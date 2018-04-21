@@ -1,5 +1,8 @@
 #include "Game.h"
 #include "ComponentsList.h"
+#include "GraphicsDevice.h"
+#include "SoundDevice.h"
+
 //**************************************
 //Initiallizes variables to Null values.
 Game::Game()
@@ -53,7 +56,7 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 
 
 	///Get a few things ready
-	GAME_OBJECTFACTORY_PRESETS presets;
+	ObjectFactory::GAME_OBJECTFACTORY_PRESETS presets;
 	presets.devices = devices.get();
 	ObjectFactory* objectFactory = devices->GetObjectFactory();
 
@@ -326,8 +329,7 @@ void Game::Update()
 //**************************************
 {
 
-	//update the physics world
-	devices->GetPhysicsDevice()->Update(1.0f / devices->GetFPS());
+	
 
 	std::vector<std::shared_ptr<GameObject>>::iterator objectIter;
 
@@ -386,6 +388,8 @@ void Game::Update()
 
 
 	}
+	//update the physics world
+	devices->GetPhysicsDevice()->Update(1.0f / devices->GetFPS());
 }
 
 //**************************************

@@ -1,16 +1,21 @@
+#include <memory>
+
+#include "ObjectFactory.h"
 #include "RendererComponent.h"
 #include "BodyComponent.h"
 #include "Texture.h"
 #include "ArtAssetLibrary.h"
 #include "View.h"
 #include "ResourceManager.h"
-#include <memory>
+#include "PhysicsDevice.h"
+#include "GraphicsDevice.h"
+
 RendererComponent::RendererComponent(std::shared_ptr<GameObject> owner):Component(owner){initialized = false;}
 RendererComponent::~RendererComponent(){}
 
 //**************************************
 //on the first pass, we set up the texture for the object
-bool RendererComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
+bool RendererComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 //**************************************
 {
 	//this will get hit twice, so we only want it done once.
@@ -61,7 +66,7 @@ GAME_VEC RendererComponent::GetUpdatedPosition(std::shared_ptr<GameObject> owner
 //**************************************
 {
 	GAME_VEC updatedPosition;
-	GAME_VEC position = devices -> GetPhysicsDevice() -> GetPosition(owner.get());
+	GAME_VEC position = _owner->GetComponent<BodyComponent>()->getPosition();
 	//adjust position.
 	updatedPosition.x = 
 		  position.x

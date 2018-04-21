@@ -3,6 +3,12 @@
 #include "ObjectFactory.h"
 #include "GameObject.h"
 #include "InputDevice.h"
+#include "SoundDevice.h"
+#include "View.h"
+#include "GraphicsDevice.h"
+#include "NoticesAssetLibrary.h"
+#include "Blackboard.h"
+#include "PhysicsDevice.h"
 
 
 UserInputComponent::UserInputComponent(std::shared_ptr<GameObject> owner):Component(owner){}
@@ -10,7 +16,7 @@ UserInputComponent::~UserInputComponent(){}
 
 //**************************************
 //Set up some defaults
-bool UserInputComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
+bool UserInputComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 {
 	frameCount = 0;
 	zeroVec.x = 0;
@@ -209,18 +215,18 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 
 
 	//*************************************** BORDER DETECTION**********************
-		
 	//Disntance from edge of screen before screen updates.	
-	GAME_INT border = 200;
-	
-	//the amount the screen moves is based upon the last change in position for the player.
-	GAME_VEC jump = _owner -> GetComponent<BodyComponent>() -> GetDPosition();
-	
+	static const GAME_INT border = 200;
+		
 	//grab a few things we are going to need.
 	PhysicsDevice* pDevice = devices -> GetPhysicsDevice();
 	GraphicsDevice* gDevice = devices -> GetGraphicsDevice();
-	std::shared_ptr<View> view = devices -> GetGraphicsDevice() -> GetView();
+	View* view = devices -> GetGraphicsDevice() -> GetView();
 	
+	//the amount the screen moves is based upon the last change in position for the player.
+	devices->getBlackboard()->updateJump(*devices->GetPhysicsDevice()->GetPosition(_owner.get()));
+	GAME_VEC jump = devices->getBlackboard()->getJump();
+
 	//position plus view
 	GAME_VEC position = _owner -> GetComponent<RendererComponent>() -> GetUpdatedPosition(_owner);
 	
@@ -256,7 +262,7 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 	//Get N,S,E,W direction.
 	GAME_DIRECTION direction = static_cast<GAME_DIRECTION>(abs((int(devices -> GetPhysicsDevice() -> GetAngle(_owner.get()))%360)));
 	//set up ntoice
-	NoticesAssetLibrary::GAME_NOTICE notice = {square.x, square.y, direction, ""};
+	NoticesAssetLibrary::GAME_NOTICE notice = {(GAME_INT)square.x, (GAME_INT)square.y, direction, ""};
 
 
 	//if there is a notice
@@ -284,7 +290,7 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 	if(locationMarker)
 	{
 		//GAME_VEC playerPosition = devices -> GetPhysicsDevice() -> GetLinearVelocity(_owner.get());
-		GAME_VEC playerPosition = devices -> GetPhysicsDevice() -> GetPosition(_owner.get());
+		GAME_VEC playerPosition = _owner->GetComponent<BodyComponent>()->getPosition();
 		std::string playerPositionText = "(" + std::to_string(playerPosition.x) + ", " + std::to_string(playerPosition.y) + ")";
 		devices -> GetGraphicsDevice() ->Text2Screen(playerPositionText, position);
 	}
@@ -321,15 +327,15 @@ GAME_VEC UserInputComponent::GetCurrentSquare()
 	//Adjust the y, because the 15x15 square starts in the bottom left corner, while SDL starts in the top left.
 	GAME_VEC square = 
 					{
-						int((cityCorner.x + viewPosition.x - playerPosition.x)*-1/110),
-						15+int((cityCorner.y + viewPosition.y - playerPosition.y)/110)
+						(GAME_FLT)((cityCorner.x + viewPosition.x - playerPosition.x)*-1/110),
+						(GAME_FLT)(15+int((cityCorner.y + viewPosition.y - playerPosition.y)/110))
 					};
 	return square;					
 	//this code is here for use for debugging.
 	//Draw player position on himself
-	/*std::string playerPositionText = "(" + std::to_string(playerPosition.x) + ", " + std::to_string(playerPosition.y) + ")";
+	std::string playerPositionText = "(" + std::to_string(playerPosition.x) + ", " + std::to_string(playerPosition.y) + ")";
 	
-	GAME_VEC position = _owner -> GetComponent<RendererComponent>() -> GetUpdatedPosition(devices -> GetPhysicsDevice() -> GetPosition(_owner.get()));
+	/*GAME_VEC position = _owner -> GetComponent<RendererComponent>() -> GetUpdatedPosition(devices -> GetPhysicsDevice() -> GetPosition(_owner.get()));
 	devices -> GetGraphicsDevice() ->Text2Screen(playerPositionText, position);*/
 
 }

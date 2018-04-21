@@ -11,7 +11,7 @@ public:
 	HealthComponent(std::shared_ptr<GameObject>);
 	~HealthComponent();
 
-	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
+	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
 
 	GAME_INT GetHealth(){return health;}
 	bool GetIsDead(){return isDead;}

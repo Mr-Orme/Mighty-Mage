@@ -89,7 +89,7 @@ void Texture::Draw(SDL_Renderer* renderer, GAME_VEC position, GAME_FLT angle, SD
 {
 
 	//Set rendering space and render to screen
-	SDL_Rect renderQuad = { position.x, position.y, width, height};
+	SDL_Rect renderQuad = { (int)position.x, (int)position.y, width, height};
 
     //Set clip rendering dimensions
     if( clip != NULL ){

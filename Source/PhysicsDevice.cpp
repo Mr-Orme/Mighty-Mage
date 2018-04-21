@@ -5,6 +5,7 @@
 #include "ContactListener.h"
 #include "GameObject.h"
 #include "Texture.h"
+#include "ObjectFactory.h"
 
 
 
@@ -137,7 +138,7 @@ GAME_VEC PhysicsDevice::GetLinearVelocity(GameObject* object)
 
 //**************************************
 //Gets bodies' position
-GAME_VEC PhysicsDevice::GetPosition(GameObject* object)
+GAME_VEC* PhysicsDevice::GetPosition(GameObject* object)
 //**************************************
 {
 	//b2Body* body = FindBody(object);
@@ -166,9 +167,9 @@ GAME_VEC PhysicsDevice::GetVelocity(GameObject* object)
 //based on passed in values
 bool PhysicsDevice::createFixture
 	(
-	GameObject* object,
-	GAME_PHYSICS physics,
-	GAME_OBJECTFACTORY_PRESETS presets
+		GameObject* object,
+		GAME_PHYSICS physics,
+		ObjectFactory::GAME_OBJECTFACTORY_PRESETS presets
 	)
 //**************************************
 {
@@ -374,7 +375,7 @@ bool PhysicsDevice::CreatRevolvingJoint(GameObject* object1, GameObject* object2
 
 //**************************************
 //adjusts postion based on the fact that SDL is top left and Box2d uses the center of an object for position.
-GAME_VEC PhysicsDevice::AlignCenters(GameObject* object)
+GAME_VEC* PhysicsDevice::AlignCenters(GameObject* object)
 //**************************************
 {
 	b2Body* body = FindBody(object);
@@ -388,5 +389,5 @@ GAME_VEC PhysicsDevice::AlignCenters(GameObject* object)
 		position.y = PW2RW(physPosition.y) - (texture -> getHeight()/2);
 	
 
-	return (position);
+	return (&position);
 }

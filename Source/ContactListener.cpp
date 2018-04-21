@@ -3,6 +3,7 @@
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "ComponentsList.h"
+#include "SoundDevice.h"
 
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {
@@ -93,7 +94,7 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 	}
 
 }
-
+//move this to backpack component! FIXME
 void ContactListener::PickUpItem(GameObject* player, GameObject* item)
 {
 	//grab the resource manager from the player's body component

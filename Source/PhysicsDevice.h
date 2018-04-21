@@ -3,11 +3,13 @@
 
 #include "Definitions.h"
 #include "Box2D.h"
+#include "ObjectFactory.h"
 
 class Texture;
 class GameObject;
 class PhysicsAssetLibrary;
 class Object;
+
 
 class PhysicsDevice{
 public:
@@ -15,7 +17,8 @@ public:
 	PhysicsDevice(GAME_FLT gravityX, GAME_FLT gravityY);
 	bool Initialize();
 	bool Update(float dt);
-
+	
+	
 	typedef struct GAME_ROTATE_STRUCT
 	{
 		GAME_FLT torque;
@@ -44,9 +47,9 @@ public:
 
 	bool createFixture
 		(
-		GameObject* object,
-		GAME_PHYSICS physics,
-		GAME_OBJECTFACTORY_PRESETS presets
+			GameObject* object,
+			GAME_PHYSICS physics,
+			ObjectFactory::GAME_OBJECTFACTORY_PRESETS presets
 		);
 
 	bool SetTransform(GameObject* object, GAME_VEC position, GAME_FLT angle);
@@ -59,7 +62,7 @@ public:
 	bool SetAngle(GameObject* object, GAME_FLT angle);
 
 	GAME_FLT GetAngularVelocity(GameObject* object);
-	GAME_VEC GetPosition(GameObject* object);
+	GAME_VEC* GetPosition(GameObject* object);
 	GAME_FLT GetAngle(GameObject* object);
 	GAME_VEC GetVelocity(GameObject* object);
 	GAME_VEC GetLinearVelocity(GameObject* object);
@@ -82,9 +85,13 @@ public:
 	inline float RW2PWAngle(GAME_FLT x){return((float)x*(2.0f*3.14159f)/360.0f);} //degrees to radians
 	inline float PW2RWAngle(GAME_FLT x){return((float)x*360.0f/(2.0f*3.14159f));} //radians to degrees
 private:
+	
 	bool DestroyJoint(b2Body* body);
+	GAME_VEC* AlignCenters(GameObject* object);
+
 	const b2Vec2 gravity;
-	GAME_VEC AlignCenters(GameObject* object);
+	const float fPRV = 10.0f;
+	
 
 	
 

@@ -62,6 +62,7 @@ bool SoundAssetLibrary::AddBackgroundMusic(std::string name, std::string path)
 {
 	//Mix_Load
 	if(musicLibrary[name] = Mix_LoadMUS(path.c_str())) return true;
+	return false;
 }
 
 //**************************************

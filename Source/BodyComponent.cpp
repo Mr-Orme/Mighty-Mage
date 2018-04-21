@@ -2,13 +2,14 @@
 #include "RendererComponent.h"
 #include "ResourceManager.h"
 #include "PhysicsDevice.h"
+#include "PhysicsAssetLibrary.h"
 
 BodyComponent::BodyComponent(std::shared_ptr<GameObject> owner):Component(owner){}
 BodyComponent::~BodyComponent(){}
 
 //**************************************
 //Based on the presets struct passed in, a fixture is created
-bool BodyComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
+bool BodyComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 //**************************************
 {
 	
@@ -30,7 +31,7 @@ bool BodyComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
 			presets
 			);
 	}
-	oldPosition = presets.position;
+	//oldPosition = presets.position;
 	return true;
 }
 
@@ -42,10 +43,10 @@ void BodyComponent::Start(){}
 std::shared_ptr<GameObject> BodyComponent::Update()
 //**************************************
 {
-	GAME_VEC newPosition = devices -> GetPhysicsDevice() -> GetPosition(_owner.get());
+	/*GAME_VEC newPosition = devices -> GetPhysicsDevice() -> GetPosition(_owner.get());
 	dPosition.x =  newPosition.x- oldPosition.x;
 	dPosition.y =  newPosition.y- oldPosition.y;
-	oldPosition = newPosition;
+	oldPosition = newPosition;*/
 	return NULL;
 }
 //**************************************
@@ -60,4 +61,14 @@ void BodyComponent::Finish()
 		printf( "Object could not be removed from Physics World");
 		exit(1);					
 	}
+}
+
+GAME_FLT BodyComponent::GetAngle()
+{
+	return devices->GetPhysicsDevice()->GetAngle(_owner.get());
+}
+
+GAME_VEC BodyComponent::getPosition()
+{
+	return *(devices->GetPhysicsDevice()->GetPosition(_owner.get()));
 }

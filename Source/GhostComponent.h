@@ -12,7 +12,7 @@ class GhostComponent : public Component
 public:
 	GhostComponent(std::shared_ptr<GameObject>);
 	~GhostComponent();
-	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
+	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
 
 	std::map<GAME_DIRECTION, bool> getGhostDirection(){return ghostDirection;}
 	void SetGhostDirection(GAME_DIRECTION direction, bool isGhost){ghostDirection[direction]=isGhost;}

@@ -1,9 +1,27 @@
+#include <memory>
+#include "tinyxml\tinyxml.h"
+#include "Box2DDebugDraw.h"
+#include "Definitions.h"
 
 #include "ResourceManager.h"
 #include "ObjectFactory.h"
-#include "Definitions.h"
-#include "tinyxml\tinyxml.h"
-#include "Box2DDebugDraw.h"
+#include "InputDevice.h"
+#include "GraphicsDevice.h"
+#include "Blackboard.h"
+#include "PhysicsDevice.h"
+#include "SoundDevice.h"
+#include "Texture.h"
+#include "View.h"
+
+#include "ArtAssetLibrary.h"
+#include "ComponentAssetLibrary.h"
+#include "LevelConfigLibrary.h"
+#include "NoticesAssetLibrary.h"
+#include "ObjectAssetLibrary.h"
+#include "PhysicsAssetLibrary.h"
+#include "SoundAssetLibrary.h"
+
+
 
 
 ResourceManager::ResourceManager(){}
@@ -23,13 +41,17 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 	//========================================
 	//Construct Object Factory
 	//========================================
-	factory = std::make_shared<ObjectFactory>();
+	factory = std::make_unique<ObjectFactory>();
 
+	//========================================
+	//Construct Blackboard
+	//========================================
+	blackboard = std::make_unique<Blackboard>();
 
 	//========================================
 	//Construct Input Device
 	//========================================
-	iDevice = std::make_shared<InputDevice>();
+	iDevice = std::make_unique<InputDevice>();
 	if(!iDevice->Initialize())
 	{
 		printf( "Input Device could not initialize!");
@@ -38,7 +60,7 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 		//========================================
 	//Construct Graphical Device
 	//========================================
-	gDevice = std::make_shared<GraphicsDevice>(SCREEN_WIDTH, SCREEN_HEIGHT);
+	gDevice = std::make_unique<GraphicsDevice>(SCREEN_WIDTH, SCREEN_HEIGHT);
 	if(!gDevice->Initialize(true))
 	{
 		printf( "Graphics Device could not Initialize!");
@@ -55,7 +77,7 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 	//========================================
 	//Construct Physics Device
 	//========================================
-	pDevice = std::make_shared<PhysicsDevice>(0,0);
+	pDevice = std::make_unique<PhysicsDevice>(0,0);
 
 	
 	if(!pDevice -> Initialize())
@@ -66,7 +88,7 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 	//========================================
 	//Construct Sound Device
 	//========================================
-	sDevice = std::make_shared<SoundDevice>();
+	sDevice = std::make_unique<SoundDevice>();
 	
 	if(!sDevice -> Initialize())
 	{
@@ -77,38 +99,38 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 	//========================================
 	//Construct Art Library
 	//========================================
-	aLibrary = std::make_shared<ArtAssetLibrary>();	
+	aLibrary = std::make_unique<ArtAssetLibrary>();	
 	//needs to be an xml file just likes physics.
 	if(!aLibrary -> Initialize(gDevice.get())){return false;}
 
 	//========================================
 	//Construct Physics Library
 	//========================================
-	pLibrary = std::make_shared<PhysicsAssetLibrary>();
+	pLibrary = std::make_unique<PhysicsAssetLibrary>();
 	if(!pLibrary -> Initialize()){return false;}
 
 	//========================================
 	//Construct Physics Library
 	//========================================
-	cLibrary = std::make_shared<ComponentAssetLibrary>();
+	cLibrary = std::make_unique<ComponentAssetLibrary>();
 	if(!cLibrary -> Initialize()){return false;}
 
 	//========================================
 	//Construct Objects Library
 	//========================================
-	oLibrary = std::make_shared<ObjectAssetLibrary>();
+	oLibrary = std::make_unique<ObjectAssetLibrary>();
 	if(!oLibrary -> Initialize()){return false;}
 
 	//========================================
 	//Construct Notices Library
 	//========================================
-	nLibrary = std::make_shared<NoticesAssetLibrary>();
+	nLibrary = std::make_unique<NoticesAssetLibrary>();
 	if(!nLibrary -> Initialize()){return false;}
 
 	//========================================
 	//Construct Sound Library
 	//========================================
-	sLibrary = std::make_shared<SoundAssetLibrary>();
+	sLibrary = std::make_unique<SoundAssetLibrary>();
 	if(!sLibrary -> Initialize(sDevice.get())){return false;}
 
 	//========================================
@@ -176,7 +198,7 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 			else if(currentComponent == "Health")
 			{
 				// Get the health
-				GAME_OBJECT_STATS stats;
+				ObjectFactory::GAME_OBJECT_STATS stats;
 				compElement -> QueryIntAttribute("health", &stats.health);
 				//add to library
 				oLibrary -> AddAsset(aName, stats);

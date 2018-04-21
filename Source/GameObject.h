@@ -4,13 +4,14 @@
 #include<memory>
 #include<iostream>
 #include<vector>
-#include "SDL.h"
-#include "SDL_ttf.h"
+//#include "SDL.h"
+//#include "SDL_ttf.h"
 #include "Definitions.h"
-
+#include "ObjectFactory.h"
 class Component;
 class GraphicsDevice;
 class PhysicsDevice;
+
 
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
@@ -18,9 +19,9 @@ public:
 	GameObject();
 	~GameObject();
 	
-	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
+	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
 	void AddComponent(std::shared_ptr<Component> component);
-
+	
 	template<class T>
 	std::shared_ptr<T> GetComponent()
 	{

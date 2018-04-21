@@ -7,6 +7,7 @@
 //#include "InputDevice.h"
 #include "View.h"
 #include "Texture.h"
+#include "SoundAssetLibrary.h"
 
 
 
@@ -19,17 +20,10 @@ GraphicsDevice::GraphicsDevice(Uint32 width, Uint32 height) : SCREEN_WIDTH(width
 
 GraphicsDevice::~GraphicsDevice()
 {
-	/*if(!ShutDown())
-	{
-		printf( "SDL could not shut down! SDL_Error: %s\n", SDL_GetError() );
-		exit(1);
-	}*/
+
 }
 
-//SDL_Window* GraphicsDevice::GetWindow()
-//{
-//	return(screen);
-//}
+
 
 bool GraphicsDevice::Initialize(bool fullScreen)
 {
@@ -92,7 +86,7 @@ bool GraphicsDevice::Initialize(bool fullScreen)
 	//========================================
 	//create view
 	//========================================
-	view = std::make_shared<View>();
+	view = std::make_unique<View>();
 	view -> Initialize (0, 0);
 
 	return(true);

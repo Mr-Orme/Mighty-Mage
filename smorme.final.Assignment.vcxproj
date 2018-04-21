@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\ArtAssetLibrary.cpp" />
+    <ClCompile Include="Source\Blackboard.cpp" />
     <ClCompile Include="Source\ComponentAssetLibrary.cpp" />
     <ClCompile Include="Source\EventHandler.cpp" />
     <ClCompile Include="Source\GhostComponent.cpp" />
@@ -48,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\ArtAssetLibrary.h" />
+    <ClInclude Include="Source\Blackboard.h" />
     <ClInclude Include="Source\ComponentAssetLibrary.h" />
     <ClInclude Include="Source\EventHandler.h" />
     <ClInclude Include="Source\GhostComponent.h" />

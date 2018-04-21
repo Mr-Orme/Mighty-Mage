@@ -1,5 +1,6 @@
 #include "BackpackComponent.h"
 #include "ResourceManager.h"
+#include "GraphicsDevice.h"
 #include "GameObject.h"
 #include "ObjectFactory.h"
 #include "ComponentsList.h"
@@ -10,7 +11,7 @@ BackpackComponent::~BackpackComponent(){}
 
 //**************************************
 //sets devices
-bool BackpackComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
+bool BackpackComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 //**************************************
 {
 	devices = presets.devices;
