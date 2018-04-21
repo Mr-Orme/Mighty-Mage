@@ -20,7 +20,7 @@ bool NoticesAssetLibrary::Initialize()
 //and returns that notice.
 //if not found, it sets the text to nothing of the notice passed in and
 //returns that notice.
-GAME_NOTICE NoticesAssetLibrary::Search(GAME_NOTICE square)
+NoticesAssetLibrary::GAME_NOTICE NoticesAssetLibrary::Search(GAME_NOTICE square)
 //**************************************
 {
 	for (auto notices : library)

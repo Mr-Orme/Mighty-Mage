@@ -63,7 +63,7 @@ void InputDevice::Update()
 
 //**************************************
 //converts the SDL event to a game event
-GAME_EVENT InputDevice::Translate(SDL_Event* event)
+InputDevice::GAME_EVENT InputDevice::Translate(SDL_Event* event)
 //**************************************
 {
 	//This switch is here in case we want to add other events, such as mouse events.

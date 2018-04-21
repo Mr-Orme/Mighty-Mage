@@ -2,6 +2,7 @@
 #include "ResourceManager.h"
 #include "ObjectFactory.h"
 #include "GameObject.h"
+#include "InputDevice.h"
 
 
 UserInputComponent::UserInputComponent(std::shared_ptr<GameObject> owner):Component(owner){}
@@ -18,9 +19,9 @@ bool UserInputComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
 	wallHit = false;
 	noWall =true;
 
-	for (int i = 0; i < GAME_NUM_EVENTS; i++)
+	for (int i = 0; i < InputDevice::GAME_NUM_EVENTS; i++)
 	{
-		GAME_EVENT eventNum = static_cast<GAME_EVENT>(i);
+		InputDevice::GAME_EVENT eventNum = static_cast<InputDevice::GAME_EVENT>(i);
 		pressControl[eventNum] = true;
 	}
 
@@ -49,7 +50,7 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 	if(!_owner -> GetComponent<BackpackComponent>() -> GetOpen())
 	{
 		//Run if shift is being held down.
-		if(devices -> GetInputDevice() -> GetEvent(GAME_SHIFT))
+		if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_SHIFT))
 		{
 			forceMultiplier = baseForceMultiplier * runMultiplier;
 			//play it faster
@@ -77,7 +78,7 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 			
 
 		//If the up or down arrow is pressed
-		if(devices -> GetInputDevice() -> GetEvent(GAME_UP))
+		if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_UP))
 		{
 			//Calculate force vector for a forward push
 			applyForce.x = (float)cosf((devices -> GetPhysicsDevice() -> GetAngle(_owner.get())*PI/180)-(PI/2))*forceMultiplier;
@@ -106,7 +107,7 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 
 		}
 		//otherwise, if the down arrow is pressed.
-		else if(devices -> GetInputDevice() -> GetEvent(GAME_DOWN))
+		else if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_DOWN))
 		{
 			//Force reversed from the UP force by adding PI to the angle.
 			applyForce.x = (float)cosf((devices -> GetPhysicsDevice() -> GetAngle(_owner.get())*PI/180)+(PI/2))*forceMultiplier;
@@ -141,10 +142,10 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 	
 		//Check for left or right buttons
 		// the "turn" variable makes sure we only turn once every time we push the button
-		if(devices -> GetInputDevice() -> GetEvent(GAME_RIGHT))
+		if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_RIGHT))
 		{
 			//change the angle
-			if(pressControl[GAME_RIGHT]) 
+			if(pressControl[InputDevice::GAME_RIGHT])
 			{
 				//set angle by angle adjust
 				devices -> GetPhysicsDevice() -> SetAngle(
@@ -153,32 +154,32 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 				//stop forward motion
 				devices -> GetPhysicsDevice() -> SetLinearVelocity(_owner.get(), zeroVec);
 				//ensures we only turn once per press
-				pressControl[GAME_RIGHT] = false;
+				pressControl[InputDevice::GAME_RIGHT] = false;
 			}
 			//same as else on up and down arrows
 			noWall = true;
 		}
-		else pressControl[GAME_RIGHT] = true;
-		if(devices -> GetInputDevice() -> GetEvent(GAME_LEFT))
+		else pressControl[InputDevice::GAME_RIGHT] = true;
+		if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_LEFT))
 		{
 			//similar to turn right.
-			if(pressControl[GAME_LEFT]) 
+			if(pressControl[InputDevice::GAME_LEFT])
 			{
 				devices -> GetPhysicsDevice() -> SetAngle(_owner.get(), devices -> GetPhysicsDevice() -> GetAngle(_owner.get())-angleAdjust);
 				devices -> GetPhysicsDevice() -> SetLinearVelocity(_owner.get(), zeroVec);
-				pressControl[GAME_LEFT] = false;
+				pressControl[InputDevice::GAME_LEFT] = false;
 			}
 			//same as else on up and down arrows
 			noWall = true;
 		
 		}
-		else pressControl[GAME_LEFT] = true;
+		else pressControl[InputDevice::GAME_LEFT] = true;
 	}
 	else devices -> GetPhysicsDevice() -> SetLinearVelocity(_owner.get(), zeroVec);
 	
-	if(devices -> GetInputDevice() -> GetEvent(GAME_B))
+	if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_B))
 	{
-		if(pressControl[GAME_B])
+		if(pressControl[InputDevice::GAME_B])
 		{
 			std::shared_ptr<BackpackComponent> backpack = _owner -> GetComponent<BackpackComponent>();	
 			if(backpack != NULL)
@@ -186,11 +187,11 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 				if(backpack -> GetOpen()) backpack -> SetOpen(false);
 				else backpack -> SetOpen(true);
 			}
-			pressControl[GAME_B] = false;
+			pressControl[InputDevice::GAME_B] = false;
 		}
 		
 	}
-	else pressControl[GAME_B] = true;
+	else pressControl[InputDevice::GAME_B] = true;
 
 
 
@@ -255,7 +256,7 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 	//Get N,S,E,W direction.
 	GAME_DIRECTION direction = static_cast<GAME_DIRECTION>(abs((int(devices -> GetPhysicsDevice() -> GetAngle(_owner.get()))%360)));
 	//set up ntoice
-	GAME_NOTICE notice = {square.x, square.y, direction, ""};
+	NoticesAssetLibrary::GAME_NOTICE notice = {square.x, square.y, direction, ""};
 
 
 	//if there is a notice

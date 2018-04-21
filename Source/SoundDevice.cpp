@@ -14,17 +14,18 @@ bool SoundDevice::Initialize()
 	int flags = MIX_INIT_OGG;
 	int initted = Mix_Init(flags);
 
-	if(initted&flags != flags)
+	if(initted && flags != flags)
 	{
 		printf("Mix_Init: Failed to init required ogg and mod support!\n");
 		printf("Mix_Init: %s\n", Mix_GetError());
+		return false;
 	}
 
 	//Load the Mixer subsystem
 	if(Mix_OpenAudio(48000, MIX_DEFAULT_FORMAT, 2, 4096 ) <0)
 	{
 		printf( "SDL Mixer could not initialize! SDL_Error: %s\n", Mix_GetError() );
-		exit(1);	    		
+		return false;
 	}
 
 	//Mixing parameters
@@ -32,6 +33,7 @@ bool SoundDevice::Initialize()
     
     //Allocate sufficient channels
     Mix_AllocateChannels(numChannels);
+	return true;
 }
 
 //**************************************

@@ -13,8 +13,20 @@ class GameObject;
 	
 class ComponentAssetLibrary{
 public:
+
 	ComponentAssetLibrary();
 	bool Initialize();
+
+	enum GAME_COMPONENT_LIST
+	{
+		GAME_BODY_COMP,
+		GAME_HEALTH_COMP,
+		GAME_RENDERER_COMP,
+		GAME_USERINPUT_COMP,
+		GAME_BACKPACK_COMP,
+		GAME_INVENTORY_COMP,
+		GAME_GHOST_COMP,
+	};
 	std::vector<std::shared_ptr<Component>> Search(std::string name, std::shared_ptr<GameObject> owner);
 	bool AddAsset(std::string name, std::vector<GAME_COMPONENT_LIST> componentList);
 private:

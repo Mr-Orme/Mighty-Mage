@@ -4,16 +4,20 @@
 
 #include "Component.h"
 #include "Definitions.h"
-
+#include "InputDevice.h"
+#include "PhysicsDevice.h"
 
 class ResourceManager;
 class ArtAssetLibrary;
 class PhysicsAssetLibrary;
 class ObjectFactory;
 
+
 class UserInputComponent : public Component
 {
 public:
+	
+
 	UserInputComponent(std::shared_ptr<GameObject> owner);
 	~UserInputComponent();
 	
@@ -30,9 +34,9 @@ protected:
 	std::shared_ptr<ResourceManager> devices;
 
 	//GAME_OBJECTFACTORY_PRESETS presets;
-	GAME_PHYSICS physics;
+	PhysicsDevice::GAME_PHYSICS physics;
 	GAME_VEC zeroVec;
-	std::map<GAME_EVENT, bool> pressControl;
+	std::map<InputDevice::GAME_EVENT, bool> pressControl;
 	bool wallHit;
 	bool noWall;
 	

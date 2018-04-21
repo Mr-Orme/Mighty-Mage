@@ -129,7 +129,7 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 		std::string aName = asset -> Attribute("name");
 	
 		//where we will store the components.
-		std::vector<GAME_COMPONENT_LIST> componentList;
+		std::vector<ComponentAssetLibrary::GAME_COMPONENT_LIST> componentList;
 		
 		//move to the components of the xml
 		TiXmlElement* compElement = asset -> FirstChildElement();
@@ -145,11 +145,11 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 				//add the coresponding asset to the library.
 				aLibrary -> AddAsset(aName, compElement -> Attribute("sprite"));
 				//add the component to the list
-				componentList.push_back(GAME_RENDERER_COMP);
+				componentList.push_back(ComponentAssetLibrary::GAME_RENDERER_COMP);
 			}
 			else if(currentComponent == "Body")
 			{
-				GAME_PHYSICS physics;
+				PhysicsDevice::GAME_PHYSICS physics;
 				//Get physics properties
 				compElement -> QueryFloatAttribute("density", &physics.density);
 				compElement -> QueryFloatAttribute("restitution", &physics.restitution);
@@ -162,16 +162,16 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 				compElement -> QueryStringAttribute("bodyShape", &bodyShape);
 		
 				//convert strings to enums
-				if(bodyType == "GAME_DYNAMIC"){physics.bodyType = GAME_DYNAMIC;}
-				else if (bodyType == "GAME_STATIC"){physics.bodyType = GAME_STATIC;}
+				if(bodyType == "GAME_DYNAMIC"){physics.bodyType = PhysicsDevice::GAME_DYNAMIC;}
+				else if (bodyType == "GAME_STATIC"){physics.bodyType = PhysicsDevice::GAME_STATIC;}
 		
-				if(bodyShape == "GAME_RECTANGLE"){physics.objectShape = GAME_RECTANGLE;}
-				else if (bodyShape == "GAME_CIRCLE"){physics.objectShape = GAME_CIRCLE;}
+				if(bodyShape == "GAME_RECTANGLE"){physics.objectShape = PhysicsDevice::GAME_RECTANGLE;}
+				else if (bodyShape == "GAME_CIRCLE"){physics.objectShape = PhysicsDevice::GAME_CIRCLE;}
 				//add to library
 				pLibrary -> AddAsset(aName, physics);
 				
 				//add component to list
-				componentList.push_back(GAME_BODY_COMP);
+				componentList.push_back(ComponentAssetLibrary::GAME_BODY_COMP);
 			}
 			else if(currentComponent == "Health")
 			{
@@ -181,12 +181,12 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 				//add to library
 				oLibrary -> AddAsset(aName, stats);
 				//add component
-				componentList.push_back(GAME_HEALTH_COMP);
+				componentList.push_back(ComponentAssetLibrary::GAME_HEALTH_COMP);
 			}
-			else if(currentComponent == "UserInput") componentList.push_back(GAME_USERINPUT_COMP);
-			else if(currentComponent == "Backpack") componentList.push_back(GAME_BACKPACK_COMP);
-			else if(currentComponent == "Inventory") componentList.push_back(GAME_INVENTORY_COMP);
-			else if(currentComponent == "Ghost") componentList.push_back(GAME_GHOST_COMP);
+			else if(currentComponent == "UserInput") componentList.push_back(ComponentAssetLibrary::GAME_USERINPUT_COMP);
+			else if(currentComponent == "Backpack") componentList.push_back(ComponentAssetLibrary::GAME_BACKPACK_COMP);
+			else if(currentComponent == "Inventory") componentList.push_back(ComponentAssetLibrary::GAME_INVENTORY_COMP);
+			else if(currentComponent == "Ghost") componentList.push_back(ComponentAssetLibrary::GAME_GHOST_COMP);
 			// if we have a misspeleed or non-existant component name in the file
 			else
 			{
@@ -215,7 +215,7 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 	do
 	{
 		//get information from file
-		GAME_NOTICE notice;
+		NoticesAssetLibrary::GAME_NOTICE notice;
 		int x,y;
 		std::string direction;
 		notices -> QueryIntAttribute("x", &x);

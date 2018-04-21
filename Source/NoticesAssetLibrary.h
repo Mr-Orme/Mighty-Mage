@@ -9,6 +9,15 @@ class NoticesAssetLibrary{
 public:
 	NoticesAssetLibrary();
 	bool Initialize();
+
+	typedef struct GAME_NOTICE
+	{
+		GAME_INT x;
+		GAME_INT y;
+		GAME_DIRECTION direction;
+		std::string text;
+	}GAME_NOTICE;
+
 	GAME_NOTICE Search(GAME_NOTICE square);
 	bool AddAsset(GAME_NOTICE notice);
 	bool RemoveAsset(GAME_NOTICE notice);

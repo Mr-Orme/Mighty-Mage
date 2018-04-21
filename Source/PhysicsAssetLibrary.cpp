@@ -4,7 +4,7 @@
 //**************************************
 //Finds an item in the library and returns the physics struct
 //associated with it.
-GAME_PHYSICS PhysicsAssetLibrary::Search(std::string searchText)
+PhysicsDevice::GAME_PHYSICS PhysicsAssetLibrary::Search(std::string searchText)
 //**************************************
 {
 	return(library.find(searchText) -> second);
@@ -20,7 +20,7 @@ bool PhysicsAssetLibrary::Initialize()
 
 //**************************************
 //the name of the object type and a physics structured is passed in and saved to the library.
-bool PhysicsAssetLibrary::AddAsset(std::string name, GAME_PHYSICS physics)
+bool PhysicsAssetLibrary::AddAsset(std::string name, PhysicsDevice::GAME_PHYSICS physics)
 //**************************************
 {
 	//this game never has friction.
@@ -34,7 +34,7 @@ bool PhysicsAssetLibrary::AddAsset(std::string name, GAME_PHYSICS physics)
 void PhysicsAssetLibrary::Print()
 //**************************************
 {
-	std::map<std::string, GAME_PHYSICS>::iterator galIter;
+	std::map<std::string, PhysicsDevice::GAME_PHYSICS>::iterator galIter;
 	
 	for(galIter = library.begin(); galIter != library.end(); galIter++)
 	{

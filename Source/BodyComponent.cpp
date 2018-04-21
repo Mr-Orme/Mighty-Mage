@@ -1,6 +1,7 @@
 #include "BodyComponent.h"
 #include "RendererComponent.h"
 #include "ResourceManager.h"
+#include "PhysicsDevice.h"
 
 BodyComponent::BodyComponent(std::shared_ptr<GameObject> owner):Component(owner){}
 BodyComponent::~BodyComponent(){}
@@ -12,7 +13,7 @@ bool BodyComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
 {
 	
 	std::shared_ptr<RendererComponent> compRenderer = _owner -> GetComponent<RendererComponent>();
-	GAME_PHYSICS physics;
+	PhysicsDevice::GAME_PHYSICS physics;
 	if(compRenderer != NULL)
 	{
 		//store the resource manager.

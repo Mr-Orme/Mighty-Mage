@@ -1,8 +1,11 @@
+#include <cmath>
+
 #include "PhysicsDevice.h"
 #include "RendererComponent.h"
 #include "ContactListener.h"
 #include "GameObject.h"
-#include <cmath>
+#include "Texture.h"
+
 
 
 PhysicsDevice::PhysicsDevice(GAME_FLT gravityX, GAME_FLT gravityY):gravity(RW2PW(gravityX), RW2PW(gravityY))

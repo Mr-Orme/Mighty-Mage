@@ -5,18 +5,19 @@
 #include <map>
 #include <iostream>
 #include "Definitions.h"
+#include "PhysicsDevice.h"
 
 class PhysicsAssetLibrary{
 public:
 	void Print();
 			//Asset Name, Asset Factory
-	GAME_PHYSICS Search(std::string name);
+	PhysicsDevice::GAME_PHYSICS Search(std::string name);
 	//bool Initialize(std::string path);
 	bool Initialize();
-	bool AddAsset(std::string name, GAME_PHYSICS physics);
+	bool AddAsset(std::string name, PhysicsDevice::GAME_PHYSICS physics);
 
 protected:
-	std::map<std::string, GAME_PHYSICS> library;
+	std::map<std::string, PhysicsDevice::GAME_PHYSICS> library;
 	
 
 private:

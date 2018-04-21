@@ -26,55 +26,17 @@ typedef unsigned int	Uint32;
 typedef float			GAME_FLT;
 typedef Uint32			GAME_INT;
 
-enum GAME_ROTATE_DIRECTION {GAME_ROTATE_LEFT = -1, GAME_ROTATE_RIGHT = 1};
-enum GAME_OBJECT_SHAPE {GAME_RECTANGLE, GAME_CIRCLE};
-enum GAME_BODY_TYPE {GAME_STATIC, GAME_KINEMATIC, GAME_DYNAMIC};
-//Event Types
-enum GAME_EVENT {GAME_NA,GAME_UP,GAME_DOWN,GAME_LEFT,GAME_RIGHT,GAME_SPACE, GAME_SHIFT, GAME_B, GAME_QUIT, GAME_NUM_EVENTS};
-enum GAME_DIRECTION {N =0, E = 90, S = 180, W = 270};
-enum GAME_COLORS {GAME_RED, GAME_YELLOW, GAME_BLUE, GAME_ORANGE, GAME_GREEN, GAME_PURPLE, GAME_NUM_COLORS};
-enum GAME_LEVEL {GAME_LEVEL_MAIN, GAME_LEVEL_BASEMENT,};
-
-enum GAME_COMPONENT_LIST 
-{
-	GAME_BODY_COMP, 
-	GAME_HEALTH_COMP, 
-	GAME_RENDERER_COMP, 
-	GAME_USERINPUT_COMP, 
-	GAME_BACKPACK_COMP,
-	GAME_INVENTORY_COMP,
-	GAME_GHOST_COMP,
-};
-
 typedef struct GAME_VEC
 {
-    GAME_FLT x;
-    GAME_FLT y;
+	GAME_FLT x;
+	GAME_FLT y;
 } GAME_VEC;
 
 
-typedef struct GAME_ROTATE_STRUCT
-{
-	GAME_FLT torque;
-	GAME_FLT maxAngularVelocity;
-	GAME_INT radius;
-	GAME_VEC center;
-} GAME_ROTATE_STRUCT;
+enum GAME_DIRECTION {N =0, E = 90, S = 180, W = 270};
 
-typedef struct GAME_PHYSICS
-{
-	GAME_FLT spinSpeed;
-	GAME_BODY_TYPE bodyType;
-	GAME_OBJECT_SHAPE objectShape;
-	GAME_FLT density;
-	GAME_FLT friction;
-	GAME_FLT restitution;
-	GAME_FLT angularDamping;
-	GAME_FLT linearDamping;
-	GAME_FLT force;
-	bool physicsOn;
-}GAME_PHYSICS;
-
+//make levels an array of resource managers! or something tha thas everything!
+enum GAME_LEVEL {GAME_LEVEL_MAIN, GAME_LEVEL_BASEMENT,};
 
 typedef struct GAME_OBJECTFACTORY_PRESETS
 {
@@ -100,14 +62,6 @@ typedef struct GAME_RGBA
 	GAME_INT B;
 	GAME_INT A;
 }GAME_RGBA;
-
-typedef struct GAME_NOTICE
-{
-	GAME_INT x;
-	GAME_INT y;
-	GAME_DIRECTION direction;
-	std::string text;
-}GAME_NOTICE;
 
 //Constants
 const GAME_FLT PI = 3.14159f;

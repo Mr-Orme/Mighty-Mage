@@ -289,7 +289,7 @@ bool Game::Run()
 {
 
 	//check to see if we have quit;
-	if (devices->GetInputDevice()->GetEvent(GAME_QUIT) == true)
+	if (devices->GetInputDevice()->GetEvent(InputDevice::GAME_QUIT) == true)
 	{
 		return false;
 	}

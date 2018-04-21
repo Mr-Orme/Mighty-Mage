@@ -6,6 +6,7 @@
 #include "GraphicsDevice.h"
 //#include "InputDevice.h"
 #include "View.h"
+#include "Texture.h"
 
 
 
@@ -153,29 +154,29 @@ void GraphicsDevice::Draw()
 		roundedBoxRGBA
 		(
 			renderer, 
-			currOverlay.topLeft.x, 
-			currOverlay.topLeft.y, 
-			currOverlay.bottomRight.x, 
-			currOverlay.bottomRight.y, 
-			cornerRadius, 
-			currOverlay.boxBackgroundColor.R, 
-			currOverlay.boxBackgroundColor.G, 
-			currOverlay.boxBackgroundColor.B, 
-			currOverlay.boxBackgroundColor.A
+			(Sint16)(currOverlay.topLeft.x),
+			(Sint16)(currOverlay.topLeft.y),
+			(Sint16)(currOverlay.bottomRight.x),
+			(Sint16)(currOverlay.bottomRight.y),
+			(Sint16)(cornerRadius),
+			(Uint8)(currOverlay.boxBackgroundColor.R),
+			(Uint8)(currOverlay.boxBackgroundColor.G),
+			(Uint8)(currOverlay.boxBackgroundColor.B),
+			(Uint8)(currOverlay.boxBackgroundColor.A)
 		);
 		//draw the border
 		roundedRectangleRGBA
 		(
 			renderer, 
-			currOverlay.topLeft.x, 
-			currOverlay.topLeft.y, 
-			currOverlay.bottomRight.x, 
-			currOverlay.bottomRight.y, 
-			cornerRadius, 
-			currOverlay.boxBorderColor.R, 
-			currOverlay.boxBorderColor.G, 
-			currOverlay.boxBorderColor.B, 
-			currOverlay.boxBorderColor.A
+			(Sint16)(currOverlay.topLeft.x),
+			(Sint16)(currOverlay.topLeft.y),
+			(Sint16)(currOverlay.bottomRight.x),
+			(Sint16)(currOverlay.bottomRight.y),
+			(Sint16)(cornerRadius),
+			(Uint8)(currOverlay.boxBorderColor.R),
+			(Uint8)(currOverlay.boxBorderColor.G),
+			(Uint8)(currOverlay.boxBorderColor.B),
+			(Uint8)(currOverlay.boxBorderColor.A)
 		);
 
 		//draw the objects
@@ -256,7 +257,13 @@ void GraphicsDevice::Text2Screen(std::string text, GAME_VEC position)
 
 	
 	//set color of text
-	SDL_Color textColor = {color.R, color.G, color.B, color.A};
+	SDL_Color textColor = 
+	{ 
+		(Uint8)(color.R), 
+		(Uint8)(color.G),
+		(Uint8)(color.B),
+		(Uint8)(color.A)
+	};
 
 	//create texture
 	SDL_Texture* textSheetTexture = SDL_CreateTextureFromSurface( 
@@ -277,12 +284,12 @@ void GraphicsDevice::Text2Screen(std::string text, GAME_VEC position)
 		//bottomRight needs to be the width + 1;
 	if(position.x == -1)
 	{
-		position.x = Center(SCREEN_WIDTH, width);
+		position.x = Center((GAME_FLT)SCREEN_WIDTH, (GAME_FLT)width);
 			
 	}
 	if(position.y == -1)
 	{
-		position.y = Center(SCREEN_HEIGHT, height);
+		position.y = Center((GAME_FLT)SCREEN_HEIGHT, (GAME_FLT)height);
 	}
 
 	GAME_VEC topLeft = {position.x - widthIncrease, position.y -heightIncrease};
@@ -330,12 +337,33 @@ void GraphicsDevice::Notice2Screen(std::string text)
 void GraphicsDevice::DrawFilledCircle(GAME_VEC position, GAME_INT radius, GAME_RGBA RGBA)
 //**************************************
 {
-	filledCircleRGBA(renderer, position.x, position.y, radius, RGBA.R, RGBA.G, RGBA.B, RGBA.A);
+	filledCircleRGBA
+	(
+		renderer, 
+		(Sint16)(position.x),
+		(Sint16)(position.y),
+		(Sint16)(radius),
+		(Uint8)(RGBA.R),
+		(Uint8)(RGBA.G),
+		(Uint8)(RGBA.B),
+		(Uint8)(RGBA.A)
+	);
 }
 
 bool GraphicsDevice::DrawBox(GAME_VEC topLeft, GAME_VEC bottomRight, GAME_RGBA RGBA)
 {
-	boxRGBA(renderer, topLeft.x, topLeft.y, bottomRight.x, bottomRight.y, RGBA.R, RGBA.G, RGBA.B,RGBA.A);
+	boxRGBA
+	(
+		renderer,
+		(Sint16)(topLeft.x),
+		(Sint16)(topLeft.y),
+		(Sint16)(bottomRight.x),
+		(Sint16)(bottomRight.y),
+		(Uint8)(RGBA.R),
+		(Uint8)(RGBA.G),
+		(Uint8)(RGBA.B),
+		(Uint8)(RGBA.A)
+	);
 	return true;
 }
 

@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "ObjectFactory.h"
 #include "ComponentsList.h"
+#include "Texture.h"
 
 BackpackComponent::BackpackComponent(std::shared_ptr<GameObject> owner):Component(owner){}
 BackpackComponent::~BackpackComponent(){}
