@@ -29,6 +29,7 @@ bool SoundAssetLibrary::AddSoundEffect(std::string name, std::string path)
 //**************************************
 {
 	if(soundEffectLibrary[name] = Mix_LoadWAV(path.c_str())) return true;
+	return false;
 	
 }
 //**************************************

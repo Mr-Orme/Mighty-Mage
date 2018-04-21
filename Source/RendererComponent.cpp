@@ -18,7 +18,7 @@ bool RendererComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
 	{
 		devices = presets.devices;
 		//Set this as the renderer for this object
-		devices -> GetGraphicsDevice() -> AddSpriteRenderer(this);
+		//devices -> GetGraphicsDevice() -> AddSpriteRenderer(this);
 
 		//grab the sprite from the library.
 		texture = presets.devices -> GetArtLibrary() -> Search(presets.objectType);
@@ -78,5 +78,5 @@ GAME_VEC RendererComponent::GetUpdatedPosition(std::shared_ptr<GameObject> owner
 void RendererComponent::Finish()
 //**************************************
 {
-	devices -> GetGraphicsDevice() -> RemoveSpriteRenderer(this);
+	//devices -> GetGraphicsDevice() -> RemoveSpriteRenderer(this);
 }

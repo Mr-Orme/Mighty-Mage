@@ -56,18 +56,18 @@ public:
 			
 		);
 
-	void ReverseOrder();
+	//void ReverseOrder();
 
 	//!!!!!!!!!!!!!!!!!!!!!Move where exit is!!!!!!!!!!!!!!!!!
 	std::shared_ptr<GameObject> GetExit(){ return levelExit; }
 
 	//Accessors
-	void AddSpriteRenderer(RendererComponent*);
-	void RemoveSpriteRenderer(RendererComponent*);
+	//void AddSpriteRenderer(RendererComponent*);
+	//void RemoveSpriteRenderer(RendererComponent*);
 
 	//Getters
 	SDL_Renderer* GetRenderer();
-	SDL_Window* GetWindow();
+	//SDL_Window* GetWindow();
 	GAME_INT GetScreenWidth(){return SCREEN_WIDTH;}
 	GAME_INT GetScreenHeight(){return SCREEN_HEIGHT;}
 	std::shared_ptr<View> GetView(){return view;}
@@ -92,7 +92,7 @@ private:
 	SDL_Renderer* renderer;
 
 	//Renderers
-	std::vector<RendererComponent*> sprites;
+	//std::vector<RendererComponent*> sprites;
 
 	std::shared_ptr<View> view;
 

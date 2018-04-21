@@ -38,6 +38,7 @@ public:
 	}
 	
 	std::shared_ptr<GameObject> Update();
+	void draw();
 
 	void SetJoinedWith(std::shared_ptr<GameObject> joinedWith){this -> joinedWith = joinedWith;}
 

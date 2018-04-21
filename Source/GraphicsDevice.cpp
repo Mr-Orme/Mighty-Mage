@@ -25,10 +25,10 @@ GraphicsDevice::~GraphicsDevice()
 	}*/
 }
 
-SDL_Window* GraphicsDevice::GetWindow()
-{
-	return(screen);
-}
+//SDL_Window* GraphicsDevice::GetWindow()
+//{
+//	return(screen);
+//}
 
 bool GraphicsDevice::Initialize(bool fullScreen)
 {
@@ -130,12 +130,12 @@ void GraphicsDevice::Begin()
 
 void GraphicsDevice::Draw()
 {
-	//********************************draw level*************************************
-	for(auto sprite : sprites)
-	{
-		sprite->Draw();
-	}
-	//*********************************************************************************
+	////********************************draw level*************************************
+	//for(auto sprite : sprites)
+	//{
+	//	sprite->Draw();
+	//}
+	////*********************************************************************************
 
 
 
@@ -216,22 +216,22 @@ SDL_Renderer* GraphicsDevice::GetRenderer()
 	return(renderer);
 }
 
-void GraphicsDevice::AddSpriteRenderer(RendererComponent* sprite)
-{
-	sprites.push_back(sprite);
-}
-void GraphicsDevice::RemoveSpriteRenderer(RendererComponent* dSprite)
-{
-	std::vector<RendererComponent*>::iterator spriteIter;
-	for(spriteIter=sprites.begin(); spriteIter!=sprites.end(); spriteIter++)
-	{
-		if(*spriteIter == dSprite)
-		{
-			spriteIter = sprites.erase(spriteIter);
-			
-		}
-	}
-}
+//void GraphicsDevice::AddSpriteRenderer(RendererComponent* sprite)
+//{
+//	sprites.push_back(sprite);
+//}
+//void GraphicsDevice::RemoveSpriteRenderer(RendererComponent* dSprite)
+//{
+//	std::vector<RendererComponent*>::iterator spriteIter;
+//	for(spriteIter=sprites.begin(); spriteIter!=sprites.end(); spriteIter++)
+//	{
+//		if(*spriteIter == dSprite)
+//		{
+//			spriteIter = sprites.erase(spriteIter);
+//			
+//		}
+//	}
+//}
 bool GraphicsDevice::SetFont(std::string path, GAME_INT size, GAME_RGBA color)
 {
 	font = TTF_OpenFont(path.c_str(), size);
@@ -318,13 +318,13 @@ void GraphicsDevice::Notice2Screen(std::string text)
 
 }
 
-//**************************************
-//reverses the order of sprites so that the player is on top.
-void GraphicsDevice::ReverseOrder()
-//**************************************
-{
-	std::reverse(sprites.begin(), sprites.end());
-}
+////**************************************
+////reverses the order of sprites so that the player is on top.
+//void GraphicsDevice::ReverseOrder()
+////**************************************
+//{
+//	std::reverse(sprites.begin(), sprites.end());
+//}
 //**************************************
 //draws a filled circle.
 void GraphicsDevice::DrawFilledCircle(GAME_VEC position, GAME_INT radius, GAME_RGBA RGBA)

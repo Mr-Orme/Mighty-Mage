@@ -133,8 +133,8 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 					//Keep track of that corner.
 					devices->SetCityCorner(squarePosition);
 					//puts the player in the middle of the screen.
-					presets.position.x = halfWidth;
-					presets.position.y = halfHeight;
+					presets.position = 
+						{ (GAME_FLT)halfWidth, (GAME_FLT)halfHeight };
 				}
 				//Create a pointer to a new object and initialize it.
 				std::shared_ptr<GameObject> newObject = objectFactory->Create(presets);
@@ -269,7 +269,7 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 	} while (rowElement);
 
 	//reverse the order of the sprites so the player is on top of everything.
-	devices->GetGraphicsDevice()->ReverseOrder();
+	//devices->GetGraphicsDevice()->ReverseOrder();
 
 	//start background music
 
@@ -356,7 +356,7 @@ void Game::Update()
 			else if (compInventory != NULL && compInventory->GetPickedUp())
 			{
 				//remove the sprite from the automatic draw list
-				devices->GetGraphicsDevice()->RemoveSpriteRenderer((*objectIter)->GetComponent<RendererComponent>().get());
+				//devices->GetGraphicsDevice()->RemoveSpriteRenderer((*objectIter)->GetComponent<RendererComponent>().get());
 				//stop the physics on it
 				devices->GetPhysicsDevice()->SetStopPhysics((*objectIter).get());
 				//remove object from the vector.
@@ -397,7 +397,11 @@ void Game::Update()
 void Game::Draw()
 //**************************************
 {
-	devices -> GetGraphicsDevice() -> Begin();	
+	devices -> GetGraphicsDevice() -> Begin();
+	for (auto object : objects)
+	{
+		object->draw();
+	}
 	devices -> GetGraphicsDevice() -> Draw();
 	
 	if(debug) devices -> GetPhysicsDevice() -> getWorld() -> DrawDebugData();

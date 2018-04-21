@@ -34,8 +34,7 @@ protected:
 	GAME_INT slotSize;
 	GAME_VEC topLeft;
 	GAME_VEC bottomRight;
-	GAME_INT maxRows;
-	GAME_INT maxColumns;
+	GAME_VEC numSlots;
 	bool open;
 };
 

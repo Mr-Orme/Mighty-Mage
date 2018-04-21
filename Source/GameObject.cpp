@@ -71,6 +71,13 @@ std::shared_ptr<GameObject> GameObject::Update()
 	}
 	return newObject;
 }
+void GameObject::draw()
+{
+	if (std::shared_ptr<RendererComponent> sprite = GetComponent<RendererComponent>(); sprite != nullptr)
+	{
+		sprite->Draw();
+	}
+}
 //**************************************
 //takes off a compoent and runs its finsih method
 bool GameObject::removeComponents()

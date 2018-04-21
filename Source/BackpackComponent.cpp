@@ -21,23 +21,22 @@ bool BackpackComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
 	GraphicsDevice* gDevice = devices -> GetGraphicsDevice();
 	GAME_INT SCREEN_WIDTH = gDevice -> GetScreenWidth();
 	GAME_INT SCREEN_HEIGHT = gDevice -> GetScreenHeight();
-	topLeft.x = SCREEN_WIDTH*.1;
-	topLeft.y = SCREEN_HEIGHT*.1;
+	topLeft.x = SCREEN_WIDTH*.1f;
+	topLeft.y = SCREEN_HEIGHT*.1f;
 	bottomRight.x = SCREEN_WIDTH-topLeft.x;
 	bottomRight.y = SCREEN_HEIGHT-topLeft.y;
 
 	//***************************Set up backpack and find dimensions **********************
 	GAME_VEC backpackDimensions = {bottomRight.x - topLeft.x, bottomRight.y - topLeft.y};
 	//maximum number of rows in backpack
-	maxRows = backpackDimensions.x/slotSize;
-	maxColumns = backpackDimensions.y/slotSize;
+	numSlots = { backpackDimensions.x / slotSize, backpackDimensions.y / slotSize };
 			
-	backpack = new bool*[maxRows];
+	backpack = new bool*[(Uint16)numSlots.x];
 	//initialize backpack with all slots empty.
-	for(int i = 0; i < maxRows; i++)
+	for(int i = 0; i < numSlots.x; i++)
 	{
-		backpack[i] = new bool[maxColumns];
-		for (int j = 0; j < maxColumns; j++)
+		backpack[i] = new bool[(Uint16)numSlots.y];
+		for (int j = 0; j < numSlots.y; j++)
 		{
 			backpack[i][j] = true;
 		}
@@ -96,7 +95,7 @@ std::shared_ptr<GameObject> BackpackComponent::Update()
 			GraphicsDevice* gDevice = devices -> GetGraphicsDevice();
 			GAME_INT SCREEN_WIDTH = gDevice -> GetScreenWidth();
 			GAME_INT SCREEN_HEIGHT = gDevice -> GetScreenHeight();
-			GAME_VEC topLeft = {SCREEN_WIDTH*.1, SCREEN_HEIGHT*.1};
+			GAME_VEC topLeft = {SCREEN_WIDTH*.1f, SCREEN_HEIGHT*.1f};
 			GAME_VEC bottomRight = {SCREEN_WIDTH-topLeft.x, SCREEN_HEIGHT-topLeft.y};
 
 			
@@ -104,9 +103,9 @@ std::shared_ptr<GameObject> BackpackComponent::Update()
 			//**********************Find Item dimensions*************************
 			std::shared_ptr<RendererComponent> rend = item -> GetComponent<RendererComponent>();
 			//number of sequential rows we need (+.5 makes sure we round up)
-			int numRows = (rend -> GetTexture() -> getWidth()/slotSize) + .5;
+			int numRows = (int)((rend -> GetTexture() -> getWidth()/slotSize) + .5f);
 			//number of sequential columns we need
-			int numColumns = (rend -> GetTexture() -> getHeight()/slotSize) + .5;
+			int numColumns = (int)((rend -> GetTexture() -> getHeight()/slotSize) + .5f);
 			//********************************************************************
 				
 			//number of sequential open rows found 
@@ -120,7 +119,7 @@ std::shared_ptr<GameObject> BackpackComponent::Update()
 
 			//let's find a spot for it. . .
 			//while we have not reached the last row, and we have not found a row to put it in.
-			while(currRow < maxRows && !rowFound)
+			while(currRow < numSlots.x && !rowFound)
 			{
 				//Not yet found a column that the item can fit in
 				bool columnFound = false;
@@ -131,7 +130,7 @@ std::shared_ptr<GameObject> BackpackComponent::Update()
 					
 				//check for enough empty columns in the current row
 				//While we haven't found a set of columns that works and we have not reached the last column
-				while (!columnFound  && currColumn < maxColumns)
+				while (!columnFound  && currColumn < numSlots.y)
 				{
 					//If it is empty, add one to our sequential columns
 					if(backpack[currRow][currColumn]) seqColumns++;
@@ -160,7 +159,7 @@ std::shared_ptr<GameObject> BackpackComponent::Update()
 						//we have not found enough empty rows
 						//we have not reached the last row
 						//The slots in the columns in the last row we checked are all empty
-					while (!rowFound && r < maxRows && rowGood)
+					while (!rowFound && r < numSlots.x && rowGood)
 					{
 						//iterate through the proper columns in this row
 						for(int c = currColumn; c < currColumn + numColumns; c++)
