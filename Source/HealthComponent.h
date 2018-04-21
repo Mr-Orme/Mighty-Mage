@@ -29,7 +29,7 @@ public:
 protected:
 	GAME_INT health;
 	bool isDead;
-	std::shared_ptr<ResourceManager> devices;
+	ResourceManager* devices;
 };
 
 #endif

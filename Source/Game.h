@@ -37,7 +37,7 @@ private:
 	std::vector<std::shared_ptr<GameObject>> newObjects;
 	
 
-	std::shared_ptr<ResourceManager> devices;
+	std::unique_ptr<ResourceManager> devices;
 	GAME_FLT gameTime;
 	bool debug;
 	GAME_INT SCREEN_WIDTH;

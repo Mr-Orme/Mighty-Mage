@@ -17,11 +17,11 @@ public:
 	void Finish();
 
 	GAME_FLT GetAngle();
-	std::shared_ptr<ResourceManager> GetDevices(){return devices;}
+	ResourceManager* GetDevices(){return devices;}
 	GAME_VEC GetDPosition(){return dPosition;}
 	
 protected:
-	std::shared_ptr<ResourceManager> devices;
+	ResourceManager* devices;
 	GAME_VEC dPosition;
 	GAME_VEC oldPosition;
 };

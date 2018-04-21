@@ -14,7 +14,7 @@ Game::~Game()
 	if(devices)
 	{
 		devices -> Shutdown();
-		devices = NULL;
+		devices = nullptr;
 	}
 }
 
@@ -47,16 +47,14 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 	//========================================
 	//Construct Device Manager
 	//========================================
-	devices = std::make_shared<ResourceManager>();
+	devices = std::make_unique<ResourceManager>();
 	devices->Initialize(SCREEN_WIDTH, SCREEN_HEIGHT, assetConfigFile);
-	this->devices = devices;
 	
-
 
 
 	///Get a few things ready
 	GAME_OBJECTFACTORY_PRESETS presets;
-	presets.devices = devices;
+	presets.devices = devices.get();
 	ObjectFactory* objectFactory = devices->GetObjectFactory();
 
 	//========================================

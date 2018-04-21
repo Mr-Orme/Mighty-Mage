@@ -31,7 +31,7 @@ public:
 	void Finish();
 protected:
 	GAME_INT frameCount;
-	std::shared_ptr<ResourceManager> devices;
+	ResourceManager* devices;
 
 	//GAME_OBJECTFACTORY_PRESETS presets;
 	PhysicsDevice::GAME_PHYSICS physics;

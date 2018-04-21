@@ -29,7 +29,7 @@ protected:
 	bool ToBackpack(std::shared_ptr<GameObject> item);
 	std::vector<std::shared_ptr<GameObject>> inventory;
 	bool** backpack;
-	std::shared_ptr<ResourceManager> devices;
+	ResourceManager* devices;
 	
 	GAME_INT slotSize;
 	GAME_VEC topLeft;

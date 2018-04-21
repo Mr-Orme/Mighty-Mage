@@ -97,7 +97,7 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 void ContactListener::PickUpItem(GameObject* player, GameObject* item)
 {
 	//grab the resource manager from the player's body component
-	std::shared_ptr<ResourceManager> devices = player -> GetComponent<BodyComponent>() -> GetDevices();
+	ResourceManager* devices = player -> GetComponent<BodyComponent>() -> GetDevices();
 	//if there is space to add it to the backpack, play the "found item" sound. . .
 	if(player -> GetComponent<BackpackComponent>() -> AddItem(item))
 	{

@@ -26,7 +26,7 @@ public:
 	void SetTexture(Texture* texture){this -> texture = texture;}
 
 protected:
-	std::shared_ptr<ResourceManager> devices;
+	ResourceManager* devices;
 	Texture* texture;
 	bool initialized;
 };

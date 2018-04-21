@@ -35,7 +35,7 @@ typedef struct GAME_VEC
 
 enum GAME_DIRECTION {N =0, E = 90, S = 180, W = 270};
 
-//make levels an array of resource managers! or something tha thas everything!
+//make levels an array of resource managers! or something that has everything!
 enum GAME_LEVEL {GAME_LEVEL_MAIN, GAME_LEVEL_BASEMENT,};
 
 typedef struct GAME_OBJECTFACTORY_PRESETS
@@ -45,7 +45,7 @@ typedef struct GAME_OBJECTFACTORY_PRESETS
 	GAME_FLT angle;
 	GAME_INT health;//move to new AssetLibraryGame
 	GAME_INT destructTime;//move to new AssetLibraryGame
-	std::shared_ptr<ResourceManager> devices;
+	ResourceManager* devices;
 	std::map<GAME_DIRECTION, bool> gDirection;
 	//std::shared_ptr<GameObject> joinedObject; //only needed for joint
 }GAME_OBJECTFACTORY_PRESETS;
