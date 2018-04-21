@@ -1,0 +1,81 @@
+<?xml version="1.0" ?>
+<Structures>
+    <!-- Asset description for libraries 	-->
+	
+   	<GameAsset name="HWall">
+		<Component name="Renderer" sprite="./Assets/Images/d_wall_h_t.png"/>
+		<Component name="Body" density="15.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "true"/>
+	</GameAsset>
+	<GameAsset name="HGhostWall">
+		<Component name="Renderer" sprite="./Assets/Images/d_wall_h_t.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "false"/>
+	</GameAsset>
+	<GameAsset name="VWall">
+		<Component name="Renderer" sprite="./Assets/Images/d_wall_v.png"/>
+		<Component name="Body" density="15.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "true"/>
+	</GameAsset>
+	<GameAsset name="VGhostWall">
+		<Component name="Renderer" sprite="./Assets/Images/d_wall_v.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "false"/>
+	</GameAsset>
+	<GameAsset name="WallFloor">
+		<Component name="Renderer" sprite="./Assets/Images/d_solid.png"/>
+		<Component name="Body" density="15.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "true"/>
+	</GameAsset>
+	<GameAsset name="GhostWallFloor">
+		<Component name="Renderer" sprite="./Assets/Images/d_solid.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "false"/>
+	</GameAsset>
+	<GameAsset name="TopFill">
+		<Component name="Renderer" sprite="./Assets/Images/d_top_n.png"/>
+		<Component name="Body" density="15.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "true"/>
+	</GameAsset>
+	<GameAsset name="Torch">
+		<Component name="Renderer" sprite="./Assets/Images/torch_h.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "false"/>
+	</GameAsset>
+	
+	<GameAsset name="HDoor">
+		<Component name="Renderer" sprite="./Assets/Images/d_door_h.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "false"/>
+	</GameAsset>
+	<GameAsset name="VDoor">
+		<Component name="Renderer" sprite="./Assets/Images/d_door_v.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "false"/>
+	</GameAsset>
+	
+	<GameAsset name="Player">
+		<Component name="Renderer" sprite="./Assets/Images/player.png"/>
+		<Component name="Body" density="1.0f" restitution="0.0f" angularDamping="4.0f" linearDamping="0.0f" bodyType="GAME_DYNAMIC" bodyShape="GAME_CIRCLE" physicsOn = "true"/>
+		<Component name="Health" health="18"/>
+		<Component name="Backpack" />
+		<Component name="UserInput" />
+	</GameAsset>
+	
+	<GameAsset name="Wand">
+		<Component name="Renderer" sprite="./Assets/Images/wand.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "false"/>
+	</GameAsset>
+</Structures>
+<Notices>
+    <Notice x="11" y="5" direction = "E">Getting Cold</Notice>
+	<Notice x="15" y="0" direction = "S">Getting Cold</Notice>
+	<Notice x="15" y="15" direction = "E">Getting Cold</Notice>
+	<Notice x="2" y="0" direction = "S">Getting Cold</Notice>
+	<Notice x="8" y="5" direction = "S">Getting Cold</Notice>
+	<Notice x="1" y="11" direction = "N">Getting HOT!!!</Notice>
+	<Notice x="1" y="15" direction = "S">Getting HOT!!!</Notice>
+	<Notice x="14" y="0" direction = "W">Find the Wizard's wand to free the town!</Notice>
+	<Notice x="1" y="13" direction = "N">You have found the Wizard's wand and freed the town from it's Curse!!!</Notice>
+	<Notice x="1" y="13" direction = "E">You have found the Wizard's wand and freed the town from it's Curse!!!</Notice>
+	<Notice x="1" y="13" direction = "S">You have found the Wizard's wand and freed the town from it's Curse!!!</Notice>
+	<Notice x="1" y="13" direction = "W">You have found the Wizard's wand and freed the town from it's Curse!!!</Notice>
+</Notices>
+<Sounds>
+	<Sound name="found" path="./Assets/Sounds/found.ogg" background="false"/>
+	<Sound name="walking" path="./Assets/Sounds/walking.ogg" background="false"/>
+	<Sound name="run" path="./Assets/Sounds/run.ogg" background="false"/>
+	<Sound name="wall" path="./Assets/Sounds/wall.ogg" background="false"/>
+	<Sound name="main" path="./Assets/Sounds/basement.ogg" background="true"/>
+	
+</Sounds>

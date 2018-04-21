@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Resource Manager">
+      <UniqueIdentifier>{a206a025-6bef-4f53-a22c-b3b329737403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resource Manager\Asset Libraries">
+      <UniqueIdentifier>{77454f89-4939-4c62-8ba4-190c5c077229}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resource Manager\Devices">
+      <UniqueIdentifier>{78acc373-a699-4fbf-adcd-a5847a3494e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{aa8439fd-d19f-4a66-a5ce-a2551c397c91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\third party">
+      <UniqueIdentifier>{1f55cc38-4ab9-4e43-93d8-5a7856cbd0ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\third party\Box2d">
+      <UniqueIdentifier>{bf578e79-10ca-452b-972f-7cd778b78fb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\third party\tinyXML">
+      <UniqueIdentifier>{72e5d9cf-02fa-46e2-8465-2327ecb8fd58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{3ad681a3-ba72-4694-8b84-1d334635e65c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\third party">
+      <UniqueIdentifier>{a03403fd-0147-4a9d-af52-05b5ac174420}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Resource Manager">
+      <UniqueIdentifier>{98e37d2c-85d0-45c3-8c0f-191bb3a0f936}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\third party\Box2d">
+      <UniqueIdentifier>{54d5aeb2-ac19-4121-8b34-c6cf167ac225}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\third party\tinyXML">
+      <UniqueIdentifier>{74d2bb40-e53a-448b-a031-df638b009401}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Resource Manager\Asset LIbraries">
+      <UniqueIdentifier>{bb220b56-ed31-4b28-9332-ce9d73a82254}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Resource Manager\Devices">
+      <UniqueIdentifier>{7d061c20-4ebc-427a-ae54-045a5d740bfa}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ObjectFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ResourceManager.cpp">
+      <Filter>Source Files\Resource Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Box2DDebugDraw.cpp">
+      <Filter>Source Files\third party\Box2d</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ContactListener.cpp">
+      <Filter>Source Files\third party\Box2d</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Texture.cpp">
+      <Filter>Source Files\Resource Manager\Devices</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\tinyxml\tinystr.cpp">
+      <Filter>Source Files\third party\tinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\tinyxml\tinyxml.cpp">
+      <Filter>Source Files\third party\tinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\tinyxml\tinyxmlerror.cpp">
+      <Filter>Source Files\third party\tinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\tinyxml\tinyxmlparser.cpp">
+      <Filter>Source Files\third party\tinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\View.cpp">
+      <Filter>Source Files\Resource Manager\Devices</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InventoryComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GraphicsDevice.cpp">
+      <Filter>Source Files\Resource Manager\Devices</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BackpackComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BodyComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HealthComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RendererComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UserInputComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ArtAssetLibrary.cpp">
+      <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ComponentAssetLibrary.cpp">
+      <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\NoticesAssetLibrary.cpp">
+      <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ObjectAssetLibrary.cpp">
+      <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PhysicsAssetLibrary.cpp">
+      <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SoundAssetLibrary.cpp">
+      <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InputDevice.cpp">
+      <Filter>Source Files\Resource Manager\Devices</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PhysicsDevice.cpp">
+      <Filter>Source Files\Resource Manager\Devices</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SoundDevice.cpp">
+      <Filter>Source Files\Resource Manager\Devices</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GhostComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LevelConfigLibrary.cpp">
+      <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EventHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Definitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ObjectFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Box2DDebugDraw.h">
+      <Filter>Header Files\third party\Box2d</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentsList.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ContactListener.h">
+      <Filter>Header Files\third party\Box2d</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ResourceManager.h">
+      <Filter>Header Files\Resource Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Texture.h">
+      <Filter>Header Files\Resource Manager\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\View.h">
+      <Filter>Header Files\Resource Manager\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\tinyxml\tinyxml.h">
+      <Filter>Header Files\third party\tinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\tinyxml\tinystr.h">
+      <Filter>Header Files\third party\tinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InventoryComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GraphicsDevice.h">
+      <Filter>Header Files\Resource Manager\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BackpackComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BodyComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HealthComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RendererComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UserInputComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ArtAssetLibrary.h">
+      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentAssetLibrary.h">
+      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\NoticesAssetLibrary.h">
+      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ObjectAssetLibrary.h">
+      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PhysicsAssetLibrary.h">
+      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SoundAssetLibrary.h">
+      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InputDevice.h">
+      <Filter>Header Files\Resource Manager\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PhysicsDevice.h">
+      <Filter>Header Files\Resource Manager\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SoundDevice.h">
+      <Filter>Header Files\Resource Manager\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GhostComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LevelConfigLibrary.h">
+      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EventHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\Box2D\Box2D\Box2D.h">
+      <Filter>Header Files\third party\Box2d</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Assets\Config\MainAssets.xml">
+      <Filter>Resource Files</Filter>
+    </Xml>
+    <Xml Include="Assets\Config\MainLevel.xml">
+      <Filter>Resource Files</Filter>
+    </Xml>
+    <Xml Include="Assets\Config\BasementAssets.xml">
+      <Filter>Resource Files</Filter>
+    </Xml>
+    <Xml Include="Assets\Config\BasementLevel.xml">
+      <Filter>Resource Files</Filter>
+    </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
+  </ItemGroup>
+</Project>

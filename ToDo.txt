@@ -1,0 +1,40 @@
+Event Handler	
+	triggers
+		Location 
+			Exits
+			Fountains
+			shop desks
+			Battles
+			Find item
+		Inventory
+			
+			Quest items
+			
+	Reaction
+		Load map
+		Change Stat
+		Load shop
+		Begin Battle
+		Display message
+		Add item to inventory
+	Audio Collision events, level change events
+	
+	Classes ask register for types of events to receive
+	When event happens, handler sends event type to classes
+	Classes can send events to handler to be passed around
+	Function pointers? void pointers?
+	
+Quest Component that keeps track of quests? Can signal quest events?
+	Each quest has a map of quest conditions and a reward. . .
+	Quest conditions can be event types such as pick up item, talk to someone, etc. . .
+	loaded at beginng of game for all levels into a quest library. . .
+	
+Level files in library
+	Perhaps hold sets of libraries for nearby levels for quick loading?
+	or use as cache for previusly loaded libraries?
+Ghost floors on top.
+Battles
+Character Stats
+Multiple player Characters
+Mouse integration
+Get to basement

@@ -1,0 +1,107 @@
+<?xml version="1.0" ?>
+<Structures>
+    <!-- Asset description for libraries 	-->
+	
+   	<GameAsset name="HWall">
+		<Component name="Renderer" sprite="./Assets/Images/d_wall_h_t.png"/>
+		<Component name="Body" density="15.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "true"/>
+	</GameAsset>
+	<GameAsset name="HGhostWall">
+		<Component name="Renderer" sprite="./Assets/Images/d_wall_h_t.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "false"/>
+	</GameAsset>
+	<GameAsset name="VWall">
+		<Component name="Renderer" sprite="./Assets/Images/d_wall_v.png"/>
+		<Component name="Body" density="15.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "true"/>
+	</GameAsset>
+	<GameAsset name="VGhostWall">
+		<Component name="Renderer" sprite="./Assets/Images/d_wall_v.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "false"/>
+	</GameAsset>
+	<GameAsset name="WallFloor">
+		<Component name="Renderer" sprite="./Assets/Images/d_solid.png"/>
+		<Component name="Body" density="15.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "true"/>
+	</GameAsset>
+	<GameAsset name="GhostWallFloor">
+		<Component name="Renderer" sprite="./Assets/Images/d_solid.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "false"/>
+	</GameAsset>
+	<GameAsset name="TopFill">
+		<Component name="Renderer" sprite="./Assets/Images/d_top_n.png"/>
+		<Component name="Body" density="15.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "true"/>
+	</GameAsset>
+	<GameAsset name="Torch">
+		<Component name="Renderer" sprite="./Assets/Images/d_torch_h.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "false"/>
+	</GameAsset>
+	
+	<GameAsset name="HDoor">
+		<Component name="Renderer" sprite="./Assets/Images/d_door_h.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "false"/>
+	</GameAsset>
+	<GameAsset name="VDoor">
+		<Component name="Renderer" sprite="./Assets/Images/d_door_v.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "false"/>
+	</GameAsset>
+	
+	<GameAsset name="Player">
+		<Component name="Renderer" sprite="./Assets/Images/player.png"/>
+		<Component name="Body" density="1.0f" restitution="0.0f" angularDamping="4.0f" linearDamping="0.0f" bodyType="GAME_DYNAMIC" bodyShape="GAME_CIRCLE" physicsOn = "true"/>
+		<Component name="Health" health="18"/>
+		<Component name="Backpack" />
+		<Component name="UserInput" />
+	</GameAsset>
+	<GameAsset name="Trapdoor">
+		<Component name="Renderer" sprite="./Assets/Images/trapdoor.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_RECTANGLE" physicsOn = "true"/>
+	</GameAsset>
+	<GameAsset name="RSphere">
+		<Component name="Renderer" sprite="./Assets/Images/red_sphere.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_CIRCLE" physicsOn = "true"/>
+		<Component name="Health" health="1"/>
+	</GameAsset>
+	<GameAsset name="BSphere">
+		<Component name="Renderer" sprite="./Assets/Images/blue_sphere.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_CIRCLE" physicsOn = "true"/>
+		<Component name="Health" health="1"/>
+	</GameAsset>
+	<GameAsset name="GSphere">
+		<Component name="Renderer" sprite="./Assets/Images/green_sphere.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_CIRCLE" physicsOn = "true"/>
+		<Component name="Health" health="1"/>
+	</GameAsset>
+	<GameAsset name="OSphere">
+		<Component name="Renderer" sprite="./Assets/Images/orange_sphere.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_CIRCLE" physicsOn = "true"/>
+		<Component name="Health" health="1"/>
+	</GameAsset>
+	<GameAsset name="PSphere">
+		<Component name="Renderer" sprite="./Assets/Images/purple_sphere.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_CIRCLE" physicsOn = "true"/>
+		<Component name="Health" health="1"/>
+	</GameAsset>
+	<GameAsset name="YSphere">
+		<Component name="Renderer" sprite="./Assets/Images/yellow_sphere.png"/>
+		<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="GAME_STATIC" bodyShape="GAME_CIRCLE" physicsOn = "true"/>
+		<Component name="Health" health="1"/>
+	</GameAsset>
+</Structures>
+<Notices>
+    <Notice x="8" y="5" direction = "S">The Inn of Sorpigal</Notice>
+	<Notice x="8" y="5" direction = "E">Eulard's Fine Foods</Notice>
+	<Notice x="8" y="5" direction = "W">B and B Blacksmiths</Notice>
+	<Notice x="13" y="10" direction = "N">Otto's Training</Notice>
+	<Notice x="6" y="10" direction = "N">Jail, KEEP OUT!</Notice>
+	<Notice x="9" y="14" direction = "E">Ye Olde Hogge Tavern</Notice>
+	<Notice x="4" y="0" direction = "N">Temple Moon Shadow</Notice>
+	<Notice x="15" y="0" direction = "W">You Must Collect all 6 Spheres to pass!</Notice>
+	<Notice x="14" y="0" direction = "W">You have broken the wizard's ward, you may descend!</Notice>
+</Notices>
+<Sounds>
+	<Sound name="found" path="./Assets/Sounds/found.ogg" background="false"/>
+	<Sound name="walking" path="./Assets/Sounds/walking.ogg" background="false"/>
+	<Sound name="run" path="./Assets/Sounds/run.ogg" background="false"/>
+	<Sound name="wall" path="./Assets/Sounds/wall.ogg" background="false"/>
+	<Sound name="main" path="./Assets/Sounds/main.ogg" background="true"/>
+	<Sound name="basement" path="./Assets/Sounds/basement.ogg" background="true"/>
+</Sounds>
