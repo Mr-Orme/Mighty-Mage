@@ -22,10 +22,13 @@ public:
 	ResourceManager* GetDevices(){return devices;}
 	GAME_VEC getPosition();
 
+	void setAngle(GAME_FLT angle);
+	void adjustAngle(GAME_FLT adjustAmount);
+	void linearStop();
+
 	
 protected:
 	ResourceManager* devices;
-	
 	/*GAME_VEC dPosition;
 	GAME_VEC oldPosition;*/
 };

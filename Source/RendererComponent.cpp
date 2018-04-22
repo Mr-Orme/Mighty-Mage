@@ -36,16 +36,9 @@ bool RendererComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& pr
 void RendererComponent::Draw()
 //**************************************
 {
-	GAME_VEC updatedPosition;
 	
-
-	//adjust position.
-	updatedPosition = GetUpdatedPosition(_owner);
-
-	GAME_FLT angle = devices -> GetPhysicsDevice() -> GetAngle(_owner.get());
-
 	//Draw sprite.
-	Draw(updatedPosition, angle);
+	Draw(GetViewAdjustedPosition(), _owner->GetComponent<BodyComponent>()->GetAngle());
 }
 
 void RendererComponent::Draw(GAME_VEC position, GAME_FLT angle)
@@ -62,26 +55,22 @@ std::shared_ptr<GameObject> RendererComponent::Update(){return NULL;}
 
 //**************************************
 //adjusts the position based on the view.
-GAME_VEC RendererComponent::GetUpdatedPosition(std::shared_ptr<GameObject> owner)
+GAME_VEC RendererComponent::GetViewAdjustedPosition()
 //**************************************
 {
-	GAME_VEC updatedPosition;
 	GAME_VEC position = _owner->GetComponent<BodyComponent>()->getPosition();
-	//adjust position.
-	updatedPosition.x = 
-		  position.x
-		+ devices -> GetGraphicsDevice() -> GetView() -> getPosition().x;
-	updatedPosition.y = 
-		  position.y
-		+ devices -> GetGraphicsDevice() -> GetView() -> getPosition().y;
 	
-	return updatedPosition;
+	return 
+	{ 
+		position.x + devices->GetGraphicsDevice()->GetView()->getPosition().x,
+		position.y + devices->GetGraphicsDevice()->GetView()->getPosition().y
+	};
 }
 
 //**************************************
-//When dead, must remove the sprite from the list
+//
 void RendererComponent::Finish()
 //**************************************
 {
-	//devices -> GetGraphicsDevice() -> RemoveSpriteRenderer(this);
+	
 }

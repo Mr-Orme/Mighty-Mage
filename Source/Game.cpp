@@ -329,42 +329,32 @@ void Game::Update()
 //**************************************
 {
 
-	
+	devices->GetGraphicsDevice()->Text2Screen("player: (" + std::to_string(objects[0]->GetComponent<BodyComponent>()->getPosition().x) + ", " + std::to_string(objects[0]->GetComponent<BodyComponent>()->getPosition().y) + ")", { 0, 25 });
 
 	std::vector<std::shared_ptr<GameObject>>::iterator objectIter;
 
 	//clean out dead objects
 	for (objectIter = objects.begin(); objectIter != objects.end(); objectIter++)
 	{
-		//check for health component
-		std::shared_ptr<HealthComponent> compHealth = (*objectIter)->GetComponent<HealthComponent>();
-		std::shared_ptr<InventoryComponent> compInventory = (*objectIter)->GetComponent<InventoryComponent>();
-		if (compHealth != NULL)
-		{
-			//if it is dead
-			if (compHealth->GetIsDead())
-			{
-				//close off the componenets.
+		//if it is dead
+		if (std::shared_ptr<HealthComponent> compHealth = (*objectIter)->GetComponent<HealthComponent>(); 
+			compHealth != nullptr && compHealth->GetIsDead())
+		{			
 				(*objectIter)->removeComponents();
-
-				//remove object from the vector.
 				objects.erase(objectIter);
-				//back up to previous item because this one was deleted.
 				objectIter--;
-			}
-			//if it got picked up. . 
-			else if (compInventory != NULL && compInventory->GetPickedUp())
-			{
-				//remove the sprite from the automatic draw list
-				//devices->GetGraphicsDevice()->RemoveSpriteRenderer((*objectIter)->GetComponent<RendererComponent>().get());
-				//stop the physics on it
-				devices->GetPhysicsDevice()->SetStopPhysics((*objectIter).get());
-				//remove object from the vector.
-				objectIter = objects.erase(objectIter);
-
-
-			}
 		}
+		
+		//if it got picked up. . 
+		//NOTE: Inventory items get added to a player's Backpack component in the collision detector
+		if (std::shared_ptr<InventoryComponent> compInventory = (*objectIter)->GetComponent<InventoryComponent>(); 
+			compInventory != nullptr && compInventory->GetPickedUp())
+		{
+			devices->GetPhysicsDevice()->SetStopPhysics((*objectIter).get());
+			objectIter = objects.erase(objectIter);
+			objectIter--;
+		}
+		
 	}
 
 
@@ -378,10 +368,9 @@ void Game::Update()
 	//Update objects.
 	for (auto object : objects)
 	{
-		//run update method for the object
 		std::shared_ptr<GameObject> temp = object->Update();
 		//if it returned an object, add it to the list to be added.
-		if (temp != NULL)
+		if (temp != nullptr)
 		{
 			newObjects.push_back(temp);
 		}

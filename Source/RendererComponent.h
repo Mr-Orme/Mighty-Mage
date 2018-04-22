@@ -22,7 +22,7 @@ public:
 	void Finish();
 
 	Texture* GetTexture(){return texture;}
-	GAME_VEC GetUpdatedPosition(std::shared_ptr<GameObject>);
+	GAME_VEC GetViewAdjustedPosition();
 
 	void SetTexture(Texture* texture){this -> texture = texture;}
 

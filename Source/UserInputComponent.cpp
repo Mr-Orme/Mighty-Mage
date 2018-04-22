@@ -16,23 +16,19 @@ UserInputComponent::~UserInputComponent(){}
 
 //**************************************
 //Set up some defaults
-bool UserInputComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
+bool UserInputComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets) 
 {
-	frameCount = 0;
-	zeroVec.x = 0;
-	zeroVec.y = 0;
 	devices = presets.devices;
 	wallHit = false;
-	noWall =true;
-
+	noWallSound = true;
+	
 	for (int i = 0; i < InputDevice::GAME_NUM_EVENTS; i++)
 	{
-		InputDevice::GAME_EVENT eventNum = static_cast<InputDevice::GAME_EVENT>(i);
-		pressControl[eventNum] = true;
+		pressControl[(InputDevice::GAME_EVENT)i] = true;
 	}
-
-
-	return true;
+	if (devices!=nullptr)
+		return true;
+	return false;
 }
 	
 void UserInputComponent::Start(){}
@@ -42,176 +38,153 @@ void UserInputComponent::Start(){}
 std::shared_ptr<GameObject> UserInputComponent::Update()
 //**************************************
 {
-	frameCount++;
-	bool locationMarker = false;
-	GAME_VEC applyForce;
-	GAME_INT baseForceMultiplier = 1500; //How fast does the player move.
-	GAME_INT forceMultiplier = baseForceMultiplier;
-	GAME_INT runMultiplier = 3; //How many times faster is running then walking
-	GAME_INT angleAdjust = 90; //How many degrees does the player turn each time
-	GAME_INT soundWait = devices -> GetFPS()/5;//adjusts how long between playing of sound effects.
 	
-	std::string sound = "walking";
+	//for sound play
+	static GAME_INT frameCount = 0;
+	frameCount++;
+	
+	//bool locationMarker = false;	
 
-	if(!_owner -> GetComponent<BackpackComponent>() -> GetOpen())
+	if (!_owner->GetComponent<BackpackComponent>()->GetOpen())
 	{
-		//Run if shift is being held down.
-		if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_SHIFT))
+
+		GAME_INT soundWait = devices->GetFPS() / 5;//adjusts how long between playing of sound effects.
+		std::string walkSound = "walking";
+		std::string runSound = "run";
+		std::string sound = walkSound;
+
+
+		const GAME_INT baseForceMultiplier = 1500; //How fast does the player move.
+		GAME_INT forceMultiplier = baseForceMultiplier;
+		const GAME_INT runMultiplier = 3; //How many times faster is running then walking
+
+		/*****************Adjustmnts for running************************/
+		if (devices->GetInputDevice()->GetEvent(InputDevice::GAME_SHIFT))
 		{
 			forceMultiplier = baseForceMultiplier * runMultiplier;
 			//play it faster
-			soundWait = devices -> GetFPS()/8;
+			soundWait = devices->GetFPS() / 8;
 			//do the run sound
-			sound = "run";
+			sound = runSound;
 		}
 		else
 		{
 			//back to walk speeds
 			forceMultiplier = baseForceMultiplier;
-		
+			sound = walkSound;
 		}
-	
-		//checks to see if it is time to play the sound effect or not.
-		bool playWalk = false;
-		if(frameCount > soundWait+1) 
+		/*****************************************************************/
+
+		/*******************sound check************/
+		if (frameCount > soundWait + 1)//walk sound every so often
 		{
-			frameCount = soundWait +1;
-			playWalk = true;
+			devices->GetSoundDevice()->PlaySound(sound, 0, 1);
+			frameCount = 0;
 		}
-
-		//grab current velocity
-		GAME_VEC velocity = devices -> GetPhysicsDevice() -> GetVelocity(_owner.get());
-			
-
-		//If the up or down arrow is pressed
-		if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_UP))
+		//wal sound based on forward/backward motion and collision detection
+		if (!noWallSound && wallHit)
 		{
-			//Calculate force vector for a forward push
-			applyForce.x = (float)cosf((devices -> GetPhysicsDevice() -> GetAngle(_owner.get())*PI/180)-(PI/2))*forceMultiplier;
-			applyForce.y = (float)sinf((devices -> GetPhysicsDevice() -> GetAngle(_owner.get())*PI/180)-(PI/2))*forceMultiplier;
-			//PUSH BABY PUSH!!!
-			devices -> GetPhysicsDevice() -> SetLinearVelocity(_owner.get(), applyForce);
-			//if last play is done and the player is still moving
-			if(playWalk ==true && (abs(velocity.x) > 1 || abs(velocity.y) >1))
-			{
-				//play walking sound
-				devices -> GetSoundDevice() -> PlaySound(sound,0,1);
-				frameCount = 0;
-			}
-		
-			//nowall makes sure we don't play the wall hitting sound if we are parallel with and next to
-			//a wall. Without out it, the wall hit sound will play once we when we start moving.
-			//wallHit is set by the contactListener
-			//If we are hitting a wall we should not be moving, so velocity is checked.
-			//there usually is some very small velocity even when running into a wall, which is why it checks
-			//for less than one.
-			if(!noWall && wallHit && abs(velocity.x) <1 && abs(velocity.y) < 1)
-			{
-				devices -> GetSoundDevice() -> PlaySound("wall",0,2);
-			}
-			noWall = false;
-
+			devices->GetSoundDevice()->PlaySound("wall", 0, 2);
 		}
-		//otherwise, if the down arrow is pressed.
-		else if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_DOWN))
-		{
-			//Force reversed from the UP force by adding PI to the angle.
-			applyForce.x = (float)cosf((devices -> GetPhysicsDevice() -> GetAngle(_owner.get())*PI/180)+(PI/2))*forceMultiplier;
-			applyForce.y = (float)sinf((devices -> GetPhysicsDevice() -> GetAngle(_owner.get())*PI/180)+(PI/2))*forceMultiplier;
+		/*****************************************/
 
-			//PUSH BABY PUSH!!!
-			devices -> GetPhysicsDevice() -> SetLinearVelocity(_owner.get(), applyForce);
-			//if last play is done and still moving
-			if(playWalk ==true && (abs(velocity.x) > 1 || abs(velocity.y) >1))
-			{
-				//play walking sound
-				devices -> GetSoundDevice() -> PlaySound(sound,0,1);
-			
-				frameCount = 0;
-			}
-			//same as up arrow....
-			if(!noWall && wallHit && abs(velocity.x) <1 && abs(velocity.y) < 1)
-			{
-				devices -> GetSoundDevice() -> PlaySound("wall",0,2);
-			}
-			noWall = false;
-
+		/**************Up or Down or neither************/
+		int forceDirection = 1;
 		
-		}
-		//if neither are pressed, remove velocity.
+
+		if (devices->GetInputDevice()->GetEvent(InputDevice::GAME_UP))
+		{	forceDirection = 1;}
+		else if (devices->GetInputDevice()->GetEvent(InputDevice::GAME_DOWN))
+		{	forceDirection = -1;}
 		else
 		{
-			devices -> GetPhysicsDevice() -> SetLinearVelocity(_owner.get(), zeroVec);
-			//make sure we won't make a wall sound the first frame after we press an up or down arrow.
-			noWall = true;
+			forceDirection = 0;
 		}
-	
-		//Check for left or right buttons
-		// the "turn" variable makes sure we only turn once every time we push the button
-		if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_RIGHT))
+		/***********************************************/
+		
+		/****************MOVE!*****************/
+		if (forceDirection != 0)
 		{
-			//change the angle
-			if(pressControl[InputDevice::GAME_RIGHT])
+			//PUSH BABY PUSH!!!
+			devices->GetPhysicsDevice()->SetLinearVelocity
+			(
+				_owner.get(),
+				//x=(cos(angle) + or - (PI/2)) * (force)
+				//y=(sin(angle) + or - (PI/2)) * (force)
+				{(float)cosf((devices->GetPhysicsDevice()->GetAngle(_owner.get())*PI / 180) + forceDirection * (PI / 2))*forceMultiplier,
+				(float)sinf((devices->GetPhysicsDevice()->GetAngle(_owner.get())*PI / 180) + forceDirection * (PI / 2))*forceMultiplier }
+			);
+			//can play wall sound upon collision!
+			noWallSound = false;
+		}
+		//Don't move!
+		else
+		{
+			_owner->GetComponent<BodyComponent>()->linearStop();
+			noWallSound = true;
+		}
+		/****************************************/
+
+		/****************left or right*************/
+		GAME_INT angleAdjust = 90; //How many degrees does the player turn each time
+		if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_RIGHT) || devices->GetInputDevice()->GetEvent(InputDevice::GAME_LEFT))
+		{
+			if (devices->GetInputDevice()->GetEvent(InputDevice::GAME_RIGHT))
 			{
-				//set angle by angle adjust
-				devices -> GetPhysicsDevice() -> SetAngle(
-					_owner.get(), 
-					devices -> GetPhysicsDevice() -> GetAngle(_owner.get())+angleAdjust);
-				//stop forward motion
-				devices -> GetPhysicsDevice() -> SetLinearVelocity(_owner.get(), zeroVec);
-				//ensures we only turn once per press
+				angleAdjust = 90;
 				pressControl[InputDevice::GAME_RIGHT] = false;
 			}
-			//same as else on up and down arrows
-			noWall = true;
-		}
-		else pressControl[InputDevice::GAME_RIGHT] = true;
-		if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_LEFT))
-		{
-			//similar to turn right.
-			if(pressControl[InputDevice::GAME_LEFT])
+			else
+				pressControl[InputDevice::GAME_RIGHT] = true;
+
+			if (devices->GetInputDevice()->GetEvent(InputDevice::GAME_LEFT))
 			{
-				devices -> GetPhysicsDevice() -> SetAngle(_owner.get(), devices -> GetPhysicsDevice() -> GetAngle(_owner.get())-angleAdjust);
-				devices -> GetPhysicsDevice() -> SetLinearVelocity(_owner.get(), zeroVec);
+				angleAdjust = -90;
 				pressControl[InputDevice::GAME_LEFT] = false;
 			}
-			//same as else on up and down arrows
-			noWall = true;
-		
+			else
+				pressControl[InputDevice::GAME_LEFT] = true;
+
+			//set angle by angle adjust
+			_owner->GetComponent<BodyComponent>()->adjustAngle(angleAdjust);
+			//stop forward motion
+			_owner->GetComponent<BodyComponent>()->linearStop();
+			//ensures we only turn once per press
 		}
-		else pressControl[InputDevice::GAME_LEFT] = true;
+		/*******************************************/
 	}
-	else devices -> GetPhysicsDevice() -> SetLinearVelocity(_owner.get(), zeroVec);
+	else _owner->GetComponent<BodyComponent>()->linearStop();
 	
+	//****************Backpack**********************
 	if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_B))
 	{
 		if(pressControl[InputDevice::GAME_B])
 		{
-			std::shared_ptr<BackpackComponent> backpack = _owner -> GetComponent<BackpackComponent>();	
-			if(backpack != NULL)
+			BackpackComponent* backpack = _owner -> GetComponent<BackpackComponent>().get();	
+			if(backpack != nullptr)
 			{
-				if(backpack -> GetOpen()) backpack -> SetOpen(false);
-				else backpack -> SetOpen(true);
+				backpack->SetOpen(!backpack->GetOpen());
 			}
 			pressControl[InputDevice::GAME_B] = false;
 		}
 		
 	}
 	else pressControl[InputDevice::GAME_B] = true;
-
+	//************************************************
 
 
 	//*************************************** True to 90**********************
 	//sometimes the angle get's off perpendicular.
-	int angle = (int(devices -> GetPhysicsDevice() -> GetAngle(_owner.get())));
+	int angle = (int(_owner->GetComponent<BodyComponent>()-> GetAngle()));
 	
 	if(angle >360 && angle < 460) angle = 90;
 	if (angle <0) angle = 270;
-	if (angle < 45 && angle >= 315) devices -> GetPhysicsDevice() -> SetAngle(_owner.get(), 0);
-	else if (angle < 135 && angle >= 45) devices -> GetPhysicsDevice() -> SetAngle(_owner.get(), 90);
-	else if (angle < 225 && angle >= 135) devices -> GetPhysicsDevice() -> SetAngle(_owner.get(), 180);
-	else if (angle < 315 && angle >= 225) devices -> GetPhysicsDevice() -> SetAngle(_owner.get(), 270);
 
+	if (angle < 45 && angle >= 315) _owner->GetComponent<BodyComponent>()->setAngle(N);
+	else if (angle < 225 && angle >= 135) _owner->GetComponent<BodyComponent>()->setAngle(S);
+	else if (angle < 135 && angle >= 45) _owner->GetComponent<BodyComponent>()->setAngle(E);
+	else if (angle < 315 && angle >= 225) _owner->GetComponent<BodyComponent>()->setAngle(W);
+	//***************************************************************************
 
 
 	//*************************************** BORDER DETECTION**********************
@@ -224,11 +197,11 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 	View* view = devices -> GetGraphicsDevice() -> GetView();
 	
 	//the amount the screen moves is based upon the last change in position for the player.
-	devices->getBlackboard()->updateJump(*devices->GetPhysicsDevice()->GetPosition(_owner.get()));
+	devices->getBlackboard()->updateJump(_owner->GetComponent<BodyComponent>()->getPosition());
 	GAME_VEC jump = devices->getBlackboard()->getJump();
-
+	
 	//position plus view
-	GAME_VEC position = _owner -> GetComponent<RendererComponent>() -> GetUpdatedPosition(_owner);
+	GAME_VEC position = _owner -> GetComponent<RendererComponent>() -> GetViewAdjustedPosition();
 	
 	//Check distance for each border and adjust view if too close.
 	//it is alway "-" jump because the DPosition's sign changes based on the direction of movement
@@ -287,13 +260,13 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 	}
 	//*********************************************************************************
 
-	if(locationMarker)
-	{
-		//GAME_VEC playerPosition = devices -> GetPhysicsDevice() -> GetLinearVelocity(_owner.get());
-		GAME_VEC playerPosition = _owner->GetComponent<BodyComponent>()->getPosition();
-		std::string playerPositionText = "(" + std::to_string(playerPosition.x) + ", " + std::to_string(playerPosition.y) + ")";
-		devices -> GetGraphicsDevice() ->Text2Screen(playerPositionText, position);
-	}
+	//if(locationMarker)
+	//{
+	//	//GAME_VEC playerPosition = devices -> GetPhysicsDevice() -> GetLinearVelocity(_owner.get());
+	//	GAME_VEC playerPosition = _owner->GetComponent<BodyComponent>()->getPosition();
+	//	std::string playerPositionText = "(" + std::to_string(playerPosition.x) + ", " + std::to_string(playerPosition.y) + ")";
+	//	devices -> GetGraphicsDevice() ->Text2Screen(playerPositionText, position);
+	//}
 
 	return NULL;
 }
@@ -304,23 +277,14 @@ GAME_VEC UserInputComponent::GetCurrentSquare()
 //**************************************
 {
 	//view adjusted player position.
-	GAME_VEC playerPosition = 
-					{
-						 _owner -> GetComponent<RendererComponent>() -> GetUpdatedPosition(_owner).x,
-						 _owner -> GetComponent<RendererComponent>() -> GetUpdatedPosition(_owner).y
-					};
+	GAME_VEC playerPosition = _owner->GetComponent<RendererComponent>()->GetViewAdjustedPosition();
+
 	//view vector.
-	GAME_VEC viewPosition = 
-					{
-						devices -> GetGraphicsDevice() -> GetView() -> getPosition().x,
-						devices -> GetGraphicsDevice() -> GetView() -> getPosition().y
-					};
+	GAME_VEC viewPosition = _owner->GetComponent<RendererComponent>()->GetViewAdjustedPosition();
+					
 	//The coordinates of the original top left city corner.
-	GAME_VEC cityCorner = 
-					{
-						devices -> GetCityCorner().x,
-						devices -> GetCityCorner().y
-					};
+	GAME_VEC cityCorner = devices->GetCityCorner();
+					
 	//the city corner plus the view get's us the top left corner of the view.
 	//subtract off the player's position on the screen to get the actual spot of the player.
 	//divide by 110 which is the number of pixels in each square.
@@ -330,13 +294,14 @@ GAME_VEC UserInputComponent::GetCurrentSquare()
 						(GAME_FLT)((cityCorner.x + viewPosition.x - playerPosition.x)*-1/110),
 						(GAME_FLT)(15+int((cityCorner.y + viewPosition.y - playerPosition.y)/110))
 					};
-	return square;					
+						
 	//this code is here for use for debugging.
 	//Draw player position on himself
 	std::string playerPositionText = "(" + std::to_string(playerPosition.x) + ", " + std::to_string(playerPosition.y) + ")";
 	
-	/*GAME_VEC position = _owner -> GetComponent<RendererComponent>() -> GetUpdatedPosition(devices -> GetPhysicsDevice() -> GetPosition(_owner.get()));
-	devices -> GetGraphicsDevice() ->Text2Screen(playerPositionText, position);*/
-
+	//GAME_VEC position = _owner -> GetComponent<RendererComponent>() -> GetViewAdjustedPosition();
+	//devices -> GetGraphicsDevice() ->Text2Screen(playerPositionText, position);
+	devices->GetGraphicsDevice()->Text2Screen(playerPositionText, { 0, 0});
+	return square;
 }
 void UserInputComponent::Finish(){}

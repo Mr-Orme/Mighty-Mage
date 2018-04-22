@@ -4,11 +4,12 @@ class Blackboard
 {
 public:
 	Blackboard();
+	Blackboard(GAME_VEC* position);
 	~Blackboard();
 	GAME_VEC  getJump() { return jump; }
 	void updateJump(GAME_VEC newPosition);
 private:
 	GAME_VEC jump;
-	GAME_VEC oldPosition;
+	GAME_VEC* oldPosition;
 };
 
