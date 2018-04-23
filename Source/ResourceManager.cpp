@@ -227,8 +227,7 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 		notice.text = notices ->GetText();
 		
 		//store in notice, in proper format.
-		notice.x = x;
-		notice.y = y;
+		notice.position = { (GAME_FLT)x,(GAME_FLT)y };
 		if(direction == "N") notice.direction = N;
 		else if(direction == "E") notice.direction = E;
 		else if(direction == "S") notice.direction = S;

@@ -25,7 +25,7 @@ NoticesAssetLibrary::GAME_NOTICE NoticesAssetLibrary::Search(GAME_NOTICE square)
 {
 	for (auto notices : library)
 	{
-		if(notices.x == square.x && notices.y == square.y && notices.direction == square.direction)
+		if(notices.position == square.position && notices.direction == square.direction)
 		{
 			return notices;
 		}
@@ -48,19 +48,19 @@ bool NoticesAssetLibrary::AddAsset(GAME_NOTICE notice)
 bool NoticesAssetLibrary::RemoveAsset(GAME_NOTICE notice)
 //**************************************
 {
-	bool foundNotice = false;
+	
 	std::vector<GAME_NOTICE>::iterator notices;
 	//iterate through all notices
 	for (notices = library.begin(); notices != library.end(); notices++)
 	{
 		//if position and direction match, delete the notice from the library.
-		if(notices -> x == notice.x && notices -> y == notice.y && notices -> direction == notice.direction)
+		if(notices -> position == notice.position && notices -> direction == notice.direction)
 		{
 			library.erase(notices);
 			notices--;
-			foundNotice = true;
+			return true;
 		}
 	}
 	//if we did not find a notice, we return false.
-	return foundNotice;
+	return false;
 }

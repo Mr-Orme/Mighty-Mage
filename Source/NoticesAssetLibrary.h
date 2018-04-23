@@ -12,8 +12,7 @@ public:
 
 	typedef struct GAME_NOTICE
 	{
-		GAME_INT x;
-		GAME_INT y;
+		GAME_VEC position;
 		GAME_DIRECTION direction;
 		std::string text;
 	}GAME_NOTICE;

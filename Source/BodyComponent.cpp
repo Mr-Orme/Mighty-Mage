@@ -30,24 +30,18 @@ bool BodyComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& preset
 			physics,
 			presets
 			);
-	}
-	oldPosition = presets.position;
+	}	
 	return true;
 }
 
 void BodyComponent::Start(){}
+
 //**************************************
-//finds the current position, subtract's off the last frame's position
-//to get the change in position. This is for the auto scrolling feature.
-//the newpostion then becomes the old position.
+//
 std::shared_ptr<GameObject> BodyComponent::Update()
 //**************************************
 {
-	GAME_VEC newPosition = devices -> GetPhysicsDevice() -> GetPosition(_owner.get());
-	dPosition.x =  newPosition.x- oldPosition.x;
-	dPosition.y =  newPosition.y- oldPosition.y;
-	oldPosition = newPosition;
-	return NULL;
+	return nullptr;
 }
 //**************************************
 //**************************************

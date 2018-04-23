@@ -23,6 +23,10 @@ struct GAME_VEC
 	{
 		return GAME_VEC { src1.x + src2.x, src1.y + src2.y };
 	}
+	friend GAME_VEC & operator- (const GAME_VEC & src1, const GAME_VEC & src2)
+	{
+		return GAME_VEC{ src1.x - src2.x, src1.y - src2.y };
+	}
 	friend bool operator> (const GAME_VEC & src1, int src2)
 	{
 		if (src1.x > src2 && src1.y > src2)
@@ -34,6 +38,14 @@ struct GAME_VEC
 	friend bool operator< (const GAME_VEC & src1, int src2)
 	{
 		if (src1.x < src2 && src1.y < src2)
+		{
+			return true;
+		}
+		return false;
+	}
+	friend bool operator== (const GAME_VEC & src1, const GAME_VEC & src2)
+	{
+		if (src1.x == src2.x && src1.y == src2.y)
 		{
 			return true;
 		}

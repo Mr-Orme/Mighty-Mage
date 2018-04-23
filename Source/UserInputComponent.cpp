@@ -49,7 +49,7 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 		GAME_INT baseForceMultiplier = 1500; //How fast does the player move.
 		GAME_INT forceMultiplier = baseForceMultiplier;
 		GAME_INT runMultiplier = 3; //How many times faster is running then walking
-		
+
 		//*****************Adjustmnts for running************************
 		if (devices->GetInputDevice()->GetEvent(InputDevice::GAME_SHIFT))
 		{
@@ -73,7 +73,7 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 			frameCount = 0;
 		}
 		//wal sound based on forward/backward motion and collision detection
-		if (!noWallSound && wallHit && abs(_owner->GetComponent<BodyComponent>()->getVelocity()) <1)
+		if (!noWallSound && wallHit && abs(_owner->GetComponent<BodyComponent>()->getVelocity()) < 1)
 		{
 			devices->GetSoundDevice()->PlaySound("wall", 0, 2);
 			wallHit = false;
@@ -108,8 +108,8 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 				//x=(cos(angle) + or - (PI/2)) * (force)
 				//y=(sin(angle) + or - (PI/2)) * (force)
 				{ 
-					(float)cosf((devices->GetPhysicsDevice()->GetAngle(_owner.get())*PI / 180) + forceDirection * (PI / 2))*forceMultiplier,
-					(float)sinf((devices->GetPhysicsDevice()->GetAngle(_owner.get())*PI / 180) + forceDirection * (PI / 2))*forceMultiplier 
+					(float)cosf((_owner->GetComponent<BodyComponent>()->GetAngle()*PI / 180) + forceDirection * (PI / 2))*forceMultiplier,
+					(float)sinf((_owner->GetComponent<BodyComponent>()->GetAngle()*PI / 180) + forceDirection * (PI / 2))*forceMultiplier
 				}
 			);
 			//can play wall sound upon collision!
@@ -129,93 +129,74 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 		
 		
 	
-		//Check for left or right buttons
-		// the "turn" variable makes sure we only turn once every time we push the button
-		GAME_INT angleAdjust = 90; //How many degrees does the player turn each time
+		//****************left or right*************
 		if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_RIGHT))
 		{
-			//change the angle
 			if(pressControl[InputDevice::GAME_RIGHT])
 			{
-				//set angle by angle adjust
-				devices -> GetPhysicsDevice() -> SetAngle(
-					_owner.get(), 
-					devices -> GetPhysicsDevice() -> GetAngle(_owner.get())+angleAdjust);
-				//stop forward motion
+				_owner->GetComponent<BodyComponent>()->adjustAngle(90);
 				_owner->GetComponent<BodyComponent>()->linearStop();
-				//ensures we only turn once per press
 				pressControl[InputDevice::GAME_RIGHT] = false;
 			}
-			//same as else on up and down arrows
-			noWallSound = true;
 		}
 		else pressControl[InputDevice::GAME_RIGHT] = true;
+
 		if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_LEFT))
 		{
-			//similar to turn right.
 			if(pressControl[InputDevice::GAME_LEFT])
 			{
-				devices -> GetPhysicsDevice() -> SetAngle(_owner.get(), devices -> GetPhysicsDevice() -> GetAngle(_owner.get())-angleAdjust);
+				_owner->GetComponent<BodyComponent>()->adjustAngle(-90);
 				_owner->GetComponent<BodyComponent>()->linearStop();
 				pressControl[InputDevice::GAME_LEFT] = false;
 			}
-			//same as else on up and down arrows
-			noWallSound = true;
-		
 		}
 		else pressControl[InputDevice::GAME_LEFT] = true;
+
+		//*****************************************************
 	}
 	else _owner->GetComponent<BodyComponent>()->linearStop();
 	
+	//*********************Backpack**********************
 	if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_B))
 	{
 		if(pressControl[InputDevice::GAME_B])
 		{
-			std::shared_ptr<BackpackComponent> backpack = _owner -> GetComponent<BackpackComponent>();	
-			if(backpack != NULL)
+			if(std::shared_ptr<BackpackComponent> backpack = _owner->GetComponent<BackpackComponent>();	backpack != nullptr)
 			{
-				if(backpack -> GetOpen()) backpack -> SetOpen(false);
-				else backpack -> SetOpen(true);
+				backpack->SetOpen(!backpack->GetOpen());
 			}
 			pressControl[InputDevice::GAME_B] = false;
 		}
 		
 	}
 	else pressControl[InputDevice::GAME_B] = true;
-
+	//****************************************************
 
 
 	//*************************************** True to 90**********************
 	//sometimes the angle get's off perpendicular.
-	int angle = (int(devices -> GetPhysicsDevice() -> GetAngle(_owner.get())));
+	int angle = (int)(_owner->GetComponent<BodyComponent>()->GetAngle());
 	
 	if(angle >360 && angle < 460) angle = 90;
 	if (angle <0) angle = 270;
-	if (angle < 45 && angle >= 315) devices -> GetPhysicsDevice() -> SetAngle(_owner.get(), 0);
-	else if (angle < 135 && angle >= 45) devices -> GetPhysicsDevice() -> SetAngle(_owner.get(), 90);
-	else if (angle < 225 && angle >= 135) devices -> GetPhysicsDevice() -> SetAngle(_owner.get(), 180);
-	else if (angle < 315 && angle >= 225) devices -> GetPhysicsDevice() -> SetAngle(_owner.get(), 270);
 
-
-
+	if (angle < 45 && angle >= 315) _owner->GetComponent<BodyComponent>()-> setAngle(N);
+	else if (angle < 225 && angle >= 135) _owner->GetComponent<BodyComponent>()->setAngle(S);
+	else if (angle < 135 && angle >= 45) _owner->GetComponent<BodyComponent>()->setAngle(E);
+	else if (angle < 315 && angle >= 225) _owner->GetComponent<BodyComponent>()->setAngle(W);
+	
 	//*************************************** BORDER DETECTION**********************
-		
-	//Disntance from edge of screen before screen updates.	
-	GAME_INT border = 200;
+
+	GraphicsDevice* gDevice = devices->GetGraphicsDevice();
+	View* view = devices->GetGraphicsDevice()->GetView();
+	const GAME_INT border = 200;
+	const GAME_VEC position = _owner -> GetComponent<RendererComponent>() -> GetViewAdjustedPosition(_owner);
 	
 	//the amount the screen moves is based upon the last change in position for the player.
-	GAME_VEC jump = _owner -> GetComponent<BodyComponent>() -> GetDPosition();
-	
-	//grab a few things we are going to need.
-	PhysicsDevice* pDevice = devices -> GetPhysicsDevice();
-	GraphicsDevice* gDevice = devices -> GetGraphicsDevice();
-	std::shared_ptr<View> view = devices -> GetGraphicsDevice() -> GetView();
-	
-	//position plus view
-	GAME_VEC position = _owner -> GetComponent<RendererComponent>() -> GetUpdatedPosition(_owner);
-	
-	//Check distance for each border and adjust view if too close.
-	//it is alway "-" jump because the DPosition's sign changes based on the direction of movement
+	static GAME_VEC oldPosition = _owner->GetComponent<BodyComponent>()->getPosition();
+	GAME_VEC jump = _owner->GetComponent<BodyComponent>()->getPosition() - oldPosition;
+	oldPosition = _owner->GetComponent<BodyComponent>()->getPosition();
+
 	//left
 	if(position.x < border)
 	{
@@ -246,7 +227,7 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 	//Get N,S,E,W direction.
 	GAME_DIRECTION direction = static_cast<GAME_DIRECTION>(abs((int(devices -> GetPhysicsDevice() -> GetAngle(_owner.get()))%360)));
 	//set up ntoice
-	NoticesAssetLibrary::GAME_NOTICE notice = {square.x, square.y, direction, ""};
+	NoticesAssetLibrary::GAME_NOTICE notice = {square, direction, ""};
 
 
 	//if there is a notice
@@ -260,6 +241,7 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 
 	//*********************************************************************************
 	
+	//Move to somewhere else!!! FIXME
 	//*****************************TO Basement*********************************************
 	//if we are on the main level and make it to the proper spot
 	if(devices -> GetLevel() == GAME_LEVEL_MAIN && square.x == 14 && square.y == 0)
@@ -283,8 +265,8 @@ GAME_VEC UserInputComponent::GetCurrentSquare()
 	//view adjusted player position.
 	GAME_VEC playerPosition = 
 					{
-						 _owner -> GetComponent<RendererComponent>() -> GetUpdatedPosition(_owner).x,
-						 _owner -> GetComponent<RendererComponent>() -> GetUpdatedPosition(_owner).y
+						 _owner -> GetComponent<RendererComponent>() -> GetViewAdjustedPosition(_owner).x,
+						 _owner -> GetComponent<RendererComponent>() -> GetViewAdjustedPosition(_owner).y
 					};
 	//view vector.
 	GAME_VEC viewPosition = 
@@ -312,7 +294,7 @@ GAME_VEC UserInputComponent::GetCurrentSquare()
 	//Draw player position on himself
 	/*std::string playerPositionText = "(" + std::to_string(playerPosition.x) + ", " + std::to_string(playerPosition.y) + ")";
 	
-	GAME_VEC position = _owner -> GetComponent<RendererComponent>() -> GetUpdatedPosition(devices -> GetPhysicsDevice() -> GetPosition(_owner.get()));
+	GAME_VEC position = _owner -> GetComponent<RendererComponent>() -> GetViewAdjustedPosition(devices -> GetPhysicsDevice() -> GetPosition(_owner.get()));
 	devices -> GetGraphicsDevice() ->Text2Screen(playerPositionText, position);*/
 
 }

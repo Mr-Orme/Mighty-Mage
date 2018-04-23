@@ -70,12 +70,12 @@ public:
 	//SDL_Window* GetWindow();
 	GAME_INT GetScreenWidth(){return SCREEN_WIDTH;}
 	GAME_INT GetScreenHeight(){return SCREEN_HEIGHT;}
-	std::shared_ptr<View> GetView(){return view;}
+	View* GetView(){return view.get();}
 	
 	
 
 	//Setters
-	void SetView(std::shared_ptr<View> view){this -> view = view;}
+	//void SetView(std::shared_ptr<View> view){this -> view = view;}
 	void SetExit(std::shared_ptr<GameObject> levelExit){this -> levelExit = levelExit;}
 	bool SetFont(std::string path, GAME_INT size, GAME_RGBA color);
 
@@ -94,7 +94,7 @@ private:
 	//Renderers
 	//std::vector<RendererComponent*> sprites;
 
-	std::shared_ptr<View> view;
+	std::unique_ptr<View> view;
 
 	typedef struct overlay
 	{

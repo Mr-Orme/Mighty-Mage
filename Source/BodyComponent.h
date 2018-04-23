@@ -18,7 +18,6 @@ public:
 
 	GAME_FLT GetAngle();
 	ResourceManager* GetDevices(){return devices;}
-	GAME_VEC GetDPosition(){return dPosition;}
 	GAME_VEC getPosition();
 	GAME_VEC getVelocity();
 	
@@ -28,8 +27,7 @@ public:
 	
 protected:
 	ResourceManager* devices;
-	GAME_VEC dPosition;
-	GAME_VEC oldPosition;
+
 };
 
 #endif
