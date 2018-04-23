@@ -42,13 +42,15 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 	if(!_owner -> GetComponent<BackpackComponent>() -> GetOpen())
 	{
 		GAME_INT soundWait = devices->GetFPS() / 5;//adjusts how long between playing of sound effects.
-		std::string walkSound = "walking";
-		std::string runSound = "run";
+		const std::string walkSound = "walking";
+		const std::string runSound = "run";
 		std::string sound = walkSound;
 
-		GAME_INT baseForceMultiplier = 1500; //How fast does the player move.
+		const GAME_INT runMultiplier = 3; //How many times faster is running then walking
+		const GAME_INT baseForceMultiplier = 1500; //How fast does the player move.
+		
 		GAME_INT forceMultiplier = baseForceMultiplier;
-		GAME_INT runMultiplier = 3; //How many times faster is running then walking
+		
 
 		//*****************Adjustmnts for running************************
 		if (devices->GetInputDevice()->GetEvent(InputDevice::GAME_SHIFT))
@@ -77,6 +79,7 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 		{
 			devices->GetSoundDevice()->PlaySound("wall", 0, 2);
 			wallHit = false;
+			noWallSound = true;
 		}
 		//*****************************************
 
