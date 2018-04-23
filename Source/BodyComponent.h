@@ -19,6 +19,12 @@ public:
 	GAME_FLT GetAngle();
 	ResourceManager* GetDevices(){return devices;}
 	GAME_VEC GetDPosition(){return dPosition;}
+	GAME_VEC getPosition();
+	GAME_VEC getVelocity();
+	
+	void setAngle(GAME_FLT angle);
+	void adjustAngle(GAME_FLT adjustAmount);
+	void linearStop();
 	
 protected:
 	ResourceManager* devices;

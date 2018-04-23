@@ -15,11 +15,35 @@ typedef unsigned int	Uint32;
 typedef float			GAME_FLT;
 typedef Uint32			GAME_INT;
 
-typedef struct GAME_VEC
+struct GAME_VEC
 {
 	GAME_FLT x;
 	GAME_FLT y;
-} GAME_VEC;
+	friend GAME_VEC & operator+ (const GAME_VEC & src1, const GAME_VEC & src2)
+	{
+		return GAME_VEC { src1.x + src2.x, src1.y + src2.y };
+	}
+	friend bool operator> (const GAME_VEC & src1, int src2)
+	{
+		if (src1.x > src2 && src1.y > src2)
+		{
+			return true;
+		}
+		return false;
+	}
+	friend bool operator< (const GAME_VEC & src1, int src2)
+	{
+		if (src1.x < src2 && src1.y < src2)
+		{
+			return true;
+		}
+		return false;
+	}
+	friend GAME_VEC abs(GAME_VEC & src)
+	{
+		return { abs(src.x),abs(src.y) };
+	}
+};
 
 
 enum GAME_DIRECTION {N =0, E = 90, S = 180, W = 270};

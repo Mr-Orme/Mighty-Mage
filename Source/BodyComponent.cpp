@@ -62,3 +62,30 @@ void BodyComponent::Finish()
 		exit(1);					
 	}
 }
+GAME_FLT BodyComponent::GetAngle()
+{
+	return devices->GetPhysicsDevice()->GetAngle(_owner.get());
+}
+
+GAME_VEC BodyComponent::getPosition()
+{
+	return (devices->GetPhysicsDevice()->GetPosition(_owner.get()));
+}
+GAME_VEC BodyComponent::getVelocity()
+{
+	return devices->GetPhysicsDevice()->GetVelocity(_owner.get());
+}
+void BodyComponent::setAngle(GAME_FLT angle)
+{
+	devices->GetPhysicsDevice()->SetAngle(_owner.get(), angle);
+}
+
+void BodyComponent::adjustAngle(GAME_FLT adjustAmount)
+{
+	setAngle(GetAngle() + adjustAmount);
+}
+
+void BodyComponent::linearStop()
+{
+	devices->GetPhysicsDevice()->SetLinearVelocity(_owner.get(), { 0,0 });
+}

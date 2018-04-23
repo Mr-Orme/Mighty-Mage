@@ -30,15 +30,14 @@ public:
 	std::shared_ptr<GameObject> Update();
 	void Finish();
 protected:
-	GAME_INT frameCount;
+	//GAME_INT frameCount;
 	ResourceManager* devices;
 
 	//GAME_OBJECTFACTORY_PRESETS presets;
 	PhysicsDevice::GAME_PHYSICS physics;
-	GAME_VEC zeroVec;
 	std::map<InputDevice::GAME_EVENT, bool> pressControl;
 	bool wallHit;
-	bool noWall;
+	bool noWallSound;
 	
 };
 
