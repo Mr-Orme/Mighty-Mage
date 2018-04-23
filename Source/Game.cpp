@@ -56,7 +56,7 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 
 
 	///Get a few things ready
-	GAME_OBJECTFACTORY_PRESETS presets;
+	ObjectFactory::GAME_OBJECTFACTORY_PRESETS presets;
 	presets.devices = devices.get();
 	ObjectFactory* objectFactory = devices->GetObjectFactory();
 

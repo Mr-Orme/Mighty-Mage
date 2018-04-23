@@ -4,6 +4,7 @@
 #include "Definitions.h"
 #include "Box2D.h"
 
+#include "ObjectFactory.h"
 class Texture;
 class GameObject;
 class PhysicsAssetLibrary;
@@ -44,9 +45,9 @@ public:
 
 	bool createFixture
 		(
-		GameObject* object,
-		GAME_PHYSICS physics,
-		GAME_OBJECTFACTORY_PRESETS presets
+			GameObject* object,
+			GAME_PHYSICS physics,
+			ObjectFactory::GAME_OBJECTFACTORY_PRESETS presets
 		);
 
 	bool SetTransform(GameObject* object, GAME_VEC position, GAME_FLT angle);

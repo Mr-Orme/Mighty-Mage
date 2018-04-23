@@ -13,7 +13,7 @@ UserInputComponent::~UserInputComponent(){}
 
 //**************************************
 //Set up some defaults
-bool UserInputComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
+bool UserInputComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 {
 	frameCount = 0;
 	zeroVec.x = 0;

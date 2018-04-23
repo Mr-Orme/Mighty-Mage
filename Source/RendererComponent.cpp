@@ -13,7 +13,7 @@ RendererComponent::~RendererComponent(){}
 
 //**************************************
 //on the first pass, we set up the texture for the object
-bool RendererComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
+bool RendererComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 //**************************************
 {
 	//this will get hit twice, so we only want it done once.

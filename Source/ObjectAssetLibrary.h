@@ -9,17 +9,17 @@
 
 
 class GameObject;
-
+#include "ObjectFactory.h"
 	
 class ObjectAssetLibrary{
 public:
 	ObjectAssetLibrary();
 	bool Initialize();
-	GAME_OBJECT_STATS Search(std::string name);
-	bool AddAsset(std::string name, GAME_OBJECT_STATS stats);
+	ObjectFactory::GAME_OBJECT_STATS Search(std::string name);
+	bool AddAsset(std::string name, ObjectFactory::GAME_OBJECT_STATS stats);
 private:
 			//name					List of components
-	std::map<std::string, GAME_OBJECT_STATS> library;
+	std::map<std::string, ObjectFactory::GAME_OBJECT_STATS> library;
 
 
 };

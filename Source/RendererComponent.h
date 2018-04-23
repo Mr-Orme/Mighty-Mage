@@ -5,14 +5,14 @@
 #include "Definitions.h"
 
 class Texture;
-
+class ObjectFactory;
 class RendererComponent : public Component
 {
 public:
 	RendererComponent(std::shared_ptr<GameObject>);
 	~RendererComponent();
 
-	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
+	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
 	
 	void Draw();
 	void Draw(GAME_VEC position, GAME_FLT angle);

@@ -5,6 +5,7 @@
 #include "ContactListener.h"
 #include "GameObject.h"
 #include "Texture.h"
+#include "ObjectFactory.h"
 
 
 
@@ -166,9 +167,9 @@ GAME_VEC PhysicsDevice::GetVelocity(GameObject* object)
 //based on passed in values
 bool PhysicsDevice::createFixture
 	(
-	GameObject* object,
-	GAME_PHYSICS physics,
-	GAME_OBJECTFACTORY_PRESETS presets
+		GameObject* object,
+		GAME_PHYSICS physics,
+		ObjectFactory::GAME_OBJECTFACTORY_PRESETS presets
 	)
 //**************************************
 {

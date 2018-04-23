@@ -11,7 +11,7 @@ public:
 	BodyComponent(std::shared_ptr<GameObject> owner);
 	~BodyComponent();
 	
-	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
+	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
 	void Start();
 	std::shared_ptr<GameObject> Update();
 	void Finish();

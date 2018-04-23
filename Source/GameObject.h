@@ -7,6 +7,7 @@
 #include "SDL.h"
 #include "SDL_ttf.h"
 #include "Definitions.h"
+#include "ObjectFactory.h"
 
 class Component;
 class GraphicsDevice;
@@ -18,7 +19,7 @@ public:
 	GameObject();
 	~GameObject();
 	
-	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
+	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
 	void AddComponent(std::shared_ptr<Component> component);
 
 	template<class T>

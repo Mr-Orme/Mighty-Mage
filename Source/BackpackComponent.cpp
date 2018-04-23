@@ -11,7 +11,7 @@ BackpackComponent::~BackpackComponent(){}
 
 //**************************************
 //sets devices
-bool BackpackComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
+bool BackpackComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 //**************************************
 {
 	devices = presets.devices;

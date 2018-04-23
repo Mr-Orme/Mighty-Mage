@@ -12,7 +12,7 @@
 //based on the object type, it grabs components.
 // and adds them to a newly created object.
 //it initializes the object which also initializes all the components
-std::shared_ptr<GameObject> ObjectFactory::Create(GAME_OBJECTFACTORY_PRESETS& presets)
+std::shared_ptr<GameObject> ObjectFactory::Create(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 //**************************************
 {
 

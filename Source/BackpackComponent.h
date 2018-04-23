@@ -13,7 +13,7 @@ public:
 	BackpackComponent(std::shared_ptr<GameObject>);
 	~BackpackComponent();
 
-	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
+	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
 
 	bool AddItem(GameObject* item);
 

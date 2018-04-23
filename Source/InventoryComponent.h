@@ -13,7 +13,7 @@ public:
 	InventoryComponent(std::shared_ptr<GameObject>);
 	~InventoryComponent();
 
-	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
+	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
 
 	bool GetPickedUp(){return pickedUp;}
 	GAME_VEC GetPackPosition(){return packPosition;}

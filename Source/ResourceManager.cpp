@@ -179,7 +179,7 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 			else if(currentComponent == "Health")
 			{
 				// Get the health
-				GAME_OBJECT_STATS stats;
+				ObjectFactory::GAME_OBJECT_STATS stats;
 				compElement -> QueryIntAttribute("health", &stats.health);
 				//add to library
 				oLibrary -> AddAsset(aName, stats);

@@ -9,7 +9,7 @@ BodyComponent::~BodyComponent(){}
 
 //**************************************
 //Based on the presets struct passed in, a fixture is created
-bool BodyComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
+bool BodyComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 //**************************************
 {
 	

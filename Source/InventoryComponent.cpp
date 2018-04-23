@@ -4,7 +4,7 @@ InventoryComponent::InventoryComponent(std::shared_ptr<GameObject> owner):Compon
 
 InventoryComponent::~InventoryComponent(){}
 
-bool InventoryComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
+bool InventoryComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 {
 	pickedUp = false;
 	return true;

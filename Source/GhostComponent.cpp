@@ -4,7 +4,7 @@ GhostComponent::GhostComponent(std::shared_ptr<GameObject> owner):Component(owne
 
 GhostComponent::~GhostComponent(){}
 
-bool GhostComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
+bool GhostComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 {
 	ghostDirection = presets.gDirection;
 	return true;

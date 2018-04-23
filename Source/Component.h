@@ -5,7 +5,7 @@
 #include "GameObject.h"
 #include "Definitions.h"
 
-
+class ObjectFactory;
 class Component
 {
 public:
@@ -13,7 +13,7 @@ public:
 	~Component();
 	void OwnerDestroyed();
 
-	virtual bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets)=0;
+	virtual bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)=0;
 	std::shared_ptr<GameObject> GetOwner();
 	virtual void Start()=0;
 	virtual std::shared_ptr<GameObject> Update()=0;

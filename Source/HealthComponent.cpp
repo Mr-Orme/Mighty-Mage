@@ -12,7 +12,7 @@ HealthComponent::~HealthComponent(){}
 
 //**************************************
 //gets health and resource manager from passed presets, the object starts out alive.
-bool HealthComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
+bool HealthComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 //**************************************
 {
 	isDead = false;

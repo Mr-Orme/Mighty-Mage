@@ -12,7 +12,7 @@ GameObject::~GameObject()
 
 //**************************************
 //Get's the components up and running based on passed presests
-bool GameObject::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
+bool GameObject::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 //**************************************
 {
 	objectType = presets.objectType;

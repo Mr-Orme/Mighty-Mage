@@ -21,7 +21,7 @@ public:
 	UserInputComponent(std::shared_ptr<GameObject> owner);
 	~UserInputComponent();
 	
-	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
+	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
 	void SetWallHit(bool wallHit){this -> wallHit = wallHit;}
 
 	GAME_VEC GetCurrentSquare();
