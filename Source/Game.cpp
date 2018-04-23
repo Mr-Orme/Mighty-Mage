@@ -332,7 +332,7 @@ void Game::Update()
 	devices->GetGraphicsDevice()->Text2Screen("player: (" + std::to_string(objects[0]->GetComponent<BodyComponent>()->getPosition().x) + ", " + std::to_string(objects[0]->GetComponent<BodyComponent>()->getPosition().y) + ")", { 0, 25 });
 
 	std::vector<std::shared_ptr<GameObject>>::iterator objectIter;
-
+	std::cout << "player: (" << objects[0]->GetComponent<BodyComponent>()->getPosition().x << ", " << objects[0]->GetComponent<BodyComponent>()->getPosition().y << ")";
 	//clean out dead objects
 	for (objectIter = objects.begin(); objectIter != objects.end(); objectIter++)
 	{
@@ -356,7 +356,7 @@ void Game::Update()
 		}
 		
 	}
-
+	std::cout << "player: (" << objects[0]->GetComponent<BodyComponent>()->getPosition().x << ", " << objects[0]->GetComponent<BodyComponent>()->getPosition().y << ")";
 
 	//add any objects created in the previous iteration
 	if (!newObjects.empty())
@@ -377,8 +377,10 @@ void Game::Update()
 
 
 	}
+	std::cout << "player: (" << objects[0]->GetComponent<BodyComponent>()->getPosition().x << ", " << objects[0]->GetComponent<BodyComponent>()->getPosition().y << ")";
 	//update the physics world
 	devices->GetPhysicsDevice()->Update(1.0f / devices->GetFPS());
+	std::cout << "player: (" << objects[0]->GetComponent<BodyComponent>()->getPosition().x << ", " << objects[0]->GetComponent<BodyComponent>()->getPosition().y << ")";
 }
 
 //**************************************

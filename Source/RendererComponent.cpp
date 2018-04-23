@@ -58,13 +58,7 @@ std::shared_ptr<GameObject> RendererComponent::Update(){return NULL;}
 GAME_VEC RendererComponent::GetViewAdjustedPosition()
 //**************************************
 {
-	GAME_VEC position = _owner->GetComponent<BodyComponent>()->getPosition();
-	
-	return 
-	{ 
-		position.x + devices->GetGraphicsDevice()->GetView()->getPosition().x,
-		position.y + devices->GetGraphicsDevice()->GetView()->getPosition().y
-	};
+	return _owner->GetComponent<BodyComponent>()->getPosition() + devices->GetGraphicsDevice()->GetView()->getPosition();
 }
 
 //**************************************
