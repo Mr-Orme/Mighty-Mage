@@ -13,7 +13,7 @@ void Component::OwnerDestroyed()
 //**************************************
 {
 	Finish();
-	_owner = NULL;
+	_owner = nullptr;
 }
 
 std::shared_ptr<GameObject> Component::GetOwner()

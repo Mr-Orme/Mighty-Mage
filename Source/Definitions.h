@@ -1,21 +1,10 @@
-/*
-* Author:	Sean Orme
-*			UALR
-* 
-* Date:		May, 2015 (Completed)
-*
-* File:		Definitions.h 
-*
-* Purpose:	This is a standard type redefinitions header that allows
-*           for flexibility in programming should design parameters change.
-*/
-
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 
 #include <string>
 #include <map>
 #include <memory>
+
 class ResourceManager;
 class View;
 class ArtAssetLibrary;

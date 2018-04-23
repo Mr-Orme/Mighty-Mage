@@ -1,5 +1,7 @@
 #include "Box2DDebugDraw.h"
 #include "SDL2_gfxPrimitives.h"
+#include "GraphicsDevice.h"
+#include "PhysicsDevice.h"
 
 Box2DDebugDraw::Box2DDebugDraw() {
 	circleAccuracy = 9;

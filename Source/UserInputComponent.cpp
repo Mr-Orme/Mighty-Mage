@@ -1,8 +1,11 @@
 #include "ComponentsList.h"
+#include "DeviceList.h"
+
 #include "ResourceManager.h"
 #include "ObjectFactory.h"
 #include "GameObject.h"
-#include "InputDevice.h"
+#include "NoticesAssetLibrary.h"
+
 
 
 UserInputComponent::UserInputComponent(std::shared_ptr<GameObject> owner):Component(owner){}

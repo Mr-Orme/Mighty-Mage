@@ -1,10 +1,13 @@
+#include <memory>
 #include "RendererComponent.h"
 #include "BodyComponent.h"
 #include "Texture.h"
 #include "ArtAssetLibrary.h"
 #include "View.h"
 #include "ResourceManager.h"
-#include <memory>
+#include "PhysicsDevice.h"
+#include "GraphicsDevice.h"
+
 RendererComponent::RendererComponent(std::shared_ptr<GameObject> owner):Component(owner){initialized = false;}
 RendererComponent::~RendererComponent(){}
 

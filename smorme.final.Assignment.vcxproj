@@ -49,9 +49,11 @@
   <ItemGroup>
     <ClInclude Include="Source\ArtAssetLibrary.h" />
     <ClInclude Include="Source\ComponentAssetLibrary.h" />
+    <ClInclude Include="Source\DeviceList.h" />
     <ClInclude Include="Source\EventHandler.h" />
     <ClInclude Include="Source\GhostComponent.h" />
     <ClInclude Include="Source\LevelConfigLibrary.h" />
+    <ClInclude Include="Source\LibraryList.h" />
     <ClInclude Include="Source\NoticesAssetLibrary.h" />
     <ClInclude Include="Source\ObjectAssetLibrary.h" />
     <ClInclude Include="Source\PhysicsAssetLibrary.h" />

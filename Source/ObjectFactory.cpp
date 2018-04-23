@@ -1,9 +1,11 @@
+#include <memory>
 #include "ObjectFactory.h"
 #include "ComponentsList.h"
 #include "View.h"
 #include "ResourceManager.h"
 #include "Texture.h"
-#include <memory>
+#include "ComponentAssetLibrary.h"
+
 
 //************************************************
 //ALL ITEMS IN "presets" need to be set.

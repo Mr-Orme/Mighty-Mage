@@ -4,9 +4,9 @@
 #include "ComponentsList.h"
 #include "ObjectFactory.h"
 #include "GraphicsDevice.h"
-//#include "InputDevice.h"
 #include "View.h"
 #include "Texture.h"
+#include "SoundDevice.h"
 
 
 

@@ -3,6 +3,7 @@
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "ComponentsList.h"
+#include "SoundDevice.h"
 
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {

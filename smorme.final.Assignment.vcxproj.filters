@@ -263,6 +263,12 @@
     <ClInclude Include="ThirdParty\Box2D\Box2D\Box2D.h">
       <Filter>Header Files\third party\Box2d</Filter>
     </ClInclude>
+    <ClInclude Include="Source\DeviceList.h">
+      <Filter>Header Files\Resource Manager\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LibraryList.h">
+      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Assets\Config\MainAssets.xml">

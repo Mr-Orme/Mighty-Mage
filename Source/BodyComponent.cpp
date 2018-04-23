@@ -2,6 +2,7 @@
 #include "RendererComponent.h"
 #include "ResourceManager.h"
 #include "PhysicsDevice.h"
+#include "PhysicsAssetLibrary.h"
 
 BodyComponent::BodyComponent(std::shared_ptr<GameObject> owner):Component(owner){}
 BodyComponent::~BodyComponent(){}

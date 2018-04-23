@@ -1,5 +1,8 @@
 #include "Game.h"
 #include "ComponentsList.h"
+#include "GraphicsDevice.h"
+#include "SoundDevice.h"
+
 //**************************************
 //Initiallizes variables to Null values.
 Game::Game()

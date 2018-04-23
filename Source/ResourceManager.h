@@ -1,19 +1,21 @@
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
-#include "GraphicsDevice.h"
-#include "InputDevice.h"
-#include "PhysicsDevice.h"
-#include "SoundDevice.h"
-#include "ArtAssetLibrary.h"
-#include "PhysicsAssetLibrary.h"
-#include "ComponentAssetLibrary.h"
-#include "ObjectAssetLibrary.h"
-#include "NoticesAssetLibrary.h"
-#include "SoundAssetLibrary.h"
-#include "View.h"
 
 #include "Definitions.h"
+
 class ObjectFactory;
+
+class ComponentAssetLibrary;
+class ObjectAssetLibrary;
+class NoticesAssetLibrary;
+class SoundAssetLibrary;
+class PhysicsAssetLibrary;
+class ArtAssetLibrary;
+
+class InputDevice;
+class GraphicsDevice;
+class PhysicsDevice;
+class SoundDevice;
 
 class ResourceManager
 {

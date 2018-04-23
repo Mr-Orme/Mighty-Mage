@@ -1,9 +1,12 @@
 
 #include "ResourceManager.h"
+#include "DeviceList.h"
+#include "LibraryList.h"
 #include "ObjectFactory.h"
 #include "Definitions.h"
 #include "tinyxml\tinyxml.h"
 #include "Box2DDebugDraw.h"
+
 
 
 ResourceManager::ResourceManager(){}

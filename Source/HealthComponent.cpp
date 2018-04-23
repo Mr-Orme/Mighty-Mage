@@ -3,6 +3,8 @@
 #include "BodyComponent.h"
 #include "ResourceManager.h"
 #include "PhysicsDevice.h"
+#include "ObjectAssetLibrary.h"
+#include "ArtAssetLibrary.h"
 
 
 HealthComponent::HealthComponent(std::shared_ptr<GameObject> owner):Component(owner){}
