@@ -33,8 +33,8 @@ public:
 	
 
 private:
-	std::vector<std::shared_ptr<GameObject>> objects;
-	std::vector<std::shared_ptr<GameObject>> newObjects;
+	std::vector<std::unique_ptr<GameObject>> objects;
+	std::vector<std::unique_ptr<GameObject>> newObjects;
 	
 
 	std::unique_ptr<ResourceManager> devices;

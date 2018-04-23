@@ -8,7 +8,8 @@
 #include "PhysicsDevice.h"
 #include "GraphicsDevice.h"
 
-RendererComponent::RendererComponent(std::shared_ptr<GameObject> owner):Component(owner){initialized = false;}
+RendererComponent::RendererComponent(GameObject* owner):Component(owner)
+{initialized = false;}
 RendererComponent::~RendererComponent(){}
 
 //**************************************
@@ -40,7 +41,7 @@ void RendererComponent::Draw()
 	//adjust position.
 	updatedPosition = GetViewAdjustedPosition(_owner);
 
-	GAME_FLT angle = devices -> GetPhysicsDevice() -> GetAngle(_owner.get());
+	GAME_FLT angle = devices -> GetPhysicsDevice() -> GetAngle(_owner);
 
 	//Draw sprite.
 	Draw(updatedPosition, angle);
@@ -56,15 +57,15 @@ void RendererComponent::Start()
 
 }
 
-std::shared_ptr<GameObject> RendererComponent::Update(){return NULL;}
+GameObject* RendererComponent::Update(){return nullptr;}
 
 //**************************************
 //adjusts the position based on the view.
-GAME_VEC RendererComponent::GetViewAdjustedPosition(std::shared_ptr<GameObject> owner)
+GAME_VEC RendererComponent::GetViewAdjustedPosition(GameObject* owner)
 //**************************************
 {
 	GAME_VEC updatedPosition;
-	GAME_VEC position = devices -> GetPhysicsDevice() -> GetPosition(owner.get());
+	GAME_VEC position = devices -> GetPhysicsDevice() -> GetPosition(owner);
 	//adjust position.
 	updatedPosition.x = 
 		  position.x

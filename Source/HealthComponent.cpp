@@ -7,7 +7,7 @@
 #include "ArtAssetLibrary.h"
 
 
-HealthComponent::HealthComponent(std::shared_ptr<GameObject> owner):Component(owner){}
+HealthComponent::HealthComponent(GameObject* owner):Component(owner){}
 HealthComponent::~HealthComponent(){}
 
 //**************************************
@@ -28,7 +28,7 @@ bool HealthComponent::KillObject(std::string deathSprite)
 //**************************************
 {
 	//Stop the physics of the object
-	devices -> GetPhysicsDevice() -> SetStopPhysics(_owner.get());
+	devices -> GetPhysicsDevice() -> SetStopPhysics(_owner);
 
 	//grab the renderer
 	std::shared_ptr<RendererComponent> compRenderer = _owner -> GetComponent<RendererComponent>();
@@ -52,7 +52,7 @@ void HealthComponent::Start()
 
 //**************************************
 //checks for death and deals with it
-std::shared_ptr<GameObject> HealthComponent::Update()
+GameObject* HealthComponent::Update()
 //**************************************
 {
 	//if dead
@@ -65,7 +65,7 @@ std::shared_ptr<GameObject> HealthComponent::Update()
 			std::shared_ptr<GameObject> joined =  _owner -> GetJoinedWith();
 			devices -> GetPhysicsDevice() -> SetStopPhysics(joined.get());
 			//destroy the joints
-			devices -> GetPhysicsDevice() -> DestroyJoint(_owner.get());
+			devices -> GetPhysicsDevice() -> DestroyJoint(_owner);
 		}
 		//kill it
 		KillObject();

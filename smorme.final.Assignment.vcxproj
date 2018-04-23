@@ -147,7 +147,7 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PreBuildEvent>
-      <Command>copy "$(ProjectDir)ThirdParty\SDL2-2.0.3\lib\x86\*.dll" "$(ProjectDir)"
+      <Command>copy "$(ProjectDir)ThirdParty\SDL2-2.0.7\lib\x86\*.dll" "$(ProjectDir)"
 copy "$(ProjectDir)ThirdParty\SDL2_image-2.0.0\lib\x86\*.dll" "$(ProjectDir)"
 copy "$(ProjectDir)ThirdParty\SDL2_ttf-2.0.12\lib\x86\*.dll" "$(ProjectDir)"
 copy "$(ProjectDir)ThirdParty\SDL2_gfx-1.0.1\lib\x86\*.dll" "$(ProjectDir)"

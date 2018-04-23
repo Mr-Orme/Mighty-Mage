@@ -8,7 +8,7 @@
 
 
 
-UserInputComponent::UserInputComponent(std::shared_ptr<GameObject> owner):Component(owner){}
+UserInputComponent::UserInputComponent(GameObject* owner):Component(owner){}
 UserInputComponent::~UserInputComponent(){}
 
 //**************************************
@@ -34,7 +34,7 @@ void UserInputComponent::Start(){}
 
 //**************************************
 //reacts to keyboard input and adjusts the world accoringly.
-std::shared_ptr<GameObject> UserInputComponent::Update()
+GameObject* UserInputComponent::Update()
 //**************************************
 {
 	static int frameCount = 0;
@@ -104,7 +104,7 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 			//PUSH BABY PUSH!!!
 			devices->GetPhysicsDevice()->SetLinearVelocity
 			(
-				_owner.get(),
+				_owner,
 				//x=(cos(angle) + or - (PI/2)) * (force)
 				//y=(sin(angle) + or - (PI/2)) * (force)
 				{ 
@@ -225,7 +225,7 @@ std::shared_ptr<GameObject> UserInputComponent::Update()
 	GAME_VEC square = GetCurrentSquare();
 	
 	//Get N,S,E,W direction.
-	GAME_DIRECTION direction = static_cast<GAME_DIRECTION>(abs((int(devices -> GetPhysicsDevice() -> GetAngle(_owner.get()))%360)));
+	GAME_DIRECTION direction = static_cast<GAME_DIRECTION>(abs((int(devices -> GetPhysicsDevice() -> GetAngle(_owner))%360)));
 	//set up ntoice
 	NoticesAssetLibrary::GAME_NOTICE notice = {square, direction, ""};
 

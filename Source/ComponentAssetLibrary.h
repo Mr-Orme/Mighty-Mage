@@ -27,7 +27,7 @@ public:
 		GAME_INVENTORY_COMP,
 		GAME_GHOST_COMP,
 	};
-	std::vector<std::shared_ptr<Component>> Search(std::string name, std::shared_ptr<GameObject> owner);
+	std::vector<Component*> Search(std::string name, GameObject* owner);
 	bool AddAsset(std::string name, std::vector<GAME_COMPONENT_LIST> componentList);
 private:
 			//name					List of components

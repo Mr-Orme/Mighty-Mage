@@ -2,7 +2,7 @@
 #include "Component.h"
 //**************************************
 //owner is set on creation.
-Component::Component(std::shared_ptr<GameObject> owner) : _owner(owner){}
+Component::Component(GameObject* owner) : _owner(owner){}
 //**************************************
 
 Component::~Component(){}
@@ -16,7 +16,7 @@ void Component::OwnerDestroyed()
 	_owner = nullptr;
 }
 
-std::shared_ptr<GameObject> Component::GetOwner()
+GameObject* Component::GetOwner()
 {
 	return(_owner);
 }

@@ -8,12 +8,12 @@ class ResourceManager;
 class BodyComponent : public Component
 {
 public:
-	BodyComponent(std::shared_ptr<GameObject> owner);
+	BodyComponent(GameObject* owner);
 	~BodyComponent();
 	
 	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
 	void Start();
-	std::shared_ptr<GameObject> Update();
+	GameObject* Update();
 	void Finish();
 
 	GAME_FLT GetAngle();

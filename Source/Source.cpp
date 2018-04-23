@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 	//========================================
 	//Construct Game
 	//========================================
-	std::shared_ptr<Game> game = std::make_shared<Game>();
+	std::unique_ptr<Game> game = std::make_unique<Game>();
 	
 	if(!game->Initialize())
 	{

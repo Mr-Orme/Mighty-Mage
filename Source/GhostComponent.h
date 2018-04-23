@@ -10,7 +10,7 @@ class GameObject;
 class GhostComponent : public Component
 {
 public:
-	GhostComponent(std::shared_ptr<GameObject>);
+	GhostComponent(GameObject*);
 	~GhostComponent();
 	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
 
@@ -19,7 +19,7 @@ public:
 	void SetGhostDirection(std::map<GAME_DIRECTION, bool> ghostDirection){this -> ghostDirection = ghostDirection;}
 
 	void Start();
-	std::shared_ptr<GameObject> Update();
+	GameObject* Update();
 	void Finish();
 protected:
 	std::map<GAME_DIRECTION, bool> ghostDirection;

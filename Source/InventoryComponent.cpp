@@ -1,6 +1,6 @@
 #include "InventoryComponent.h"
 
-InventoryComponent::InventoryComponent(std::shared_ptr<GameObject> owner):Component(owner){}
+InventoryComponent::InventoryComponent(GameObject* owner):Component(owner){}
 
 InventoryComponent::~InventoryComponent(){}
 
@@ -11,5 +11,5 @@ bool InventoryComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& p
 }
 
 void InventoryComponent::Start(){}
-std::shared_ptr<GameObject> InventoryComponent::Update(){return NULL;}
+GameObject* InventoryComponent::Update(){return nullptr;}
 void InventoryComponent::Finish(){}

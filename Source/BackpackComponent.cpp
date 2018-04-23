@@ -6,7 +6,7 @@
 #include "Texture.h"
 #include "GraphicsDevice.h"
 
-BackpackComponent::BackpackComponent(std::shared_ptr<GameObject> owner):Component(owner){}
+BackpackComponent::BackpackComponent(GameObject* owner):Component(owner){}
 BackpackComponent::~BackpackComponent(){}
 
 //**************************************
@@ -55,10 +55,10 @@ bool BackpackComponent::AddItem(GameObject* item)
 //**************************************
 {
 	//grab the shared pointer from the owner
-	std::shared_ptr<GameObject> itemSP = item -> GetComponent<RendererComponent>() -> GetOwner();
+	//GameObject* itemSP = item -> GetComponent<RendererComponent>() -> GetOwner();
 
 	//return whether it was added or not
-	return (ToBackpack(itemSP));
+	return (ToBackpack(item));
 	
 }
 
@@ -66,7 +66,7 @@ void BackpackComponent::Start(){}
 	
 	//Have this iterate through all items in inventory and draw them. .  . Must happen after Graphic's
 	//Device does it's draw. . .
-std::shared_ptr<GameObject> BackpackComponent::Update()
+GameObject* BackpackComponent::Update()
 	{
 		if (open)
 		{
@@ -76,9 +76,10 @@ std::shared_ptr<GameObject> BackpackComponent::Update()
 
 			std::map<Texture*, GAME_VEC> objects;
 			//grab all textures and their positions;
-			for(auto item : inventory)
+			std::vector<std::unique_ptr<GameObject>>::iterator item;
+			for(item = inventory.begin(); item!=inventory.end(); item++)
 			{
-				objects[(item -> GetComponent<RendererComponent>() -> GetTexture())] = item -> GetComponent<InventoryComponent>() -> GetPackPosition();
+				objects[((*item) -> GetComponent<RendererComponent>() -> GetTexture())] = (*item) -> GetComponent<InventoryComponent>() -> GetPackPosition();
 			}
 			
 			devices -> GetGraphicsDevice() -> DrawOverlay(topLeft, bottomRight, background, border, objects);
@@ -90,7 +91,7 @@ std::shared_ptr<GameObject> BackpackComponent::Update()
 	}
 	void BackpackComponent::Finish(){}
 
-	bool BackpackComponent::ToBackpack(std::shared_ptr<GameObject> item)
+	bool BackpackComponent::ToBackpack(GameObject* item)
 	{
 		
 
@@ -203,7 +204,7 @@ std::shared_ptr<GameObject> BackpackComponent::Update()
 					}
 				}
 				//save it to the inventory vector
-				inventory.push_back(item);
+				inventory.push_back(std::unique_ptr<GameObject>(item));
 				//remove the item from the list of level objects
 				item -> GetComponent<InventoryComponent>() -> SetPickedUp(true);
 				//we found a spot for it.

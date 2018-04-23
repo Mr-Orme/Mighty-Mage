@@ -4,7 +4,7 @@
 #include "PhysicsDevice.h"
 #include "PhysicsAssetLibrary.h"
 
-BodyComponent::BodyComponent(std::shared_ptr<GameObject> owner):Component(owner){}
+BodyComponent::BodyComponent(GameObject* owner):Component(owner){}
 BodyComponent::~BodyComponent(){}
 
 //**************************************
@@ -26,7 +26,7 @@ bool BodyComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& preset
 		//Create fixture.
 		devices -> GetPhysicsDevice() -> createFixture
 			(
-			_owner.get(),
+			_owner,
 			physics,
 			presets
 			);
@@ -38,7 +38,7 @@ void BodyComponent::Start(){}
 
 //**************************************
 //
-std::shared_ptr<GameObject> BodyComponent::Update()
+GameObject* BodyComponent::Update()
 //**************************************
 {
 	return nullptr;
@@ -50,7 +50,7 @@ void BodyComponent::Finish()
 //**************************************
 {
 	//remove the physics body
-	if(!devices -> GetPhysicsDevice() -> RemoveObject(_owner.get()))
+	if(!devices -> GetPhysicsDevice() -> RemoveObject(_owner))
 	{
 		printf( "Object could not be removed from Physics World");
 		exit(1);					
@@ -58,20 +58,20 @@ void BodyComponent::Finish()
 }
 GAME_FLT BodyComponent::GetAngle()
 {
-	return devices->GetPhysicsDevice()->GetAngle(_owner.get());
+	return devices->GetPhysicsDevice()->GetAngle(_owner);
 }
 
 GAME_VEC BodyComponent::getPosition()
 {
-	return (devices->GetPhysicsDevice()->GetPosition(_owner.get()));
+	return (devices->GetPhysicsDevice()->GetPosition(_owner));
 }
 GAME_VEC BodyComponent::getVelocity()
 {
-	return devices->GetPhysicsDevice()->GetVelocity(_owner.get());
+	return devices->GetPhysicsDevice()->GetVelocity(_owner);
 }
 void BodyComponent::setAngle(GAME_FLT angle)
 {
-	devices->GetPhysicsDevice()->SetAngle(_owner.get(), angle);
+	devices->GetPhysicsDevice()->SetAngle(_owner, angle);
 }
 
 void BodyComponent::adjustAngle(GAME_FLT adjustAmount)
@@ -81,5 +81,5 @@ void BodyComponent::adjustAngle(GAME_FLT adjustAmount)
 
 void BodyComponent::linearStop()
 {
-	devices->GetPhysicsDevice()->SetLinearVelocity(_owner.get(), { 0,0 });
+	devices->GetPhysicsDevice()->SetLinearVelocity(_owner, { 0,0 });
 }

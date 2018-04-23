@@ -8,7 +8,7 @@
 Game::Game()
 //**************************************
 {
-	devices = NULL;
+	devices = nullptr;
 	debug = false;
 }
 
@@ -53,8 +53,6 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 	devices = std::make_unique<ResourceManager>();
 	devices->Initialize(SCREEN_WIDTH, SCREEN_HEIGHT, assetConfigFile);
 	
-
-
 	///Get a few things ready
 	ObjectFactory::GAME_OBJECTFACTORY_PRESETS presets;
 	presets.devices = devices.get();
@@ -64,20 +62,19 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 	//load the files
 	//========================================
 	TiXmlDocument currentLevel(levelConfig);
+	
 	//if it does not load, the level or the physics did not load.
 	if (!currentLevel.LoadFile()){ return false; };
 	//create a root variable and set to the first element "Level"
+	
 	TiXmlElement* lRoot = currentLevel.FirstChildElement();;
 	//record the level;
 	int iLevel;
 	lRoot->QueryIntAttribute("level", &iLevel);
-	devices->SetLevel(static_cast<GAME_LEVEL>(iLevel));
-
-
-
+	devices->SetLevel((GAME_LEVEL)iLevel);
+	
 	//get the first child element "Row"
 	TiXmlElement* rowElement = lRoot->FirstChildElement();
-
 
 	//Size, in pixels, of one square in the game space
 	GAME_INT squareDimension = 110;
@@ -128,7 +125,7 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 				{
 					GAME_INT halfWidth = devices->GetGraphicsDevice()->GetScreenWidth() / 2;
 					GAME_INT halfHeight = devices->GetGraphicsDevice()->GetScreenHeight() / 2;
-					// sets the top left corenr of the map
+					// sets the top left corner of the map
 					squarePosition.x = presets.position.x*(-1) + halfWidth;
 					squarePosition.y = presets.position.y*(-1) + halfHeight;
 					//Keep track of that corner.
@@ -138,12 +135,13 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 						{ (GAME_FLT)halfWidth, (GAME_FLT)halfHeight };
 				}
 				//Create a pointer to a new object and initialize it.
-				std::shared_ptr<GameObject> newObject = objectFactory->Create(presets);
+				
 				//add new object
-				objects.push_back(newObject);
+				objects.push_back(std::make_unique<GameObject>(objectFactory->Create(presets)));
 
 				//mark the exit
-				if (presets.objectType == "Trapdoor") devices->GetGraphicsDevice()->SetExit(newObject);
+				//This needs to be generic and in the EventHandler! FIXME
+				if (presets.objectType == "Trapdoor") devices->GetGraphicsDevice()->SetExit(objects.back().get());
 
 				//make sure presests is ready for loading the level
 				presets.position = squarePosition;
@@ -180,10 +178,8 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 					presets.objectType = "TopFill";
 				}
 
-				//Create a pointer to a new object and initialize it.
-				std::shared_ptr<GameObject> newObject = objectFactory->Create(presets);
-				//add new object
-				objects.push_back(newObject);
+				//Create a pointer to a new object and initialize it and add it.
+				objects.push_back(std::make_unique<GameObject>(objectFactory->Create(presets)));
 				//***************************************
 
 				//***********LEFT WALL**********************
@@ -216,9 +212,9 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 				if (left != "none")
 				{
 					//Create a pointer to a new object and initialize it.
-					std::shared_ptr<GameObject> newObject = objectFactory->Create(presets);
+					
 					//add new object
-					objects.push_back(newObject);
+					objects.push_back(std::unique_ptr<GameObject>(objectFactory->Create(presets)));
 				}
 				//***************************************
 
@@ -246,9 +242,9 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 				if (floor != "none")
 				{
 					//Create a pointer to a new object and initialize it.
-					std::shared_ptr<GameObject> newObject = objectFactory->Create(presets);
+					
 					//add new object
-					objects.push_back(newObject);
+					objects.push_back(std::unique_ptr<GameObject>(objectFactory->Create(presets)));
 				}
 				//***************************************
 				//move x to next square to the right (we already moved ten in the code above).
@@ -332,14 +328,14 @@ void Game::Update()
 	//update the physics world
 	devices->GetPhysicsDevice()->Update(1.0f / devices->GetFPS());
 
-	std::vector<std::shared_ptr<GameObject>>::iterator objectIter;
+	std::vector<std::unique_ptr<GameObject>>::iterator objectIter;
 
 	//clean out dead objects
 	for (objectIter = objects.begin(); objectIter != objects.end(); objectIter++)
 	{
 		//check for health component
-		std::shared_ptr<HealthComponent> compHealth = (*objectIter)->GetComponent<HealthComponent>();
-		std::shared_ptr<InventoryComponent> compInventory = (*objectIter)->GetComponent<InventoryComponent>();
+		HealthComponent* compHealth = (*objectIter)->GetComponent<HealthComponent>();
+		InventoryComponent* compInventory = (*objectIter)->GetComponent<InventoryComponent>();
 		if (compHealth != NULL)
 		{
 			//if it is dead

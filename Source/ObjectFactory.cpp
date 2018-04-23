@@ -12,14 +12,14 @@
 //based on the object type, it grabs components.
 // and adds them to a newly created object.
 //it initializes the object which also initializes all the components
-std::shared_ptr<GameObject> ObjectFactory::Create(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
+GameObject* ObjectFactory::Create(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 //**************************************
 {
 
 	//Create pointer to new objects
-	std::shared_ptr<GameObject> newObject = std::make_shared<GameObject>();
+	GameObject* newObject = new GameObject();
 	//Get list of components for the new object
-	std::vector<std::shared_ptr<Component>> componentList = presets.devices -> GetComponentLibrary() ->Search(presets.objectType, newObject);
+	std::vector<Component*> componentList = presets.devices -> GetComponentLibrary() ->Search(presets.objectType, newObject);
 	//Add each to the object
 	for (auto comp : componentList)
 	{
@@ -30,7 +30,7 @@ std::shared_ptr<GameObject> ObjectFactory::Create(ObjectFactory::GAME_OBJECTFACT
 	if(!presets.gDirection.empty())
 	{
 		//add the ghost component
-		std::shared_ptr<GhostComponent> ghost = std::make_shared<GhostComponent>(newObject);
+		GhostComponent* ghost = new GhostComponent(newObject);
 		newObject -> AddComponent(ghost);
 	}
 		

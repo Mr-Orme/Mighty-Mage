@@ -10,24 +10,24 @@ class GameObject;
 class BackpackComponent : public Component
 {
 public:
-	BackpackComponent(std::shared_ptr<GameObject>);
+	BackpackComponent(GameObject*);
 	~BackpackComponent();
 
 	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
 
 	bool AddItem(GameObject* item);
 
-	std::vector<std::shared_ptr<GameObject>> GetInventory(){return inventory;}
+	//std::vector<std::unique_ptr<GameObject>> GetInventory(){return inventory;}
 
 	void SetOpen(bool open){this -> open = open;}
 	bool GetOpen(){return open;}
 
 	void Start();
-	std::shared_ptr<GameObject> Update();
+	GameObject* Update();
 	void Finish();
 protected:
-	bool ToBackpack(std::shared_ptr<GameObject> item);
-	std::vector<std::shared_ptr<GameObject>> inventory;
+	bool ToBackpack(GameObject* item);
+	std::vector<std::unique_ptr<GameObject>> inventory;
 	bool** backpack;
 	ResourceManager* devices;
 	

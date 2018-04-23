@@ -20,14 +20,14 @@ public:
 	~GameObject();
 	
 	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
-	void AddComponent(std::shared_ptr<Component> component);
+	void AddComponent(Component* component);
 
 	template<class T>
-	std::shared_ptr<T> GetComponent()
+	T* GetComponent()
 	{
 		for(auto comp : components)
 		{
-			std::shared_ptr<T> target;
+			T* target;
 			if((target = std::dynamic_pointer_cast<T>(comp)))
 			{
 				return(target);
@@ -35,10 +35,10 @@ public:
 		}
 	
 		//Return NULL;
-		return(std::shared_ptr<T>());
+		return(nullptr);
 	}
 	
-	std::shared_ptr<GameObject> Update();
+	GameObject* Update();
 	void draw();
 
 	void SetJoinedWith(std::shared_ptr<GameObject> joinedWith){this -> joinedWith = joinedWith;}
@@ -50,7 +50,7 @@ public:
 
 protected:
 	
-	std::vector<std::shared_ptr<Component>> components;
+	std::vector<std::unique_ptr<Component>> components;
     bool initialized;
 	std::string objectType;
 	std::shared_ptr<GameObject> joinedWith;

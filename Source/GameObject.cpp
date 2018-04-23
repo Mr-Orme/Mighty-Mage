@@ -23,21 +23,22 @@ bool GameObject::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 	//It's initialization method has a check to see if it is already initialized 
 	//so that when we go through all the components and initialize them in the next step, it won't do it again.
 	
-	std::shared_ptr<RendererComponent> component = GetComponent<RendererComponent>();
+	RendererComponent* component = GetComponent<RendererComponent>();
 	if(component) component -> Initialize(presets);
 
 	//initialize all components
-	for ( auto comp :components)
+	std::vector<std::unique_ptr<Component>>::iterator compIter;
+	for ( compIter= components.begin(); compIter!=components.end();compIter++)
 	{
 		
-		comp -> Initialize(presets);
+		(*compIter)-> Initialize(presets);
 	}
 	//start all components
 	if(!initialized)
 	{
-		for (auto comp : components)
+		for (compIter = components.begin(); compIter != components.end(); compIter++)
 		{
-			comp -> Start();
+			(*compIter) -> Start();
 		}
 		initialized = true;
 	}
@@ -46,24 +47,23 @@ bool GameObject::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 
 //**************************************
 //Adds the passed component to the object.
-void GameObject::AddComponent(std::shared_ptr<Component> component)
+void GameObject::AddComponent(Component* component)
 //**************************************
 {
-	components.push_back(component);
+	components.push_back(std::unique_ptr<Component>(component));
 }
 
 //**************************************
 //runs the update method for all attached components
-std::shared_ptr<GameObject> GameObject::Update()
+GameObject* GameObject::Update()
 //**************************************
 
 {
-	std::shared_ptr<GameObject> newObject = NULL;
-	for (auto comp : components)
+	GameObject* newObject = nullptr;
+	std::vector<std::unique_ptr<Component>>::iterator compIter;
+	for (compIter = components.begin(); compIter != components.end(); compIter++)
 	{
-		std::shared_ptr<GameObject> tempObject = NULL;
-		tempObject = comp -> Update();
-		if(tempObject != NULL)
+		if(GameObject* tempObject = (*compIter)->Update(); tempObject != nullptr)
 		{
 			newObject = tempObject;
 		}
@@ -73,7 +73,7 @@ std::shared_ptr<GameObject> GameObject::Update()
 }
 void GameObject::draw()
 {
-	if (std::shared_ptr<RendererComponent> sprite = GetComponent<RendererComponent>(); sprite != nullptr)
+	if (RendererComponent* sprite = GetComponent<RendererComponent>(); sprite != nullptr)
 	{
 		sprite->Draw();
 	}
@@ -83,9 +83,12 @@ void GameObject::draw()
 bool GameObject::removeComponents()
 //**************************************
 {
-	for (auto comp : components)
+	
+	for (std::vector<std::unique_ptr<Component>>::iterator comp = components.begin();
+		comp!=components.end(); 
+		comp++)
 	{
-		comp -> Finish();
+		(*comp) -> Finish();
 		
 	}
 	components.clear();

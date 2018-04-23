@@ -18,7 +18,7 @@ class UserInputComponent : public Component
 public:
 	
 
-	UserInputComponent(std::shared_ptr<GameObject> owner);
+	UserInputComponent(GameObject* owner);
 	~UserInputComponent();
 	
 	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
@@ -27,7 +27,7 @@ public:
 	GAME_VEC GetCurrentSquare();
 
 	void Start();
-	std::shared_ptr<GameObject> Update();
+	GameObject* Update();
 	void Finish();
 protected:
 	//GAME_INT frameCount;

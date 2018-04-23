@@ -59,7 +59,7 @@ public:
 	//void ReverseOrder();
 
 	//!!!!!!!!!!!!!!!!!!!!!Move where exit is!!!!!!!!!!!!!!!!!
-	std::shared_ptr<GameObject> GetExit(){ return levelExit; }
+	GameObject* GetExit(){ return levelExit; }
 
 	//Accessors
 	//void AddSpriteRenderer(RendererComponent*);
@@ -76,7 +76,7 @@ public:
 
 	//Setters
 	//void SetView(std::shared_ptr<View> view){this -> view = view;}
-	void SetExit(std::shared_ptr<GameObject> levelExit){this -> levelExit = levelExit;}
+	void SetExit(GameObject* levelExit){this -> levelExit = levelExit;}
 	bool SetFont(std::string path, GAME_INT size, GAME_RGBA color);
 
 
@@ -110,7 +110,7 @@ private:
 	TTF_Font* font;
 	GAME_RGBA color;
 
-	std::shared_ptr<GameObject> levelExit;
+	GameObject* levelExit;
 
 };
 

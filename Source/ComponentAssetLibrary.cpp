@@ -16,11 +16,11 @@ bool ComponentAssetLibrary::Initialize()
 //Takes the name of the object and a pointer to it
 //creates components based on it's type and adds them to a vector
 //which is returned.
-std::vector<std::shared_ptr<Component>> ComponentAssetLibrary::Search(std::string name, std::shared_ptr<GameObject> owner)
+std::vector<Component*> ComponentAssetLibrary::Search(std::string name, GameObject* owner)
 //**************************************
 {
 	//Vector of pointers to return
-	std::vector<std::shared_ptr<Component>> componentListPtrs;
+	std::vector<Component*> componentListPtrs;
 	
 	//finds the list of components associated with the name of the object passed.
 	std::vector<GAME_COMPONENT_LIST> componentList = library.find(name) -> second;
@@ -32,10 +32,10 @@ std::vector<std::shared_ptr<Component>> ComponentAssetLibrary::Search(std::strin
 		switch (comp)
 		{
 		case GAME_BODY_COMP:
-			componentListPtrs.push_back(std::make_shared<BodyComponent>(owner));
+			componentListPtrs.push_back(new BodyComponent(owner));
 			break;
 		case GAME_HEALTH_COMP:
-			componentListPtrs.push_back(std::make_shared<HealthComponent>(owner));
+			componentListPtrs.push_back(new HealthComponent*(owner));
 			break;
 		case GAME_RENDERER_COMP:
 			componentListPtrs.push_back(std::make_shared<RendererComponent>(owner));

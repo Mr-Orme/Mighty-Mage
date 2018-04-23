@@ -8,7 +8,7 @@ class ResourceManager;
 class HealthComponent : public Component
 {
 public:
-	HealthComponent(std::shared_ptr<GameObject>);
+	HealthComponent(GameObject*);
 	~HealthComponent();
 
 	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
@@ -24,7 +24,7 @@ public:
 	bool KillObject();
 	
 	void Start();
-	std::shared_ptr<GameObject> Update();
+	GameObject* Update();
 	void Finish();
 protected:
 	GAME_INT health;

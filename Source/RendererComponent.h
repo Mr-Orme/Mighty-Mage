@@ -9,7 +9,7 @@ class ObjectFactory;
 class RendererComponent : public Component
 {
 public:
-	RendererComponent(std::shared_ptr<GameObject>);
+	RendererComponent(GameObject*);
 	~RendererComponent();
 
 	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
@@ -17,11 +17,11 @@ public:
 	void Draw();
 	void Draw(GAME_VEC position, GAME_FLT angle);
 	void Start();
-	std::shared_ptr<GameObject> Update();
+	GameObject* Update();
 	void Finish();
 
 	Texture* GetTexture(){return texture;}
-	GAME_VEC GetViewAdjustedPosition(std::shared_ptr<GameObject>);
+	GAME_VEC GetViewAdjustedPosition(GameObject*);
 
 	void SetTexture(Texture* texture){this -> texture = texture;}
 

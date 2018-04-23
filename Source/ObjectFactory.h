@@ -28,7 +28,7 @@ public:
 	{
 		int health;
 	};
-	std::shared_ptr<GameObject> Create(GAME_OBJECTFACTORY_PRESETS& presets);
+	GameObject* Create(GAME_OBJECTFACTORY_PRESETS& presets);
 	protected:
 	
 };
