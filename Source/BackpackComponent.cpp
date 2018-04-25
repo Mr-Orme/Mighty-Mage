@@ -51,14 +51,128 @@ bool BackpackComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& pr
 //**************************************
 //kills the item passed in, grabs it's rendere, and saves it to, what is essentially
 //the Graphics device's backpack vector.
-bool BackpackComponent::AddItem(GameObject* item)
+bool BackpackComponent::AddItem(std::unique_ptr<GameObject> item)
 //**************************************
 {
-	//grab the shared pointer from the owner
-	//GameObject* itemSP = item -> GetComponent<RendererComponent>() -> GetOwner();
 
-	//return whether it was added or not
-	return (ToBackpack(item));
+
+	GraphicsDevice* gDevice = devices->GetGraphicsDevice();
+	GAME_INT SCREEN_WIDTH = gDevice->GetScreenWidth();
+	GAME_INT SCREEN_HEIGHT = gDevice->GetScreenHeight();
+	GAME_VEC topLeft = { SCREEN_WIDTH*.1f, SCREEN_HEIGHT*.1f };
+	GAME_VEC bottomRight = { SCREEN_WIDTH - topLeft.x, SCREEN_HEIGHT - topLeft.y };
+
+
+
+	//**********************Find Item dimensions*************************
+	RendererComponent* rend = item->GetComponent<RendererComponent>();
+	//number of sequential rows we need (+.5 makes sure we round up)
+	int numRows = (int)((rend->GetTexture()->getWidth() / slotSize) + .5f);
+	//number of sequential columns we need
+	int numColumns = (int)((rend->GetTexture()->getHeight() / slotSize) + .5f);
+	//********************************************************************
+
+	//number of sequential open rows found 
+	int seqRows = 0;
+	//current row & column we are checking
+	int currRow = 0;
+	int currColumn = 0;
+
+	//Found a row that the item can fit in
+	bool rowFound = false;
+
+	//let's find a spot for it. . .
+	//while we have not reached the last row, and we have not found a row to put it in.
+	while (currRow < numSlots.x && !rowFound)
+	{
+		//Not yet found a column that the item can fit in
+		bool columnFound = false;
+		//# of sequential open columns we have found
+		int seqColumns = 0;
+		//back to the first column
+		currColumn = 0;
+
+		//check for enough empty columns in the current row
+		//While we haven't found a set of columns that works and we have not reached the last column
+		while (!columnFound  && currColumn < numSlots.y)
+		{
+			//If it is empty, add one to our sequential columns
+			if (backpack[currRow][currColumn]) seqColumns++;
+			//if it is not empty, start sequential column count over.
+			else seqColumns = 0;
+			//If we have found enough sequential columns, set the found to true
+			if (seqColumns >= numColumns) columnFound = true;
+			//otherwise, move on to the next column.
+			else currColumn++;
+		}
+
+
+		//if we found enough empty slots in the columns in this row
+		if (columnFound)
+		{
+			//let's check the next row
+			int r = 0;
+			//back up to first in column that was empty in this sequence of empty columns
+			//"-1" because currColumn count starts at 0, and numColumns starts at 1.
+			currColumn -= (numColumns - 1);
+
+			//start by assuming all slots in the proper columns are empty
+			bool rowGood = true;
+			//now let's check we have enough empty rows in these columns
+			//We keep looping if 
+			//we have not found enough empty rows
+			//we have not reached the last row
+			//The slots in the columns in the last row we checked are all empty
+			while (!rowFound && r < numSlots.x && rowGood)
+			{
+				//iterate through the proper columns in this row
+				for (int c = currColumn; c < currColumn + numColumns; c++)
+				{
+					//if even one is not empty, this row is no good.
+					if (!backpack[currRow + r][currColumn + c]) rowGood = false;
+				}
+				//if we have found enough rows
+				if (r >= numRows - 1) rowFound = true;
+				//otherwise move on to the next row
+				else r++;
+
+			}
+		}
+		//we have finished checking this row, so let's move to the next one.
+		currRow++;
+	}
+
+	//this can only be true if column is also true, which means we found the columns and rows we needed to place the item.
+	if (rowFound)
+	{
+		//back up to the proper row
+		currRow--;
+		//calculate position based on row & column.
+		GAME_VEC position = { currColumn*slotSize + topLeft.x + 5, currRow*slotSize + topLeft.y + 5 };
+
+
+
+		//Set the position of the item to be in the proper spot in the inventory
+		item->GetComponent<InventoryComponent>()->SetPackPosition(position);
+
+
+		//mark used slots. . .
+		for (int i = currRow; i < currRow + numRows; i++)
+		{
+			for (int j = currColumn; j < currColumn + numColumns; j++)
+			{
+				backpack[i][j] = false;
+			}
+		}
+		//save it to the inventory vector
+		inventory.push_back(std::move(item));
+		//remove the item from the list of level objects
+		
+		//we found a spot for it.
+		return true;
+	}
+	//we didn't find a spot for it.
+	return false;
 	
 }
 
@@ -76,10 +190,10 @@ GameObject* BackpackComponent::Update()
 
 			std::map<Texture*, GAME_VEC> objects;
 			//grab all textures and their positions;
-			std::vector<std::unique_ptr<GameObject>>::iterator item;
-			for(item = inventory.begin(); item!=inventory.end(); item++)
+			
+			for(auto& item : inventory)
 			{
-				objects[((*item) -> GetComponent<RendererComponent>() -> GetTexture())] = (*item) -> GetComponent<InventoryComponent>() -> GetPackPosition();
+				objects[item -> GetComponent<RendererComponent>() -> GetTexture()] = item -> GetComponent<InventoryComponent>() -> GetPackPosition();
 			}
 			
 			devices -> GetGraphicsDevice() -> DrawOverlay(topLeft, bottomRight, background, border, objects);
@@ -91,125 +205,3 @@ GameObject* BackpackComponent::Update()
 	}
 	void BackpackComponent::Finish(){}
 
-	bool BackpackComponent::ToBackpack(GameObject* item)
-	{
-		
-
-			GraphicsDevice* gDevice = devices -> GetGraphicsDevice();
-			GAME_INT SCREEN_WIDTH = gDevice -> GetScreenWidth();
-			GAME_INT SCREEN_HEIGHT = gDevice -> GetScreenHeight();
-			GAME_VEC topLeft = {SCREEN_WIDTH*.1f, SCREEN_HEIGHT*.1f};
-			GAME_VEC bottomRight = {SCREEN_WIDTH-topLeft.x, SCREEN_HEIGHT-topLeft.y};
-
-			
-
-			//**********************Find Item dimensions*************************
-			RendererComponent* rend = item -> GetComponent<RendererComponent>();
-			//number of sequential rows we need (+.5 makes sure we round up)
-			int numRows = (int)((rend -> GetTexture() -> getWidth()/slotSize) + .5f);
-			//number of sequential columns we need
-			int numColumns = (int)((rend -> GetTexture() -> getHeight()/slotSize) + .5f);
-			//********************************************************************
-				
-			//number of sequential open rows found 
-			int seqRows = 0;
-			//current row & column we are checking
-			int currRow = 0;
-			int currColumn = 0;
-				
-			//Found a row that the item can fit in
-			bool rowFound = false;
-
-			//let's find a spot for it. . .
-			//while we have not reached the last row, and we have not found a row to put it in.
-			while(currRow < numSlots.x && !rowFound)
-			{
-				//Not yet found a column that the item can fit in
-				bool columnFound = false;
-				//# of sequential open columns we have found
-				int seqColumns = 0;
-				//back to the first column
-				currColumn = 0;
-					
-				//check for enough empty columns in the current row
-				//While we haven't found a set of columns that works and we have not reached the last column
-				while (!columnFound  && currColumn < numSlots.y)
-				{
-					//If it is empty, add one to our sequential columns
-					if(backpack[currRow][currColumn]) seqColumns++;
-					//if it is not empty, start sequential column count over.
-					else seqColumns = 0;
-					//If we have found enough sequential columns, set the found to true
-					if(seqColumns >= numColumns) columnFound = true;
-					//otherwise, move on to the next column.
-					else currColumn++;						
-				}
-					
-					
-				//if we found enough empty slots in the columns in this row
-				if(columnFound)
-				{
-					//let's check the next row
-					int r=0;
-					//back up to first in column that was empty in this sequence of empty columns
-					//"-1" because currColumn count starts at 0, and numColumns starts at 1.
-					currColumn -= (numColumns-1);
-
-					//start by assuming all slots in the proper columns are empty
-					bool rowGood = true;
-					//now let's check we have enough empty rows in these columns
-					//We keep looping if 
-						//we have not found enough empty rows
-						//we have not reached the last row
-						//The slots in the columns in the last row we checked are all empty
-					while (!rowFound && r < numSlots.x && rowGood)
-					{
-						//iterate through the proper columns in this row
-						for(int c = currColumn; c < currColumn + numColumns; c++)
-						{
-							//if even one is not empty, this row is no good.
-							if(!backpack[currRow+r][currColumn+c]) rowGood = false;
-						}
-						//if we have found enough rows
-						if(r >= numRows-1) rowFound = true;
-						//otherwise move on to the next row
-						else r++;
-
-					}
-				}
-				//we have finished checking this row, so let's move to the next one.
-				currRow++;
-			}
-
-			//this can only be true if column is also true, which means we found the columns and rows we needed to place the item.
-			if(rowFound)
-			{
-				//back up to the proper row
-				currRow--;
-				//calculate position based on row & column.
-				GAME_VEC position = {currColumn*slotSize + topLeft.x+5, currRow*slotSize + topLeft.y+5};
-				
-				
-				
-				//Set the position of the item to be in the proper spot in the inventory
-				item -> GetComponent<InventoryComponent>() -> SetPackPosition(position);
-				
-				
-				//mark used slots. . .
-				for(int i = currRow; i < currRow + numRows; i ++)
-				{
-					for(int j = currColumn; j < currColumn + numColumns; j++)
-					{
-						backpack[i][j] = false;
-					}
-				}
-				//save it to the inventory vector
-				inventory.push_back(std::unique_ptr<GameObject>(item));
-				//remove the item from the list of level objects
-				item -> GetComponent<InventoryComponent>() -> SetPickedUp(true);
-				//we found a spot for it.
-				return true;
-			}
-			//we didn't find a spot for it.
-			return false;
-	}

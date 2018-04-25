@@ -15,18 +15,19 @@ public:
 
 	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
 
-	bool GetPickedUp(){return pickedUp;}
+	bool isPickedUp();
 	GAME_VEC GetPackPosition(){return packPosition;}
+	GameObject* gotPickedUpBy() { return pickedUpBy; }
 	
-	void SetPickedUp(bool pickedUp){this -> pickedUp = pickedUp;}
+	void getPickedUp(GameObject* pickedUpBy);
 	void SetPackPosition(GAME_VEC packPosition){this -> packPosition = packPosition;}
 
 	void Start();
 	GameObject* Update();
 	void Finish();
 protected:
-	bool pickedUp;
 	GAME_VEC packPosition;
+	GameObject* pickedUpBy;
 };
 
 #endif

@@ -227,22 +227,7 @@ void GraphicsDevice::SetView(View * view)
 	this->view = std::unique_ptr<View>(view);
 }
 
-//void GraphicsDevice::AddSpriteRenderer(RendererComponent* sprite)
-//{
-//	sprites.push_back(sprite);
-//}
-//void GraphicsDevice::RemoveSpriteRenderer(RendererComponent* dSprite)
-//{
-//	std::vector<RendererComponent*>::iterator spriteIter;
-//	for(spriteIter=sprites.begin(); spriteIter!=sprites.end(); spriteIter++)
-//	{
-//		if(*spriteIter == dSprite)
-//		{
-//			spriteIter = sprites.erase(spriteIter);
-//			
-//		}
-//	}
-//}
+
 bool GraphicsDevice::SetFont(std::string path, GAME_INT size, GAME_RGBA color)
 {
 	font = TTF_OpenFont(path.c_str(), size);

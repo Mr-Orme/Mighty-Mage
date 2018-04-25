@@ -36,8 +36,7 @@ bool SoundAssetLibrary::RemoveAsset(std::string name)
 Mix_Music* SoundAssetLibrary::SearchMusic(std::string name)
 //**************************************
 {
-	std::map<std::string, Mix_Music* >::iterator musicIter;
-	musicIter = musicLibrary.find(name);
+	std::map<std::string, Mix_Music* >::iterator musicIter = musicLibrary.find(name);
 	//make sure we found one.
 	if(musicIter == musicLibrary.end())
 	{
@@ -62,18 +61,17 @@ bool SoundAssetLibrary::Finish()
 //**************************************
 {
 	//iterates through sound effects.
-	std::map<std::string, Mix_Chunk*>::iterator soundIter;
-	for (soundIter = soundEffectLibrary.begin(); soundIter != soundEffectLibrary.end(); soundIter++)
+	
+	for (auto sound : soundEffectLibrary )
 	{
 		//removes sound effect.
-		Mix_FreeChunk(soundIter ->second);
+		Mix_FreeChunk(sound.second);
 	}
 	//itersates through music.
-	std::map<std::string, Mix_Music* >::iterator musicIter;
-	for (musicIter = musicLibrary.begin(); musicIter != musicLibrary.end(); musicIter++)
+	for (auto song : musicLibrary)
 	{
 		//removes music.
-		Mix_FreeMusic(musicIter -> second);
+		Mix_FreeMusic(song.second);
 	}
 	return true;
 }

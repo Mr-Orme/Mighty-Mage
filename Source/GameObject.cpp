@@ -17,29 +17,27 @@ bool GameObject::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 //**************************************
 {
 	objectType = presets.objectType;
-	joinedWith = NULL;
-	////This sets the current object to the joinedObject in case a joint will be made.
-	//presets.joinedObject = std::make_shared<GameObject>(shared_from_this());
+	joinedWith = nullptr;
+	
 	//the renderer component needs to be initialized first because the body component depends on it
 	//It's initialization method has a check to see if it is already initialized 
 	//so that when we go through all the components and initialize them in the next step, it won't do it again.
-	
 	RendererComponent* component = GetComponent<RendererComponent>();
 	if(component) component -> Initialize(presets);
 
 	//initialize all components
-	std::vector<std::unique_ptr<Component>>::iterator compIter;
-	for ( compIter= components.begin(); compIter!=components.end();compIter++)
+	for ( auto& component : components)
 	{
+	
 		
-		(*compIter)-> Initialize(presets);
+		component-> Initialize(presets);
 	}
 	//start all components
 	if(!initialized)
 	{
-		for (compIter = components.begin(); compIter != components.end(); compIter++)
+		for (auto& component : components)
 		{
-			(*compIter) -> Start();
+			component -> Start();
 		}
 		initialized = true;
 	}
@@ -61,10 +59,9 @@ GameObject* GameObject::Update()
 
 {
 	GameObject* newObject = nullptr;
-	std::vector<std::unique_ptr<Component>>::iterator compIter;
-	for (compIter = components.begin(); compIter != components.end(); compIter++)
+	for (auto& component : components)
 	{
-		if(GameObject* tempObject = (*compIter)->Update(); tempObject != nullptr)
+		if(GameObject* tempObject = component ->Update(); tempObject != nullptr)
 		{
 			newObject = tempObject;
 		}

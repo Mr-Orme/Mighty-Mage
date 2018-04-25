@@ -1,9 +1,7 @@
 #include <string>
 #include "ContactListener.h"
-#include "ResourceManager.h"
 #include "GameObject.h"
 #include "ComponentsList.h"
-#include "SoundDevice.h"
 
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {
@@ -17,11 +15,7 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 	//find their types
 	std::string objectAType = objectA -> getObjectType();
 	std::string objectBType = objectB -> getObjectType();
-	
-	
-		
-		
-		
+			
 	if(objectAType == "Player")
 	{
 		
@@ -29,7 +23,13 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 		if(objectB -> GetComponent<InventoryComponent>())
 		{
 			
-			PickUpItem(objectA, objectB);
+			//PickUpItem(objectA, objectB);
+			//pick it up if it has a backpack component.
+			if (objectA->GetComponent<BackpackComponent>())
+			{
+				objectB->GetComponent<InventoryComponent>()->getPickedUp(objectA);
+				//objectB->GetComponent<HealthComponent>()->SetIsDead(true);
+			}
 		}
 		
 
@@ -95,14 +95,14 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 
 }
 
-void ContactListener::PickUpItem(GameObject* player, GameObject* item)
-{
-	//grab the resource manager from the player's body component
-	ResourceManager* devices = player -> GetComponent<BodyComponent>() -> GetDevices();
-	//if there is space to add it to the backpack, play the "found item" sound. . .
-	if(player -> GetComponent<BackpackComponent>() -> AddItem(item))
-	{
-		devices -> GetSoundDevice() -> PlaySound("found",0,3);
-	}
-
-}
+//void ContactListener::PickUpItem(GameObject* player, GameObject* item)
+//{
+//	//grab the resource manager from the player's body component
+//	ResourceManager* devices = player -> GetComponent<BodyComponent>() -> GetDevices();
+//	//if there is space to add it to the backpack, play the "found item" sound. . .
+//	if(player -> GetComponent<BackpackComponent>() -> AddItem(item))
+//	{
+//		devices -> GetSoundDevice() -> PlaySound("found",0,3);
+//	}
+//
+//}

@@ -43,8 +43,9 @@ GameObject* ObjectFactory::Create(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& pre
 	}
 	else
 	{
+		delete newObject;
 		std::cout << "Object did not initialize!" << std::endl;
-		return NULL;
+		return nullptr;
 	}
 }
 

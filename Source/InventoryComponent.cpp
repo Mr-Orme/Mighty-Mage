@@ -6,8 +6,22 @@ InventoryComponent::~InventoryComponent(){}
 
 bool InventoryComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 {
-	pickedUp = false;
+	pickedUpBy = nullptr;
 	return true;
+}
+
+bool InventoryComponent::isPickedUp()
+{
+	if (pickedUpBy == nullptr)
+	{
+		return false;
+	}
+	return true;
+}
+
+void InventoryComponent::getPickedUp(GameObject * pickedUpBy)
+{
+	this->pickedUpBy = pickedUpBy;
 }
 
 void InventoryComponent::Start(){}

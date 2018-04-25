@@ -329,17 +329,18 @@ void Game::Update()
 	//update the physics world
 	devices->GetPhysicsDevice()->Update(1.0f / devices->GetFPS());
 
-	std::vector<std::unique_ptr<GameObject>>::iterator objectIter;
+	 
 
 	//clean out dead objects
-	for (objectIter = objects.begin(); objectIter != objects.end(); objectIter++)
+	for (std::vector<std::unique_ptr<GameObject>>::iterator objectIter = objects.begin(); objectIter != objects.end(); objectIter++)
 	{
 		//check for health component
 		HealthComponent* compHealth = (*objectIter)->GetComponent<HealthComponent>();
-		InventoryComponent* compInventory = (*objectIter)->GetComponent<InventoryComponent>();
-		if (compHealth != NULL)
+		
+		if (compHealth != nullptr)
 		{
-			//if it is dead
+			InventoryComponent* compInventory = (*objectIter)->GetComponent<InventoryComponent>();
+			//**************Bring out your dead********************
 			if (compHealth->GetIsDead())
 			{
 				//close off the componenets.
@@ -350,18 +351,27 @@ void Game::Update()
 				//back up to previous item because this one was deleted.
 				objectIter--;
 			}
-			//if it got picked up. . 
-			else if (compInventory != NULL && compInventory->GetPickedUp())
+			//*******************************************************
+
+			//***************************Item pickup***************************
+			else if (compInventory != nullptr && compInventory->isPickedUp())
 			{
-				//remove the sprite from the automatic draw list
-				//devices->GetGraphicsDevice()->RemoveSpriteRenderer((*objectIter)->GetComponent<RendererComponent>().get());
 				//stop the physics on it
 				devices->GetPhysicsDevice()->SetStopPhysics((*objectIter).get());
+				
+				/*The collision detector stores the pointer in the inventory component of the object that picks it up
+				here, we get that pointer, and put the item in the backpack of that object*/
+				GameObject* player = (*objectIter)->GetComponent<InventoryComponent>()->gotPickedUpBy();
+				if (player->GetComponent<BackpackComponent>()->AddItem(std::move(*objectIter)))
+				{
+					devices->GetSoundDevice()->PlaySound("found", 0, 3);
+				}
+
 				//remove object from the vector.
 				objectIter = objects.erase(objectIter);
-
-
+				objectIter--;
 			}
+			//*******************************************************************
 		}
 	}
 
@@ -379,12 +389,10 @@ void Game::Update()
 		//run update method for the object
 		GameObject* temp = object->Update();
 		//if it returned an object, add it to the list to be added.
-		if (temp != NULL)
+		if (temp != nullptr)
 		{
 			newObjects.push_back(std::unique_ptr<GameObject>(temp));
 		}
-
-
 	}
 }
 
@@ -427,8 +435,8 @@ void Game::Reset()
 		objects.clear();
 	}
 	//kill old Resource Manager;
-	if (devices)	devices->Shutdown();
-	devices = NULL;
+	if (devices) devices->Shutdown();
+	devices = nullptr;
 
 
 }

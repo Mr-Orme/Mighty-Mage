@@ -4,11 +4,10 @@
 #include<memory>
 #include<iostream>
 #include<vector>
-//#include "SDL.h"
-//#include "SDL_ttf.h"
+
 #include "Definitions.h"
 #include "ObjectFactory.h"
-//#include "ComponentsList.h"
+
 class Component;
 class GraphicsDevice;
 class PhysicsDevice;
@@ -20,7 +19,7 @@ class InventoryComponent;
 class RendererComponent;
 class UserInputComponent;
 
-class GameObject : public std::enable_shared_from_this<GameObject>
+class GameObject
 {
 public:
 	GameObject();
@@ -33,10 +32,10 @@ public:
 	T* GetComponent()
 	{
 
-		for (std::vector<std::unique_ptr<Component>>::iterator compIter = components.begin(); compIter != components.end(); compIter++)
+		for (auto& component : components)
 		{
 			T* target = nullptr;
-			if (target = dynamic_cast<T*>(compIter->get()))
+			if (target = dynamic_cast<T*>(component.get()))
 			{
 				return(target);
 			}

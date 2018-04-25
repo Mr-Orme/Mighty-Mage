@@ -34,21 +34,17 @@ bool PhysicsAssetLibrary::AddAsset(std::string name, PhysicsDevice::GAME_PHYSICS
 void PhysicsAssetLibrary::Print()
 //**************************************
 {
-	std::map<std::string, PhysicsDevice::GAME_PHYSICS>::iterator galIter;
-	
-	for(galIter = library.begin(); galIter != library.end(); galIter++)
+	for(auto asset : library)
 	{
-	
-		
 		std::cout << 
-			"**********************" << galIter -> first << "***************************" << std::endl <<
-			"Angular Damping: " << galIter -> second.angularDamping  << std::endl <<
-			"Density: " << galIter -> second.density  << std::endl <<
-			"Linear Damping: " << galIter -> second.linearDamping << std::endl <<
-			"Force: " << galIter -> second.force << std::endl <<
-			"Friction: " << galIter -> second.friction << std::endl <<		
-			"Object Shape: " << galIter -> second.objectShape << std::endl <<
-			"Spin Speed: " << galIter -> second.spinSpeed  << std::endl <<
+			"**********************" <<asset.first << "***************************" << std::endl <<
+			"Angular Damping: " <<asset.second.angularDamping  << std::endl <<
+			"Density: " <<asset.second.density  << std::endl <<
+			"Linear Damping: " <<asset.second.linearDamping << std::endl <<
+			"Force: " <<asset.second.force << std::endl <<
+			"Friction: " <<asset.second.friction << std::endl <<		
+			"Object Shape: " <<asset.second.objectShape << std::endl <<
+			"Spin Speed: " <<asset.second.spinSpeed  << std::endl <<
 			std::endl;
 	}
 }

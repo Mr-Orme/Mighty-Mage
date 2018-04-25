@@ -15,7 +15,7 @@ public:
 
 	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
 
-	bool AddItem(GameObject* item);
+	bool AddItem(std::unique_ptr<GameObject> item);
 
 	std::vector<std::unique_ptr<GameObject>>& GetInventory(){return inventory;}
 
@@ -26,7 +26,6 @@ public:
 	GameObject* Update();
 	void Finish();
 protected:
-	bool ToBackpack(GameObject* item);
 	std::vector<std::unique_ptr<GameObject>> inventory;
 	bool** backpack;
 	ResourceManager* devices;

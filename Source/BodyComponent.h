@@ -4,7 +4,7 @@
 #include "Component.h"
 #include "Definitions.h"
 class ResourceManager;
-
+class GameObject;
 class BodyComponent : public Component
 {
 public:
@@ -27,6 +27,7 @@ public:
 	
 protected:
 	ResourceManager* devices;
+	
 
 };
 
