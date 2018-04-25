@@ -211,7 +211,7 @@ GameObject* UserInputComponent::Update()
 
 	//*********************************************************************************
 	
-	//Move to somewhere else!!! FIXME
+	//TODO: Move level switch to event handler!!! 
 	//*****************************TO Basement*********************************************
 	//if we are on the main level and make it to the proper spot
 	if(devices -> GetLevel() == GAME_LEVEL_MAIN && square.x == 14 && square.y == 0)
@@ -241,7 +241,7 @@ GAME_VEC UserInputComponent::GetCurrentSquare()
 	//subtract off the player's position on the screen to get the actual spot of the player.
 	//divide by the number of pixels in each square.
 	//Adjust the y, because the 15x15 square starts in the bottom left corner, while SDL starts in the top left.
-	//FIXME needs to determine square by nose! adjust according to direction facing!
+	//TODO: needs to determine square by nose! adjust according to direction facing!
 	GAME_VEC square = 
 					{
 						int((cityCorner.x - playerPosition.x)*-1/ squareDimension),

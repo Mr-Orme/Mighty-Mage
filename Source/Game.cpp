@@ -140,7 +140,7 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 				objects.push_back(std::unique_ptr<GameObject>(objectFactory->Create(presets)));
 
 				//mark the exit
-				//This needs to be generic and in the EventHandler! FIXME
+				//TODO: This needs to be generic and in the EventHandler! 
 				if (presets.objectType == "Trapdoor") devices->GetGraphicsDevice()->SetExit(objects.back().get());
 
 				//make sure presests is ready for loading the level
