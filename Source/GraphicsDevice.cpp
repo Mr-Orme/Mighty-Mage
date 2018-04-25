@@ -13,8 +13,8 @@
 
 GraphicsDevice::GraphicsDevice(Uint32 width, Uint32 height) : SCREEN_WIDTH(width), SCREEN_HEIGHT(height)
 {
-	screen = NULL;
-	renderer = NULL;
+	screen = nullptr;
+	renderer = nullptr;
 }
 
 GraphicsDevice::~GraphicsDevice()
@@ -72,7 +72,7 @@ bool GraphicsDevice::Initialize(bool fullScreen)
 			SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
 	}
-	if(screen==NULL)
+	if(screen==nullptr)
 	{
 		printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
 		return(false);
@@ -80,7 +80,7 @@ bool GraphicsDevice::Initialize(bool fullScreen)
 
 	//Construct the renderer
 	renderer = SDL_CreateRenderer(screen,-1,SDL_RENDERER_ACCELERATED);
-	if(renderer==NULL)
+	if(renderer==nullptr)
 	{
 		printf( "Renderer could not be created! SDL_Error: %s\n", SDL_GetError() );
 		return(false);
@@ -103,11 +103,11 @@ bool GraphicsDevice::ShutDown()
 {
 	//Free the window
 	SDL_DestroyWindow(screen);
-	screen = NULL;
+	screen = nullptr;
 
 	//Free renderer
 	SDL_DestroyRenderer(renderer);
-	renderer = NULL;
+	renderer = nullptr;
 	
 
 	//Quit SDL Subsystems
@@ -231,7 +231,7 @@ void GraphicsDevice::SetView(View * view)
 bool GraphicsDevice::SetFont(std::string path, GAME_INT size, GAME_RGBA color)
 {
 	font = TTF_OpenFont(path.c_str(), size);
-	if( font == NULL )
+	if( font == nullptr )
 	{
         printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
 	}

@@ -21,7 +21,8 @@ struct GAME_VEC
 	GAME_FLT y;
 	friend GAME_VEC & operator+ (const GAME_VEC & src1, const GAME_VEC & src2)
 	{
-		return GAME_VEC { src1.x + src2.x, src1.y + src2.y };
+		GAME_VEC temp{ src1.x + src2.x, src1.y + src2.y };
+		return temp;
 	}
 	friend GAME_VEC & operator- (const GAME_VEC & src1, const GAME_VEC & src2)
 	{
@@ -61,7 +62,7 @@ struct GAME_VEC
 
 enum GAME_DIRECTION {N =0, E = 90, S = 180, W = 270};
 
-//make levels an array of resource managers! or something that has everything!
+//make levels an array of resource managers! or something that has everything! FIXME
 enum GAME_LEVEL {GAME_LEVEL_MAIN, GAME_LEVEL_BASEMENT,};
 
 
@@ -75,7 +76,7 @@ typedef struct GAME_RGBA
 
 //Constants
 const GAME_FLT PI = 3.14159f;
-const float fPRV = 10.0f;
+const int squareDimension = 110;
 
 
 

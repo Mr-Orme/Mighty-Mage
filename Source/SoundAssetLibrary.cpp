@@ -41,7 +41,7 @@ Mix_Music* SoundAssetLibrary::SearchMusic(std::string name)
 	if(musicIter == musicLibrary.end())
 	{
 		{printf("Background File not found!") ;}
-		return NULL;
+		return nullptr;
 	}
 	else return musicIter -> second;
 }
@@ -53,6 +53,7 @@ bool SoundAssetLibrary::AddBackgroundMusic(std::string name, std::string path)
 {
 	//Mix_Load
 	if(musicLibrary[name] = Mix_LoadMUS(path.c_str())) return true;
+	return false;
 }
 
 //**************************************

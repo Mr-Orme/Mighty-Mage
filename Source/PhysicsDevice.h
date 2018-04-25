@@ -86,6 +86,7 @@ private:
 	bool DestroyJoint(b2Body* body);
 	const b2Vec2 gravity;
 	GAME_VEC AlignCenters(GameObject* object);
+	static const float fPRV;
 
 	
 

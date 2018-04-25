@@ -190,7 +190,7 @@ GameObject* UserInputComponent::Update()
 	GraphicsDevice* gDevice = devices->GetGraphicsDevice();
 	View* view = devices->GetGraphicsDevice()->GetView();
 	const GAME_INT border = 200;
-	const GAME_VEC position = _owner -> GetComponent<RendererComponent>() -> GetViewAdjustedPosition(_owner);
+	const GAME_VEC position = _owner -> GetComponent<RendererComponent>() -> GetViewAdjustedPosition();
 	
 	//the amount the screen moves is based upon the last change in position for the player.
 	static GAME_VEC oldPosition = _owner->GetComponent<BodyComponent>()->getPosition();
@@ -254,7 +254,7 @@ GameObject* UserInputComponent::Update()
 	//*********************************************************************************
 
 
-	return NULL;
+	return nullptr;
 }
 
 //**************************************
@@ -262,40 +262,21 @@ GameObject* UserInputComponent::Update()
 GAME_VEC UserInputComponent::GetCurrentSquare()
 //**************************************
 {
-	//view adjusted player position.
-	GAME_VEC playerPosition = 
-					{
-						 _owner -> GetComponent<RendererComponent>() -> GetViewAdjustedPosition(_owner).x,
-						 _owner -> GetComponent<RendererComponent>() -> GetViewAdjustedPosition(_owner).y
-					};
-	//view vector.
-	GAME_VEC viewPosition = 
-					{
-						devices -> GetGraphicsDevice() -> GetView() -> getPosition().x,
-						devices -> GetGraphicsDevice() -> GetView() -> getPosition().y
-					};
-	//The coordinates of the original top left city corner.
-	GAME_VEC cityCorner = 
-					{
-						devices -> GetCityCorner().x,
-						devices -> GetCityCorner().y
-					};
-	//the city corner plus the view get's us the top left corner of the view.
+	
+	
+	GAME_VEC playerPosition = _owner->GetComponent<BodyComponent>()->getPosition();
+		
+	GAME_VEC cityCorner = devices->GetCityCorner();
+	
 	//subtract off the player's position on the screen to get the actual spot of the player.
-	//divide by 110 which is the number of pixels in each square.
+	//divide by the number of pixels in each square.
 	//Adjust the y, because the 15x15 square starts in the bottom left corner, while SDL starts in the top left.
 	GAME_VEC square = 
 					{
-						int((cityCorner.x + viewPosition.x - playerPosition.x)*-1/110),
-						15+int((cityCorner.y + viewPosition.y - playerPosition.y)/110)
+						int((cityCorner.x - playerPosition.x)*-1/ squareDimension),
+						15+int((cityCorner.y- playerPosition.y-_owner->GetComponent<RendererComponent>()->GetTexture()->getHeight())/ squareDimension)
 					};
 	return square;					
-	//this code is here for use for debugging.
-	//Draw player position on himself
-	/*std::string playerPositionText = "(" + std::to_string(playerPosition.x) + ", " + std::to_string(playerPosition.y) + ")";
-	
-	GAME_VEC position = _owner -> GetComponent<RendererComponent>() -> GetViewAdjustedPosition(devices -> GetPhysicsDevice() -> GetPosition(_owner.get()));
-	devices -> GetGraphicsDevice() ->Text2Screen(playerPositionText, position);*/
 
 }
 void UserInputComponent::Finish(){}

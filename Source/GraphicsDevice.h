@@ -58,7 +58,7 @@ public:
 
 	//void ReverseOrder();
 
-	//!!!!!!!!!!!!!!!!!!!!!Move where exit is!!!!!!!!!!!!!!!!!
+	//!!!!!!!!!!!!!!!!!!!!!Move where exit is!!!!!!!!!!!!!!!!! FIXME
 	GameObject* GetExit(){ return levelExit; }
 
 	//Accessors

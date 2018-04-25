@@ -77,8 +77,7 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 	//get the first child element "Row"
 	TiXmlElement* rowElement = lRoot->FirstChildElement();
 
-	//Size, in pixels, of one square in the game space
-	GAME_INT squareDimension = 110;
+	
 	presets.position.x = 0;
 	presets.position.y = 0;
 	//keeps track of the game square we are currently on.
@@ -263,7 +262,7 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 		//move x to beginning of row
 		presets.position.x = devices->GetCityCorner().x;
 		//only move a row down if we are doing rows, not extras.
-		if (label != "Extras") presets.position.y += 110;
+		if (label != "Extras") presets.position.y += squareDimension;
 	} while (rowElement);
 
 	//reverse the order of the sprites so the player is on top of everything.

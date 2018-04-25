@@ -39,7 +39,7 @@ void RendererComponent::Draw()
 	
 
 	//adjust position.
-	updatedPosition = GetViewAdjustedPosition(_owner);
+	updatedPosition = GetViewAdjustedPosition();
 
 	GAME_FLT angle = devices -> GetPhysicsDevice() -> GetAngle(_owner);
 
@@ -61,18 +61,15 @@ GameObject* RendererComponent::Update(){return nullptr;}
 
 //**************************************
 //adjusts the position based on the view.
-GAME_VEC RendererComponent::GetViewAdjustedPosition(GameObject* owner)
+GAME_VEC RendererComponent::GetViewAdjustedPosition()
 //**************************************
 {
-	GAME_VEC updatedPosition;
-	GAME_VEC position = devices -> GetPhysicsDevice() -> GetPosition(owner);
+	
+	GAME_VEC position = devices -> GetPhysicsDevice() -> GetPosition(_owner);
+	
 	//adjust position.
-	updatedPosition.x = 
-		  position.x
-		+ devices -> GetGraphicsDevice() -> GetView() -> getPosition().x;
-	updatedPosition.y = 
-		  position.y
-		+ devices -> GetGraphicsDevice() -> GetView() -> getPosition().y;
+	GAME_VEC updatedPosition = position + devices->GetGraphicsDevice()->GetView()->getPosition();
+
 	
 	return updatedPosition;
 }

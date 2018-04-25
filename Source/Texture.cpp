@@ -7,7 +7,7 @@ Texture::Texture()
 {
 	width = 0;
 	height = 0;
-	texture = NULL;
+	texture = nullptr;
 }
 
 
@@ -24,13 +24,13 @@ bool Texture::load(SDL_Renderer* renderer, std::string path )
 	free();
 
 	//The image that's loaded
-    SDL_Surface* surface = NULL;
+    SDL_Surface* surface = nullptr;
     
     //Load the image
     surface = IMG_Load( path.c_str() );
     
     //If the image loaded
-	if( surface == NULL)
+	if( surface == nullptr)
 	{
    		printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
 
@@ -43,7 +43,7 @@ bool Texture::load(SDL_Renderer* renderer, std::string path )
 		//Create an optimized image
 		texture = SDL_CreateTextureFromSurface(renderer,surface);
      
-		if(texture == NULL)
+		if(texture == nullptr)
 		{
 			printf( "Unable to create texture from image %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
 
@@ -61,7 +61,7 @@ bool Texture::load(SDL_Renderer* renderer, std::string path )
 
 	}
 
-	return(texture!=NULL);
+	return(texture!=nullptr);
 
 }
 
@@ -75,10 +75,10 @@ bool Texture::load(SDL_Texture* texture)
 
 void Texture::free()
 {
-	if(texture != NULL)
+	if(texture != nullptr)
 	{
 		SDL_DestroyTexture(texture);
-  		texture = NULL;
+  		texture = nullptr;
 		width = 0;
 		height = 0;
 	}
@@ -89,10 +89,10 @@ void Texture::Draw(SDL_Renderer* renderer, GAME_VEC position, GAME_FLT angle, SD
 {
 
 	//Set rendering space and render to screen
-	SDL_Rect renderQuad = { position.x, position.y, width, height};
+	SDL_Rect renderQuad = { (int)position.x, (int)position.y, width, height};
 
     //Set clip rendering dimensions
-    if( clip != NULL ){
+    if( clip != nullptr ){
         renderQuad.w = clip->w;
         renderQuad.h = clip->h;
     }

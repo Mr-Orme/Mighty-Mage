@@ -16,10 +16,7 @@
 int main(int argc, char *argv[])
 {
 
-	//========================================
-	//Initialize the random number generator
-	//========================================
-	srand((unsigned int)time(NULL));
+
 	
 	//========================================
 	//Construct Game
@@ -57,7 +54,7 @@ int main(int argc, char *argv[])
 	//========================================
 	if(game)
 	{
-		game = NULL;
+		game = nullptr;
 	}
 
 	

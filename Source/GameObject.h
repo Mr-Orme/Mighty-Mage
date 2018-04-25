@@ -31,17 +31,14 @@ public:
 	template<class T>
 	T* GetComponent()
 	{
-
 		for (auto& component : components)
 		{
-			T* target = nullptr;
-			if (target = dynamic_cast<T*>(component.get()))
+			
+			if (T* target = nullptr; target = dynamic_cast<T*>(component.get()))
 			{
 				return(target);
 			}
 		}
-
-		//Return NULL;
 		return(nullptr);
 	}
 	

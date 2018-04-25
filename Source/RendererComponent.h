@@ -21,7 +21,7 @@ public:
 	void Finish();
 
 	Texture* GetTexture(){return texture;}
-	GAME_VEC GetViewAdjustedPosition(GameObject*);
+	GAME_VEC GetViewAdjustedPosition();
 
 	void SetTexture(Texture* texture){this -> texture = texture;}
 

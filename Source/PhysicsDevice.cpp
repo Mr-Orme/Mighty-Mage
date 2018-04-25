@@ -8,6 +8,7 @@
 #include "ObjectFactory.h"
 
 
+const float PhysicsDevice::fPRV{ 10.0f };
 
 PhysicsDevice::PhysicsDevice(GAME_FLT gravityX, GAME_FLT gravityY):gravity(RW2PW(gravityX), RW2PW(gravityY))
 {
