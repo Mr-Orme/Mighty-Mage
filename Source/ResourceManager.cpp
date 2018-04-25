@@ -298,26 +298,26 @@ bool ResourceManager::Shutdown()
 	iDevice = nullptr;
 
 	sLibrary->Finish();
-	sLibrary = NULL;
+	sLibrary = nullptr;
 
 	gDevice->ShutDown();
-	gDevice = NULL;
+	gDevice = nullptr;
 
 	sDevice->Shutdown();
-	sDevice = NULL;
+	sDevice = nullptr;
 
-	pDevice = NULL;
+	pDevice = nullptr;
 
 
-	aLibrary = NULL;
+	aLibrary = nullptr;
 
-	pLibrary = NULL;
+	pLibrary = nullptr;
 
-	oLibrary = NULL;
+	oLibrary = nullptr;
 
-	nLibrary = NULL;
+	nLibrary = nullptr;
 
-	factory = NULL;
+	factory = nullptr;
 
 
 

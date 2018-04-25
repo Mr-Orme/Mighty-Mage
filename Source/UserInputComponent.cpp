@@ -26,7 +26,8 @@ bool UserInputComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& p
 		pressControl[eventNum] = true;
 	}
 
-
+	//use owner's position to scroll when boder approached!
+	devices->GetGraphicsDevice()->GetView()->addScroller(_owner);
 	return true;
 }
 	
@@ -187,38 +188,7 @@ GameObject* UserInputComponent::Update()
 	
 	//*************************************** BORDER DETECTION**********************
 
-	GraphicsDevice* gDevice = devices->GetGraphicsDevice();
-	View* view = devices->GetGraphicsDevice()->GetView();
-	const GAME_INT border = 200;
-	const GAME_VEC position = _owner -> GetComponent<RendererComponent>() -> GetViewAdjustedPosition();
 	
-	//the amount the screen moves is based upon the last change in position for the player.
-	static GAME_VEC oldPosition = _owner->GetComponent<BodyComponent>()->getPosition();
-	GAME_VEC jump = _owner->GetComponent<BodyComponent>()->getPosition() - oldPosition;
-	oldPosition = _owner->GetComponent<BodyComponent>()->getPosition();
-
-	//left
-	if(position.x < border)
-	{
-		view -> setX(view -> getPosition().x-jump.x);				
-	}
-	//right
-	else if(position.x > gDevice -> GetScreenWidth() - border)
-	{ 
-		view -> setX(view -> getPosition().x-jump.x);
-	}
-	//top
-	if(position.y < border)
-	{
-		view -> setY(view -> getPosition().y-jump.y);				
-	}
-	//bottom
-	else if(position.y  > gDevice -> GetScreenHeight() - border)
-	{
-		view -> setY(view -> getPosition().y-jump.y);
-	}
-		
-	//*********************************************************************************
 
 	//*****************************NOTICES*********************************************
 	//this is the game square in the 15x15 map.
@@ -271,6 +241,7 @@ GAME_VEC UserInputComponent::GetCurrentSquare()
 	//subtract off the player's position on the screen to get the actual spot of the player.
 	//divide by the number of pixels in each square.
 	//Adjust the y, because the 15x15 square starts in the bottom left corner, while SDL starts in the top left.
+	//FIXME needs to determine square by nose! adjust according to direction facing!
 	GAME_VEC square = 
 					{
 						int((cityCorner.x - playerPosition.x)*-1/ squareDimension),

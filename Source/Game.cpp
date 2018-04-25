@@ -328,6 +328,7 @@ void Game::Update()
 	//update the physics world
 	devices->GetPhysicsDevice()->Update(1.0f / devices->GetFPS());
 
+	
 	 
 
 	//clean out dead objects
@@ -393,6 +394,8 @@ void Game::Update()
 			newObjects.push_back(std::unique_ptr<GameObject>(temp));
 		}
 	}
+	//update view
+	devices->GetGraphicsDevice()->GetView()->Update();
 }
 
 //**************************************

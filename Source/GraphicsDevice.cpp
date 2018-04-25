@@ -93,7 +93,7 @@ bool GraphicsDevice::Initialize(bool fullScreen)
 	//create view
 	//========================================
 	view = std::make_unique<View>();
-	view -> Initialize (0, 0);
+	view->Initialize(this, 0, 0);
 
 	return(true);
 

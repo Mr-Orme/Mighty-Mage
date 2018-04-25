@@ -39,6 +39,7 @@ protected:
 	bool wallHit;
 	bool noWallSound;
 	
+	
 };
 
 #endif

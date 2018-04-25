@@ -20,7 +20,8 @@ public:
 	ResourceManager* GetDevices(){return devices;}
 	GAME_VEC getPosition();
 	GAME_VEC getVelocity();
-	
+	GAME_INT getWidth();
+	GAME_INT getHeight();
 	void setAngle(GAME_FLT angle);
 	void adjustAngle(GAME_FLT adjustAmount);
 	void linearStop();

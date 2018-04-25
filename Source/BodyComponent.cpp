@@ -1,9 +1,10 @@
 #include "BodyComponent.h"
 #include "RendererComponent.h"
 #include "ResourceManager.h"
-#include "PhysicsDevice.h"
 #include "PhysicsAssetLibrary.h"
 #include "GameObject.h"
+#include "PhysicsDevice.h"
+#include "Texture.h"
 
 BodyComponent::BodyComponent(GameObject* owner):Component(owner){}
 BodyComponent::~BodyComponent(){}
@@ -69,6 +70,14 @@ GAME_VEC BodyComponent::getPosition()
 GAME_VEC BodyComponent::getVelocity()
 {
 	return devices->GetPhysicsDevice()->GetVelocity(_owner);
+}
+GAME_INT BodyComponent::getWidth()
+{
+	return _owner->GetComponent<RendererComponent>()->GetTexture()->getWidth();
+}
+GAME_INT BodyComponent::getHeight()
+{
+	return _owner->GetComponent<RendererComponent>()->GetTexture()->getHeight();
 }
 void BodyComponent::setAngle(GAME_FLT angle)
 {
