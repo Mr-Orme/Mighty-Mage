@@ -38,18 +38,19 @@ void UserInputComponent::Start(){}
 GameObject* UserInputComponent::Update()
 //**************************************
 {
+	//HACK: adjust walking sounds so that there is dead space after sound so that framecount is unnecessary
 	static int frameCount = 0;
 	
 	if(!_owner -> GetComponent<BackpackComponent>() -> GetOpen())
 	{
 		GAME_INT soundWait = devices->GetFPS() / 5;//adjusts how long between playing of sound effects.
-		std::string walkSound = "walking";
-		std::string runSound = "run";
+		const std::string walkSound = "walking";
+		const std::string runSound = "run";
 		std::string sound = walkSound;
 
-		GAME_INT baseForceMultiplier = 1500; //How fast does the player move.
+		const GAME_INT baseForceMultiplier = 1500; //How fast does the player move.
 		GAME_INT forceMultiplier = baseForceMultiplier;
-		GAME_INT runMultiplier = 3; //How many times faster is running then walking
+		const GAME_INT runMultiplier = 3; //How many times faster is running then walking
 
 		//*****************Adjustmnts for running************************
 		if (devices->GetInputDevice()->GetEvent(InputDevice::GAME_SHIFT))
@@ -73,7 +74,8 @@ GameObject* UserInputComponent::Update()
 			devices->GetSoundDevice()->PlaySound(sound, 0, 1);
 			frameCount = 0;
 		}
-		//wal sound based on forward/backward motion and collision detection
+		//TODO: Need to make sure wall sound only played once after hit, unless key pressed again! Maybe set noWallSound to true after playing, then back to fall on keyup
+		//wall sound based on forward/backward motion and collision detection
 		if (!noWallSound && wallHit && abs(_owner->GetComponent<BodyComponent>()->getVelocity()) < 1)
 		{
 			devices->GetSoundDevice()->PlaySound("wall", 0, 2);
@@ -129,7 +131,7 @@ GameObject* UserInputComponent::Update()
 		
 		
 		
-	
+		//TODO: If angles were a linked list instead of an enum, could go forwad and back on it!
 		//****************left or right*************
 		if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_RIGHT))
 		{
@@ -173,7 +175,7 @@ GameObject* UserInputComponent::Update()
 	else pressControl[InputDevice::GAME_B] = true;
 	//****************************************************
 
-
+	//HACK: Need to just set angle previously instead of truing up later!
 	//*************************************** True to 90**********************
 	//sometimes the angle get's off perpendicular.
 	int angle = (int)(_owner->GetComponent<BodyComponent>()->GetAngle());
@@ -189,7 +191,7 @@ GameObject* UserInputComponent::Update()
 	//*************************************** BORDER DETECTION**********************
 
 	
-
+	//TODO: Notice displays need to be elsewhere. View???
 	//*****************************NOTICES*********************************************
 	//this is the game square in the 15x15 map.
 	GAME_VEC square = GetCurrentSquare();
@@ -226,7 +228,7 @@ GameObject* UserInputComponent::Update()
 
 	return nullptr;
 }
-
+//TODO: finding current square needs to be more generic and outside the UserInputComponent. BodyComponent???
 //**************************************
 //find's the 15x15 game square based on current position
 GAME_VEC UserInputComponent::GetCurrentSquare()
