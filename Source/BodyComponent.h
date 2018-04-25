@@ -16,8 +16,8 @@ public:
 	GameObject* Update();
 	void Finish();
 
-	GAME_FLT GetAngle();
-	ResourceManager* GetDevices(){return devices;}
+	GAME_FLT getAngle();
+	GAME_VEC getCurrentSquare();
 	GAME_VEC getPosition();
 	GAME_VEC getVelocity();
 	GAME_INT getWidth();

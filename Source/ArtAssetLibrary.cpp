@@ -17,18 +17,14 @@ bool ArtAssetLibrary::Initialize(GraphicsDevice* gDevice)
 }
 
 //**************************************
-//Adds a texture to the library based on the object's name and the path to it's sprite
+//Adds a texture to the library based on the object's name 
+//and load the texture using the path to the sprite
 bool ArtAssetLibrary::AddAsset(std::string name, std::string path)
 //**************************************
 {
-	//Texture variable
-	Texture* tempTexture;
 	
-	//Make a new texture and assign
-	tempTexture = new Texture();
-	if(!tempTexture -> load(gDevice -> GetRenderer(), path)){return false;}
-	//add to library
-	library[name] = tempTexture;
+	library[name] = std::make_unique<Texture>();
+	if(!library[name] -> load(gDevice -> GetRenderer(), path)){return false;}
 	return true;
 }
 
@@ -39,5 +35,5 @@ Texture* ArtAssetLibrary::Search(std::string searchString)
 
 //**************************************
 {
-	return (library.find(searchString) ->second);
+	return (library.find(searchString) ->second.get());
 }

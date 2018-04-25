@@ -24,11 +24,9 @@ public:
 	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
 	void SetWallHit(bool wallHit){this -> wallHit = wallHit;}
 
-	GAME_VEC GetCurrentSquare();
-
-	void Start();
-	GameObject* Update();
-	void Finish();
+	void Start() override;
+	GameObject* Update() override;
+	void Finish() override;
 protected:
 	//GAME_INT frameCount;
 	ResourceManager* devices;
@@ -37,7 +35,8 @@ protected:
 	PhysicsDevice::GAME_PHYSICS physics;
 	std::map<InputDevice::GAME_EVENT, bool> pressControl;
 	bool wallHit;
-	bool noWallSound;
+	bool linearMovement;
+	bool wallSoundPlayed;
 	
 	
 };

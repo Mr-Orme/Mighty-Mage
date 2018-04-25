@@ -18,7 +18,8 @@ bool UserInputComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& p
 	
 	devices = presets.devices;
 	wallHit = false;
-	noWallSound =true;
+	linearMovement =false;
+	wallSoundPlayed = false;
 
 	for (int i = 0; i < InputDevice::GAME_NUM_EVENTS; i++)
 	{
@@ -67,37 +68,49 @@ GameObject* UserInputComponent::Update()
 			sound = walkSound;
 		}
 		//*****************************************************************
-	
+		//TODO: stop walking sound when button let go of!
 		//*******************sound check************
 		if (frameCount > soundWait + 1)//walk sound every so often
 		{
 			devices->GetSoundDevice()->PlaySound(sound, 0, 1);
 			frameCount = 0;
 		}
-		//TODO: Need to make sure wall sound only played once after hit, unless key pressed again! Maybe set noWallSound to true after playing, then back to fall on keyup
+		//TODO: no sound if up/down held, press both, let go of the first...
+		/*	1. Collision with wall && (wallHit)
+			2. Forward or back button pressed && (linearMovement)
+			3. only once per press (wallSoundPlayed)
+			4. reset on right/left turn (wallSoundPlayed=false & linearMovement=false [this one so it doesn't play immediatly])
+			5. velocity check to make sure we've started moving again!
+			*/
 		//wall sound based on forward/backward motion and collision detection
-		if (!noWallSound && wallHit && abs(_owner->GetComponent<BodyComponent>()->getVelocity()) < 1)
+		if (!wallSoundPlayed && linearMovement && wallHit && abs(_owner->GetComponent<BodyComponent>()->getVelocity()) < 1)
 		{
 			devices->GetSoundDevice()->PlaySound("wall", 0, 2);
 			wallHit = false;
+			wallSoundPlayed = true;
 		}
 		//*****************************************
 
 		//**************Up or Down or neither************
-		int forceDirection = 1;
-
+		int forceDirection = 0;
+		
 
 		if (devices->GetInputDevice()->GetEvent(InputDevice::GAME_UP))
 		{
 			forceDirection = -1;
+			linearMovement = true;
 		}
+
 		else if (devices->GetInputDevice()->GetEvent(InputDevice::GAME_DOWN))
 		{
 			forceDirection = 1;
+			linearMovement = true;
 		}
+
 		else
 		{
-			forceDirection = 0;
+			linearMovement = false;
+			wallSoundPlayed = false;
 		}
 		//***********************************************
 
@@ -111,19 +124,16 @@ GameObject* UserInputComponent::Update()
 				//x=(cos(angle) + or - (PI/2)) * (force)
 				//y=(sin(angle) + or - (PI/2)) * (force)
 				{ 
-					(float)cosf((_owner->GetComponent<BodyComponent>()->GetAngle()*PI / 180) + forceDirection * (PI / 2))*forceMultiplier,
-					(float)sinf((_owner->GetComponent<BodyComponent>()->GetAngle()*PI / 180) + forceDirection * (PI / 2))*forceMultiplier
+					(float)cosf((_owner->GetComponent<BodyComponent>()->getAngle()*PI / 180) + forceDirection * (PI / 2))*forceMultiplier,
+					(float)sinf((_owner->GetComponent<BodyComponent>()->getAngle()*PI / 180) + forceDirection * (PI / 2))*forceMultiplier
 				}
 			);
-			//can play wall sound upon collision!
-			noWallSound = false;
 			frameCount++;
 		}
 		//Don't move!
 		else
 		{
 			_owner->GetComponent<BodyComponent>()->linearStop();
-			noWallSound = true;
 			frameCount = 0;
 			
 		}
@@ -140,6 +150,8 @@ GameObject* UserInputComponent::Update()
 				_owner->GetComponent<BodyComponent>()->adjustAngle(90);
 				_owner->GetComponent<BodyComponent>()->linearStop();
 				pressControl[InputDevice::GAME_RIGHT] = false;
+				linearMovement = false;
+				wallSoundPlayed = false;
 			}
 		}
 		else pressControl[InputDevice::GAME_RIGHT] = true;
@@ -151,6 +163,8 @@ GameObject* UserInputComponent::Update()
 				_owner->GetComponent<BodyComponent>()->adjustAngle(-90);
 				_owner->GetComponent<BodyComponent>()->linearStop();
 				pressControl[InputDevice::GAME_LEFT] = false;
+				linearMovement = false;
+				wallSoundPlayed = false;				
 			}
 		}
 		else pressControl[InputDevice::GAME_LEFT] = true;
@@ -178,7 +192,7 @@ GameObject* UserInputComponent::Update()
 	//HACK: Need to just set angle previously instead of truing up later!
 	//*************************************** True to 90**********************
 	//sometimes the angle get's off perpendicular.
-	int angle = (int)(_owner->GetComponent<BodyComponent>()->GetAngle());
+	int angle = (int)(_owner->GetComponent<BodyComponent>()->getAngle());
 	
 	if(angle >360 && angle < 460) angle = 90;
 	if (angle <0) angle = 270;
@@ -194,7 +208,7 @@ GameObject* UserInputComponent::Update()
 	//TODO: Notice displays need to be elsewhere. View???
 	//*****************************NOTICES*********************************************
 	//this is the game square in the 15x15 map.
-	GAME_VEC square = GetCurrentSquare();
+	GAME_VEC square = _owner->GetComponent<BodyComponent>()->getCurrentSquare();
 	
 	//Get N,S,E,W direction.
 	GAME_DIRECTION direction = static_cast<GAME_DIRECTION>(abs((int(devices -> GetPhysicsDevice() -> GetAngle(_owner))%360)));
@@ -228,28 +242,5 @@ GameObject* UserInputComponent::Update()
 
 	return nullptr;
 }
-//TODO: finding current square needs to be more generic and outside the UserInputComponent. BodyComponent???
-//**************************************
-//find's the 15x15 game square based on current position
-GAME_VEC UserInputComponent::GetCurrentSquare()
-//**************************************
-{
-	
-	
-	GAME_VEC playerPosition = _owner->GetComponent<BodyComponent>()->getPosition();
-		
-	GAME_VEC cityCorner = devices->GetCityCorner();
-	
-	//subtract off the player's position on the screen to get the actual spot of the player.
-	//divide by the number of pixels in each square.
-	//Adjust the y, because the 15x15 square starts in the bottom left corner, while SDL starts in the top left.
-	//TODO: needs to determine square by nose! adjust according to direction facing!
-	GAME_VEC square = 
-					{
-						int((cityCorner.x - playerPosition.x)*-1/ squareDimension),
-						15+int((cityCorner.y- playerPosition.y-_owner->GetComponent<RendererComponent>()->GetTexture()->getHeight())/ squareDimension)
-					};
-	return square;					
 
-}
 void UserInputComponent::Finish(){}

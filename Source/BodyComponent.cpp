@@ -58,7 +58,7 @@ void BodyComponent::Finish()
 		exit(1);					
 	}
 }
-GAME_FLT BodyComponent::GetAngle()
+GAME_FLT BodyComponent::getAngle()
 {
 	return devices->GetPhysicsDevice()->GetAngle(_owner);
 }
@@ -86,10 +86,32 @@ void BodyComponent::setAngle(GAME_FLT angle)
 
 void BodyComponent::adjustAngle(GAME_FLT adjustAmount)
 {
-	setAngle(GetAngle() + adjustAmount);
+	setAngle(getAngle() + adjustAmount);
 }
 
 void BodyComponent::linearStop()
 {
 	devices->GetPhysicsDevice()->SetLinearVelocity(_owner, { 0,0 });
+}
+
+//**************************************
+//find's the 15x15 game square based on current position
+GAME_VEC BodyComponent::getCurrentSquare()
+//**************************************
+{
+
+
+	GAME_VEC cityCorner = devices->GetCityCorner();
+
+	//subtract off the player's position on the screen to get the actual spot of the player.
+	//divide by the number of pixels in each square.
+	//Adjust the y, because the 15x15 square starts in the bottom left corner, while SDL starts in the top left.
+	//TODO: needs to determine square by nose! adjust according to direction facing!
+	GAME_VEC square =
+	{
+		int((cityCorner.x - getPosition().x)*-1 / squareDimension),
+		15 + int((cityCorner.y - getPosition().y - _owner->GetComponent<RendererComponent>()->GetTexture()->getHeight()) / squareDimension)
+	};
+	return square;
+
 }
