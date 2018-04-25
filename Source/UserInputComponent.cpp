@@ -23,8 +23,7 @@ bool UserInputComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& p
 
 	for (int i = 0; i < InputDevice::GAME_NUM_EVENTS; i++)
 	{
-		InputDevice::GAME_EVENT eventNum = static_cast<InputDevice::GAME_EVENT>(i);
-		pressControl[eventNum] = true;
+		pressControl[(InputDevice::GAME_EVENT)i] = true;
 	}
 
 	//use owner's position to scroll when boder approached!
@@ -75,7 +74,7 @@ GameObject* UserInputComponent::Update()
 			devices->GetSoundDevice()->PlaySound(sound, 0, 1);
 			frameCount = 0;
 		}
-		//TODO: no sound if up/down held, press both, let go of the first...
+		//TODO: no sound if up/down held, press both, let go of the first... use press control vector!
 		/*	1. Collision with wall && (wallHit)
 			2. Forward or back button pressed && (linearMovement)
 			3. only once per press (wallSoundPlayed)
