@@ -26,13 +26,13 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 	//========================================
 	//Construct Object Factory
 	//========================================
-	factory = std::make_shared<ObjectFactory>();
+	factory = std::make_unique<ObjectFactory>();
 
 
 	//========================================
 	//Construct Input Device
 	//========================================
-	iDevice = std::make_shared<InputDevice>();
+	iDevice = std::make_unique<InputDevice>();
 	if(!iDevice->Initialize())
 	{
 		printf( "Input Device could not initialize!");
@@ -41,7 +41,7 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 		//========================================
 	//Construct Graphical Device
 	//========================================
-	gDevice = std::make_shared<GraphicsDevice>(SCREEN_WIDTH, SCREEN_HEIGHT);
+	gDevice = std::make_unique<GraphicsDevice>(SCREEN_WIDTH, SCREEN_HEIGHT);
 	if(!gDevice->Initialize(true))
 	{
 		printf( "Graphics Device could not Initialize!");
@@ -58,7 +58,7 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 	//========================================
 	//Construct Physics Device
 	//========================================
-	pDevice = std::make_shared<PhysicsDevice>(0,0);
+	pDevice = std::make_unique<PhysicsDevice>(0,0);
 
 	
 	if(!pDevice -> Initialize())
@@ -69,7 +69,7 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 	//========================================
 	//Construct Sound Device
 	//========================================
-	sDevice = std::make_shared<SoundDevice>();
+	sDevice = std::make_unique<SoundDevice>();
 	
 	if(!sDevice -> Initialize())
 	{
@@ -80,38 +80,38 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 	//========================================
 	//Construct Art Library
 	//========================================
-	aLibrary = std::make_shared<ArtAssetLibrary>();	
+	aLibrary = std::make_unique<ArtAssetLibrary>();	
 	//needs to be an xml file just likes physics.
 	if(!aLibrary -> Initialize(gDevice.get())){return false;}
 
 	//========================================
 	//Construct Physics Library
 	//========================================
-	pLibrary = std::make_shared<PhysicsAssetLibrary>();
+	pLibrary = std::make_unique<PhysicsAssetLibrary>();
 	if(!pLibrary -> Initialize()){return false;}
 
 	//========================================
 	//Construct Physics Library
 	//========================================
-	cLibrary = std::make_shared<ComponentAssetLibrary>();
+	cLibrary = std::make_unique<ComponentAssetLibrary>();
 	if(!cLibrary -> Initialize()){return false;}
 
 	//========================================
 	//Construct Objects Library
 	//========================================
-	oLibrary = std::make_shared<ObjectAssetLibrary>();
+	oLibrary = std::make_unique<ObjectAssetLibrary>();
 	if(!oLibrary -> Initialize()){return false;}
 
 	//========================================
 	//Construct Notices Library
 	//========================================
-	nLibrary = std::make_shared<NoticesAssetLibrary>();
+	nLibrary = std::make_unique<NoticesAssetLibrary>();
 	if(!nLibrary -> Initialize()){return false;}
 
 	//========================================
 	//Construct Sound Library
 	//========================================
-	sLibrary = std::make_shared<SoundAssetLibrary>();
+	sLibrary = std::make_unique<SoundAssetLibrary>();
 	if(!sLibrary -> Initialize(sDevice.get())){return false;}
 
 	//========================================
@@ -322,4 +322,109 @@ bool ResourceManager::Shutdown()
 
 
 	return true;
+}
+
+GraphicsDevice * ResourceManager::GetGraphicsDevice()
+{
+	return gDevice.get();
+}
+
+InputDevice * ResourceManager::GetInputDevice()
+{
+	return iDevice.get();
+}
+
+PhysicsDevice * ResourceManager::GetPhysicsDevice()
+{
+	return pDevice.get();
+}
+
+SoundDevice * ResourceManager::GetSoundDevice()
+{
+	return sDevice.get();
+}
+
+ArtAssetLibrary * ResourceManager::GetArtLibrary()
+{
+	return aLibrary.get();
+}
+
+PhysicsAssetLibrary * ResourceManager::GetPhysicsLibrary()
+{
+	return pLibrary.get();
+}
+
+ComponentAssetLibrary * ResourceManager::GetComponentLibrary()
+{
+	return cLibrary.get();
+}
+
+ObjectAssetLibrary * ResourceManager::GetObjectLibrary()
+{
+	return oLibrary.get();
+}
+
+NoticesAssetLibrary * ResourceManager::GetNoticesLibrary()
+{
+	return nLibrary.get();
+}
+
+SoundAssetLibrary * ResourceManager::GetSoundLibrary()
+{
+	return sLibrary.get();
+}
+
+ObjectFactory * ResourceManager::GetObjectFactory()
+{
+	return factory.get();
+}
+
+void ResourceManager::SetGraphicsDevice(GraphicsDevice * gDevice)
+{
+	this->gDevice = std::unique_ptr<GraphicsDevice>(gDevice);
+}
+
+void ResourceManager::SetInputDevice(InputDevice * iDevice)
+{
+	this->iDevice = std::unique_ptr<InputDevice>(iDevice);
+}
+
+void ResourceManager::SetPhysicsDevice(PhysicsDevice * pDevice)
+{
+	this->pDevice = std::unique_ptr<PhysicsDevice>(pDevice);
+}
+
+void ResourceManager::SetSoundDevice(SoundDevice * sDevice)
+{
+	this->sDevice = std::unique_ptr<SoundDevice>(sDevice);
+}
+
+void ResourceManager::SetArtLibrary(ArtAssetLibrary * aLibrary)
+{
+	this->aLibrary = std::unique_ptr<ArtAssetLibrary>(aLibrary);
+}
+
+void ResourceManager::SetPhysicsLibrary(PhysicsAssetLibrary * pLibrary)
+{
+	this->pLibrary = std::unique_ptr<PhysicsAssetLibrary>(pLibrary);
+}
+
+void ResourceManager::SetComponentLibrary(ComponentAssetLibrary * cLibrary)
+{
+	this->cLibrary = std::unique_ptr<ComponentAssetLibrary>(cLibrary);
+}
+
+void ResourceManager::SetObjectLibrary(ObjectAssetLibrary * oLibrary)
+{
+	this->oLibrary = std::unique_ptr<ObjectAssetLibrary>(oLibrary);
+}
+
+void ResourceManager::SetNoticesLibrary(NoticesAssetLibrary * nLibrary)
+{
+	this->nLibrary = std::unique_ptr<NoticesAssetLibrary>(nLibrary);
+}
+
+void ResourceManager::SetSoundLibrary(SoundAssetLibrary * sLibrary)
+{
+	this->sLibrary = std::unique_ptr<SoundAssetLibrary>(sLibrary);
 }

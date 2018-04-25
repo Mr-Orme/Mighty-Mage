@@ -3,6 +3,7 @@
 #include "ResourceManager.h"
 #include "PhysicsDevice.h"
 #include "PhysicsAssetLibrary.h"
+#include "GameObject.h"
 
 BodyComponent::BodyComponent(GameObject* owner):Component(owner){}
 BodyComponent::~BodyComponent(){}
@@ -13,7 +14,7 @@ bool BodyComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& preset
 //**************************************
 {
 	
-	std::shared_ptr<RendererComponent> compRenderer = _owner -> GetComponent<RendererComponent>();
+	RendererComponent* compRenderer = _owner -> GetComponent<RendererComponent>();
 	PhysicsDevice::GAME_PHYSICS physics;
 	if(compRenderer != NULL)
 	{

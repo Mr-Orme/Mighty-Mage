@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "GameObject.h"
 #include "ComponentsList.h"
 #include "GraphicsDevice.h"
 #include "SoundDevice.h"
@@ -137,7 +138,7 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 				//Create a pointer to a new object and initialize it.
 				
 				//add new object
-				objects.push_back(std::make_unique<GameObject>(objectFactory->Create(presets)));
+				objects.push_back(std::unique_ptr<GameObject>(objectFactory->Create(presets)));
 
 				//mark the exit
 				//This needs to be generic and in the EventHandler! FIXME
@@ -179,7 +180,7 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 				}
 
 				//Create a pointer to a new object and initialize it and add it.
-				objects.push_back(std::make_unique<GameObject>(objectFactory->Create(presets)));
+				objects.push_back(std::unique_ptr<GameObject>(objectFactory->Create(presets)));
 				//***************************************
 
 				//***********LEFT WALL**********************
@@ -368,19 +369,19 @@ void Game::Update()
 	//add any objects created in the previous iteration
 	if (!newObjects.empty())
 	{
-		objects.insert(objects.end(), newObjects.begin(), newObjects.end());
+		objects.insert(objects.end(), std::make_move_iterator(newObjects.begin()), std::make_move_iterator(newObjects.end()));
 		newObjects.clear();
 	}
 
 	//Update objects.
-	for (auto object : objects)
+	for (auto& object : objects)
 	{
 		//run update method for the object
-		std::shared_ptr<GameObject> temp = object->Update();
+		GameObject* temp = object->Update();
 		//if it returned an object, add it to the list to be added.
 		if (temp != NULL)
 		{
-			newObjects.push_back(temp);
+			newObjects.push_back(std::unique_ptr<GameObject>(temp));
 		}
 
 
@@ -395,7 +396,7 @@ void Game::Draw()
 //**************************************
 {
 	devices -> GetGraphicsDevice() -> Begin();
-	for (auto object : objects)
+	for (auto& object : objects)
 	{
 		object->draw();
 	}
@@ -417,7 +418,7 @@ void Game::Reset()
 	if (!objects.empty())
 	{
 		//for every object in objects
-		for (const auto object : objects)
+		for (const auto& object : objects)
 		{
 			//remove it from the physics world
 			devices->GetPhysicsDevice()->RemoveObject(object.get());

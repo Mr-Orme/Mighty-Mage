@@ -5,7 +5,7 @@
 #include "PhysicsDevice.h"
 #include "ObjectAssetLibrary.h"
 #include "ArtAssetLibrary.h"
-
+#include "GameObject.h"
 
 HealthComponent::HealthComponent(GameObject* owner):Component(owner){}
 HealthComponent::~HealthComponent(){}
@@ -31,7 +31,7 @@ bool HealthComponent::KillObject(std::string deathSprite)
 	devices -> GetPhysicsDevice() -> SetStopPhysics(_owner);
 
 	//grab the renderer
-	std::shared_ptr<RendererComponent> compRenderer = _owner -> GetComponent<RendererComponent>();
+	RendererComponent* compRenderer = _owner -> GetComponent<RendererComponent>();
 	//change the sprite
 	compRenderer -> SetTexture(devices -> GetArtLibrary() -> Search(deathSprite));	
 	return true;
@@ -62,8 +62,8 @@ GameObject* HealthComponent::Update()
 		if(_owner -> GetJoinedWith() != NULL)
 		{
 			//Turn off the joined object
-			std::shared_ptr<GameObject> joined =  _owner -> GetJoinedWith();
-			devices -> GetPhysicsDevice() -> SetStopPhysics(joined.get());
+			GameObject* joined =  _owner -> GetJoinedWith();
+			devices -> GetPhysicsDevice() -> SetStopPhysics(joined);
 			//destroy the joints
 			devices -> GetPhysicsDevice() -> DestroyJoint(_owner);
 		}

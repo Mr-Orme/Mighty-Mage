@@ -2,10 +2,10 @@
 #define COMPONENT_H
 
 #include <memory>
-#include "GameObject.h"
 #include "Definitions.h"
+#include "ObjectFactory.h"
+class GameObject;
 
-class ObjectFactory;
 class Component
 {
 public:

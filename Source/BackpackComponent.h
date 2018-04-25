@@ -17,7 +17,7 @@ public:
 
 	bool AddItem(GameObject* item);
 
-	//std::vector<std::unique_ptr<GameObject>> GetInventory(){return inventory;}
+	std::vector<std::unique_ptr<GameObject>>& GetInventory(){return inventory;}
 
 	void SetOpen(bool open){this -> open = open;}
 	bool GetOpen(){return open;}

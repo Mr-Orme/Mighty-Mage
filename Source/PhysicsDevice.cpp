@@ -173,7 +173,7 @@ bool PhysicsDevice::createFixture
 	)
 //**************************************
 {
-	std::shared_ptr<RendererComponent> compRenderer = object -> GetComponent<RendererComponent>();
+	RendererComponent* compRenderer = object -> GetComponent<RendererComponent>();
 	//new body definition
 	b2BodyDef* bd = new b2BodyDef;
 	//made need one or the other, depending on what was passed.

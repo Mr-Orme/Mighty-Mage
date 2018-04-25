@@ -70,12 +70,12 @@ public:
 	//SDL_Window* GetWindow();
 	GAME_INT GetScreenWidth(){return SCREEN_WIDTH;}
 	GAME_INT GetScreenHeight(){return SCREEN_HEIGHT;}
-	View* GetView(){return view.get();}
+	View* GetView();
 	
 	
 
 	//Setters
-	//void SetView(std::shared_ptr<View> view){this -> view = view;}
+	void SetView(View* view);
 	void SetExit(GameObject* levelExit){this -> levelExit = levelExit;}
 	bool SetFont(std::string path, GAME_INT size, GAME_RGBA color);
 

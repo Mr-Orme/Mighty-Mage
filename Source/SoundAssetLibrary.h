@@ -9,7 +9,8 @@
 
 class SoundAssetLibrary{
 public:
-	SoundAssetLibrary();
+	SoundAssetLibrary() {}
+	~SoundAssetLibrary() {}
 	bool Finish();
 	bool Initialize(SoundDevice* sDevice);
 	Mix_Chunk* SearchSoundEffects(std::string name);

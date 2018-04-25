@@ -1,4 +1,5 @@
 #include "ComponentsList.h"
+#include "GameObject.h"
 
 GameObject::GameObject()
 {
@@ -84,15 +85,12 @@ bool GameObject::removeComponents()
 //**************************************
 {
 	
-	for (std::vector<std::unique_ptr<Component>>::iterator comp = components.begin();
-		comp!=components.end(); 
-		comp++)
+	for (auto& comp: components)
 	{
-		(*comp) -> Finish();
+		comp -> Finish();
 		
 	}
 	components.clear();
 	return true;
 }
-
 

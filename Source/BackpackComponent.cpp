@@ -104,7 +104,7 @@ GameObject* BackpackComponent::Update()
 			
 
 			//**********************Find Item dimensions*************************
-			std::shared_ptr<RendererComponent> rend = item -> GetComponent<RendererComponent>();
+			RendererComponent* rend = item -> GetComponent<RendererComponent>();
 			//number of sequential rows we need (+.5 makes sure we round up)
 			int numRows = (int)((rend -> GetTexture() -> getWidth()/slotSize) + .5f);
 			//number of sequential columns we need

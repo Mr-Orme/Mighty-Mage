@@ -161,7 +161,7 @@ GameObject* UserInputComponent::Update()
 	{
 		if(pressControl[InputDevice::GAME_B])
 		{
-			if(std::shared_ptr<BackpackComponent> backpack = _owner->GetComponent<BackpackComponent>();	backpack != nullptr)
+			if(BackpackComponent* backpack = _owner->GetComponent<BackpackComponent>();	backpack != nullptr)
 			{
 				backpack->SetOpen(!backpack->GetOpen());
 			}

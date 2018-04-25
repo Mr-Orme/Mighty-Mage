@@ -25,7 +25,8 @@ struct GAME_VEC
 	}
 	friend GAME_VEC & operator- (const GAME_VEC & src1, const GAME_VEC & src2)
 	{
-		return GAME_VEC{ src1.x - src2.x, src1.y - src2.y };
+		GAME_VEC temp{ src1.x - src2.x, src1.y - src2.y };
+		return temp;
 	}
 	friend bool operator> (const GAME_VEC & src1, int src2)
 	{

@@ -49,7 +49,7 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 		{
 			objectB -> GetComponent<UserInputComponent>() -> SetWallHit(false);
 		}
-		std::shared_ptr<GhostComponent> ghost =  objectA -> GetComponent<GhostComponent>();
+		GhostComponent* ghost =  objectA -> GetComponent<GhostComponent>();
 		if(ghost != NULL)
 		{
 			std::map<GAME_DIRECTION, bool> ghostMap = ghost -> getGhostDirection();

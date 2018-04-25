@@ -1,13 +1,5 @@
 #include "SoundAssetLibrary.h"
 
-//**************************************
-//Nothing here, move along.
-SoundAssetLibrary::SoundAssetLibrary()
-//**************************************
-{
-
-}
-//**************************************
 //set's the sound device, and set's the sound library in the sound device.
 bool SoundAssetLibrary::Initialize(SoundDevice* sDevice)
 //**************************************

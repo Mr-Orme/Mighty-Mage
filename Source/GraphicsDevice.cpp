@@ -217,6 +217,16 @@ SDL_Renderer* GraphicsDevice::GetRenderer()
 	return(renderer);
 }
 
+View * GraphicsDevice::GetView()
+{
+	return view.get();
+}
+
+void GraphicsDevice::SetView(View * view)
+{
+	this->view = std::unique_ptr<View>(view);
+}
+
 //void GraphicsDevice::AddSpriteRenderer(RendererComponent* sprite)
 //{
 //	sprites.push_back(sprite);

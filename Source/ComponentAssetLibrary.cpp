@@ -20,6 +20,7 @@ std::vector<Component*> ComponentAssetLibrary::Search(std::string name, GameObje
 //**************************************
 {
 	//Vector of pointers to return
+	//will be made into unique_ptrs in GameObject class
 	std::vector<Component*> componentListPtrs;
 	
 	//finds the list of components associated with the name of the object passed.
@@ -35,22 +36,22 @@ std::vector<Component*> ComponentAssetLibrary::Search(std::string name, GameObje
 			componentListPtrs.push_back(new BodyComponent(owner));
 			break;
 		case GAME_HEALTH_COMP:
-			componentListPtrs.push_back(new HealthComponent*(owner));
+			componentListPtrs.push_back(new HealthComponent(owner));
 			break;
 		case GAME_RENDERER_COMP:
-			componentListPtrs.push_back(std::make_shared<RendererComponent>(owner));
+			componentListPtrs.push_back(new RendererComponent(owner));
 			break;
 		case GAME_USERINPUT_COMP:
-			componentListPtrs.push_back(std::make_shared<UserInputComponent>(owner));
+			componentListPtrs.push_back(new UserInputComponent(owner));
 			break;
 		case GAME_BACKPACK_COMP:
-			componentListPtrs.push_back(std::make_shared<BackpackComponent>(owner));
+			componentListPtrs.push_back(new BackpackComponent(owner));
 			break;
 		case GAME_INVENTORY_COMP:
-			componentListPtrs.push_back(std::make_shared<InventoryComponent>(owner));
+			componentListPtrs.push_back(new InventoryComponent(owner));
 			break;
 		case GAME_GHOST_COMP:
-			componentListPtrs.push_back(std::make_shared<GhostComponent>(owner));
+			componentListPtrs.push_back(new GhostComponent(owner));
 			break;
 		default:
 			break;

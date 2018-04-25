@@ -5,6 +5,7 @@
 #include "ResourceManager.h"
 #include "Texture.h"
 #include "ComponentAssetLibrary.h"
+#include "GameObject.h"
 
 
 //************************************************

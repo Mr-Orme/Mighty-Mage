@@ -9,6 +9,8 @@
 
 class PhysicsAssetLibrary{
 public:
+	PhysicsAssetLibrary() {}
+	~PhysicsAssetLibrary() {}
 	void Print();
 			//Asset Name, Asset Factory
 	PhysicsDevice::GAME_PHYSICS Search(std::string name);
