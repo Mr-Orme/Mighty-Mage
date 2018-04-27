@@ -26,6 +26,30 @@ bool UserInputComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& p
 		pressControl[(InputDevice::GAME_EVENT)i] = true;
 	}
 
+	node* head = new node;
+	
+	current = head;
+	current->prev = nullptr;
+	current->direction = N;
+	
+	current->next = new node;
+	current->next->prev = current;
+	current->next->direction = E;
+	
+	current->next->next = new node;
+	current->next->next->prev = current->next;
+	current->next->next->direction = S;
+
+	current->next->next->next = new node;
+	current->next->next->next->prev = current->next->next;
+	current->next->next->next->direction = W;
+
+	//make it circular!
+	current->next->next->next->next = head;
+	head->prev = current->next->next->next;
+
+	current = head;
+
 	//use owner's position to scroll when boder approached!
 	devices->GetGraphicsDevice()->GetView()->addScroller(_owner);
 	return true;
@@ -48,7 +72,7 @@ GameObject* UserInputComponent::Update()
 		const std::string runSound = "run";
 		std::string sound = walkSound;
 
-		const GAME_INT baseForceMultiplier = 1500; //How fast does the player move.
+		const GAME_INT baseForceMultiplier = 1000; //How fast does the player move.
 		GAME_INT forceMultiplier = baseForceMultiplier;
 		const GAME_INT runMultiplier = 3; //How many times faster is running then walking
 
@@ -140,17 +164,18 @@ GameObject* UserInputComponent::Update()
 		
 		
 		
-		//TODO: If angles were a linked list instead of an enum, could go forwad and back on it!
 		//****************left or right*************
 		if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_RIGHT))
 		{
 			if(pressControl[InputDevice::GAME_RIGHT])
 			{
-				_owner->GetComponent<BodyComponent>()->adjustAngle(90);
+				current = current->next;
 				_owner->GetComponent<BodyComponent>()->linearStop();
-				pressControl[InputDevice::GAME_RIGHT] = false;
+
 				linearMovement = false;
 				wallSoundPlayed = false;
+				
+				pressControl[InputDevice::GAME_RIGHT] = false;
 			}
 		}
 		else pressControl[InputDevice::GAME_RIGHT] = true;
@@ -159,18 +184,21 @@ GameObject* UserInputComponent::Update()
 		{
 			if(pressControl[InputDevice::GAME_LEFT])
 			{
-				_owner->GetComponent<BodyComponent>()->adjustAngle(-90);
+				current = current->prev;
 				_owner->GetComponent<BodyComponent>()->linearStop();
-				pressControl[InputDevice::GAME_LEFT] = false;
+				
 				linearMovement = false;
 				wallSoundPlayed = false;				
+
+				pressControl[InputDevice::GAME_LEFT] = false;
 			}
 		}
 		else pressControl[InputDevice::GAME_LEFT] = true;
 
+		_owner->GetComponent<BodyComponent>()->setAngle(current->direction);
 		//*****************************************************
 	}
-	else _owner->GetComponent<BodyComponent>()->linearStop();
+	else _owner->GetComponent<BodyComponent>()->linearStop();//if backpack is open!
 	
 	//*********************Backpack**********************
 	if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_B))
@@ -188,23 +216,8 @@ GameObject* UserInputComponent::Update()
 	else pressControl[InputDevice::GAME_B] = true;
 	//****************************************************
 
-	//HACK: Need to just set angle previously instead of truing up later!
-	//*************************************** True to 90**********************
-	//sometimes the angle get's off perpendicular.
-	int angle = (int)(_owner->GetComponent<BodyComponent>()->getAngle());
 	
-	if(angle >360 && angle < 460) angle = 90;
-	if (angle <0) angle = 270;
-
-	if (angle < 45 && angle >= 315) _owner->GetComponent<BodyComponent>()-> setAngle(N);
-	else if (angle < 225 && angle >= 135) _owner->GetComponent<BodyComponent>()->setAngle(S);
-	else if (angle < 135 && angle >= 45) _owner->GetComponent<BodyComponent>()->setAngle(E);
-	else if (angle < 315 && angle >= 225) _owner->GetComponent<BodyComponent>()->setAngle(W);
-	
-	//*************************************** BORDER DETECTION**********************
-
-	
-	//TODO: Notice displays need to be elsewhere. View???
+	//TODO: Notice displays need to be elsewhere. Event handler
 	//*****************************NOTICES*********************************************
 	//this is the game square in the 15x15 map.
 	GAME_VEC square = _owner->GetComponent<BodyComponent>()->getCurrentSquare();

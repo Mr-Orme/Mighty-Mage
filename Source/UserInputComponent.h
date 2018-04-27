@@ -11,7 +11,12 @@ class ResourceManager;
 class ArtAssetLibrary;
 class PhysicsAssetLibrary;
 class ObjectFactory;
-
+struct node
+{
+	GAME_DIRECTION direction;
+	node* next;
+	node*prev;
+};
 
 class UserInputComponent : public Component
 {
@@ -28,6 +33,8 @@ public:
 	GameObject* Update() override;
 	void Finish() override;
 protected:
+
+	node* current;
 	//GAME_INT frameCount;
 	ResourceManager* devices;
 
@@ -38,6 +45,8 @@ protected:
 	bool linearMovement;
 	bool wallSoundPlayed;
 	
+	const GAME_INT baseForceMultiplier;
+	const GAME_INT runMultiplier; //How many times faster is running then walking
 	
 };
 

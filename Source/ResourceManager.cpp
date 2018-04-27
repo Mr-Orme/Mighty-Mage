@@ -48,11 +48,8 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 		exit(1);
 	}
 	//color of fonts
-	GAME_RGBA RGBA;
-	RGBA.R = 0;
-	RGBA.G = 0;
-	RGBA.B = 0;
-	RGBA.A = 255;
+	GAME_RGBA RGBA{ 0,0,0,255 };
+	
 	//set graphic device font
 	gDevice -> SetFont("./Assets/Fonts/impact.ttf", 16, RGBA);
 	//========================================
@@ -152,6 +149,7 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 			}
 			else if(currentComponent == "Body")
 			{
+				//TODO: Consolidate all initial values into one struct, and consolidate libraries. objectLibrary?
 				PhysicsDevice::GAME_PHYSICS physics;
 				//Get physics properties
 				compElement -> QueryFloatAttribute("density", &physics.density);
@@ -186,7 +184,10 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 				//add component
 				componentList.push_back(ComponentAssetLibrary::GAME_HEALTH_COMP);
 			}
-			else if(currentComponent == "UserInput") componentList.push_back(ComponentAssetLibrary::GAME_USERINPUT_COMP);
+			else if (currentComponent == "UserInput")
+			{
+				componentList.push_back(ComponentAssetLibrary::GAME_USERINPUT_COMP);
+			}
 			else if(currentComponent == "Backpack") componentList.push_back(ComponentAssetLibrary::GAME_BACKPACK_COMP);
 			else if(currentComponent == "Inventory") componentList.push_back(ComponentAssetLibrary::GAME_INVENTORY_COMP);
 			else if(currentComponent == "Ghost") componentList.push_back(ComponentAssetLibrary::GAME_GHOST_COMP);

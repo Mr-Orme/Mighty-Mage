@@ -41,7 +41,7 @@
 		<Component name="Body" density="1.0f" restitution="0.0f" angularDamping="4.0f" linearDamping="0.0f" bodyType="GAME_DYNAMIC" bodyShape="GAME_CIRCLE" physicsOn = "true"/>
 		<Component name="Health" health="18"/>
 		<Component name="Backpack" />
-		<Component name="UserInput" />
+		<Component name="UserInput" walkSpeed ="1000" runMultiplier="3" />
 	</GameAsset>
 	<GameAsset name="Trapdoor">
 		<Component name="Renderer" sprite="./Assets/Images/trapdoor.png"/>
