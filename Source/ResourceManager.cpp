@@ -19,9 +19,17 @@ ResourceManager::~ResourceManager(){}
 //and creastes and initialzies all devices
 bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, std::string assetPath)
 {
+
+	/*TODO: Create Level class and have vector of levels. . . . Level needs:
+		1. Physics World - make swappable worlds in physics device
+		2. Objects vector
+	*/
 	//don't load the basement
 	loadBasement = false;
 
+	//TODO: XML of game values including:
+	//1. FPS
+	//2. Screen dimensions
 	GAME_FPS = 100;
 	//========================================
 	//Construct Object Factory

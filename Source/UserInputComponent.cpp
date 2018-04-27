@@ -72,9 +72,9 @@ GameObject* UserInputComponent::Update()
 		const std::string runSound = "run";
 		std::string sound = walkSound;
 
-		const GAME_INT baseForceMultiplier = 1000; //How fast does the player move.
+		 //How fast does the player move.
 		GAME_INT forceMultiplier = baseForceMultiplier;
-		const GAME_INT runMultiplier = 3; //How many times faster is running then walking
+		
 
 		//*****************Adjustmnts for running************************
 		if (devices->GetInputDevice()->GetEvent(InputDevice::GAME_SHIFT))
