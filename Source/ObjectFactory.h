@@ -18,7 +18,7 @@ public:
 		GAME_VEC position;
 		GAME_FLT angle;
 		GAME_INT walkSpeed;
-		GAME_INT runMultiplier;
+		GAME_INT RUN_MULTIPLIER;
 		GAME_INT health;//move to new AssetLibraryGame
 		GAME_INT destructTime;//move to new AssetLibraryGame
 		ResourceManager* devices;

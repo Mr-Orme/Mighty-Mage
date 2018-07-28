@@ -19,6 +19,7 @@ class Box2DDebugDraw : public b2Draw {
 		void DrawSolidCircle(const b2Vec2 &center, float32 radius, const b2Vec2 &axis, const b2Color &color);
 		void DrawSegment(const b2Vec2 &p1, const b2Vec2 &p2, const b2Color &color);
 	    void DrawTransform(const b2Transform &xf);
+		void DrawPoint(const b2Vec2& p, float32 size, const b2Color& color) {}
 
 	private:
 

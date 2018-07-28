@@ -45,8 +45,8 @@ protected:
 	bool linearMovement;
 	bool wallSoundPlayed;
 	
-	const GAME_INT baseForceMultiplier;
-	const GAME_INT runMultiplier; //How many times faster is running then walking
+	const GAME_INT BASE_FORCE_MULTIPLIER;
+	const GAME_INT RUN_MULTIPLIER; //How many times faster is running then walking
 	
 };
 

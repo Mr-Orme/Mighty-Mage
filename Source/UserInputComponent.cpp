@@ -8,7 +8,7 @@
 
 
 
-UserInputComponent::UserInputComponent(GameObject* owner):Component(owner){}
+UserInputComponent::UserInputComponent(GameObject* owner):Component(owner), BASE_FORCE_MULTIPLIER(1500), RUN_MULTIPLIER(3){}
 UserInputComponent::~UserInputComponent(){}
 
 //**************************************
@@ -73,13 +73,13 @@ GameObject* UserInputComponent::Update()
 		std::string sound = walkSound;
 
 		 //How fast does the player move.
-		GAME_INT forceMultiplier = baseForceMultiplier;
+		GAME_INT forceMultiplier = BASE_FORCE_MULTIPLIER;
 		
 
 		//*****************Adjustmnts for running************************
 		if (devices->GetInputDevice()->GetEvent(InputDevice::GAME_SHIFT))
 		{
-			forceMultiplier = baseForceMultiplier * runMultiplier;
+			forceMultiplier = BASE_FORCE_MULTIPLIER * RUN_MULTIPLIER;
 			soundWait = devices->GetFPS() / 8;
 			sound = runSound;
 		}
@@ -87,7 +87,7 @@ GameObject* UserInputComponent::Update()
 		//back to walking
 		{
 			soundWait = devices->GetFPS() / 5;
-			forceMultiplier = baseForceMultiplier;
+			forceMultiplier = BASE_FORCE_MULTIPLIER;
 			sound = walkSound;
 		}
 		//*****************************************************************
