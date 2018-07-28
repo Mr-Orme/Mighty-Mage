@@ -3,8 +3,7 @@
 #include "BodyComponent.h"
 #include "ResourceManager.h"
 #include "PhysicsDevice.h"
-#include "ObjectAssetLibrary.h"
-#include "ArtAssetLibrary.h"
+#include "AssetLibrary.h"
 #include "GameObject.h"
 
 HealthComponent::HealthComponent(GameObject* owner):Component(owner){}
@@ -17,7 +16,7 @@ bool HealthComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& pres
 {
 	isDead = false;
 	devices = presets.devices;
-	health = devices -> GetObjectLibrary() -> Search(presets.objectType).health;
+	health = devices -> getAssetLibrary() -> getObjectStats(presets.objectType).health;
 	return true;
 }
 
@@ -28,12 +27,12 @@ bool HealthComponent::KillObject(std::string deathSprite)
 //**************************************
 {
 	//Stop the physics of the object
-	devices -> GetPhysicsDevice() -> SetStopPhysics(_owner);
+	devices -> getPhysicsDevice() -> SetStopPhysics(_owner);
 
 	//grab the renderer
 	RendererComponent* compRenderer = _owner -> GetComponent<RendererComponent>();
 	//change the sprite
-	compRenderer -> SetTexture(devices -> GetArtLibrary() -> Search(deathSprite));	
+	compRenderer -> SetTexture(devices -> getAssetLibrary() -> getArtAsset(deathSprite));	
 	return true;
 }
 //**************************************
@@ -63,9 +62,9 @@ GameObject* HealthComponent::Update()
 		{
 			//Turn off the joined object
 			GameObject* joined =  _owner -> GetJoinedWith();
-			devices -> GetPhysicsDevice() -> SetStopPhysics(joined);
+			devices -> getPhysicsDevice() -> SetStopPhysics(joined);
 			//destroy the joints
-			devices -> GetPhysicsDevice() -> DestroyJoint(_owner);
+			devices -> getPhysicsDevice() -> DestroyJoint(_owner);
 		}
 		//kill it
 		KillObject();

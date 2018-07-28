@@ -4,7 +4,7 @@
 #include "ResourceManager.h"
 #include "ObjectFactory.h"
 #include "GameObject.h"
-#include "NoticesAssetLibrary.h"
+#include "AssetLibrary.h"
 
 
 
@@ -51,7 +51,7 @@ bool UserInputComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& p
 	current = head;
 
 	//use owner's position to scroll when boder approached!
-	devices->GetGraphicsDevice()->GetView()->addScroller(_owner);
+	devices->getGraphicsDevice()->GetView()->addScroller(_owner);
 	return true;
 }
 	
@@ -67,7 +67,7 @@ GameObject* UserInputComponent::Update()
 	
 	if(!_owner -> GetComponent<BackpackComponent>() -> GetOpen())
 	{
-		GAME_INT soundWait = devices->GetFPS() / 5;//adjusts how long between playing of sound effects.
+		GAME_INT soundWait = devices->getFPS() / 5;//adjusts how long between playing of sound effects.
 		const std::string walkSound = "walking";
 		const std::string runSound = "run";
 		std::string sound = walkSound;
@@ -77,16 +77,16 @@ GameObject* UserInputComponent::Update()
 		
 
 		//*****************Adjustmnts for running************************
-		if (devices->GetInputDevice()->GetEvent(InputDevice::GAME_SHIFT))
+		if (devices->getInputDevice()->GetEvent(InputDevice::GAME_SHIFT))
 		{
 			forceMultiplier = BASE_FORCE_MULTIPLIER * RUN_MULTIPLIER;
-			soundWait = devices->GetFPS() / 8;
+			soundWait = devices->getFPS() / 8;
 			sound = runSound;
 		}
 		else
 		//back to walking
 		{
-			soundWait = devices->GetFPS() / 5;
+			soundWait = devices->getFPS() / 5;
 			forceMultiplier = BASE_FORCE_MULTIPLIER;
 			sound = walkSound;
 		}
@@ -95,7 +95,7 @@ GameObject* UserInputComponent::Update()
 		//*******************sound check************
 		if (frameCount > soundWait + 1)//walk sound every so often
 		{
-			devices->GetSoundDevice()->PlaySound(sound, 0, 1);
+			devices->getSoundDevice()->PlaySound(sound, 0, 1);
 			frameCount = 0;
 		}
 		//TODO: no sound if up/down held, press both, let go of the first... use press control vector!
@@ -108,7 +108,7 @@ GameObject* UserInputComponent::Update()
 		//wall sound based on forward/backward motion and collision detection
 		if (!wallSoundPlayed && linearMovement && wallHit && abs(_owner->GetComponent<BodyComponent>()->getVelocity()) < 1)
 		{
-			devices->GetSoundDevice()->PlaySound("wall", 0, 2);
+			devices->getSoundDevice()->PlaySound("wall", 0, 2);
 			wallHit = false;
 			wallSoundPlayed = true;
 		}
@@ -118,13 +118,13 @@ GameObject* UserInputComponent::Update()
 		int forceDirection = 0;
 		
 
-		if (devices->GetInputDevice()->GetEvent(InputDevice::GAME_UP))
+		if (devices->getInputDevice()->GetEvent(InputDevice::GAME_UP))
 		{
 			forceDirection = -1;
 			linearMovement = true;
 		}
 
-		else if (devices->GetInputDevice()->GetEvent(InputDevice::GAME_DOWN))
+		else if (devices->getInputDevice()->GetEvent(InputDevice::GAME_DOWN))
 		{
 			forceDirection = 1;
 			linearMovement = true;
@@ -141,7 +141,7 @@ GameObject* UserInputComponent::Update()
 		if (forceDirection != 0)
 		{
 			//PUSH BABY PUSH!!!
-			devices->GetPhysicsDevice()->SetLinearVelocity
+			devices->getPhysicsDevice()->SetLinearVelocity
 			(
 				_owner,
 				//x=(cos(angle) + or - (PI/2)) * (force)
@@ -165,7 +165,7 @@ GameObject* UserInputComponent::Update()
 		
 		
 		//****************left or right*************
-		if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_RIGHT))
+		if(devices -> getInputDevice() -> GetEvent(InputDevice::GAME_RIGHT))
 		{
 			if(pressControl[InputDevice::GAME_RIGHT])
 			{
@@ -180,7 +180,7 @@ GameObject* UserInputComponent::Update()
 		}
 		else pressControl[InputDevice::GAME_RIGHT] = true;
 
-		if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_LEFT))
+		if(devices -> getInputDevice() -> GetEvent(InputDevice::GAME_LEFT))
 		{
 			if(pressControl[InputDevice::GAME_LEFT])
 			{
@@ -201,7 +201,7 @@ GameObject* UserInputComponent::Update()
 	else _owner->GetComponent<BodyComponent>()->linearStop();//if backpack is open!
 	
 	//*********************Backpack**********************
-	if(devices -> GetInputDevice() -> GetEvent(InputDevice::GAME_B))
+	if(devices -> getInputDevice() -> GetEvent(InputDevice::GAME_B))
 	{
 		if(pressControl[InputDevice::GAME_B])
 		{
@@ -223,17 +223,17 @@ GameObject* UserInputComponent::Update()
 	GAME_VEC square = _owner->GetComponent<BodyComponent>()->getCurrentSquare();
 	
 	//Get N,S,E,W direction.
-	GAME_DIRECTION direction = static_cast<GAME_DIRECTION>(abs((int(devices -> GetPhysicsDevice() -> GetAngle(_owner))%360)));
+	GAME_DIRECTION direction = static_cast<GAME_DIRECTION>(abs((int(devices -> getPhysicsDevice() -> GetAngle(_owner))%360)));
 	//set up ntoice
-	NoticesAssetLibrary::GAME_NOTICE notice = {square, direction, ""};
+	AssetLibrary::GAME_NOTICE notice = {square, direction, ""};
 
 
 	//if there is a notice
-	notice = devices -> GetNoticesLibrary() -> Search(notice);
+	notice = devices -> getAssetLibrary() -> getNotice(notice);
 	if( notice.text != "")
 	{
 		//display it.
-		devices -> GetGraphicsDevice() -> Notice2Screen(notice.text);
+		devices -> getGraphicsDevice() -> Notice2Screen(notice.text);
 	}
 
 
@@ -242,12 +242,12 @@ GameObject* UserInputComponent::Update()
 	//TODO: Move level switch to event handler!!! 
 	//*****************************TO Basement*********************************************
 	//if we are on the main level and make it to the proper spot
-	if(devices -> GetLevel() == GAME_LEVEL_MAIN && square.x == 14 && square.y == 0)
+	if(devices -> getLevel() == GAME_LEVEL_MAIN && square.x == 14 && square.y == 0)
 	{
 		//load the basement.
 		//NOTE: actual loading of basement is done by the Game class, this just tells the class
 		//it is time to load.
-		devices -> SetLoadBasement(true);
+		devices -> setLoadBasement(true);
 	}
 	//*********************************************************************************
 

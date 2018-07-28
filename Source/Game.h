@@ -1,21 +1,13 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "ResourceManager.h"
-
-#include "ArtAssetLibrary.h"
-#include "PhysicsAssetLibrary.h"
-
-#include "ObjectFactory.h"
-
-#include "View.h"
-#include "Timer.h"
-
 #include "Definitions.h"
-#include "tinyxml\tinyxml.h"
 
 #include <string>
 #include <vector>
+
+class GameObject;
+class ResourceManager;
 
 class Game{
 public:

@@ -20,15 +20,13 @@ struct GAME_VEC
 	GAME_FLT x;
 	GAME_FLT y;
 	//TODO: Fix these overloads!
-	friend GAME_VEC & operator+ (const GAME_VEC & src1, const GAME_VEC & src2)
+	friend GAME_VEC operator+ (const GAME_VEC & src1, const GAME_VEC & src2)
 	{
-		GAME_VEC temp{ src1.x + src2.x, src1.y + src2.y };
-		return temp;
+		return { src1.x + src2.x, src1.y + src2.y };
 	}
-	friend GAME_VEC & operator- (const GAME_VEC & src1, const GAME_VEC & src2)
+	friend GAME_VEC operator- (const GAME_VEC & src1, const GAME_VEC & src2)
 	{
-		GAME_VEC temp{ src1.x - src2.x, src1.y - src2.y };
-		return temp;
+		return { src1.x - src2.x, src1.y - src2.y };
 	}
 	friend bool operator> (const GAME_VEC & src1, int src2)
 	{

@@ -7,7 +7,7 @@
 #include "ObjectFactory.h"
 class Texture;
 class GameObject;
-class PhysicsAssetLibrary;
+//class PhysicsAssetLibrary;
 class Object;
 
 class PhysicsDevice{

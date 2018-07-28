@@ -78,9 +78,6 @@
     <ClCompile Include="Source\ResourceManager.cpp">
       <Filter>Source Files\Resource Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Box2DDebugDraw.cpp">
-      <Filter>Source Files\third party\Box2d</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ContactListener.cpp">
       <Filter>Source Files\third party\Box2d</Filter>
     </ClCompile>
@@ -123,24 +120,6 @@
     <ClCompile Include="Source\UserInputComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ArtAssetLibrary.cpp">
-      <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ComponentAssetLibrary.cpp">
-      <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\NoticesAssetLibrary.cpp">
-      <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ObjectAssetLibrary.cpp">
-      <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PhysicsAssetLibrary.cpp">
-      <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SoundAssetLibrary.cpp">
-      <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
-    </ClCompile>
     <ClCompile Include="Source\InputDevice.cpp">
       <Filter>Source Files\Resource Manager\Devices</Filter>
     </ClCompile>
@@ -159,6 +138,9 @@
     <ClCompile Include="Source\EventHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\AssetLibrary.cpp">
+      <Filter>Source Files\Resource Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Definitions.h">
@@ -175,9 +157,6 @@
     </ClInclude>
     <ClInclude Include="Source\Timer.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Box2DDebugDraw.h">
-      <Filter>Header Files\third party\Box2d</Filter>
     </ClInclude>
     <ClInclude Include="Source\Component.h">
       <Filter>Header Files\Components</Filter>
@@ -224,24 +203,6 @@
     <ClInclude Include="Source\UserInputComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ArtAssetLibrary.h">
-      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ComponentAssetLibrary.h">
-      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\NoticesAssetLibrary.h">
-      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ObjectAssetLibrary.h">
-      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PhysicsAssetLibrary.h">
-      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SoundAssetLibrary.h">
-      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
-    </ClInclude>
     <ClInclude Include="Source\InputDevice.h">
       <Filter>Header Files\Resource Manager\Devices</Filter>
     </ClInclude>
@@ -266,8 +227,8 @@
     <ClInclude Include="Source\DeviceList.h">
       <Filter>Header Files\Resource Manager\Devices</Filter>
     </ClInclude>
-    <ClInclude Include="Source\LibraryList.h">
-      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
+    <ClInclude Include="Source\AssetLibrary.h">
+      <Filter>Header Files\Resource Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

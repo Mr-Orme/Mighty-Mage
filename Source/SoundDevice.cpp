@@ -1,5 +1,6 @@
 #include "SoundDevice.h"
-#include "SoundAssetLibrary.h"
+#include "AssetLibrary.h"
+#include "ResourceManager.h"
 
 SoundDevice::~SoundDevice()
 {
@@ -7,9 +8,10 @@ SoundDevice::~SoundDevice()
 }
 //**************************************
 //set's up initial setting for sound device
-bool SoundDevice::Initialize()
+bool SoundDevice::Initialize(ResourceManager* devices)
 //**************************************
 {
+	this->devices= devices;
 	//allows for OGG support
 	int flags = MIX_INIT_OGG;
 	int initted = Mix_Init(flags);
@@ -50,7 +52,7 @@ bool SoundDevice::PlaySound(std::string sound, int numLoops)
 bool SoundDevice::PlaySound(std::string sound, int numLoops, int channel)
 //**************************************
 {
-		Mix_PlayChannel(channel, sLibrary ->SearchSoundEffects(sound), numLoops);
+		Mix_PlayChannel(channel, devices->getAssetLibrary() ->getSoundEffect(sound), numLoops);
 		return true;
 }
 //**************************************
@@ -58,7 +60,7 @@ bool SoundDevice::PlaySound(std::string sound, int numLoops, int channel)
 void SoundDevice::SetBackground(std::string background)
 //**************************************
 {
-	if(Mix_PlayMusic(sLibrary -> SearchMusic(background), -1) == -1)
+	if(Mix_PlayMusic(devices->getAssetLibrary()-> getMusic(background), -1) == -1)
 	{printf("Mix_PlayMusic: %s\n", Mix_GetError());}
 }
 void SoundDevice::Shutdown()

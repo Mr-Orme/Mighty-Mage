@@ -3,8 +3,7 @@
 //so no include guards are needed
 
 #include <Box2D\Box2D.h>
-//#include "GameFunctions.h"
-#include "ResourceManager.h"
+class ResourceManager;
 
 class Box2DDebugDraw : public b2Draw {
 

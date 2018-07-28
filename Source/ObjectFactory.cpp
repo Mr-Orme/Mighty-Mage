@@ -4,9 +4,8 @@
 #include "View.h"
 #include "ResourceManager.h"
 #include "Texture.h"
-#include "ComponentAssetLibrary.h"
 #include "GameObject.h"
-
+#include "AssetLibrary.h"
 
 //************************************************
 //ALL ITEMS IN "presets" need to be set.
@@ -20,7 +19,7 @@ GameObject* ObjectFactory::Create(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& pre
 	//Create pointer to new objects
 	GameObject* newObject = new GameObject();
 	//Get list of components for the new object
-	std::vector<Component*> componentList = presets.devices -> GetComponentLibrary() ->Search(presets.objectType, newObject);
+	std::vector<Component*> componentList = presets.devices -> getAssetLibrary() ->getComponents(presets.objectType, newObject);
 	//Add each to the object
 	for (auto comp : componentList)
 	{

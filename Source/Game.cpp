@@ -1,8 +1,15 @@
+#include "tinyxml\tinyxml.h"
+
 #include "Game.h"
 #include "GameObject.h"
 #include "ComponentsList.h"
 #include "GraphicsDevice.h"
+#include "View.h"
 #include "SoundDevice.h"
+#include "ResourceManager.h"
+#include "Timer.h"
+
+
 
 //**************************************
 //Initiallizes variables to Null values.
@@ -57,7 +64,7 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 	///Get a few things ready
 	ObjectFactory::GAME_OBJECTFACTORY_PRESETS presets;
 	presets.devices = devices.get();
-	ObjectFactory* objectFactory = devices->GetObjectFactory();
+	ObjectFactory* objectFactory = devices->getObjectFactory();
 
 	//========================================
 	//load the files
@@ -72,7 +79,7 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 	//record the level;
 	int iLevel;
 	lRoot->QueryIntAttribute("level", &iLevel);
-	devices->SetLevel((GAME_LEVEL)iLevel);
+	devices->setLevel((GAME_LEVEL)iLevel);
 	
 	//get the first child element "Row"
 	TiXmlElement* rowElement = lRoot->FirstChildElement();
@@ -123,13 +130,13 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 				//OF THE SCREEN BEFORE ANYTHING ELSE IS CREATED.
 				if (presets.objectType == "Player")
 				{
-					GAME_INT halfWidth = devices->GetGraphicsDevice()->GetScreenWidth() / 2;
-					GAME_INT halfHeight = devices->GetGraphicsDevice()->GetScreenHeight() / 2;
+					GAME_INT halfWidth = devices->getGraphicsDevice()->GetScreenWidth() / 2;
+					GAME_INT halfHeight = devices->getGraphicsDevice()->GetScreenHeight() / 2;
 					// sets the top left corner of the map
 					squarePosition.x = presets.position.x*(-1) + halfWidth;
 					squarePosition.y = presets.position.y*(-1) + halfHeight;
 					//Keep track of that corner.
-					devices->SetCityCorner(squarePosition);
+					devices->setCityCorner(squarePosition);
 					//puts the player in the middle of the screen.
 					presets.position = 
 						{ (GAME_FLT)halfWidth, (GAME_FLT)halfHeight };
@@ -141,7 +148,7 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 
 				//mark the exit
 				//TODO: This needs to be generic and in the EventHandler! 
-				if (presets.objectType == "Trapdoor") devices->GetGraphicsDevice()->SetExit(objects.back().get());
+				if (presets.objectType == "Trapdoor") devices->getGraphicsDevice()->SetExit(objects.back().get());
 
 				//make sure presests is ready for loading the level
 				presets.position = squarePosition;
@@ -260,17 +267,17 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 		//get next row
 		rowElement = rowElement->NextSiblingElement();
 		//move x to beginning of row
-		presets.position.x = devices->GetCityCorner().x;
+		presets.position.x = devices->getCityCorner().x;
 		//only move a row down if we are doing rows, not extras.
 		if (label != "Extras") presets.position.y += squareDimension;
 	} while (rowElement);
 
 	//reverse the order of the sprites so the player is on top of everything.
-	//devices->GetGraphicsDevice()->ReverseOrder();
+	//devices->getGraphicsDevice()->ReverseOrder();
 
 	//start background music
 
-	devices->GetSoundDevice()->SetBackground("main");
+	devices->getSoundDevice()->SetBackground("main");
 
 
 
@@ -286,23 +293,23 @@ bool Game::Run()
 {
 
 	//check to see if we have quit;
-	if (devices->GetInputDevice()->GetEvent(InputDevice::GAME_QUIT) == true)
+	if (devices->getInputDevice()->GetEvent(InputDevice::GAME_QUIT) == true)
 	{
 		return false;
 	}
 
 	//here's where we load the basement if the variable was set.
 	//this needs to be abstracted a bit. . .
-	if (devices->GetLoadBasement())
+	if (devices->getLoadBasement())
 	{
 		LoadLevel("./Assets/Config/BasementLevel.xml", "./Assets/Config/BasementAssets.xml");
 	}
 	//Poll for new events
-	devices->GetInputDevice()->Update();
+	devices->getInputDevice()->Update();
 
 	//Construct Frame Timer
 	Timer* frameRate = new Timer();
-	if (!frameRate->Initialize(devices->GetFPS()))
+	if (!frameRate->Initialize(devices->getFPS()))
 	{
 		printf("Frame Timer could not intialize! SDL_Error: %s\n", SDL_GetError());
 		exit(1);
@@ -326,7 +333,7 @@ void Game::Update()
 {
 
 	//update the physics world
-	devices->GetPhysicsDevice()->Update(1.0f / devices->GetFPS());
+	devices->getPhysicsDevice()->Update(1.0f / devices->getFPS());
 
 	
 	 
@@ -357,14 +364,14 @@ void Game::Update()
 			else if (compInventory != nullptr && compInventory->isPickedUp())
 			{
 				//stop the physics on it
-				devices->GetPhysicsDevice()->SetStopPhysics((*objectIter).get());
+				devices->getPhysicsDevice()->SetStopPhysics((*objectIter).get());
 				
 				/*The collision detector stores the pointer in the inventory component of the object that picks it up
 				here, we get that pointer, and put the item in the backpack of that object*/
 				GameObject* player = (*objectIter)->GetComponent<InventoryComponent>()->gotPickedUpBy();
 				if (player->GetComponent<BackpackComponent>()->AddItem(std::move(*objectIter)))
 				{
-					devices->GetSoundDevice()->PlaySound("found", 0, 3);
+					devices->getSoundDevice()->PlaySound("found", 0, 3);
 				}
 
 				//remove object from the vector.
@@ -395,7 +402,7 @@ void Game::Update()
 		}
 	}
 	//update view
-	devices->GetGraphicsDevice()->GetView()->Update();
+	devices->getGraphicsDevice()->GetView()->Update();
 }
 
 //**************************************
@@ -405,16 +412,16 @@ void Game::Update()
 void Game::Draw()
 //**************************************
 {
-	devices -> GetGraphicsDevice() -> Begin();
+	devices -> getGraphicsDevice() -> Begin();
 	for (auto& object : objects)
 	{
 		object->draw();
 	}
-	devices -> GetGraphicsDevice() -> Draw();
+	devices -> getGraphicsDevice() -> Draw();
 	
-	if(debug) devices -> GetPhysicsDevice() -> getWorld() -> DrawDebugData();
+	if(debug) devices -> getPhysicsDevice() -> getWorld() -> DrawDebugData();
 	
-	devices -> GetGraphicsDevice() -> Present();
+	devices -> getGraphicsDevice() -> Present();
 }
 
 //**************************************
@@ -431,7 +438,7 @@ void Game::Reset()
 		for (const auto& object : objects)
 		{
 			//remove it from the physics world
-			devices->GetPhysicsDevice()->RemoveObject(object.get());
+			devices->getPhysicsDevice()->RemoveObject(object.get());
 		}
 		//clear the vector
 		objects.clear();

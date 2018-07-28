@@ -2,7 +2,7 @@
 #include "RendererComponent.h"
 #include "BodyComponent.h"
 #include "Texture.h"
-#include "ArtAssetLibrary.h"
+#include "AssetLibrary.h"
 #include "View.h"
 #include "ResourceManager.h"
 #include "PhysicsDevice.h"
@@ -22,10 +22,10 @@ bool RendererComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& pr
 	{
 		devices = presets.devices;
 		//Set this as the renderer for this object
-		//devices -> GetGraphicsDevice() -> AddSpriteRenderer(this);
+		//devices -> getGraphicsDevice() -> AddSpriteRenderer(this);
 
 		//grab the sprite from the library.
-		texture = presets.devices -> GetArtLibrary() -> Search(presets.objectType);
+		texture = presets.devices -> getAssetLibrary() -> getArtAsset(presets.objectType);
 		initialized = true;
 	}
 	return true;
@@ -41,7 +41,7 @@ void RendererComponent::Draw()
 	//adjust position.
 	updatedPosition = GetViewAdjustedPosition();
 
-	GAME_FLT angle = devices -> GetPhysicsDevice() -> GetAngle(_owner);
+	GAME_FLT angle = devices -> getPhysicsDevice() -> GetAngle(_owner);
 
 	//Draw sprite.
 	Draw(updatedPosition, angle);
@@ -49,7 +49,7 @@ void RendererComponent::Draw()
 
 void RendererComponent::Draw(GAME_VEC position, GAME_FLT angle)
 {
-	texture ->Draw(devices -> GetGraphicsDevice() -> GetRenderer(), position, angle, NULL);
+	texture ->Draw(devices -> getGraphicsDevice() -> GetRenderer(), position, angle, NULL);
 }
 
 void RendererComponent::Start()
@@ -65,10 +65,10 @@ GAME_VEC RendererComponent::GetViewAdjustedPosition()
 //**************************************
 {
 	
-	GAME_VEC position = devices -> GetPhysicsDevice() -> GetPosition(_owner);
+	GAME_VEC position = devices -> getPhysicsDevice() -> GetPosition(_owner);
 	
 	//adjust position.
-	GAME_VEC updatedPosition = position + devices->GetGraphicsDevice()->GetView()->getPosition();
+	GAME_VEC updatedPosition = position + devices->getGraphicsDevice()->GetView()->getPosition();
 
 	
 	return updatedPosition;
@@ -79,5 +79,5 @@ GAME_VEC RendererComponent::GetViewAdjustedPosition()
 void RendererComponent::Finish()
 //**************************************
 {
-	//devices -> GetGraphicsDevice() -> RemoveSpriteRenderer(this);
+	//devices -> getGraphicsDevice() -> RemoveSpriteRenderer(this);
 }

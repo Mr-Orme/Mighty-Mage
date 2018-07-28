@@ -195,7 +195,7 @@ void GraphicsDevice::Draw()
 //	{
 //		ResourceManager* devices = levelExit -> GetComponent<BodyComponent>() -> GetDevices().get();
 //		//stop the physics on the trapdoor so we can walk onto that square.
-//		devices -> GetPhysicsDevice() -> SetStopPhysics(levelExit.get());
+//		devices -> getPhysicsDevice() -> SetStopPhysics(levelExit.get());
 //		//get rid of the notice stating we need to find the spheres.
 //		GAME_NOTICE notice = {15, 0, W, ""};
 //		devices -> GetNoticesLibrary() -> RemoveAsset(notice);

@@ -1,7 +1,7 @@
 #include "BodyComponent.h"
 #include "RendererComponent.h"
 #include "ResourceManager.h"
-#include "PhysicsAssetLibrary.h"
+#include "AssetLibrary.h"
 #include "GameObject.h"
 #include "PhysicsDevice.h"
 #include "Texture.h"
@@ -23,10 +23,10 @@ bool BodyComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& preset
 		devices = presets.devices;
 				
 		//Get physics based on object type.
-		physics = devices -> GetPhysicsLibrary() -> Search(presets.objectType);
+		physics = devices -> getAssetLibrary() -> getObjectPhysics(presets.objectType);
 				
 		//Create fixture.
-		devices -> GetPhysicsDevice() -> createFixture
+		devices -> getPhysicsDevice() -> createFixture
 			(
 			_owner,
 			physics,
@@ -52,7 +52,7 @@ void BodyComponent::Finish()
 //**************************************
 {
 	//remove the physics body
-	if(!devices -> GetPhysicsDevice() -> RemoveObject(_owner))
+	if(!devices -> getPhysicsDevice() -> RemoveObject(_owner))
 	{
 		printf( "Object could not be removed from Physics World");
 		exit(1);					
@@ -60,16 +60,16 @@ void BodyComponent::Finish()
 }
 GAME_FLT BodyComponent::getAngle()
 {
-	return devices->GetPhysicsDevice()->GetAngle(_owner);
+	return devices->getPhysicsDevice()->GetAngle(_owner);
 }
 
 GAME_VEC BodyComponent::getPosition()
 {
-	return (devices->GetPhysicsDevice()->GetPosition(_owner));
+	return (devices->getPhysicsDevice()->GetPosition(_owner));
 }
 GAME_VEC BodyComponent::getVelocity()
 {
-	return devices->GetPhysicsDevice()->GetVelocity(_owner);
+	return devices->getPhysicsDevice()->GetVelocity(_owner);
 }
 GAME_INT BodyComponent::getWidth()
 {
@@ -81,7 +81,7 @@ GAME_INT BodyComponent::getHeight()
 }
 void BodyComponent::setAngle(GAME_FLT angle)
 {
-	devices->GetPhysicsDevice()->SetAngle(_owner, angle);
+	devices->getPhysicsDevice()->SetAngle(_owner, angle);
 }
 
 void BodyComponent::adjustAngle(GAME_FLT adjustAmount)
@@ -91,7 +91,7 @@ void BodyComponent::adjustAngle(GAME_FLT adjustAmount)
 
 void BodyComponent::linearStop()
 {
-	devices->GetPhysicsDevice()->SetLinearVelocity(_owner, { 0,0 });
+	devices->getPhysicsDevice()->SetLinearVelocity(_owner, { 0,0 });
 }
 
 //**************************************
@@ -101,7 +101,7 @@ GAME_VEC BodyComponent::getCurrentSquare()
 {
 
 
-	GAME_VEC cityCorner = devices->GetCityCorner();
+	GAME_VEC cityCorner = devices->getCityCorner();
 
 	//subtract off the player's position on the screen to get the actual spot of the player.
 	//divide by the number of pixels in each square.

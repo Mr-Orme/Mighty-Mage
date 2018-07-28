@@ -20,7 +20,7 @@ bool BackpackComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& pr
 	//probably want to base the backpack size on the number of slots we want
 	//and not on the screen size. . .
 	slotSize = 25; //pixels
-	GraphicsDevice* gDevice = devices -> GetGraphicsDevice();
+	GraphicsDevice* gDevice = devices -> getGraphicsDevice();
 	GAME_INT SCREEN_WIDTH = gDevice -> GetScreenWidth();
 	GAME_INT SCREEN_HEIGHT = gDevice -> GetScreenHeight();
 	topLeft.x = SCREEN_WIDTH*.1f;
@@ -56,7 +56,7 @@ bool BackpackComponent::AddItem(std::unique_ptr<GameObject> item)
 {
 
 
-	GraphicsDevice* gDevice = devices->GetGraphicsDevice();
+	GraphicsDevice* gDevice = devices->getGraphicsDevice();
 	GAME_INT SCREEN_WIDTH = gDevice->GetScreenWidth();
 	GAME_INT SCREEN_HEIGHT = gDevice->GetScreenHeight();
 	GAME_VEC topLeft = { SCREEN_WIDTH*.1f, SCREEN_HEIGHT*.1f };
@@ -196,7 +196,7 @@ GameObject* BackpackComponent::Update()
 				objects[item -> GetComponent<RendererComponent>() -> GetTexture()] = item -> GetComponent<InventoryComponent>() -> GetPackPosition();
 			}
 			
-			devices -> GetGraphicsDevice() -> DrawOverlay(topLeft, bottomRight, background, border, objects);
+			devices -> getGraphicsDevice() -> DrawOverlay(topLeft, bottomRight, background, border, objects);
 				
 
 			

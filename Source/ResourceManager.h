@@ -5,12 +5,8 @@
 
 class ObjectFactory;
 
-class ComponentAssetLibrary;
-class ObjectAssetLibrary;
-class NoticesAssetLibrary;
-class SoundAssetLibrary;
-class PhysicsAssetLibrary;
-class ArtAssetLibrary;
+
+class AssetLibrary;
 
 class InputDevice;
 class GraphicsDevice;
@@ -26,48 +22,39 @@ public:
 	bool Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, std::string assetPath);
 	bool Shutdown();
 
-	//Device Getters
-	GraphicsDevice* GetGraphicsDevice();
-	InputDevice* GetInputDevice();
-	PhysicsDevice* GetPhysicsDevice();
-	SoundDevice* GetSoundDevice();
+	//Device getters
+	GraphicsDevice* getGraphicsDevice();
+	InputDevice* getInputDevice();
+	PhysicsDevice* getPhysicsDevice();
+	SoundDevice* getSoundDevice();
 
-	//Device Setters
-	ArtAssetLibrary* GetArtLibrary();
-	PhysicsAssetLibrary* GetPhysicsLibrary();
-	ComponentAssetLibrary* GetComponentLibrary();
-	ObjectAssetLibrary* GetObjectLibrary();
-	NoticesAssetLibrary* GetNoticesLibrary();
-	SoundAssetLibrary* GetSoundLibrary();
+	//Device setters
+	AssetLibrary* getAssetLibrary();
+	
 
-	//ObjectFactor Getter
-	ObjectFactory* GetObjectFactory();
+	//ObjectFactor getter
+	ObjectFactory* getObjectFactory();
 
-	//Other Getters
-	GAME_INT GetFPS(){return GAME_FPS;}
-	GAME_VEC GetCityCorner(){return cityCorner;}
-	GAME_LEVEL GetLevel(){return level;}
-	bool GetLoadBasement(){return loadBasement;}
+	//Other getters
+	GAME_INT getFPS(){return GAME_FPS;}
+	GAME_VEC getCityCorner(){return cityCorner;}
+	GAME_LEVEL getLevel(){return level;}
+	bool getLoadBasement(){return loadBasement;}
 
-	//Device Setters
-	void SetGraphicsDevice(GraphicsDevice* gDevice);
-	void SetInputDevice(InputDevice* iDevice);
-	void SetPhysicsDevice(PhysicsDevice* pDevice);
-	void SetSoundDevice(SoundDevice* sDevice);
+	//Device setters
+	void setGraphicsDevice(GraphicsDevice* gDevice);
+	void setInputDevice(InputDevice* iDevice);
+	void setPhysicsDevice(PhysicsDevice* pDevice);
+	void setSoundDevice(SoundDevice* sDevice);
 
-	//Library Setters
-	void SetArtLibrary(ArtAssetLibrary* aLibrary);
-	void SetPhysicsLibrary(PhysicsAssetLibrary* pLibrary);
-	void SetComponentLibrary(ComponentAssetLibrary* cLibrary);
-	void SetObjectLibrary(ObjectAssetLibrary* oLibrary);
-	void SetNoticesLibrary(NoticesAssetLibrary* nLibrary);
-	void SetSoundLibrary(SoundAssetLibrary* sLibrary);
-
-	//Other Setters
-	void SetFPS(GAME_INT fps){ GAME_FPS = fps;}
-	void SetCityCorner(GAME_VEC cityCorner){this -> cityCorner = cityCorner;}
-	void SetLevel(GAME_LEVEL level){this -> level = level;}
-	void SetLoadBasement(bool loadBasement){this -> loadBasement = loadBasement;}
+	//Library setter
+	void setAssetLibrary(AssetLibrary* Library);
+	
+	//Other setters
+	void setFPS(GAME_INT fps){ GAME_FPS = fps;}
+	void setCityCorner(GAME_VEC cityCorner){this -> cityCorner = cityCorner;}
+	void setLevel(GAME_LEVEL level){this -> level = level;}
+	void setLoadBasement(bool loadBasement){this -> loadBasement = loadBasement;}
 
 protected:
 	//Devices
@@ -76,13 +63,9 @@ protected:
 	std::unique_ptr<PhysicsDevice> pDevice;
 	std::unique_ptr<SoundDevice> sDevice;
 
-	//LIbraries
-	std::unique_ptr<ArtAssetLibrary> aLibrary;
-	std::unique_ptr<PhysicsAssetLibrary> pLibrary;
-	std::unique_ptr<ComponentAssetLibrary> cLibrary;
-	std::unique_ptr<ObjectAssetLibrary> oLibrary;
-	std::unique_ptr<NoticesAssetLibrary> nLibrary;
-	std::unique_ptr<SoundAssetLibrary> sLibrary;
+	//LIbrary
+	std::unique_ptr<AssetLibrary> assetLibrary;
+
 
 	std::unique_ptr<ObjectFactory> factory;
 	

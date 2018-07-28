@@ -17,7 +17,8 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_ttf.h"
-#include "RendererComponent.h"
+#include "Texture.h"
+//#include "RendererComponent.h"
 class View;
 //class InputDevice;
 

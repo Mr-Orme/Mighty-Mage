@@ -11,16 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\ArtAssetLibrary.cpp" />
-    <ClCompile Include="Source\ComponentAssetLibrary.cpp" />
     <ClCompile Include="Source\EventHandler.cpp" />
     <ClCompile Include="Source\GhostComponent.cpp" />
     <ClCompile Include="Source\LevelConfigLibrary.cpp" />
-    <ClCompile Include="Source\NoticesAssetLibrary.cpp" />
-    <ClCompile Include="Source\ObjectAssetLibrary.cpp" />
-    <ClCompile Include="Source\PhysicsAssetLibrary.cpp" />
-    <ClCompile Include="Source\SoundAssetLibrary.cpp" />
-    <ClCompile Include="Source\Box2DDebugDraw.cpp" />
+    <ClCompile Include="Source\AssetLibrary.cpp" />
     <ClCompile Include="Source\Component.cpp" />
     <ClCompile Include="Source\BackpackComponent.cpp" />
     <ClCompile Include="Source\BodyComponent.cpp" />
@@ -47,18 +41,11 @@
     <ClCompile Include="Source\View.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\ArtAssetLibrary.h" />
-    <ClInclude Include="Source\ComponentAssetLibrary.h" />
     <ClInclude Include="Source\DeviceList.h" />
     <ClInclude Include="Source\EventHandler.h" />
     <ClInclude Include="Source\GhostComponent.h" />
     <ClInclude Include="Source\LevelConfigLibrary.h" />
-    <ClInclude Include="Source\LibraryList.h" />
-    <ClInclude Include="Source\NoticesAssetLibrary.h" />
-    <ClInclude Include="Source\ObjectAssetLibrary.h" />
-    <ClInclude Include="Source\PhysicsAssetLibrary.h" />
-    <ClInclude Include="Source\SoundAssetLibrary.h" />
-    <ClInclude Include="Source\Box2DDebugDraw.h" />
+    <ClInclude Include="Source\AssetLibrary.h" />
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\BackpackComponent.h" />
     <ClInclude Include="Source\BodyComponent.h" />
