@@ -16,9 +16,6 @@
     <Filter Include="Source Files\Resource Manager">
       <UniqueIdentifier>{a206a025-6bef-4f53-a22c-b3b329737403}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Resource Manager\Asset Libraries">
-      <UniqueIdentifier>{77454f89-4939-4c62-8ba4-190c5c077229}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Resource Manager\Devices">
       <UniqueIdentifier>{78acc373-a699-4fbf-adcd-a5847a3494e5}</UniqueIdentifier>
     </Filter>
@@ -49,11 +46,14 @@
     <Filter Include="Header Files\third party\tinyXML">
       <UniqueIdentifier>{74d2bb40-e53a-448b-a031-df638b009401}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Resource Manager\Asset LIbraries">
-      <UniqueIdentifier>{bb220b56-ed31-4b28-9332-ce9d73a82254}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Resource Manager\Devices">
       <UniqueIdentifier>{7d061c20-4ebc-427a-ae54-045a5d740bfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resource Manager\Libraries">
+      <UniqueIdentifier>{77454f89-4939-4c62-8ba4-190c5c077229}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Resource Manager\Libraries">
+      <UniqueIdentifier>{bb220b56-ed31-4b28-9332-ce9d73a82254}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -133,13 +133,13 @@
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="Source\LevelConfigLibrary.cpp">
-      <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
+      <Filter>Source Files\Resource Manager\Libraries</Filter>
     </ClCompile>
     <ClCompile Include="Source\EventHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\AssetLibrary.cpp">
-      <Filter>Source Files\Resource Manager</Filter>
+      <Filter>Source Files\Resource Manager\Libraries</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -216,7 +216,7 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Source\LevelConfigLibrary.h">
-      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
+      <Filter>Header Files\Resource Manager\Libraries</Filter>
     </ClInclude>
     <ClInclude Include="Source\EventHandler.h">
       <Filter>Header Files</Filter>
@@ -228,7 +228,7 @@
       <Filter>Header Files\Resource Manager\Devices</Filter>
     </ClInclude>
     <ClInclude Include="Source\AssetLibrary.h">
-      <Filter>Header Files\Resource Manager</Filter>
+      <Filter>Header Files\Resource Manager\Libraries</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

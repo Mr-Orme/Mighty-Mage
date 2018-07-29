@@ -19,7 +19,7 @@ struct GAME_VEC
 {
 	GAME_FLT x;
 	GAME_FLT y;
-	//TODO: Fix these overloads!
+	
 	friend GAME_VEC operator+ (const GAME_VEC & src1, const GAME_VEC & src2)
 	{
 		return { src1.x + src2.x, src1.y + src2.y };
@@ -61,7 +61,7 @@ struct GAME_VEC
 
 enum GAME_DIRECTION {N =0, E = 90, S = 180, W = 270};
 
-//make levels an array of resource managers! or something that has everything! FIXME
+//TODO:make levels an array of resource managers! or something that has everything! 
 enum GAME_LEVEL {GAME_LEVEL_MAIN, GAME_LEVEL_BASEMENT,};
 
 

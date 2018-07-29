@@ -4,13 +4,14 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "Definitions.h"
 #include "ObjectFactory.h"
 #include "PhysicsDevice.h"
 #include "SoundDevice.h"
+#include "Texture.h"
 
-class Texture;
 class GraphicsDevice;
 class GameObject;
 class Component;
@@ -66,7 +67,7 @@ public:
 
 
 private:
-	std::map<std::string, Texture*> artLibrary;
+	std::map<std::string, std::unique_ptr<Texture>> artLibrary;
 	std::vector<GAME_NOTICE> noticeLibrary;
 	std::map<std::string, ObjectFactory::GAME_OBJECT_STATS> objectCreationLibrary;
 	std::map<std::string, PhysicsDevice::GAME_PHYSICS> physicsLibrary;

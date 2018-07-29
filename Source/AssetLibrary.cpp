@@ -7,10 +7,7 @@
 
 AssetLibrary::~AssetLibrary()
 {
-	for (auto artPair : artLibrary)
-	{
-		delete artPair.second;
-	}
+
 }
 
 bool AssetLibrary::initialize(SoundDevice * sDevice, GraphicsDevice * gDevice)
@@ -31,16 +28,15 @@ bool AssetLibrary::initialize(SoundDevice * sDevice, GraphicsDevice * gDevice)
 
 Texture * AssetLibrary::getArtAsset(std::string searchString)
 {
-	return artLibrary.find(searchString)->second;
+	return artLibrary.find(searchString)->second.get();
 }
 
 bool AssetLibrary::setArtAsset(std::string name, std::string path)
 {
-	artLibrary[name] = new Texture;
+	artLibrary[name] = std::make_unique<Texture>();
 	if (!artLibrary[name]->load(gDevice->GetRenderer(), path)) 
 	{ 
-		std::map<std::string, Texture*>::iterator artIter = artLibrary.find(name);
-		delete artIter->second;
+		std::map<std::string, std::unique_ptr<Texture>>::iterator artIter = artLibrary.find(name);
 		artLibrary.erase(artIter);
 		return false; 
 	}
