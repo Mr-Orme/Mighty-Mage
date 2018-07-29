@@ -16,6 +16,7 @@ bool InputDevice::Initialize()
 		exit(1);
 	}
 
+	keyStates[GAME_NA] = false;
 	keyStates[GAME_DOWN] = false;
 	keyStates[GAME_UP] = false;
 	keyStates[GAME_LEFT] = false;
