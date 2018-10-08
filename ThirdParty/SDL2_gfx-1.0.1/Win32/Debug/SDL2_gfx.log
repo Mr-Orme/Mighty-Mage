@@ -1,0 +1,22 @@
+﻿Build started 2/6/2015 4:33:42 PM.
+     1>Project "C:\Users\kabush\Desktop\SDL2_gfx-1.0.1\SDL2_gfx.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\SDL\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _USRDLL /D DLL_EXPORT /D USE_MMX /D _WINDLL /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Win32\Debug\\" /Fd"Win32\Debug\vc110.pdb" /Gd /TC /analyze- /errorReport:prompt SDL2_framerate.c SDL2_gfxPrimitives.c SDL2_rotozoom.c SDL2_imageFilter.c
+         SDL2_imageFilter.c
+         SDL2_rotozoom.c
+         SDL2_gfxPrimitives.c
+         SDL2_framerate.c
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Win32\Debug\SDL2_gfx.dll" /INCREMENTAL /NOLOGO /LIBPATH:..\SDL\VisualC\Win32\Debug SDL2.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"Win32\Debug\SDL2_gfx.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE:NO /IMPLIB:"Win32\Debug\SDL2_gfx.lib" /MACHINE:X86 /SAFESEH /DLL Win32\Debug\SDL2_framerate.obj
+         Win32\Debug\SDL2_gfxPrimitives.obj
+         Win32\Debug\SDL2_rotozoom.obj
+         Win32\Debug\SDL2_imageFilter.obj
+     1>SDL2_framerate.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+            Creating library Win32\Debug\SDL2_gfx.lib and object Win32\Debug\SDL2_gfx.exp
+         SDL2_gfx.vcxproj -> C:\Users\kabush\Desktop\SDL2_gfx-1.0.1\Win32\Debug\SDL2_gfx.dll
+     1>Done Building Project "C:\Users\kabush\Desktop\SDL2_gfx-1.0.1\SDL2_gfx.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:17.19
