@@ -10,24 +10,23 @@ class GameObject;
 class InventoryComponent : public Component
 {
 public:
-	InventoryComponent(GameObject*);
+	InventoryComponent(std::shared_ptr<GameObject>);
 	~InventoryComponent();
 
-	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
+	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
 
-	bool isPickedUp();
+	bool GetPickedUp(){return pickedUp;}
 	GAME_VEC GetPackPosition(){return packPosition;}
-	GameObject* gotPickedUpBy() { return pickedUpBy; }
 	
-	void getPickedUp(GameObject* pickedUpBy);
+	void SetPickedUp(bool pickedUp){this -> pickedUp = pickedUp;}
 	void SetPackPosition(GAME_VEC packPosition){this -> packPosition = packPosition;}
 
 	void Start();
-	GameObject* Update();
+	std::shared_ptr<GameObject> Update();
 	void Finish();
 protected:
+	bool pickedUp;
 	GAME_VEC packPosition;
-	GameObject* pickedUpBy;
 };
 
 #endif

@@ -3,20 +3,19 @@
 #include "BodyComponent.h"
 #include "ResourceManager.h"
 #include "PhysicsDevice.h"
-#include "AssetLibrary.h"
-#include "GameObject.h"
 
-HealthComponent::HealthComponent(GameObject* owner):Component(owner){}
+
+HealthComponent::HealthComponent(std::shared_ptr<GameObject> owner):Component(owner){}
 HealthComponent::~HealthComponent(){}
 
 //**************************************
 //gets health and resource manager from passed presets, the object starts out alive.
-bool HealthComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
+bool HealthComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
 //**************************************
 {
 	isDead = false;
 	devices = presets.devices;
-	health = devices -> getAssetLibrary() -> getObjectStats(presets.objectType).health;
+	health = devices -> GetObjectLibrary() -> Search(presets.objectType).health;
 	return true;
 }
 
@@ -27,12 +26,12 @@ bool HealthComponent::KillObject(std::string deathSprite)
 //**************************************
 {
 	//Stop the physics of the object
-	devices -> getPhysicsDevice() -> SetStopPhysics(_owner);
+	devices -> GetPhysicsDevice() -> SetStopPhysics(_owner.get());
 
 	//grab the renderer
-	RendererComponent* compRenderer = _owner -> GetComponent<RendererComponent>();
+	std::shared_ptr<RendererComponent> compRenderer = _owner -> GetComponent<RendererComponent>();
 	//change the sprite
-	compRenderer -> SetTexture(devices -> getAssetLibrary() -> getArtAsset(deathSprite));	
+	compRenderer -> SetTexture(devices -> GetArtLibrary() -> Search(deathSprite));	
 	return true;
 }
 //**************************************
@@ -51,7 +50,7 @@ void HealthComponent::Start()
 
 //**************************************
 //checks for death and deals with it
-GameObject* HealthComponent::Update()
+std::shared_ptr<GameObject> HealthComponent::Update()
 //**************************************
 {
 	//if dead
@@ -61,10 +60,10 @@ GameObject* HealthComponent::Update()
 		if(_owner -> GetJoinedWith() != NULL)
 		{
 			//Turn off the joined object
-			GameObject* joined =  _owner -> GetJoinedWith();
-			devices -> getPhysicsDevice() -> SetStopPhysics(joined);
+			std::shared_ptr<GameObject> joined =  _owner -> GetJoinedWith();
+			devices -> GetPhysicsDevice() -> SetStopPhysics(joined.get());
 			//destroy the joints
-			devices -> getPhysicsDevice() -> DestroyJoint(_owner);
+			devices -> GetPhysicsDevice() -> DestroyJoint(_owner.get());
 		}
 		//kill it
 		KillObject();

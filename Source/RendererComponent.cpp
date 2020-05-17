@@ -1,20 +1,16 @@
-#include <memory>
 #include "RendererComponent.h"
 #include "BodyComponent.h"
 #include "Texture.h"
-#include "AssetLibrary.h"
+#include "ArtAssetLibrary.h"
 #include "View.h"
 #include "ResourceManager.h"
-#include "PhysicsDevice.h"
-#include "GraphicsDevice.h"
-
-RendererComponent::RendererComponent(GameObject* owner):Component(owner)
-{initialized = false;}
+#include <memory>
+RendererComponent::RendererComponent(std::shared_ptr<GameObject> owner):Component(owner){initialized = false;}
 RendererComponent::~RendererComponent(){}
 
 //**************************************
 //on the first pass, we set up the texture for the object
-bool RendererComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
+bool RendererComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
 //**************************************
 {
 	//this will get hit twice, so we only want it done once.
@@ -22,10 +18,10 @@ bool RendererComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& pr
 	{
 		devices = presets.devices;
 		//Set this as the renderer for this object
-		//devices -> getGraphicsDevice() -> AddSpriteRenderer(this);
+		devices -> GetGraphicsDevice() -> AddSpriteRenderer(this);
 
 		//grab the sprite from the library.
-		texture = presets.devices -> getAssetLibrary() -> getArtAsset(presets.objectType);
+		texture = presets.devices -> GetArtLibrary() -> Search(presets.objectType);
 		initialized = true;
 	}
 	return true;
@@ -39,9 +35,9 @@ void RendererComponent::Draw()
 	
 
 	//adjust position.
-	updatedPosition = GetViewAdjustedPosition();
+	updatedPosition = GetUpdatedPosition(_owner);
 
-	GAME_FLT angle = devices -> getPhysicsDevice() -> GetAngle(_owner);
+	GAME_FLT angle = devices -> GetPhysicsDevice() -> GetAngle(_owner.get());
 
 	//Draw sprite.
 	Draw(updatedPosition, angle);
@@ -49,7 +45,7 @@ void RendererComponent::Draw()
 
 void RendererComponent::Draw(GAME_VEC position, GAME_FLT angle)
 {
-	texture ->Draw(devices -> getGraphicsDevice() -> GetRenderer(), position, angle, NULL);
+	texture ->Draw(devices -> GetGraphicsDevice() -> GetRenderer(), position, angle, NULL);
 }
 
 void RendererComponent::Start()
@@ -57,19 +53,22 @@ void RendererComponent::Start()
 
 }
 
-GameObject* RendererComponent::Update(){return nullptr;}
+std::shared_ptr<GameObject> RendererComponent::Update(){return NULL;}
 
 //**************************************
 //adjusts the position based on the view.
-GAME_VEC RendererComponent::GetViewAdjustedPosition()
+GAME_VEC RendererComponent::GetUpdatedPosition(std::shared_ptr<GameObject> owner)
 //**************************************
 {
-	
-	GAME_VEC position = devices -> getPhysicsDevice() -> GetPosition(_owner);
-	
+	GAME_VEC updatedPosition;
+	GAME_VEC position = devices -> GetPhysicsDevice() -> GetPosition(owner.get());
 	//adjust position.
-	GAME_VEC updatedPosition = position + devices->getGraphicsDevice()->GetView()->getPosition();
-
+	updatedPosition.x = 
+		  position.x
+		+ devices -> GetGraphicsDevice() -> GetView() -> getPosition().x;
+	updatedPosition.y = 
+		  position.y
+		+ devices -> GetGraphicsDevice() -> GetView() -> getPosition().y;
 	
 	return updatedPosition;
 }
@@ -79,5 +78,5 @@ GAME_VEC RendererComponent::GetViewAdjustedPosition()
 void RendererComponent::Finish()
 //**************************************
 {
-	//devices -> getGraphicsDevice() -> RemoveSpriteRenderer(this);
+	devices -> GetGraphicsDevice() -> RemoveSpriteRenderer(this);
 }

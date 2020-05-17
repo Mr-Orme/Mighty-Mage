@@ -1,5 +1,4 @@
 #include "ComponentsList.h"
-#include "GameObject.h"
 
 GameObject::GameObject()
 {
@@ -13,31 +12,32 @@ GameObject::~GameObject()
 
 //**************************************
 //Get's the components up and running based on passed presests
-bool GameObject::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
+bool GameObject::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
 //**************************************
 {
 	objectType = presets.objectType;
-	joinedWith = nullptr;
-	
+	joinedWith = NULL;
+	////This sets the current object to the joinedObject in case a joint will be made.
+	//presets.joinedObject = std::make_shared<GameObject>(shared_from_this());
 	//the renderer component needs to be initialized first because the body component depends on it
 	//It's initialization method has a check to see if it is already initialized 
 	//so that when we go through all the components and initialize them in the next step, it won't do it again.
-	RendererComponent* component = GetComponent<RendererComponent>();
+	
+	std::shared_ptr<RendererComponent> component = GetComponent<RendererComponent>();
 	if(component) component -> Initialize(presets);
 
 	//initialize all components
-	for ( auto& component : components)
+	for ( auto comp :components)
 	{
-	
 		
-		component-> Initialize(presets);
+		comp -> Initialize(presets);
 	}
 	//start all components
 	if(!initialized)
 	{
-		for (auto& component : components)
+		for (auto comp : components)
 		{
-			component -> Start();
+			comp -> Start();
 		}
 		initialized = true;
 	}
@@ -46,22 +46,24 @@ bool GameObject::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
 
 //**************************************
 //Adds the passed component to the object.
-void GameObject::AddComponent(Component* component)
+void GameObject::AddComponent(std::shared_ptr<Component> component)
 //**************************************
 {
-	components.push_back(std::unique_ptr<Component>(component));
+	components.push_back(component);
 }
 
 //**************************************
 //runs the update method for all attached components
-GameObject* GameObject::Update()
+std::shared_ptr<GameObject> GameObject::Update()
 //**************************************
 
 {
-	GameObject* newObject = nullptr;
-	for (auto& component : components)
+	std::shared_ptr<GameObject> newObject = NULL;
+	for (auto comp : components)
 	{
-		if(GameObject* tempObject = component ->Update(); tempObject != nullptr)
+		std::shared_ptr<GameObject> tempObject = NULL;
+		tempObject = comp -> Update();
+		if(tempObject != NULL)
 		{
 			newObject = tempObject;
 		}
@@ -69,20 +71,12 @@ GameObject* GameObject::Update()
 	}
 	return newObject;
 }
-void GameObject::draw()
-{
-	if (RendererComponent* sprite = GetComponent<RendererComponent>(); sprite != nullptr)
-	{
-		sprite->Draw();
-	}
-}
 //**************************************
 //takes off a compoent and runs its finsih method
 bool GameObject::removeComponents()
 //**************************************
 {
-	
-	for (auto& comp: components)
+	for (auto comp : components)
 	{
 		comp -> Finish();
 		
@@ -90,4 +84,5 @@ bool GameObject::removeComponents()
 	components.clear();
 	return true;
 }
+
 

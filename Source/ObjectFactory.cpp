@@ -1,25 +1,23 @@
-#include <memory>
 #include "ObjectFactory.h"
 #include "ComponentsList.h"
 #include "View.h"
 #include "ResourceManager.h"
 #include "Texture.h"
-#include "GameObject.h"
-#include "AssetLibrary.h"
+#include <memory>
 
 //************************************************
 //ALL ITEMS IN "presets" need to be set.
 //based on the object type, it grabs components.
 // and adds them to a newly created object.
 //it initializes the object which also initializes all the components
-GameObject* ObjectFactory::Create(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
+std::shared_ptr<GameObject> ObjectFactory::Create(GAME_OBJECTFACTORY_PRESETS& presets)
 //**************************************
 {
 
 	//Create pointer to new objects
-	GameObject* newObject = new GameObject();
+	std::shared_ptr<GameObject> newObject = std::make_shared<GameObject>();
 	//Get list of components for the new object
-	std::vector<Component*> componentList = presets.devices -> getAssetLibrary() ->getComponents(presets.objectType, newObject);
+	std::vector<std::shared_ptr<Component>> componentList = presets.devices -> GetComponentLibrary() ->Search(presets.objectType, newObject);
 	//Add each to the object
 	for (auto comp : componentList)
 	{
@@ -30,7 +28,7 @@ GameObject* ObjectFactory::Create(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& pre
 	if(!presets.gDirection.empty())
 	{
 		//add the ghost component
-		GhostComponent* ghost = new GhostComponent(newObject);
+		std::shared_ptr<GhostComponent> ghost = std::make_shared<GhostComponent>(newObject);
 		newObject -> AddComponent(ghost);
 	}
 		
@@ -42,9 +40,8 @@ GameObject* ObjectFactory::Create(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& pre
 	}
 	else
 	{
-		delete newObject;
 		std::cout << "Object did not initialize!" << std::endl;
-		return nullptr;
+		return NULL;
 	}
 }
 

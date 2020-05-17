@@ -4,63 +4,55 @@
 #include<memory>
 #include<iostream>
 #include<vector>
-
+#include "SDL.h"
+#include "SDL_ttf.h"
 #include "Definitions.h"
-#include "ObjectFactory.h"
 
 class Component;
 class GraphicsDevice;
 class PhysicsDevice;
-class BackpackComponent;
-class BodyComponent;
-class GhostComponent;
-class HealthComponent;
-class InventoryComponent;
-class RendererComponent;
-class UserInputComponent;
 
-class GameObject
+class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
 	GameObject();
 	~GameObject();
 	
-	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
-	void AddComponent(Component* component);
+	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
+	void AddComponent(std::shared_ptr<Component> component);
 
 	template<class T>
-	T* GetComponent()
+	std::shared_ptr<T> GetComponent()
 	{
-		for (auto& component : components)
+		for(auto comp : components)
 		{
-			
-			if (T* target = nullptr; target = dynamic_cast<T*>(component.get()))
+			std::shared_ptr<T> target;
+			if((target = std::dynamic_pointer_cast<T>(comp)))
 			{
 				return(target);
 			}
 		}
-		return(nullptr);
+	
+		//Return NULL;
+		return(std::shared_ptr<T>());
 	}
 	
-	
-	GameObject* Update();
-	void draw();
+	std::shared_ptr<GameObject> Update();
 
-	void SetJoinedWith(GameObject* joinedWith){this -> joinedWith = joinedWith;}
+	void SetJoinedWith(std::shared_ptr<GameObject> joinedWith){this -> joinedWith = joinedWith;}
 
 	std::string getObjectType(){return objectType;}
-	GameObject* GetJoinedWith(){return joinedWith;}
+	std::shared_ptr<GameObject> GetJoinedWith(){return joinedWith;}
 
 	bool removeComponents();
 
 protected:
 	
-	std::vector<std::unique_ptr<Component>> components;
+	std::vector<std::shared_ptr<Component>> components;
     bool initialized;
 	std::string objectType;
-	GameObject* joinedWith;
+	std::shared_ptr<GameObject> joinedWith;
 
 };
 
 #endif
-

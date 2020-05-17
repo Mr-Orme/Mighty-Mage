@@ -4,49 +4,37 @@
 
 #include "Component.h"
 #include "Definitions.h"
-#include "InputDevice.h"
-#include "PhysicsDevice.h"
+
 
 class ResourceManager;
 class ArtAssetLibrary;
 class PhysicsAssetLibrary;
 class ObjectFactory;
-struct node
-{
-	GAME_DIRECTION direction;
-	node* next;
-	node*prev;
-};
 
 class UserInputComponent : public Component
 {
 public:
-	
-
-	UserInputComponent(GameObject* owner);
+	UserInputComponent(std::shared_ptr<GameObject> owner);
 	~UserInputComponent();
 	
-	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
+	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
 	void SetWallHit(bool wallHit){this -> wallHit = wallHit;}
 
-	void Start() override;
-	GameObject* Update() override;
-	void Finish() override;
-protected:
+	GAME_VEC GetCurrentSquare();
 
-	node* current;
-	//GAME_INT frameCount;
-	ResourceManager* devices;
+	void Start();
+	std::shared_ptr<GameObject> Update();
+	void Finish();
+protected:
+	GAME_INT frameCount;
+	std::shared_ptr<ResourceManager> devices;
 
 	//GAME_OBJECTFACTORY_PRESETS presets;
-	PhysicsDevice::GAME_PHYSICS physics;
-	std::map<InputDevice::GAME_EVENT, bool> pressControl;
+	GAME_PHYSICS physics;
+	GAME_VEC zeroVec;
+	std::map<GAME_EVENT, bool> pressControl;
 	bool wallHit;
-	bool linearMovement;
-	bool wallSoundPlayed;
-	
-	const GAME_INT BASE_FORCE_MULTIPLIER;
-	const GAME_INT RUN_MULTIPLIER; //How many times faster is running then walking
+	bool noWall;
 	
 };
 

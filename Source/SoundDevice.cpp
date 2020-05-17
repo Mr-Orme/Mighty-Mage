@@ -1,6 +1,5 @@
 #include "SoundDevice.h"
-#include "AssetLibrary.h"
-#include "ResourceManager.h"
+#include "SoundAssetLibrary.h"
 
 SoundDevice::~SoundDevice()
 {
@@ -8,26 +7,24 @@ SoundDevice::~SoundDevice()
 }
 //**************************************
 //set's up initial setting for sound device
-bool SoundDevice::Initialize(ResourceManager* devices)
+bool SoundDevice::Initialize()
 //**************************************
 {
-	this->devices= devices;
 	//allows for OGG support
 	int flags = MIX_INIT_OGG;
 	int initted = Mix_Init(flags);
 
-	if(initted && flags != flags)
+	if(initted&flags != flags)
 	{
 		printf("Mix_Init: Failed to init required ogg and mod support!\n");
 		printf("Mix_Init: %s\n", Mix_GetError());
-		return false;
 	}
 
 	//Load the Mixer subsystem
 	if(Mix_OpenAudio(48000, MIX_DEFAULT_FORMAT, 2, 4096 ) <0)
 	{
 		printf( "SDL Mixer could not initialize! SDL_Error: %s\n", Mix_GetError() );
-		return false;
+		exit(1);	    		
 	}
 
 	//Mixing parameters
@@ -35,7 +32,6 @@ bool SoundDevice::Initialize(ResourceManager* devices)
     
     //Allocate sufficient channels
     Mix_AllocateChannels(numChannels);
-	return true;
 }
 
 //**************************************
@@ -52,7 +48,7 @@ bool SoundDevice::PlaySound(std::string sound, int numLoops)
 bool SoundDevice::PlaySound(std::string sound, int numLoops, int channel)
 //**************************************
 {
-		Mix_PlayChannel(channel, devices->getAssetLibrary() ->getSoundEffect(sound), numLoops);
+		Mix_PlayChannel(channel, sLibrary ->SearchSoundEffects(sound), numLoops);
 		return true;
 }
 //**************************************
@@ -60,7 +56,7 @@ bool SoundDevice::PlaySound(std::string sound, int numLoops, int channel)
 void SoundDevice::SetBackground(std::string background)
 //**************************************
 {
-	if(Mix_PlayMusic(devices->getAssetLibrary()-> getMusic(background), -1) == -1)
+	if(Mix_PlayMusic(sLibrary -> SearchMusic(background), -1) == -1)
 	{printf("Mix_PlayMusic: %s\n", Mix_GetError());}
 }
 void SoundDevice::Shutdown()

@@ -2,25 +2,25 @@
 #define COMPONENT_H
 
 #include <memory>
+#include "GameObject.h"
 #include "Definitions.h"
-#include "ObjectFactory.h"
-class GameObject;
+
 
 class Component
 {
 public:
-	Component(GameObject* owner);
+	Component(std::shared_ptr<GameObject> owner);
 	~Component();
 	void OwnerDestroyed();
 
-	virtual bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)=0;
-	GameObject* GetOwner();
+	virtual bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets)=0;
+	std::shared_ptr<GameObject> GetOwner();
 	virtual void Start()=0;
-	virtual GameObject* Update()=0;
+	virtual std::shared_ptr<GameObject> Update()=0;
 	virtual void Finish()=0;
 
 protected:
-	GameObject* _owner;
+	std::shared_ptr<GameObject> _owner;
 };
 
 

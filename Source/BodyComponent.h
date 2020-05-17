@@ -4,32 +4,26 @@
 #include "Component.h"
 #include "Definitions.h"
 class ResourceManager;
-class GameObject;
+
 class BodyComponent : public Component
 {
 public:
-	BodyComponent(GameObject* owner);
+	BodyComponent(std::shared_ptr<GameObject> owner);
 	~BodyComponent();
 	
-	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
+	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
 	void Start();
-	GameObject* Update();
+	std::shared_ptr<GameObject> Update();
 	void Finish();
 
-	GAME_FLT getAngle();
-	GAME_VEC getCurrentSquare();
-	GAME_VEC getPosition();
-	GAME_VEC getVelocity();
-	GAME_INT getWidth();
-	GAME_INT getHeight();
-	void setAngle(GAME_FLT angle);
-	void adjustAngle(GAME_FLT adjustAmount);
-	void linearStop();
+	GAME_FLT GetAngle();
+	std::shared_ptr<ResourceManager> GetDevices(){return devices;}
+	GAME_VEC GetDPosition(){return dPosition;}
 	
 protected:
-	ResourceManager* devices;
-	
-
+	std::shared_ptr<ResourceManager> devices;
+	GAME_VEC dPosition;
+	GAME_VEC oldPosition;
 };
 
 #endif

@@ -5,28 +5,28 @@
 #include "Definitions.h"
 
 class Texture;
-class ObjectFactory;
+
 class RendererComponent : public Component
 {
 public:
-	RendererComponent(GameObject*);
+	RendererComponent(std::shared_ptr<GameObject>);
 	~RendererComponent();
 
-	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
+	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
 	
 	void Draw();
 	void Draw(GAME_VEC position, GAME_FLT angle);
 	void Start();
-	GameObject* Update();
+	std::shared_ptr<GameObject> Update();
 	void Finish();
 
 	Texture* GetTexture(){return texture;}
-	GAME_VEC GetViewAdjustedPosition();
+	GAME_VEC GetUpdatedPosition(std::shared_ptr<GameObject>);
 
 	void SetTexture(Texture* texture){this -> texture = texture;}
 
 protected:
-	ResourceManager* devices;
+	std::shared_ptr<ResourceManager> devices;
 	Texture* texture;
 	bool initialized;
 };

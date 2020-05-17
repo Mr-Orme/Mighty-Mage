@@ -8,10 +8,10 @@ class ResourceManager;
 class HealthComponent : public Component
 {
 public:
-	HealthComponent(GameObject*);
+	HealthComponent(std::shared_ptr<GameObject>);
 	~HealthComponent();
 
-	bool Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets);
+	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
 
 	GAME_INT GetHealth(){return health;}
 	bool GetIsDead(){return isDead;}
@@ -24,12 +24,12 @@ public:
 	bool KillObject();
 	
 	void Start();
-	GameObject* Update();
+	std::shared_ptr<GameObject> Update();
 	void Finish();
 protected:
 	GAME_INT health;
 	bool isDead;
-	ResourceManager* devices;
+	std::shared_ptr<ResourceManager> devices;
 };
 
 #endif

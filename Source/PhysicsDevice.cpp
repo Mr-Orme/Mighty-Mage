@@ -1,14 +1,9 @@
-#include <cmath>
-
 #include "PhysicsDevice.h"
 #include "RendererComponent.h"
 #include "ContactListener.h"
 #include "GameObject.h"
-#include "Texture.h"
-#include "ObjectFactory.h"
+#include <cmath>
 
-
-const float PhysicsDevice::fPRV{ 10.0f };
 
 PhysicsDevice::PhysicsDevice(GAME_FLT gravityX, GAME_FLT gravityY):gravity(RW2PW(gravityX), RW2PW(gravityY))
 {
@@ -119,7 +114,8 @@ bool PhysicsDevice::SetStatic(GameObject* object)
 bool PhysicsDevice::SetStopPhysics(GameObject* object)
 {
 	b2Body* body = FindBody(object);
-	body -> SetActive(false);
+	//body -> SetActive(false);
+	body->SetEnabled(false);
 	return true;	
 }
 
@@ -168,13 +164,13 @@ GAME_VEC PhysicsDevice::GetVelocity(GameObject* object)
 //based on passed in values
 bool PhysicsDevice::createFixture
 	(
-		GameObject* object,
-		GAME_PHYSICS physics,
-		ObjectFactory::GAME_OBJECTFACTORY_PRESETS presets
+	GameObject* object,
+	GAME_PHYSICS physics,
+	GAME_OBJECTFACTORY_PRESETS presets
 	)
 //**************************************
 {
-	RendererComponent* compRenderer = object -> GetComponent<RendererComponent>();
+	std::shared_ptr<RendererComponent> compRenderer = object -> GetComponent<RendererComponent>();
 	//new body definition
 	b2BodyDef* bd = new b2BodyDef;
 	//made need one or the other, depending on what was passed.
@@ -247,8 +243,8 @@ bool PhysicsDevice::createFixture
 
 	//create the fixture on the body.
 	body -> CreateFixture(&shapefd);
-	body -> SetActive(physics.physicsOn);
-	
+	//body -> SetActive(physics.physicsOn);
+	body->SetEnabled(physics.physicsOn);
 	return true;
 	
 }

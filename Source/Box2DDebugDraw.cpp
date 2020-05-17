@@ -1,8 +1,5 @@
 #include "Box2DDebugDraw.h"
 #include "SDL2_gfxPrimitives.h"
-#include "GraphicsDevice.h"
-#include "PhysicsDevice.h"
-#include "ResourceManager.h"
 
 Box2DDebugDraw::Box2DDebugDraw() {
 	circleAccuracy = 9;
@@ -21,79 +18,52 @@ bool Box2DDebugDraw::Initialize(ResourceManager* devices) {
 	return true;
 }
 
-void Box2DDebugDraw::DrawPolygon(const b2Vec2 *vertices, int32 vertexCount, const b2Color &color) 
+void Box2DDebugDraw::DrawPoint(const b2Vec2& p, float size, const b2Color& color)
+{
+}
+
+void Box2DDebugDraw::DrawPolygon(const b2Vec2 *vertices, int32 vertexCount, const b2Color &color)
 {
 	//std::cout <<"Draw Polygon";
    	// Draw Shape Vertices using SDL2_gfx (white)
-	SDL_SetRenderDrawColor(devices -> getGraphicsDevice() -> GetRenderer(),0,0,255,255);
+	SDL_SetRenderDrawColor(devices -> GetGraphicsDevice() -> GetRenderer(),0,0,255,255);
 
 	// Draw Bound Box Vertices using SDL2 Primitives
 	for(int i=0; i<(vertexCount-1); i++) {
-		lineRGBA
-		(
-			devices -> getGraphicsDevice() ->GetRenderer(), 
-			(Sint16)(devices -> getPhysicsDevice() -> PW2RW(vertices[i].x)),
-			(Sint16)(devices -> getPhysicsDevice() -> PW2RW(vertices[i].y)),
-			(Sint16)(devices -> getPhysicsDevice() -> PW2RW(vertices[i+1].x)),
-			(Sint16)(devices -> getPhysicsDevice() -> PW2RW(vertices[i+1].y)),
-			255,255,255,100
-		);
-		//SDL_RenderDrawLine(devices -> getGraphicsDevice() ->GetRenderer(),devices -> getPhysicsDevice() -> PW2RW(vertices[i].x),devices -> getPhysicsDevice() -> PW2RW(vertices[i].y),devices -> getPhysicsDevice() -> PW2RW(vertices[i+1].x),devices -> getPhysicsDevice() -> PW2RW(vertices[i+1].y));
+		lineRGBA(devices -> GetGraphicsDevice() ->GetRenderer(), devices -> GetPhysicsDevice() -> PW2RW(vertices[i].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[i].y),devices -> GetPhysicsDevice() -> PW2RW(vertices[i+1].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[i+1].y),255,255,255,100);
+		//SDL_RenderDrawLine(devices -> GetGraphicsDevice() ->GetRenderer(),devices -> GetPhysicsDevice() -> PW2RW(vertices[i].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[i].y),devices -> GetPhysicsDevice() -> PW2RW(vertices[i+1].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[i+1].y));
 	}	
 	//draw a line from the last to the first
-    lineRGBA
-	(
-		devices -> getGraphicsDevice() ->GetRenderer(),
-		(Sint16)(devices -> getPhysicsDevice() -> PW2RW(vertices[vertexCount-1].x)),
-		(Sint16)(devices -> getPhysicsDevice() -> PW2RW(vertices[vertexCount-1].y)),
-		(Sint16)(devices -> getPhysicsDevice() -> PW2RW(vertices[0].x)),
-		(Sint16)(devices -> getPhysicsDevice() -> PW2RW(vertices[0].y)),
-		255,255,255,100
-	);
+    lineRGBA(devices -> GetGraphicsDevice() ->GetRenderer(),devices -> GetPhysicsDevice() -> PW2RW(vertices[vertexCount-1].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[vertexCount-1].y),devices -> GetPhysicsDevice() -> PW2RW(vertices[0].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[0].y),255,255,255,100);
 
     //Reset color (black)
-    SDL_SetRenderDrawColor(devices -> getGraphicsDevice() ->GetRenderer(),0,0,0,255);
+    SDL_SetRenderDrawColor(devices -> GetGraphicsDevice() ->GetRenderer(),0,0,0,255);
 }
 
 void Box2DDebugDraw::DrawSolidPolygon(const b2Vec2 *vertices, int32 vertexCount, const b2Color &color)
 {
 	//std::cout << "Draw Solid Polygon";
    	// Draw Bound Box Vertices using SDL2 Primitives (Green)
-    SDL_SetRenderDrawColor(devices -> getGraphicsDevice() ->GetRenderer(),0,255,0,255);
+    SDL_SetRenderDrawColor(devices -> GetGraphicsDevice() ->GetRenderer(),0,255,0,255);
 
 	// Draw Bound Box Vertices using SDL2 Primitives
 	for(int i=0; i<(vertexCount-1); i++) {
-        lineRGBA
-		(
-			devices -> getGraphicsDevice() ->GetRenderer(),
-			(Sint16)(devices -> getPhysicsDevice() -> PW2RW(vertices[i].x)),
-			(Sint16)(devices -> getPhysicsDevice() -> PW2RW(vertices[i].y)),
-			(Sint16)(devices -> getPhysicsDevice() -> PW2RW(vertices[i+1].x)),
-			(Sint16)(devices -> getPhysicsDevice() -> PW2RW(vertices[i+1].y)),
-			255,0,0,100
-		);
-		//SDL_RenderDrawLine(devices -> getGraphicsDevice() ->GetRenderer(),devices -> getPhysicsDevice() -> PW2RW(vertices[i].x),devices -> getPhysicsDevice() -> PW2RW(vertices[i].y),devices -> getPhysicsDevice() -> PW2RW(vertices[i+1].x),devices -> getPhysicsDevice() -> PW2RW(vertices[i+1].y));
+        lineRGBA(devices -> GetGraphicsDevice() ->GetRenderer(),devices -> GetPhysicsDevice() -> PW2RW(vertices[i].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[i].y),devices -> GetPhysicsDevice() -> PW2RW(vertices[i+1].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[i+1].y),255,0,0,100);
+		//SDL_RenderDrawLine(devices -> GetGraphicsDevice() ->GetRenderer(),devices -> GetPhysicsDevice() -> PW2RW(vertices[i].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[i].y),devices -> GetPhysicsDevice() -> PW2RW(vertices[i+1].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[i+1].y));
 	}	
 	//draw a line from the last to the first
-    lineRGBA
-	(
-		devices -> getGraphicsDevice() ->GetRenderer(),
-		(Sint16)(devices -> getPhysicsDevice() -> PW2RW(vertices[vertexCount-1].x)),
-		(Sint16)(devices -> getPhysicsDevice() -> PW2RW(vertices[vertexCount-1].y)),
-		(Sint16)(devices -> getPhysicsDevice() -> PW2RW(vertices[0].x)),
-		(Sint16)(devices -> getPhysicsDevice() -> PW2RW(vertices[0].y)),
-		255,0,0,100);
+    lineRGBA(devices -> GetGraphicsDevice() ->GetRenderer(),devices -> GetPhysicsDevice() -> PW2RW(vertices[vertexCount-1].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[vertexCount-1].y),devices -> GetPhysicsDevice() -> PW2RW(vertices[0].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[0].y),255,0,0,100);
 
     //Reset color (black)
-    SDL_SetRenderDrawColor(devices -> getGraphicsDevice() ->GetRenderer(),0,0,0,255);
+    SDL_SetRenderDrawColor(devices -> GetGraphicsDevice() ->GetRenderer(),0,0,0,255);
 }
 
-void Box2DDebugDraw::DrawCircle(const b2Vec2 &center, float32 radius, const b2Color &color) 
+void Box2DDebugDraw::DrawCircle(const b2Vec2 &center, float radius, const b2Color &color) 
 {
 	//Unimplemented
 }
 
-void Box2DDebugDraw::DrawSolidCircle(const b2Vec2 &center, float32 radius, const b2Vec2 &axis, const b2Color &color)
+void Box2DDebugDraw::DrawSolidCircle(const b2Vec2 &center, float radius, const b2Vec2 &axis, const b2Color &color)
 {
     //Unimplemented
 }

@@ -1,49 +1,51 @@
 #include "BodyComponent.h"
 #include "RendererComponent.h"
 #include "ResourceManager.h"
-#include "AssetLibrary.h"
-#include "GameObject.h"
-#include "PhysicsDevice.h"
-#include "Texture.h"
 
-BodyComponent::BodyComponent(GameObject* owner):Component(owner){}
+BodyComponent::BodyComponent(std::shared_ptr<GameObject> owner):Component(owner){}
 BodyComponent::~BodyComponent(){}
 
 //**************************************
 //Based on the presets struct passed in, a fixture is created
-bool BodyComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
+bool BodyComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
 //**************************************
 {
 	
-	RendererComponent* compRenderer = _owner -> GetComponent<RendererComponent>();
-	PhysicsDevice::GAME_PHYSICS physics;
+	std::shared_ptr<RendererComponent> compRenderer = _owner -> GetComponent<RendererComponent>();
+	GAME_PHYSICS physics;
 	if(compRenderer != NULL)
 	{
 		//store the resource manager.
 		devices = presets.devices;
 				
 		//Get physics based on object type.
-		physics = devices -> getAssetLibrary() -> getObjectPhysics(presets.objectType);
+		physics = devices -> GetPhysicsLibrary() -> Search(presets.objectType);
 				
 		//Create fixture.
-		devices -> getPhysicsDevice() -> createFixture
+		devices -> GetPhysicsDevice() -> createFixture
 			(
-			_owner,
+			_owner.get(),
 			physics,
 			presets
 			);
-	}	
+	}
+	oldPosition = presets.position;
 	return true;
 }
 
 void BodyComponent::Start(){}
-
 //**************************************
-//
-GameObject* BodyComponent::Update()
+//finds the current position, subtract's off the last frame's position
+//to get the change in position. This is for the auto scrolling feature.
+//the newpostion then becomes the old position.
+std::shared_ptr<GameObject> BodyComponent::Update()
 //**************************************
 {
-	return nullptr;
+	GAME_VEC newPosition = devices -> GetPhysicsDevice() -> GetPosition(_owner.get());
+	dPosition.x =  newPosition.x- oldPosition.x;
+	dPosition.y =  newPosition.y- oldPosition.y;
+	oldPosition = newPosition;
+	return NULL;
 }
 //**************************************
 //**************************************
@@ -52,66 +54,9 @@ void BodyComponent::Finish()
 //**************************************
 {
 	//remove the physics body
-	if(!devices -> getPhysicsDevice() -> RemoveObject(_owner))
+	if(!devices -> GetPhysicsDevice() -> RemoveObject(_owner.get()))
 	{
 		printf( "Object could not be removed from Physics World");
 		exit(1);					
 	}
-}
-GAME_FLT BodyComponent::getAngle()
-{
-	return devices->getPhysicsDevice()->GetAngle(_owner);
-}
-
-GAME_VEC BodyComponent::getPosition()
-{
-	return (devices->getPhysicsDevice()->GetPosition(_owner));
-}
-GAME_VEC BodyComponent::getVelocity()
-{
-	return devices->getPhysicsDevice()->GetVelocity(_owner);
-}
-GAME_INT BodyComponent::getWidth()
-{
-	return _owner->GetComponent<RendererComponent>()->GetTexture()->getWidth();
-}
-GAME_INT BodyComponent::getHeight()
-{
-	return _owner->GetComponent<RendererComponent>()->GetTexture()->getHeight();
-}
-void BodyComponent::setAngle(GAME_FLT angle)
-{
-	devices->getPhysicsDevice()->SetAngle(_owner, angle);
-}
-
-void BodyComponent::adjustAngle(GAME_FLT adjustAmount)
-{
-	setAngle(getAngle() + adjustAmount);
-}
-
-void BodyComponent::linearStop()
-{
-	devices->getPhysicsDevice()->SetLinearVelocity(_owner, { 0,0 });
-}
-
-//**************************************
-//find's the 15x15 game square based on current position
-GAME_VEC BodyComponent::getCurrentSquare()
-//**************************************
-{
-
-
-	GAME_VEC cityCorner = devices->getCityCorner();
-
-	//subtract off the player's position on the screen to get the actual spot of the player.
-	//divide by the number of pixels in each square.
-	//Adjust the y, because the 15x15 square starts in the bottom left corner, while SDL starts in the top left.
-	//TODO: needs to determine square by nose! adjust according to direction facing!
-	GAME_VEC square =
-	{
-		int((cityCorner.x - getPosition().x)*-1 / squareDimension),
-		15 + int((cityCorner.y - getPosition().y - _owner->GetComponent<RendererComponent>()->GetTexture()->getHeight()) / squareDimension)
-	};
-	return square;
-
 }

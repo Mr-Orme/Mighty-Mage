@@ -3,51 +3,22 @@
 
 #include "Definitions.h"
 #include "Box2D.h"
+#include "Texture.h"
+#include "PhysicsAssetLibrary.h"
+#include "GameObject.h"
 
-#include "ObjectFactory.h"
-class Texture;
-class GameObject;
-//class PhysicsAssetLibrary;
 class Object;
 
 class PhysicsDevice{
 public:
-
 	PhysicsDevice(GAME_FLT gravityX, GAME_FLT gravityY);
 	bool Initialize();
 	bool Update(float dt);
-
-	typedef struct GAME_ROTATE_STRUCT
-	{
-		GAME_FLT torque;
-		GAME_FLT maxAngularVelocity;
-		GAME_INT radius;
-		GAME_VEC center;
-	} GAME_ROTATE_STRUCT;
-
-	enum GAME_OBJECT_SHAPE { GAME_RECTANGLE, GAME_CIRCLE };
-	enum GAME_BODY_TYPE { GAME_STATIC, GAME_KINEMATIC, GAME_DYNAMIC };
-
-	typedef struct GAME_PHYSICS
-	{
-		GAME_FLT spinSpeed;
-		GAME_BODY_TYPE bodyType;
-		GAME_OBJECT_SHAPE objectShape;
-		GAME_FLT density;
-		GAME_FLT friction;
-		GAME_FLT restitution;
-		GAME_FLT angularDamping;
-		GAME_FLT linearDamping;
-		GAME_FLT force;
-		bool physicsOn;
-	}GAME_PHYSICS;
-
-
 	bool createFixture
 		(
-			GameObject* object,
-			GAME_PHYSICS physics,
-			ObjectFactory::GAME_OBJECTFACTORY_PRESETS presets
+		GameObject* object,
+		GAME_PHYSICS physics,
+		GAME_OBJECTFACTORY_PRESETS presets
 		);
 
 	bool SetTransform(GameObject* object, GAME_VEC position, GAME_FLT angle);
@@ -86,7 +57,6 @@ private:
 	bool DestroyJoint(b2Body* body);
 	const b2Vec2 gravity;
 	GAME_VEC AlignCenters(GameObject* object);
-	static const float fPRV;
 
 	
 

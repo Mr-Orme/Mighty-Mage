@@ -1,29 +1,15 @@
 #include "InventoryComponent.h"
 
-InventoryComponent::InventoryComponent(GameObject* owner):Component(owner){}
+InventoryComponent::InventoryComponent(std::shared_ptr<GameObject> owner):Component(owner){}
 
 InventoryComponent::~InventoryComponent(){}
 
-bool InventoryComponent::Initialize(ObjectFactory::GAME_OBJECTFACTORY_PRESETS& presets)
+bool InventoryComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
 {
-	pickedUpBy = nullptr;
+	pickedUp = false;
 	return true;
-}
-
-bool InventoryComponent::isPickedUp()
-{
-	if (pickedUpBy == nullptr)
-	{
-		return false;
-	}
-	return true;
-}
-
-void InventoryComponent::getPickedUp(GameObject * pickedUpBy)
-{
-	this->pickedUpBy = pickedUpBy;
 }
 
 void InventoryComponent::Start(){}
-GameObject* InventoryComponent::Update(){return nullptr;}
+std::shared_ptr<GameObject> InventoryComponent::Update(){return NULL;}
 void InventoryComponent::Finish(){}

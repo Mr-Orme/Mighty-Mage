@@ -1,20 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ArtAssetLibrary.cpp" />
+    <ClCompile Include="Source\ComponentAssetLibrary.cpp" />
     <ClCompile Include="Source\EventHandler.cpp" />
     <ClCompile Include="Source\GhostComponent.cpp" />
     <ClCompile Include="Source\LevelConfigLibrary.cpp" />
-    <ClCompile Include="Source\AssetLibrary.cpp" />
+    <ClCompile Include="Source\NoticesAssetLibrary.cpp" />
+    <ClCompile Include="Source\ObjectAssetLibrary.cpp" />
+    <ClCompile Include="Source\PhysicsAssetLibrary.cpp" />
+    <ClCompile Include="Source\SoundAssetLibrary.cpp" />
+    <ClCompile Include="Source\Box2DDebugDraw.cpp" />
     <ClCompile Include="Source\Component.cpp" />
     <ClCompile Include="Source\BackpackComponent.cpp" />
     <ClCompile Include="Source\BodyComponent.cpp" />
@@ -41,11 +55,16 @@
     <ClCompile Include="Source\View.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\DeviceList.h" />
+    <ClInclude Include="Source\ArtAssetLibrary.h" />
+    <ClInclude Include="Source\ComponentAssetLibrary.h" />
     <ClInclude Include="Source\EventHandler.h" />
     <ClInclude Include="Source\GhostComponent.h" />
     <ClInclude Include="Source\LevelConfigLibrary.h" />
-    <ClInclude Include="Source\AssetLibrary.h" />
+    <ClInclude Include="Source\NoticesAssetLibrary.h" />
+    <ClInclude Include="Source\ObjectAssetLibrary.h" />
+    <ClInclude Include="Source\PhysicsAssetLibrary.h" />
+    <ClInclude Include="Source\SoundAssetLibrary.h" />
+    <ClInclude Include="Source\Box2DDebugDraw.h" />
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\BackpackComponent.h" />
     <ClInclude Include="Source\BodyComponent.h" />
@@ -86,21 +105,34 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8DA8FC7C-8042-4144-975D-7F6B0B70CAE5}</ProjectGuid>
-    <RootNamespace>Hmwk1Assignment</RootNamespace>
+    <RootNamespace>MightyMage</RootNamespace>
     <ProjectName>Mighty.Mage</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -110,17 +142,53 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ProjectDir)Game\</OutDir>
     <IntDir>$(ProjectDir)Temp\</IntDir>
-    <IncludePath>$(ProjectDir)ThirdParty\SDL2_ttf-2.0.12\include;$(ProjectDir)ThirdParty\Box2D\Box2D;$(ProjectDir)ThirdParty\Box2D;$(ProjectDir)ThirdParty\SDL2-2.0.7\include;$(ProjectDir)ThirdParty\SDL2_image-2.0.0\include;$(ProjectDir)ThirdParty\SDL2_gfx-1.0.1\include;$(ProjectDir)ThirdParty\SDL2_mixer-2.0.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)ThirdParty\SDL2_ttf-2.0.12\lib\x86;$(ProjectDir)ThirdParty\Box2D\Box2D\lib;$(ProjectDir)ThirdParty\SDL2-2.0.7\lib\x86;$(ProjectDir)ThirdParty\SDL2_image-2.0.0\lib\x86;$(ProjectDir)ThirdParty\SDL2_gfx-1.0.1\lib\x86;$(ProjectDir)ThirdParty\SDL2_mixer-2.0.0\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)ThirdParty\SDL2_ttf-2.0.12\include;$(ProjectDir)ThirdParty\Box2D\Box2D;$(ProjectDir)ThirdParty\Box2D;$(ProjectDir)ThirdParty\SDL2-2.0.3\include;$(ProjectDir)ThirdParty\SDL2_image-2.0.0\include;$(ProjectDir)ThirdParty\SDL2_gfx-1.0.1\include;$(ProjectDir)ThirdParty\SDL2_mixer-2.0.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)ThirdParty\SDL2_ttf-2.0.12\lib\x86;$(ProjectDir)ThirdParty\Box2D\Box2D\lib;$(ProjectDir)ThirdParty\SDL2-2.0.3\lib\x86;$(ProjectDir)ThirdParty\SDL2_image-2.0.0\lib\x86;$(ProjectDir)ThirdParty\SDL2_gfx-1.0.1\lib\x86;$(ProjectDir)ThirdParty\SDL2_mixer-2.0.0\lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)ThirdParty\SDL2_ttf\include;$(ProjectDir)ThirdParty\Box2D\include\box2d;$(ProjectDir)ThirdParty\SDL2\include;$(ProjectDir)ThirdParty\SDL2_image\include;$(ProjectDir)ThirdParty\SDL2_gfx;$(ProjectDir)ThirdParty\SDL2_mixer\include;$(ProjectDir)ThirdParty\Box2D\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)ThirdParty\SDL2_ttf\lib\x64;$(ProjectDir)ThirdParty\Box2D\build\src\x64debug;$(ProjectDir)ThirdParty\SDL2\lib\x64;$(ProjectDir)ThirdParty\SDL2_image\lib\x64;$(ProjectDir)ThirdParty\SDL2_gfx\x64\Debug;$(ProjectDir)ThirdParty\SDL2_mixer\lib\x64;$(LibraryPath)</LibraryPath>
+    <OutDir>$(ProjectDir)Game\</OutDir>
+    <IntDir>$(ProjectDir)Temp\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_gfx.lib;SDL2_ttf.lib;SDL2_mixer.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <PreBuildEvent>
+      <Command>copy "$(ProjectDir)ThirdParty\SDL2-2.0.3\lib\x86\*.dll" "$(ProjectDir)"
+copy "$(ProjectDir)ThirdParty\SDL2_image-2.0.0\lib\x86\*.dll" "$(ProjectDir)"
+copy "$(ProjectDir)ThirdParty\SDL2_ttf-2.0.12\lib\x86\*.dll" "$(ProjectDir)"
+copy "$(ProjectDir)ThirdParty\SDL2_gfx-1.0.1\lib\x86\*.dll" "$(ProjectDir)"
+copy "$(ProjectDir)ThirdParty\SDL2_mixer-2.0.0\lib\x86\*.dll" "$(ProjectDir)"</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>move "$(ProjectDir)*.dll" "$(ProjectDir)Game";
+xcopy "$(ProjectDir)Assets" "$(ProjectDir)Game\Assets" /E /I /F /Y</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
@@ -134,11 +202,11 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PreBuildEvent>
-      <Command>copy "$(ProjectDir)ThirdParty\SDL2-2.0.7\lib\x86\*.dll" "$(ProjectDir)"
-copy "$(ProjectDir)ThirdParty\SDL2_image-2.0.0\lib\x86\*.dll" "$(ProjectDir)"
-copy "$(ProjectDir)ThirdParty\SDL2_ttf-2.0.12\lib\x86\*.dll" "$(ProjectDir)"
-copy "$(ProjectDir)ThirdParty\SDL2_gfx-1.0.1\lib\x86\*.dll" "$(ProjectDir)"
-copy "$(ProjectDir)ThirdParty\SDL2_mixer-2.0.0\lib\x86\*.dll" "$(ProjectDir)"</Command>
+      <Command>copy "$(ProjectDir)ThirdParty\SDL2\lib\x64\*.dll" "$(ProjectDir)"
+copy "$(ProjectDir)ThirdParty\SDL2_image\lib\x64\*.dll" "$(ProjectDir)"
+copy "$(ProjectDir)ThirdParty\SDL2_ttf\lib\x64\*.dll" "$(ProjectDir)"
+copy "$(ProjectDir)ThirdParty\SDL2_gfx\x64\Debug\*.dll" "$(ProjectDir)"
+copy "$(ProjectDir)ThirdParty\SDL2_mixer\lib\x64\*.dll" "$(ProjectDir)"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>move "$(ProjectDir)*.dll" "$(ProjectDir)Game";
@@ -146,6 +214,20 @@ xcopy "$(ProjectDir)Assets" "$(ProjectDir)Game\Assets" /E /I /F /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>

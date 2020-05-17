@@ -4,17 +4,16 @@
 #include "ComponentsList.h"
 #include "ObjectFactory.h"
 #include "GraphicsDevice.h"
+//#include "InputDevice.h"
 #include "View.h"
-#include "Texture.h"
-#include "SoundDevice.h"
 
 
 
 
 GraphicsDevice::GraphicsDevice(Uint32 width, Uint32 height) : SCREEN_WIDTH(width), SCREEN_HEIGHT(height)
 {
-	screen = nullptr;
-	renderer = nullptr;
+	screen = NULL;
+	renderer = NULL;
 }
 
 GraphicsDevice::~GraphicsDevice()
@@ -26,10 +25,10 @@ GraphicsDevice::~GraphicsDevice()
 	}*/
 }
 
-//SDL_Window* GraphicsDevice::GetWindow()
-//{
-//	return(screen);
-//}
+SDL_Window* GraphicsDevice::GetWindow()
+{
+	return(screen);
+}
 
 bool GraphicsDevice::Initialize(bool fullScreen)
 {
@@ -72,7 +71,7 @@ bool GraphicsDevice::Initialize(bool fullScreen)
 			SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
 	}
-	if(screen==nullptr)
+	if(screen==NULL)
 	{
 		printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
 		return(false);
@@ -80,7 +79,7 @@ bool GraphicsDevice::Initialize(bool fullScreen)
 
 	//Construct the renderer
 	renderer = SDL_CreateRenderer(screen,-1,SDL_RENDERER_ACCELERATED);
-	if(renderer==nullptr)
+	if(renderer==NULL)
 	{
 		printf( "Renderer could not be created! SDL_Error: %s\n", SDL_GetError() );
 		return(false);
@@ -92,8 +91,8 @@ bool GraphicsDevice::Initialize(bool fullScreen)
 	//========================================
 	//create view
 	//========================================
-	view = std::make_unique<View>();
-	view->Initialize(this, 0, 0);
+	view = std::make_shared<View>();
+	view -> Initialize (0, 0);
 
 	return(true);
 
@@ -103,11 +102,11 @@ bool GraphicsDevice::ShutDown()
 {
 	//Free the window
 	SDL_DestroyWindow(screen);
-	screen = nullptr;
+	screen = NULL;
 
 	//Free renderer
 	SDL_DestroyRenderer(renderer);
-	renderer = nullptr;
+	renderer = NULL;
 	
 
 	//Quit SDL Subsystems
@@ -131,12 +130,12 @@ void GraphicsDevice::Begin()
 
 void GraphicsDevice::Draw()
 {
-	////********************************draw level*************************************
-	//for(auto sprite : sprites)
-	//{
-	//	sprite->Draw();
-	//}
-	////*********************************************************************************
+	//********************************draw level*************************************
+	for(auto sprite : sprites)
+	{
+		sprite->Draw();
+	}
+	//*********************************************************************************
 
 
 
@@ -154,29 +153,29 @@ void GraphicsDevice::Draw()
 		roundedBoxRGBA
 		(
 			renderer, 
-			(Sint16)(currOverlay.topLeft.x),
-			(Sint16)(currOverlay.topLeft.y),
-			(Sint16)(currOverlay.bottomRight.x),
-			(Sint16)(currOverlay.bottomRight.y),
-			(Sint16)(cornerRadius),
-			(Uint8)(currOverlay.boxBackgroundColor.R),
-			(Uint8)(currOverlay.boxBackgroundColor.G),
-			(Uint8)(currOverlay.boxBackgroundColor.B),
-			(Uint8)(currOverlay.boxBackgroundColor.A)
+			currOverlay.topLeft.x, 
+			currOverlay.topLeft.y, 
+			currOverlay.bottomRight.x, 
+			currOverlay.bottomRight.y, 
+			cornerRadius, 
+			currOverlay.boxBackgroundColor.R, 
+			currOverlay.boxBackgroundColor.G, 
+			currOverlay.boxBackgroundColor.B, 
+			currOverlay.boxBackgroundColor.A
 		);
 		//draw the border
 		roundedRectangleRGBA
 		(
 			renderer, 
-			(Sint16)(currOverlay.topLeft.x),
-			(Sint16)(currOverlay.topLeft.y),
-			(Sint16)(currOverlay.bottomRight.x),
-			(Sint16)(currOverlay.bottomRight.y),
-			(Sint16)(cornerRadius),
-			(Uint8)(currOverlay.boxBorderColor.R),
-			(Uint8)(currOverlay.boxBorderColor.G),
-			(Uint8)(currOverlay.boxBorderColor.B),
-			(Uint8)(currOverlay.boxBorderColor.A)
+			currOverlay.topLeft.x, 
+			currOverlay.topLeft.y, 
+			currOverlay.bottomRight.x, 
+			currOverlay.bottomRight.y, 
+			cornerRadius, 
+			currOverlay.boxBorderColor.R, 
+			currOverlay.boxBorderColor.G, 
+			currOverlay.boxBorderColor.B, 
+			currOverlay.boxBorderColor.A
 		);
 
 		//draw the objects
@@ -195,7 +194,7 @@ void GraphicsDevice::Draw()
 //	{
 //		ResourceManager* devices = levelExit -> GetComponent<BodyComponent>() -> GetDevices().get();
 //		//stop the physics on the trapdoor so we can walk onto that square.
-//		devices -> getPhysicsDevice() -> SetStopPhysics(levelExit.get());
+//		devices -> GetPhysicsDevice() -> SetStopPhysics(levelExit.get());
 //		//get rid of the notice stating we need to find the spheres.
 //		GAME_NOTICE notice = {15, 0, W, ""};
 //		devices -> GetNoticesLibrary() -> RemoveAsset(notice);
@@ -217,21 +216,26 @@ SDL_Renderer* GraphicsDevice::GetRenderer()
 	return(renderer);
 }
 
-View * GraphicsDevice::GetView()
+void GraphicsDevice::AddSpriteRenderer(RendererComponent* sprite)
 {
-	return view.get();
+	sprites.push_back(sprite);
 }
-
-void GraphicsDevice::SetView(View * view)
+void GraphicsDevice::RemoveSpriteRenderer(RendererComponent* dSprite)
 {
-	this->view = std::unique_ptr<View>(view);
+	std::vector<RendererComponent*>::iterator spriteIter;
+	for(spriteIter=sprites.begin(); spriteIter!=sprites.end(); spriteIter++)
+	{
+		if(*spriteIter == dSprite)
+		{
+			spriteIter = sprites.erase(spriteIter);
+			
+		}
+	}
 }
-
-
 bool GraphicsDevice::SetFont(std::string path, GAME_INT size, GAME_RGBA color)
 {
 	font = TTF_OpenFont(path.c_str(), size);
-	if( font == nullptr )
+	if( font == NULL )
 	{
         printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
 	}
@@ -252,13 +256,7 @@ void GraphicsDevice::Text2Screen(std::string text, GAME_VEC position)
 
 	
 	//set color of text
-	SDL_Color textColor = 
-	{ 
-		(Uint8)(color.R), 
-		(Uint8)(color.G),
-		(Uint8)(color.B),
-		(Uint8)(color.A)
-	};
+	SDL_Color textColor = {color.R, color.G, color.B, color.A};
 
 	//create texture
 	SDL_Texture* textSheetTexture = SDL_CreateTextureFromSurface( 
@@ -279,12 +277,12 @@ void GraphicsDevice::Text2Screen(std::string text, GAME_VEC position)
 		//bottomRight needs to be the width + 1;
 	if(position.x == -1)
 	{
-		position.x = Center((GAME_FLT)SCREEN_WIDTH, (GAME_FLT)width);
+		position.x = Center(SCREEN_WIDTH, width);
 			
 	}
 	if(position.y == -1)
 	{
-		position.y = Center((GAME_FLT)SCREEN_HEIGHT, (GAME_FLT)height);
+		position.y = Center(SCREEN_HEIGHT, height);
 	}
 
 	GAME_VEC topLeft = {position.x - widthIncrease, position.y -heightIncrease};
@@ -320,45 +318,24 @@ void GraphicsDevice::Notice2Screen(std::string text)
 
 }
 
-////**************************************
-////reverses the order of sprites so that the player is on top.
-//void GraphicsDevice::ReverseOrder()
-////**************************************
-//{
-//	std::reverse(sprites.begin(), sprites.end());
-//}
+//**************************************
+//reverses the order of sprites so that the player is on top.
+void GraphicsDevice::ReverseOrder()
+//**************************************
+{
+	std::reverse(sprites.begin(), sprites.end());
+}
 //**************************************
 //draws a filled circle.
 void GraphicsDevice::DrawFilledCircle(GAME_VEC position, GAME_INT radius, GAME_RGBA RGBA)
 //**************************************
 {
-	filledCircleRGBA
-	(
-		renderer, 
-		(Sint16)(position.x),
-		(Sint16)(position.y),
-		(Sint16)(radius),
-		(Uint8)(RGBA.R),
-		(Uint8)(RGBA.G),
-		(Uint8)(RGBA.B),
-		(Uint8)(RGBA.A)
-	);
+	filledCircleRGBA(renderer, position.x, position.y, radius, RGBA.R, RGBA.G, RGBA.B, RGBA.A);
 }
 
 bool GraphicsDevice::DrawBox(GAME_VEC topLeft, GAME_VEC bottomRight, GAME_RGBA RGBA)
 {
-	boxRGBA
-	(
-		renderer,
-		(Sint16)(topLeft.x),
-		(Sint16)(topLeft.y),
-		(Sint16)(bottomRight.x),
-		(Sint16)(bottomRight.y),
-		(Uint8)(RGBA.R),
-		(Uint8)(RGBA.G),
-		(Uint8)(RGBA.B),
-		(Uint8)(RGBA.A)
-	);
+	boxRGBA(renderer, topLeft.x, topLeft.y, bottomRight.x, bottomRight.y, RGBA.R, RGBA.G, RGBA.B,RGBA.A);
 	return true;
 }
 

@@ -17,8 +17,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_ttf.h"
-#include "Texture.h"
-//#include "RendererComponent.h"
+#include "RendererComponent.h"
 class View;
 //class InputDevice;
 
@@ -57,27 +56,27 @@ public:
 			
 		);
 
-	//void ReverseOrder();
+	void ReverseOrder();
 
-	//TODO: !!!!!!!!!!!!!!!!!!!!!Move where exit is!!!!!!!!!!!!!!!!! 
-	GameObject* GetExit(){ return levelExit; }
+	//!!!!!!!!!!!!!!!!!!!!!Move where exit is!!!!!!!!!!!!!!!!!
+	std::shared_ptr<GameObject> GetExit(){ return levelExit; }
 
 	//Accessors
-	//void AddSpriteRenderer(RendererComponent*);
-	//void RemoveSpriteRenderer(RendererComponent*);
+	void AddSpriteRenderer(RendererComponent*);
+	void RemoveSpriteRenderer(RendererComponent*);
 
 	//Getters
 	SDL_Renderer* GetRenderer();
-	//SDL_Window* GetWindow();
+	SDL_Window* GetWindow();
 	GAME_INT GetScreenWidth(){return SCREEN_WIDTH;}
 	GAME_INT GetScreenHeight(){return SCREEN_HEIGHT;}
-	View* GetView();
+	std::shared_ptr<View> GetView(){return view;}
 	
 	
 
 	//Setters
-	void SetView(View* view);
-	void SetExit(GameObject* levelExit){this -> levelExit = levelExit;}
+	void SetView(std::shared_ptr<View> view){this -> view = view;}
+	void SetExit(std::shared_ptr<GameObject> levelExit){this -> levelExit = levelExit;}
 	bool SetFont(std::string path, GAME_INT size, GAME_RGBA color);
 
 
@@ -93,9 +92,9 @@ private:
 	SDL_Renderer* renderer;
 
 	//Renderers
-	//std::vector<RendererComponent*> sprites;
+	std::vector<RendererComponent*> sprites;
 
-	std::unique_ptr<View> view;
+	std::shared_ptr<View> view;
 
 	typedef struct overlay
 	{
@@ -111,7 +110,7 @@ private:
 	TTF_Font* font;
 	GAME_RGBA color;
 
-	GameObject* levelExit;
+	std::shared_ptr<GameObject> levelExit;
 
 };
 

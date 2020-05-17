@@ -1,22 +1,11 @@
-#include "tinyxml\tinyxml.h"
-
 #include "Game.h"
-#include "GameObject.h"
 #include "ComponentsList.h"
-#include "GraphicsDevice.h"
-#include "View.h"
-#include "SoundDevice.h"
-#include "ResourceManager.h"
-#include "Timer.h"
-
-
-
 //**************************************
 //Initiallizes variables to Null values.
 Game::Game()
 //**************************************
 {
-	devices = nullptr;
+	devices = NULL;
 	debug = false;
 }
 
@@ -25,7 +14,7 @@ Game::~Game()
 	if(devices)
 	{
 		devices -> Shutdown();
-		devices = nullptr;
+		devices = NULL;
 	}
 }
 
@@ -58,33 +47,39 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 	//========================================
 	//Construct Device Manager
 	//========================================
-	devices = std::make_unique<ResourceManager>();
+	devices = std::make_shared<ResourceManager>();
 	devices->Initialize(SCREEN_WIDTH, SCREEN_HEIGHT, assetConfigFile);
+	this->devices = devices;
 	
+
+
+
 	///Get a few things ready
-	ObjectFactory::GAME_OBJECTFACTORY_PRESETS presets;
-	presets.devices = devices.get();
-	ObjectFactory* objectFactory = devices->getObjectFactory();
+	GAME_OBJECTFACTORY_PRESETS presets;
+	presets.devices = devices;
+	ObjectFactory* objectFactory = devices->GetObjectFactory();
 
 	//========================================
 	//load the files
 	//========================================
 	TiXmlDocument currentLevel(levelConfig);
-	
 	//if it does not load, the level or the physics did not load.
 	if (!currentLevel.LoadFile()){ return false; };
 	//create a root variable and set to the first element "Level"
-	
 	TiXmlElement* lRoot = currentLevel.FirstChildElement();;
 	//record the level;
 	int iLevel;
 	lRoot->QueryIntAttribute("level", &iLevel);
-	devices->setLevel((GAME_LEVEL)iLevel);
-	
+	devices->SetLevel(static_cast<GAME_LEVEL>(iLevel));
+
+
+
 	//get the first child element "Row"
 	TiXmlElement* rowElement = lRoot->FirstChildElement();
 
-	
+
+	//Size, in pixels, of one square in the game space
+	GAME_INT squareDimension = 110;
 	presets.position.x = 0;
 	presets.position.y = 0;
 	//keeps track of the game square we are currently on.
@@ -130,25 +125,24 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 				//OF THE SCREEN BEFORE ANYTHING ELSE IS CREATED.
 				if (presets.objectType == "Player")
 				{
-					GAME_INT halfWidth = devices->getGraphicsDevice()->GetScreenWidth() / 2;
-					GAME_INT halfHeight = devices->getGraphicsDevice()->GetScreenHeight() / 2;
-					// sets the top left corner of the map
+					GAME_INT halfWidth = devices->GetGraphicsDevice()->GetScreenWidth() / 2;
+					GAME_INT halfHeight = devices->GetGraphicsDevice()->GetScreenHeight() / 2;
+					// sets the top left corenr of the map
 					squarePosition.x = presets.position.x*(-1) + halfWidth;
 					squarePosition.y = presets.position.y*(-1) + halfHeight;
 					//Keep track of that corner.
-					devices->setCityCorner(squarePosition);
+					devices->SetCityCorner(squarePosition);
 					//puts the player in the middle of the screen.
-					presets.position = 
-						{ (GAME_FLT)halfWidth, (GAME_FLT)halfHeight };
+					presets.position.x = halfWidth;
+					presets.position.y = halfHeight;
 				}
 				//Create a pointer to a new object and initialize it.
-				
+				std::shared_ptr<GameObject> newObject = objectFactory->Create(presets);
 				//add new object
-				objects.push_back(std::unique_ptr<GameObject>(objectFactory->Create(presets)));
+				objects.push_back(newObject);
 
 				//mark the exit
-				//TODO: This needs to be generic and in the EventHandler! 
-				if (presets.objectType == "Trapdoor") devices->getGraphicsDevice()->SetExit(objects.back().get());
+				if (presets.objectType == "Trapdoor") devices->GetGraphicsDevice()->SetExit(newObject);
 
 				//make sure presests is ready for loading the level
 				presets.position = squarePosition;
@@ -185,8 +179,10 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 					presets.objectType = "TopFill";
 				}
 
-				//Create a pointer to a new object and initialize it and add it.
-				objects.push_back(std::unique_ptr<GameObject>(objectFactory->Create(presets)));
+				//Create a pointer to a new object and initialize it.
+				std::shared_ptr<GameObject> newObject = objectFactory->Create(presets);
+				//add new object
+				objects.push_back(newObject);
 				//***************************************
 
 				//***********LEFT WALL**********************
@@ -219,9 +215,9 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 				if (left != "none")
 				{
 					//Create a pointer to a new object and initialize it.
-					
+					std::shared_ptr<GameObject> newObject = objectFactory->Create(presets);
 					//add new object
-					objects.push_back(std::unique_ptr<GameObject>(objectFactory->Create(presets)));
+					objects.push_back(newObject);
 				}
 				//***************************************
 
@@ -249,9 +245,9 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 				if (floor != "none")
 				{
 					//Create a pointer to a new object and initialize it.
-					
+					std::shared_ptr<GameObject> newObject = objectFactory->Create(presets);
 					//add new object
-					objects.push_back(std::unique_ptr<GameObject>(objectFactory->Create(presets)));
+					objects.push_back(newObject);
 				}
 				//***************************************
 				//move x to next square to the right (we already moved ten in the code above).
@@ -267,17 +263,17 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 		//get next row
 		rowElement = rowElement->NextSiblingElement();
 		//move x to beginning of row
-		presets.position.x = devices->getCityCorner().x;
+		presets.position.x = devices->GetCityCorner().x;
 		//only move a row down if we are doing rows, not extras.
-		if (label != "Extras") presets.position.y += squareDimension;
+		if (label != "Extras") presets.position.y += 110;
 	} while (rowElement);
 
 	//reverse the order of the sprites so the player is on top of everything.
-	//devices->getGraphicsDevice()->ReverseOrder();
+	devices->GetGraphicsDevice()->ReverseOrder();
 
 	//start background music
 
-	devices->getSoundDevice()->SetBackground("main");
+	devices->GetSoundDevice()->SetBackground("main");
 
 
 
@@ -293,23 +289,23 @@ bool Game::Run()
 {
 
 	//check to see if we have quit;
-	if (devices->getInputDevice()->GetEvent(InputDevice::GAME_QUIT) == true)
+	if (devices->GetInputDevice()->GetEvent(GAME_QUIT) == true)
 	{
 		return false;
 	}
 
 	//here's where we load the basement if the variable was set.
 	//this needs to be abstracted a bit. . .
-	if (devices->getLoadBasement())
+	if (devices->GetLoadBasement())
 	{
 		LoadLevel("./Assets/Config/BasementLevel.xml", "./Assets/Config/BasementAssets.xml");
 	}
 	//Poll for new events
-	devices->getInputDevice()->Update();
+	devices->GetInputDevice()->Update();
 
 	//Construct Frame Timer
 	Timer* frameRate = new Timer();
-	if (!frameRate->Initialize(devices->getFPS()))
+	if (!frameRate->Initialize(devices->GetFPS()))
 	{
 		printf("Frame Timer could not intialize! SDL_Error: %s\n", SDL_GetError());
 		exit(1);
@@ -333,21 +329,19 @@ void Game::Update()
 {
 
 	//update the physics world
-	devices->getPhysicsDevice()->Update(1.0f / devices->getFPS());
+	devices->GetPhysicsDevice()->Update(1.0f / devices->GetFPS());
 
-	
-	 
+	std::vector<std::shared_ptr<GameObject>>::iterator objectIter;
 
 	//clean out dead objects
-	for (std::vector<std::unique_ptr<GameObject>>::iterator objectIter = objects.begin(); objectIter != objects.end(); objectIter++)
+	for (objectIter = objects.begin(); objectIter != objects.end(); objectIter++)
 	{
 		//check for health component
-		HealthComponent* compHealth = (*objectIter)->GetComponent<HealthComponent>();
-		
-		if (compHealth != nullptr)
+		std::shared_ptr<HealthComponent> compHealth = (*objectIter)->GetComponent<HealthComponent>();
+		std::shared_ptr<InventoryComponent> compInventory = (*objectIter)->GetComponent<InventoryComponent>();
+		if (compHealth != NULL)
 		{
-			InventoryComponent* compInventory = (*objectIter)->GetComponent<InventoryComponent>();
-			//**************Bring out your dead********************
+			//if it is dead
 			if (compHealth->GetIsDead())
 			{
 				//close off the componenets.
@@ -358,27 +352,18 @@ void Game::Update()
 				//back up to previous item because this one was deleted.
 				objectIter--;
 			}
-			//*******************************************************
-
-			//***************************Item pickup***************************
-			else if (compInventory != nullptr && compInventory->isPickedUp())
+			//if it got picked up. . 
+			else if (compInventory != NULL && compInventory->GetPickedUp())
 			{
+				//remove the sprite from the automatic draw list
+				devices->GetGraphicsDevice()->RemoveSpriteRenderer((*objectIter)->GetComponent<RendererComponent>().get());
 				//stop the physics on it
-				devices->getPhysicsDevice()->SetStopPhysics((*objectIter).get());
-				
-				/*The collision detector stores the pointer in the inventory component of the object that picks it up
-				here, we get that pointer, and put the item in the backpack of that object*/
-				GameObject* player = (*objectIter)->GetComponent<InventoryComponent>()->gotPickedUpBy();
-				if (player->GetComponent<BackpackComponent>()->AddItem(std::move(*objectIter)))
-				{
-					devices->getSoundDevice()->PlaySound("found", 0, 3);
-				}
-
+				devices->GetPhysicsDevice()->SetStopPhysics((*objectIter).get());
 				//remove object from the vector.
 				objectIter = objects.erase(objectIter);
-				objectIter--;
+
+
 			}
-			//*******************************************************************
 		}
 	}
 
@@ -386,23 +371,23 @@ void Game::Update()
 	//add any objects created in the previous iteration
 	if (!newObjects.empty())
 	{
-		objects.insert(objects.end(), std::make_move_iterator(newObjects.begin()), std::make_move_iterator(newObjects.end()));
+		objects.insert(objects.end(), newObjects.begin(), newObjects.end());
 		newObjects.clear();
 	}
 
 	//Update objects.
-	for (auto& object : objects)
+	for (auto object : objects)
 	{
 		//run update method for the object
-		GameObject* temp = object->Update();
+		std::shared_ptr<GameObject> temp = object->Update();
 		//if it returned an object, add it to the list to be added.
-		if (temp != nullptr)
+		if (temp != NULL)
 		{
-			newObjects.push_back(std::unique_ptr<GameObject>(temp));
+			newObjects.push_back(temp);
 		}
+
+
 	}
-	//update view
-	devices->getGraphicsDevice()->GetView()->Update();
 }
 
 //**************************************
@@ -412,16 +397,12 @@ void Game::Update()
 void Game::Draw()
 //**************************************
 {
-	devices -> getGraphicsDevice() -> Begin();
-	for (auto& object : objects)
-	{
-		object->draw();
-	}
-	devices -> getGraphicsDevice() -> Draw();
+	devices -> GetGraphicsDevice() -> Begin();	
+	devices -> GetGraphicsDevice() -> Draw();
 	
-	if(debug) devices -> getPhysicsDevice() -> getWorld() -> DrawDebugData();
+	if (debug) devices->GetPhysicsDevice()->getWorld()->DebugDraw(); //-> DrawDebugData();
 	
-	devices -> getGraphicsDevice() -> Present();
+	devices -> GetGraphicsDevice() -> Present();
 }
 
 //**************************************
@@ -435,17 +416,17 @@ void Game::Reset()
 	if (!objects.empty())
 	{
 		//for every object in objects
-		for (const auto& object : objects)
+		for (const auto object : objects)
 		{
 			//remove it from the physics world
-			devices->getPhysicsDevice()->RemoveObject(object.get());
+			devices->GetPhysicsDevice()->RemoveObject(object.get());
 		}
 		//clear the vector
 		objects.clear();
 	}
 	//kill old Resource Manager;
-	if (devices) devices->Shutdown();
-	devices = nullptr;
+	if (devices)	devices->Shutdown();
+	devices = NULL;
 
 
 }

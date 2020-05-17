@@ -1,2 +1,3 @@
-# Mighty-Mage
-The continuation of my game from CPSC 4377
+# MightyMage
+Final project for Advanced Game programming class, hopefully will end up being a RPG.
+Version submitted at end of class
