@@ -28,7 +28,7 @@ bool RendererComponent::initialize(ObjectFactoryPresets& presets)
 }
 //**************************************
 // Updates the position based on the view and draws the sprite
-void RendererComponent::Draw()
+void RendererComponent::run()
 //**************************************
 {
 	Vector2D updatedPosition;
@@ -39,13 +39,13 @@ void RendererComponent::Draw()
 
 	float angle = devices -> GetPhysicsDevice() -> getAngle(_owner);
 
-	//Draw sprite.
-	Draw(updatedPosition, angle);
+	//run sprite.
+	run(updatedPosition, angle);
 }
 
-void RendererComponent::Draw(Vector2D position, float angle)
+void RendererComponent::run(Vector2D position, float angle)
 {
-	texture ->Draw(devices -> GetGraphicsDevice() -> GetRenderer(), position, angle, nullptr);
+	texture ->run(devices -> GetGraphicsDevice() -> GetRenderer(), position, angle, nullptr);
 }
 
 void RendererComponent::Start()

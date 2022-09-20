@@ -66,10 +66,10 @@ void Timer::unpause()
         //Unpause the timer
         paused = false;
 
-        //Reset the starting ticks
+        //reset the starting ticks
         startTicks = SDL_GetTicks() - pausedTicks;
 
-        //Reset the paused ticks
+        //reset the paused ticks
         pausedTicks = 0;
     }
 }

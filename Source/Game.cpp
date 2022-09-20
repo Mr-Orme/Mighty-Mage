@@ -1,62 +1,40 @@
 #include "Game.h"
 #include "ComponentsList.h"
-//**************************************
-//Initiallizes variables to Null values.
+
 Game::Game()
-//**************************************
+{}
+
+Game::Game(std::string levelConfigFile, std::string assetConfigFile)
 {
-	devices = nullptr;
-	debug = false;
+	loadLevel(levelConfigFile, assetConfigFile);
 }
 
 Game::~Game()
-{
-	if(devices)
-	{
-		devices -> Shutdown();
-		devices = nullptr;
-	}
-}
+{}
 
-//**************************************
-//Initializes Game & Art Asset Libraries.
-bool Game::initialize()
-//**************************************
-{
-	//========================================
-	//Base Game Constants
-	//========================================
-	SCREEN_WIDTH = 800;
-	SCREEN_HEIGHT = 600;
-	
-	
-	
-	return true;
-}
 
 //**************************************
 //Takes a string corresponding to an XML file
 //containing level config data and loads the objects
 //into the objects vector.
 //Also creates a new view object for the level.
-bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
+bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 //**************************************
 {
 
-	Reset();
+	reset();
 	//========================================
 	//Construct Device Manager
 	//========================================
 	devices = std::make_unique<ResourceManager>();
-	devices->initialize(SCREEN_WIDTH, SCREEN_HEIGHT, assetConfigFile);
-	this->devices = devices;
+	devices->initialize(screenDimensions, assetConfigFile);
 	
 
 
 
 	///Get a few things ready
 	ObjectFactoryPresets presets;
-	presets.devices = devices;
+	presets.devices = devices.get();
 	ObjectFactory* objectFactory = devices->GetObjectFactory();
 
 	//========================================
@@ -125,8 +103,8 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 				//OF THE SCREEN BEFORE ANYTHING ELSE IS CREATED.
 				if (presets.objectType == "Player")
 				{
-					int halfWidth = devices->GetGraphicsDevice()->GetScreenWidth() / 2;
-					int halfHeight = devices->GetGraphicsDevice()->GetScreenHeight() / 2;
+					int halfWidth = devices->GetGraphicsDevice()->getScreenDimensions().x / 2;
+					int halfHeight = devices->GetGraphicsDevice()->getScreenDimensions().y / 2;
 					// sets the top left corenr of the map
 					squarePosition.x = presets.position.x*(-1) + halfWidth;
 					squarePosition.y = presets.position.y*(-1) + halfHeight;
@@ -137,12 +115,12 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 					presets.position.y = halfHeight;
 				}
 				//Create a pointer to a new object and initialize it.
-				std::unique_ptr<GameObject> newObject = objectFactory->Create(presets);
+			
 				//add new object
-				objects.push_back(newObject);
+				objects.push_back(objectFactory->Create(presets));
 
 				//mark the exit
-				if (presets.objectType == "Trapdoor") devices->GetGraphicsDevice()->SetExit(newObject);
+				if (presets.objectType == "Trapdoor") devices->GetGraphicsDevice()->SetExit(objects.back().get());
 
 				//make sure presests is ready for loading the level
 				presets.position = squarePosition;
@@ -284,7 +262,7 @@ bool Game::LoadLevel(std::string levelConfig, std::string assetConfigFile)
 //**************************************
 //Runs the game, including regulation of the game timer,
 //and calling the update & draw methods.
-bool Game::Run()
+bool Game::run()
 //**************************************
 {
 
@@ -298,7 +276,7 @@ bool Game::Run()
 	//this needs to be abstracted a bit. . .
 	if (devices->GetLoadBasement())
 	{
-		LoadLevel("./Assets/Config/BasementLevel.xml", "./Assets/Config/BasementAssets.xml");
+		loadLevel("./Assets/Config/BasementLevel.xml", "./Assets/Config/BasementAssets.xml");
 	}
 	//Poll for new events
 	devices->GetInputDevice()->update();
@@ -315,7 +293,7 @@ bool Game::Run()
 	frameRate->start();
 
 	update();
-	Draw();
+	run();
 
 	//pauses until proper refresh time has passed.
 	frameRate->fpsRegulate();
@@ -337,8 +315,8 @@ void Game::update()
 	for (objectIter = objects.begin(); objectIter != objects.end(); objectIter++)
 	{
 		//check for health component
-		std::unique_ptr<HealthComponent> compHealth = (*objectIter)->GetComponent<HealthComponent>();
-		std::unique_ptr<InventoryComponent> compInventory = (*objectIter)->GetComponent<InventoryComponent>();
+		std::unique_ptr<HealthComponent>& compHealth = (*objectIter)->getComponent<HealthComponent>();
+		std::unique_ptr<InventoryComponent>& compInventory = (*objectIter)->getComponent<InventoryComponent>();
 		if (compHealth != nullptr)
 		{
 			if (compHealth->GetIsDead())
@@ -351,7 +329,7 @@ void Game::update()
 			else if (compInventory != nullptr && compInventory->GetPickedUp())
 			{
 				//remove the sprite from the automatic draw list
-				devices->GetGraphicsDevice()->RemoveSpriteRenderer((*objectIter)->GetComponent<RendererComponent>().get());
+				devices->GetGraphicsDevice()->RemoveSpriteRenderer((*objectIter)->getComponent<RendererComponent>().get());
 				//stop the physics on it
 				devices->GetPhysicsDevice()->SetStopPhysics((*objectIter).get());
 				//remove object from the vector.
@@ -371,10 +349,10 @@ void Game::update()
 	}
 
 	//Update objects.
-	for (auto object : objects)
+	for (auto& object : objects)
 	{
 		//run update method for the object
-		std::unique_ptr<GameObject> temp = object->update();
+		std::unique_ptr<GameObject> temp{ object->update() };
 		//if it returned an object, add it to the list to be added.
 		if (temp != nullptr)
 		{
@@ -389,39 +367,24 @@ void Game::update()
 //Starts the graphic deivce, 
 //Graphic Device draws the sprites
 //Then calls the graphic device's present method to show the frame.
-void Game::Draw()
+bool Game::run()
 //**************************************
 {
 	devices -> GetGraphicsDevice() -> Begin();	
-	devices -> GetGraphicsDevice() -> Draw();
+	devices -> GetGraphicsDevice() -> run();
 	
 	if (debug) devices->GetPhysicsDevice()->getWorld()->DebugDraw(); //-> DrawDebugData();
 	
 	devices -> GetGraphicsDevice() -> Present();
+	return true;
 }
 
 //**************************************
-//Clears the object vector, world, and view object in 
+//Clears the object vector and ResourceManager in
 //preparation of loading a new level.
-void Game::Reset()
+void Game::reset()
 //**************************************
-
 {
-	//if objects is not empty
-	if (!objects.empty())
-	{
-		//for every object in objects
-		for (const auto object : objects)
-		{
-			//remove it from the physics world
-			devices->GetPhysicsDevice()->RemoveObject(object.get());
-		}
-		//clear the vector
 		objects.clear();
-	}
-	//kill old Resource Manager;
-	if (devices)	devices->Shutdown();
-	devices = nullptr;
-
-
+		devices = nullptr;
 }

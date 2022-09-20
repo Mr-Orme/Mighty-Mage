@@ -1,6 +1,6 @@
 #include "GhostComponent.h"
 
-GhostComponent::GhostComponent(std::unique_ptr<GameObject> owner):Component(owner){}
+GhostComponent::GhostComponent(GameObject* owner, ResourceManager* devices):Component(owner, devices){}
 
 GhostComponent::~GhostComponent(){}
 
@@ -10,6 +10,14 @@ bool GhostComponent::initialize(ObjectFactoryPresets& presets)
 	return true;
 }
 
-void GhostComponent::Start(){}
+bool GhostComponent::canPass(Direction direction) const
+{
+	if (const auto canGo{ ghostDirection.find(direction) }; canGo != ghostDirection.end())
+	{
+		return canGo->second;
+	}
+	return false;
+}
+
+
 std::unique_ptr<GameObject> GhostComponent::update(){return nullptr;}
-void GhostComponent::Finish(){}

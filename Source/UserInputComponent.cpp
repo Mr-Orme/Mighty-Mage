@@ -46,9 +46,9 @@ std::unique_ptr<GameObject> UserInputComponent::update()
 	
 	std::string sound = "walking";
 
-	if(!_owner -> GetComponent<BackpackComponent>() -> GetOpen())
+	if(!_owner -> getComponent<BackpackComponent>() -> GetOpen())
 	{
-		//Run if shift is being held down.
+		//run if shift is being held down.
 		if(devices -> GetInputDevice() -> GetEvent(Event::shift))
 		{
 			forceMultiplier = baseForceMultiplier * runMultiplier;
@@ -180,7 +180,7 @@ std::unique_ptr<GameObject> UserInputComponent::update()
 	{
 		if(pressControl[Event::key_b])
 		{
-			std::unique_ptr<BackpackComponent> backpack = _owner -> GetComponent<BackpackComponent>();	
+			std::unique_ptr<BackpackComponent> backpack = _owner -> getComponent<BackpackComponent>();	
 			if(backpack != nullptr)
 			{
 				if(backpack -> GetOpen()) backpack -> SetOpen(false);
@@ -213,7 +213,7 @@ std::unique_ptr<GameObject> UserInputComponent::update()
 	int border = 200;
 	
 	//the amount the screen moves is based upon the last change in position for the player.
-	Vector2D jump = _owner -> GetComponent<BodyComponent>() -> getPosition();
+	Vector2D jump = _owner -> getComponent<BodyComponent>() -> getPosition();
 	
 	//grab a few things we are going to need.
 	PhysicsDevice* pDevice = devices -> GetPhysicsDevice();
@@ -221,7 +221,7 @@ std::unique_ptr<GameObject> UserInputComponent::update()
 	std::unique_ptr<View> view = devices -> GetGraphicsDevice() -> GetView();
 	
 	//position plus view
-	Vector2D position = _owner -> GetComponent<RendererComponent>() -> GetUpdatedPosition(_owner);
+	Vector2D position = _owner -> getComponent<RendererComponent>() -> GetUpdatedPosition(_owner);
 	
 	//Check distance for each border and adjust view if too close.
 	//it is alway "-" jump because the DPosition's sign changes based on the direction of movement
@@ -299,8 +299,8 @@ Vector2D UserInputComponent::GetCurrentSquare()
 	//view adjusted player position.
 	Vector2D playerPosition = 
 					{
-						 _owner -> GetComponent<RendererComponent>() -> GetUpdatedPosition(_owner).x,
-						 _owner -> GetComponent<RendererComponent>() -> GetUpdatedPosition(_owner).y
+						 _owner -> getComponent<RendererComponent>() -> GetUpdatedPosition(_owner).x,
+						 _owner -> getComponent<RendererComponent>() -> GetUpdatedPosition(_owner).y
 					};
 	//view vector.
 	Vector2D viewPosition = 
@@ -325,10 +325,10 @@ Vector2D UserInputComponent::GetCurrentSquare()
 					};
 	return square;					
 	//this code is here for use for debugging.
-	//Draw player position on himself
+	//run player position on himself
 	/*std::string playerPositionText = "(" + std::to_string(playerPosition.x) + ", " + std::to_string(playerPosition.y) + ")";
 	
-	Vector2D position = _owner -> GetComponent<RendererComponent>() -> GetUpdatedPosition(devices -> GetPhysicsDevice() -> GetPosition(_owner));
+	Vector2D position = _owner -> getComponent<RendererComponent>() -> GetUpdatedPosition(devices -> GetPhysicsDevice() -> GetPosition(_owner));
 	devices -> GetGraphicsDevice() ->Text2Screen(playerPositionText, position);*/
 
 }

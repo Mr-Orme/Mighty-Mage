@@ -10,7 +10,7 @@
 
 
 
-GraphicsDevice::GraphicsDevice(int width, int height) : SCREEN_WIDTH(width), SCREEN_HEIGHT(height)
+GraphicsDevice::GraphicsDevice(int width, int height) : SCREEN_WIDTH(width), screenDimensions.y(height)
 {
 	screen = nullptr;
 	renderer = nullptr;
@@ -61,14 +61,14 @@ bool GraphicsDevice::initialize(bool fullScreen)
 		screen = SDL_CreateWindow("Demonstration Window",
 			SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED,
-			SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_FULLSCREEN);
+			SCREEN_WIDTH, screenDimensions.y, SDL_WINDOW_FULLSCREEN);
 	}
 	else
 	{
 		screen = SDL_CreateWindow("Demonstration Window",
 			SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED,
-			SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+			SCREEN_WIDTH, screenDimensions.y, SDL_WINDOW_SHOWN);
 
 	}
 	if(screen==nullptr)
@@ -128,12 +128,12 @@ void GraphicsDevice::Begin()
 	SDL_RenderClear(renderer);
 }
 
-void GraphicsDevice::Draw()
+void GraphicsDevice::run()
 {
 	//********************************draw level*************************************
 	for(auto sprite : sprites)
 	{
-		sprite->Draw();
+		sprite->run();
 	}
 	//*********************************************************************************
 
@@ -181,7 +181,7 @@ void GraphicsDevice::Draw()
 		//draw the objects
 		for( auto object : currOverlay.objects)
 		{
-			object.first ->Draw(renderer, object.second, 0, nullptr);
+			object.first ->run(renderer, object.second, 0, nullptr);
 
 		}
 
@@ -192,7 +192,7 @@ void GraphicsDevice::Draw()
 //	//if we found all the spheres.
 //	if(spheresFound >= 6)
 //	{
-//		ResourceManager* devices = levelExit -> GetComponent<BodyComponent>() -> GetDevices().get();
+//		ResourceManager* devices = levelExit -> getComponent<BodyComponent>() -> GetDevices().get();
 //		//stop the physics on the trapdoor so we can walk onto that square.
 //		devices -> GetPhysicsDevice() -> SetStopPhysics(levelExit.get());
 //		//get rid of the notice stating we need to find the spheres.
@@ -282,7 +282,7 @@ void GraphicsDevice::Text2Screen(std::string text, Vector2D position)
 	}
 	if(position.y == -1)
 	{
-		position.y = Center(SCREEN_HEIGHT, height);
+		position.y = Center(screenDimensions.y, height);
 	}
 
 	Vector2D topLeft = {position.x - widthIncrease, position.y -heightIncrease};

@@ -15,53 +15,15 @@
 
 int main(int argc, char *argv[])
 {
+	
+	std::string assetFile = "./Assets/Config/MainAssets.xml";
+	std::string levelConfigFile = "./Assets/Config/MainLevel.xml";
 
-	//========================================
-	//Initialize the random number generator
-	//========================================
-	srand((unsigned int)time(nullptr));
-	
-	//========================================
-	//Construct Game
-	//========================================
-	std::unique_ptr<Game> game = std::make_unique<Game>();
-	
-	if(!game->initialize())
-	{
-		printf( "Game could not Initialize!");
-		exit(1);
-	}
-	
-	//========================================
-	//Load Level
-	//========================================
-	std::string assetFile= "./Assets/Config/MainAssets.xml";
-	std::string levelConfigFile= "./Assets/Config/MainLevel.xml";
-	if(!game->LoadLevel(levelConfigFile, assetFile))
-	{
-		printf( "Game could not load level %s: ", levelConfigFile);
-		exit(1);
-	}
-	
-	
-	//========================================
-	//Main Game Loop
-	//========================================
+	std::unique_ptr<Game> game{ std::make_unique<Game>(levelConfigFile, assetFile) };
 
 	//While the user hasn't quit
-	while(game->Run()){}
+	while(game->run()){}
 	
-
-	//========================================
-	// Clean-up
-	//========================================
-	if(game)
-	{
-		game = nullptr;
-	}
-
-	
-
 	return 0;
 
 }

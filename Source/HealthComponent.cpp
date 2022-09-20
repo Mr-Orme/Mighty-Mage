@@ -29,7 +29,7 @@ bool HealthComponent::KillObject(std::string deathSprite)
 	devices -> GetPhysicsDevice() -> SetStopPhysics(_owner);
 
 	//grab the renderer
-	std::unique_ptr<RendererComponent> compRenderer = _owner -> GetComponent<RendererComponent>();
+	auto compRenderer{ _owner->getComponent<RendererComponent>() };
 	//change the sprite
 	compRenderer -> SetTexture(devices -> GetArtLibrary() -> Search(deathSprite));	
 	return true;

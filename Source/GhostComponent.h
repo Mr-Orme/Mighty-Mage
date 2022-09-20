@@ -10,17 +10,16 @@ class GameObject;
 class GhostComponent : public Component
 {
 public:
-	GhostComponent(std::unique_ptr<GameObject>);
+	GhostComponent(GameObject* owner, ResourceManager* devices);
 	~GhostComponent();
 	bool initialize(ObjectFactoryPresets& presets);
 
-	std::map<Direction, bool> getGhostDirection(){return ghostDirection;}
+	bool canPass(Direction) const;
 	void SetGhostDirection(Direction direction, bool isGhost){ghostDirection[direction]=isGhost;}
 	void SetGhostDirection(std::map<Direction, bool> ghostDirection){this -> ghostDirection = ghostDirection;}
 
-	void Start();
-	std::unique_ptr<GameObject> update();
-	void Finish();
+	
+	std::unique_ptr<GameObject> update() override;
 protected:
 	std::map<Direction, bool> ghostDirection;
 };

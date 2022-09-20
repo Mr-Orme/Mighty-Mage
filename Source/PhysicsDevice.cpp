@@ -170,7 +170,7 @@ bool PhysicsDevice::createFixture
 	)
 //**************************************
 {
-	std::unique_ptr<RendererComponent> compRenderer = object -> GetComponent<RendererComponent>();
+	std::unique_ptr<RendererComponent> compRenderer = object -> getComponent<RendererComponent>();
 	//new body definition
 	b2BodyDef* bd = new b2BodyDef;
 	//made need one or the other, depending on what was passed.
@@ -199,7 +199,7 @@ bool PhysicsDevice::createFixture
 	}
 
 	//********Adjust postion because SDL is top left, while box2d is center*************
-	Texture* texture = object -> GetComponent<RendererComponent>() -> GetTexture();
+	Texture* texture = object -> getComponent<RendererComponent>() -> GetTexture();
 	//subtract off half the width.
 	presets.position.x += (texture -> getWidth()/2);
 	//subtract off half the height
@@ -378,7 +378,7 @@ Vector2D PhysicsDevice::AlignCenters(GameObject* object)
 	b2Body* body = FindBody(object);
 	b2Vec2 physPosition = body -> GetPosition();
 	Vector2D position;
-	Texture* texture = object -> GetComponent<RendererComponent>() -> GetTexture();
+	Texture* texture = object -> getComponent<RendererComponent>() -> GetTexture();
 
 		//subtract off half the width.
 		position.x = PW2RW(physPosition.x) - (texture -> getWidth()/2);

@@ -4,8 +4,6 @@
 #include<memory>
 #include<iostream>
 #include<vector>
-#include "SDL.h"
-#include "SDL_ttf.h"
 #include "Definitions.h"
 
 class Component;
@@ -17,19 +15,19 @@ class GameObject
 public:
 	GameObject();
 	~GameObject();
-	
+	enum class Type{player, wall, floor, door, extra};
 	bool initialize(ObjectFactoryPresets& presets);
 	void addComponent(std::unique_ptr<Component> component);
 
 	template<class T>
-	std::unique_ptr<T>& GetComponent()
+	T* getComponent()
 	{
 		for(auto& comp : components)
 		{
-			std::unique_ptr<T> target;
-			if((target = std::dynamic_pointer_cast<T>(comp)))
+			
+			if (auto result{ dynamic_cast<T*>(comp.get()) }; result !=nullptr)
 			{
-				return(target);
+				return(result);
 			}
 		}
 	
@@ -41,14 +39,19 @@ public:
 
 	void SetJoinedWith(GameObject* joinedWith){this -> joinedWith = joinedWith;}
 
-	std::string getObjectType(){return objectType;}
+	bool isWall() const;
+	bool isPlayer() const;
+	bool isDoor() const;
 	GameObject* getJoinedWith(){return joinedWith;}
 	
 
 protected:
-	
+	void setType(std::string);
+
 	std::vector<std::unique_ptr<Component>> components;
-	std::string objectType;
+
+	Type name{ Type::floor };
+	Direction direction{ Direction::N };
 	GameObject* joinedWith{ nullptr };
 
 };

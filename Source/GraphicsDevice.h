@@ -27,7 +27,7 @@ class GraphicsDevice
 public:
 
 	//Constructors and Destructors
-	GraphicsDevice(int, int);
+	GraphicsDevice(Vector2D dimensions);
 	~GraphicsDevice();
 
 	//Startup and Shutdown
@@ -36,7 +36,7 @@ public:
 
 	//Rendering functions
 	void Begin();
-	void Draw();
+	void run();
 	void Present();
 
 	void Text2Screen(std::string text, Vector2D position);
@@ -58,8 +58,8 @@ public:
 
 	void ReverseOrder();
 
-	//!!!!!!!!!!!!!!!!!!!!!Move where exit is!!!!!!!!!!!!!!!!!
-	std::unique_ptr<GameObject> GetExit(){ return levelExit; }
+	//TODO::!!!!!!!!!!!!!!!!!!!!!Move where exit is!!!!!!!!!!!!!!!!!
+	GameObject* GetExit(){ return levelExit; }
 
 	//Accessors
 	void AddSpriteRenderer(RendererComponent*);
@@ -68,15 +68,14 @@ public:
 	//Getters
 	SDL_Renderer* GetRenderer();
 	SDL_Window* GetWindow();
-	int GetScreenWidth(){return SCREEN_WIDTH;}
-	int GetScreenHeight(){return SCREEN_HEIGHT;}
-	std::unique_ptr<View> GetView(){return view;}
+	Vector2D getScreenDimensions() { return screenDimensions; }
+	View* GetView(){return view.get(); }
 	
 	
 
 	//Setters
-	void SetView(std::unique_ptr<View> view){this -> view = view;}
-	void SetExit(std::unique_ptr<GameObject> levelExit){this -> levelExit = levelExit;}
+	void SetView(std::unique_ptr<View> view){this -> view = std::move(view);}
+	void SetExit(GameObject* levelExit){this -> levelExit = levelExit;}
 	bool SetFont(std::string path, int size, RGBA color);
 
 
@@ -84,8 +83,7 @@ public:
 private:
 	float Center(float centerOn, float width);
 	//Parameters
-	const int SCREEN_WIDTH;
-	const int SCREEN_HEIGHT;
+	const Vector2D screenDimensions;
 
 	//Window(s) to display graphics
 	SDL_Window* screen;
@@ -110,7 +108,7 @@ private:
 	TTF_Font* font;
 	RGBA color;
 
-	std::unique_ptr<GameObject> levelExit;
+	GameObject* levelExit;
 
 };
 

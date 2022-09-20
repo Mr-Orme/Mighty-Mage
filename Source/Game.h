@@ -21,13 +21,13 @@ class Game{
 public:
 	
 	Game();
+	Game(std::string levelConfigFile, std::string assetConfigFile);
 	~Game();
-	bool Initialize ();
-	void Reset();
-	bool LoadLevel(std::string levelConfigFile, std::string assetConfigFile);
-	bool Run();
+	
+	void reset();
+	bool loadLevel(std::string levelConfigFile, std::string assetConfigFile);
+	bool run();
 	void update();
-	void Draw();
 	
 
 	
@@ -37,11 +37,10 @@ private:
 	std::vector<std::unique_ptr<GameObject>> newObjects;
 	
 
-	std::unique_ptr<ResourceManager> devices;
-	float gameTime;
-	bool debug;
-	int SCREEN_WIDTH;
-	int SCREEN_HEIGHT;
+	std::unique_ptr<ResourceManager> devices{ nullptr };
+	float gameTime{};
+	bool debug{ false };
+	Vector2D screenDimensions{800, 600};
 	
 	
 };

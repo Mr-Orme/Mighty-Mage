@@ -14,8 +14,8 @@ public:
 
 	bool initialize(ObjectFactoryPresets& presets);
 	
-	void Draw();
-	void Draw(Vector2D position, float angle);
+	void run();
+	void run(Vector2D position, float angle);
 	void Start();
 	std::unique_ptr<GameObject> update();
 	void Finish();

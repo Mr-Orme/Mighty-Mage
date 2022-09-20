@@ -85,7 +85,7 @@ void Texture::free()
 }
 	   
 
-void Texture::Draw(SDL_Renderer* renderer, Vector2D position, float angle, SDL_Rect* clip)
+void Texture::run(SDL_Renderer* renderer, Vector2D position, float angle, SDL_Rect* clip)
 {
 
 	//Set rendering space and render to screen

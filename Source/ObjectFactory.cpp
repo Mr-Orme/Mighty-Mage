@@ -17,7 +17,7 @@ std::unique_ptr<GameObject> ObjectFactory::Create(ObjectFactoryPresets& presets)
 	//Create pointer to new objects
 	std::unique_ptr<GameObject> newObject = std::make_unique<GameObject>();
 	//Get list of components for the new object
-	std::vector<std::unique_ptr<Component>> componentList = presets.devices -> GetComponentLibrary() ->Search(presets.objectType, newObject.get());
+	std::vector<std::unique_ptr<Component>> componentList = presets.devices -> getComponentLibrary() ->Search(presets.objectType, newObject.get());
 	//Add each to the object
 	for (auto& comp : componentList)
 	{

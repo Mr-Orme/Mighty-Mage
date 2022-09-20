@@ -19,7 +19,7 @@ bool BodyComponent::initialize(ObjectFactoryPresets& presets)
 //**************************************
 {
 	PhysicsStats physics;
-	if(_owner->GetComponent<RendererComponent>() != nullptr)
+	if(_owner->getComponent<RendererComponent>() != nullptr)
 	{
 		//store the resource manager.
 		devices = presets.devices;

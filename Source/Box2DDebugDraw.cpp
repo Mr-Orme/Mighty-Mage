@@ -36,7 +36,7 @@ void Box2DDebugDraw::DrawPolygon(const b2Vec2 *vertices, int32 vertexCount, cons
 	//draw a line from the last to the first
     lineRGBA(devices -> GetGraphicsDevice() ->GetRenderer(),devices -> GetPhysicsDevice() -> PW2RW(vertices[vertexCount-1].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[vertexCount-1].y),devices -> GetPhysicsDevice() -> PW2RW(vertices[0].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[0].y),255,255,255,100);
 
-    //Reset color (black)
+    //reset color (black)
     SDL_SetRenderDrawColor(devices -> GetGraphicsDevice() ->GetRenderer(),0,0,0,255);
 }
 
@@ -54,7 +54,7 @@ void Box2DDebugDraw::DrawSolidPolygon(const b2Vec2 *vertices, int32 vertexCount,
 	//draw a line from the last to the first
     lineRGBA(devices -> GetGraphicsDevice() ->GetRenderer(),devices -> GetPhysicsDevice() -> PW2RW(vertices[vertexCount-1].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[vertexCount-1].y),devices -> GetPhysicsDevice() -> PW2RW(vertices[0].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[0].y),255,0,0,100);
 
-    //Reset color (black)
+    //reset color (black)
     SDL_SetRenderDrawColor(devices -> GetGraphicsDevice() ->GetRenderer(),0,0,0,255);
 }
 

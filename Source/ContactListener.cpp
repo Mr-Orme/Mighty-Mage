@@ -14,92 +14,53 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 	GameObject* objectB = reinterpret_cast<GameObject*>(bodyB->GetUserData().pointer);
 
 	//find their types
-	std::string objectAType = objectA -> getObjectType();
-	std::string objectBType = objectB -> getObjectType();
 	
-	
-		
-		
-		
-	if(objectAType == "Player")
+			
+	if(objectA->isPlayer())
 	{
 		
 		//if we found a pickupable item, grab it.
-		if(objectB -> GetComponent<InventoryComponent>())
+		if(objectB -> getComponent<InventoryComponent>())
 		{
 			
 			PickUpItem(objectA, objectB);
 		}
-		
-
-
 	}
 	
 	//walls always put the player as object B
-	if (objectBType == "Player")
+	else if (objectB->isPlayer())
 	{
-		//if it is a wall, than set the input componet's hit wall value to true.
-		if(objectAType =="HWall" || objectAType =="VWall" )
+		if (objectA->isWall())
 		{
-			objectB -> GetComponent<UserInputComponent>() -> SetWallHit(true);
+			objectB->getComponent<UserInputComponent>()->SetWallHit(true);
 		}
-		//otherwise, false.
-		else 
+		else
 		{
-			objectB -> GetComponent<UserInputComponent>() -> SetWallHit(false);
+			objectB->getComponent<UserInputComponent>()->SetWallHit(false);
 		}
-		std::unique_ptr<GhostComponent> ghost =  objectA -> GetComponent<GhostComponent>();
-		if(ghost != nullptr)
+		
+		if (auto ghost = objectA->getComponent<GhostComponent>();
+			ghost != nullptr &&
+			(bodyB->GetLinearVelocity().y <= 0 && ghost->canPass(Direction::N))
+			|| (bodyB->GetLinearVelocity().y >= 0 && ghost->canPass(Direction::S))
+			|| (bodyB->GetLinearVelocity().x >= 0 && ghost->canPass(Direction::E))
+			|| (bodyB->GetLinearVelocity().x <= 0 && ghost->canPass(Direction::W))
+			)
 		{
-			std::map<Direction, bool> ghostMap = ghost -> getGhostDirection();
-			
-			for(auto direction : ghostMap)
-			{
-				switch (direction.first)
-				{
-				case Direction::N:
-					if(direction.second && bodyB -> GetLinearVelocity().y <=0) 
-					{
-						contact -> SetEnabled(false);
-					}
-					break;
-				case Direction::S:
-					if(direction.second && bodyB -> GetLinearVelocity().y >=0)
-					{
-						contact -> SetEnabled(false);
-					}
-					break;
-				case Direction::E:
-					if(direction.second && bodyB -> GetLinearVelocity().x >=0)
-					{
-						contact -> SetEnabled(false);
-					}
-					break;
-				case Direction::W:
-					if(direction.second && bodyB -> GetLinearVelocity().x <=0) 
-					{
-						contact -> SetEnabled(false);
-					}
-					break;
-				default:
-					break;
-				}
+			contact->SetEnabled(false);
+		}
 
-					
-				
-			}
-
-		}
 	}
 
 }
 
 void ContactListener::PickUpItem(GameObject* player, GameObject* item)
 {
+	//TODO::strip item and make new item to pass to backback, move all components. mark to delete item...
 	//grab the resource manager from the player's body component
-	std::unique_ptr<ResourceManager> devices = player -> GetComponent<BodyComponent>() -> GetDevices();
+	ResourceManager* devices = player -> getComponent<BodyComponent>() -> GetDevices();
 	//if there is space to add it to the backpack, play the "found item" sound. . .
-	if(player -> GetComponent<BackpackComponent>() -> AddItem(item))
+	if(player -> getComponent<BackpackComponent>() -> AddItem(item))
 	{
 		devices -> GetSoundDevice() -> PlaySound("found",0,3);
 	}
