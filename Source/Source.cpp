@@ -19,14 +19,14 @@ int main(int argc, char *argv[])
 	//========================================
 	//Initialize the random number generator
 	//========================================
-	srand((unsigned int)time(NULL));
+	srand((unsigned int)time(nullptr));
 	
 	//========================================
 	//Construct Game
 	//========================================
-	std::shared_ptr<Game> game = std::make_shared<Game>();
+	std::unique_ptr<Game> game = std::make_unique<Game>();
 	
-	if(!game->Initialize())
+	if(!game->initialize())
 	{
 		printf( "Game could not Initialize!");
 		exit(1);
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 	//========================================
 	if(game)
 	{
-		game = NULL;
+		game = nullptr;
 	}
 
 	

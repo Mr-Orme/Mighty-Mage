@@ -17,14 +17,14 @@ public:
 		MM_NUM_EVENTS 
 	};
 
-	bool Initialize();
-	GAME_INT RegisterEventListener(MMEvents MMEvent, std::function<void(MMEvents, void*)> callback );
-	bool RemoveEventListener(MMEvents MMEvent, GAME_INT listenerID );
+	bool initialize();
+	int RegisterEventListener(MMEvents MMEvent, std::function<void(MMEvents, void*)> callback );
+	bool RemoveEventListener(MMEvents MMEvent, int listenerID );
 	bool EventNotification (MMEvents MMEvent, void* sender);
 
 
 protected:
-	std::map<MMEvents, std::map<GAME_INT, std::function<void(MMEvents, void*)>>> notifications;
-	GAME_INT listenerID;
+	std::map<MMEvents, std::map<int, std::function<void(MMEvents, void*)>>> notifications;
+	int listenerID;
 };
 #endif

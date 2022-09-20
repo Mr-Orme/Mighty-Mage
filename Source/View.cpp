@@ -13,7 +13,7 @@ View::~View()
 
 //**************************************
 //Set initial values
-bool View::Initialize(GAME_FLT x, GAME_FLT y)
+bool View::initialize(float x, float y)
 //**************************************
 {
 	//this -> iDevice = iDevice;
@@ -24,7 +24,7 @@ bool View::Initialize(GAME_FLT x, GAME_FLT y)
 
 //**************************************
 //NOT USED
-bool View::Update(GAME_FLT gameTime)
+bool View::Update(float gameTime)
 //**************************************
 {
 	return true;

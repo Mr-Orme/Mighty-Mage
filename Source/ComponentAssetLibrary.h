@@ -14,12 +14,12 @@ class GameObject;
 class ComponentAssetLibrary{
 public:
 	ComponentAssetLibrary();
-	bool Initialize();
-	std::vector<std::shared_ptr<Component>> Search(std::string name, std::shared_ptr<GameObject> owner);
-	bool AddAsset(std::string name, std::vector<GAME_COMPONENT_LIST> componentList);
+	bool initialize();
+	std::vector<std::unique_ptr<Component>> search(std::string name, GameObject* owner);
+	bool addAsset(std::string name, std::vector<Components> componentList);
 private:
 			//name					List of components
-	std::map<std::string, std::vector<GAME_COMPONENT_LIST>> library;
+	std::map<std::string, std::vector<Components>> library;
 
 
 };

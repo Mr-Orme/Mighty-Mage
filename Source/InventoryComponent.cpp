@@ -1,15 +1,15 @@
 #include "InventoryComponent.h"
 
-InventoryComponent::InventoryComponent(std::shared_ptr<GameObject> owner):Component(owner){}
+InventoryComponent::InventoryComponent(std::unique_ptr<GameObject> owner):Component(owner){}
 
 InventoryComponent::~InventoryComponent(){}
 
-bool InventoryComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
+bool InventoryComponent::initialize(ObjectFactoryPresets& presets)
 {
 	pickedUp = false;
 	return true;
 }
 
 void InventoryComponent::Start(){}
-std::shared_ptr<GameObject> InventoryComponent::Update(){return NULL;}
+std::unique_ptr<GameObject> InventoryComponent::update(){return nullptr;}
 void InventoryComponent::Finish(){}

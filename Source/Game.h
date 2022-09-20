@@ -26,22 +26,22 @@ public:
 	void Reset();
 	bool LoadLevel(std::string levelConfigFile, std::string assetConfigFile);
 	bool Run();
-	void Update();
+	void update();
 	void Draw();
 	
 
 	
 
 private:
-	std::vector<std::shared_ptr<GameObject>> objects;
-	std::vector<std::shared_ptr<GameObject>> newObjects;
+	std::vector<std::unique_ptr<GameObject>> objects;
+	std::vector<std::unique_ptr<GameObject>> newObjects;
 	
 
-	std::shared_ptr<ResourceManager> devices;
-	GAME_FLT gameTime;
+	std::unique_ptr<ResourceManager> devices;
+	float gameTime;
 	bool debug;
-	GAME_INT SCREEN_WIDTH;
-	GAME_INT SCREEN_HEIGHT;
+	int SCREEN_WIDTH;
+	int SCREEN_HEIGHT;
 	
 	
 };

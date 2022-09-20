@@ -14,7 +14,7 @@ ResourceManager::~ResourceManager(){}
 //**************************************
 //prepares all asset libraries based on path passed xml file
 //and creastes and initialzies all devices
-bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, std::string assetPath)
+bool ResourceManager::initialize(int SCREEN_WIDTH, int SCREEN_HEIGHT, std::string assetPath)
 {
 	//don't load the basement
 	loadBasement = false;
@@ -23,14 +23,14 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 	//========================================
 	//Construct Object Factory
 	//========================================
-	factory = std::make_shared<ObjectFactory>();
+	factory = std::make_unique<ObjectFactory>();
 
 
 	//========================================
 	//Construct Input Device
 	//========================================
-	iDevice = std::make_shared<InputDevice>();
-	if(!iDevice->Initialize())
+	iDevice = std::make_unique<InputDevice>();
+	if(!iDevice->initialize())
 	{
 		printf( "Input Device could not initialize!");
 		exit(1);
@@ -38,27 +38,24 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 		//========================================
 	//Construct Graphical Device
 	//========================================
-	gDevice = std::make_shared<GraphicsDevice>(SCREEN_WIDTH, SCREEN_HEIGHT);
-	if(!gDevice->Initialize(true))
+	gDevice = std::make_unique<GraphicsDevice>(SCREEN_WIDTH, SCREEN_HEIGHT);
+	if(!gDevice->initialize(true))
 	{
 		printf( "Graphics Device could not Initialize!");
 		exit(1);
 	}
 	//color of fonts
-	GAME_RGBA RGBA;
-	RGBA.R = 0;
-	RGBA.G = 0;
-	RGBA.B = 0;
-	RGBA.A = 255;
+	RGBA RGBA{ 0, 0, 0, 255 };
+	
 	//set graphic device font
 	gDevice -> SetFont("./Assets/Fonts/impact.ttf", 16, RGBA);
 	//========================================
 	//Construct Physics Device
 	//========================================
-	pDevice = std::make_shared<PhysicsDevice>(0,0);
+	pDevice = std::make_unique<PhysicsDevice>(0,0);
 
 	
-	if(!pDevice -> Initialize())
+	if(!pDevice -> initialize())
 	{
 		printf("Physics Device could not intialize!");
 		exit(1);
@@ -66,9 +63,9 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 	//========================================
 	//Construct Sound Device
 	//========================================
-	sDevice = std::make_shared<SoundDevice>();
+	sDevice = std::make_unique<SoundDevice>();
 	
-	if(!sDevice -> Initialize())
+	if(!sDevice -> initialize())
 	{
 		printf("Physics Device could not intialize!");
 		exit(1);
@@ -77,39 +74,39 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 	//========================================
 	//Construct Art Library
 	//========================================
-	aLibrary = std::make_shared<ArtAssetLibrary>();	
+	aLibrary = std::make_unique<ArtAssetLibrary>();	
 	//needs to be an xml file just likes physics.
-	if(!aLibrary -> Initialize(gDevice.get())){return false;}
+	if(!aLibrary -> initialize(gDevice.get())){return false;}
 
 	//========================================
 	//Construct Physics Library
 	//========================================
-	pLibrary = std::make_shared<PhysicsAssetLibrary>();
-	if(!pLibrary -> Initialize()){return false;}
+	pLibrary = std::make_unique<PhysicsAssetLibrary>();
+	if(!pLibrary -> initialize()){return false;}
 
 	//========================================
 	//Construct Physics Library
 	//========================================
-	cLibrary = std::make_shared<ComponentAssetLibrary>();
-	if(!cLibrary -> Initialize()){return false;}
+	cLibrary = std::make_unique<ComponentAssetLibrary>();
+	if(!cLibrary -> initialize()){return false;}
 
 	//========================================
 	//Construct Objects Library
 	//========================================
-	oLibrary = std::make_shared<ObjectAssetLibrary>();
-	if(!oLibrary -> Initialize()){return false;}
+	oLibrary = std::make_unique<ObjectAssetLibrary>();
+	if(!oLibrary -> initialize()){return false;}
 
 	//========================================
 	//Construct Notices Library
 	//========================================
-	nLibrary = std::make_shared<NoticesAssetLibrary>();
-	if(!nLibrary -> Initialize()){return false;}
+	nLibrary = std::make_unique<NoticesAssetLibrary>();
+	if(!nLibrary -> initialize()){return false;}
 
 	//========================================
 	//Construct Sound Library
 	//========================================
-	sLibrary = std::make_shared<SoundAssetLibrary>();
-	if(!sLibrary -> Initialize(sDevice.get())){return false;}
+	sLibrary = std::make_unique<SoundAssetLibrary>();
+	if(!sLibrary -> initialize(sDevice.get())){return false;}
 
 	//========================================
 	//Populate Libraries
@@ -118,7 +115,7 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 	//prepare XML file for parsing.
 	TiXmlDocument assetFile(assetPath);
 	if(!assetFile.LoadFile()){return false;};
-	TiXmlElement* assetType = assetFile.FirstChildElement();
+	TiXmlElement* assetType = assetFile.FirstChildElement()->FirstChildElement();
 	
 	//get first asset
 	TiXmlElement* asset = assetType -> FirstChildElement();
@@ -129,7 +126,7 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 		std::string aName = asset -> Attribute("name");
 	
 		//where we will store the components.
-		std::vector<GAME_COMPONENT_LIST> componentList;
+		std::vector<Components> componentList;
 		
 		//move to the components of the xml
 		TiXmlElement* compElement = asset -> FirstChildElement();
@@ -145,11 +142,11 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 				//add the coresponding asset to the library.
 				aLibrary -> AddAsset(aName, compElement -> Attribute("sprite"));
 				//add the component to the list
-				componentList.push_back(GAME_RENDERER_COMP);
+				componentList.push_back(Components::renderer);
 			}
 			else if(currentComponent == "Body")
 			{
-				GAME_PHYSICS physics;
+				PhysicsStats physics;
 				//Get physics properties
 				compElement -> QueryFloatAttribute("density", &physics.density);
 				compElement -> QueryFloatAttribute("restitution", &physics.restitution);
@@ -162,31 +159,31 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 				compElement -> QueryStringAttribute("bodyShape", &bodyShape);
 		
 				//convert strings to enums
-				if(bodyType == "GAME_DYNAMIC"){physics.bodyType = GAME_DYNAMIC;}
-				else if (bodyType == "GAME_STATIC"){physics.bodyType = GAME_STATIC;}
+				if(bodyType == "dynamic"){physics.bodyType = PhysicsStats::BodyType::dynamic;}
+				else if (bodyType == "staticBody"){physics.bodyType = PhysicsStats::BodyType::staticBody;}
 		
-				if(bodyShape == "GAME_RECTANGLE"){physics.objectShape = GAME_RECTANGLE;}
-				else if (bodyShape == "GAME_CIRCLE"){physics.objectShape = GAME_CIRCLE;}
+				if(bodyShape == "rectangle"){physics.objectShape = PhysicsStats::BodyShape::rectangle;}
+				else if (bodyShape == "circle"){physics.objectShape = PhysicsStats::BodyShape::circle;}
 				//add to library
 				pLibrary -> AddAsset(aName, physics);
 				
 				//add component to list
-				componentList.push_back(GAME_BODY_COMP);
+				componentList.push_back(Components::body);
 			}
 			else if(currentComponent == "Health")
 			{
 				// Get the health
-				GAME_OBJECT_STATS stats;
+				ObjectStats stats;
 				compElement -> QueryIntAttribute("health", &stats.health);
 				//add to library
 				oLibrary -> AddAsset(aName, stats);
 				//add component
-				componentList.push_back(GAME_HEALTH_COMP);
+				componentList.push_back(Components::health);
 			}
-			else if(currentComponent == "UserInput") componentList.push_back(GAME_USERINPUT_COMP);
-			else if(currentComponent == "Backpack") componentList.push_back(GAME_BACKPACK_COMP);
-			else if(currentComponent == "Inventory") componentList.push_back(GAME_INVENTORY_COMP);
-			else if(currentComponent == "Ghost") componentList.push_back(GAME_GHOST_COMP);
+			else if(currentComponent == "UserInput") componentList.push_back(Components::userInput);
+			else if(currentComponent == "Backpack") componentList.push_back(Components::backpack);
+			else if(currentComponent == "Inventory") componentList.push_back(Components::inventory);
+			else if(currentComponent == "Ghost") componentList.push_back(Components::ghost);
 			// if we have a misspeleed or non-existant component name in the file
 			else
 			{
@@ -215,7 +212,7 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 	do
 	{
 		//get information from file
-		GAME_NOTICE notice;
+		Notice notice;
 		int x,y;
 		std::string direction;
 		notices -> QueryIntAttribute("x", &x);
@@ -226,10 +223,10 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 		//store in notice, in proper format.
 		notice.x = x;
 		notice.y = y;
-		if(direction == "N") notice.direction = N;
-		else if(direction == "E") notice.direction = E;
-		else if(direction == "S") notice.direction = S;
-		else if(direction == "W") notice.direction = W;
+		if(direction == "N") notice.direction = Direction::N;
+		else if(direction == "E") notice.direction = Direction::E;
+		else if(direction == "S") notice.direction = Direction::S;
+		else if(direction == "W") notice.direction = Direction::W;
 		
 		//add it to the library.
 		nLibrary -> AddAsset(notice);
@@ -274,11 +271,11 @@ bool ResourceManager::Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, 
 	//Set-up debugging
 	//
 	Box2DDebugDraw* debugDraw = new Box2DDebugDraw();
-	debugDraw->Initialize(this);
+	debugDraw->initialize(this);
     debugDraw->SetFlags(b2Draw::e_shapeBit | b2Draw::e_aabbBit);  //Turn on shape (red color) and aabb (green) 
 
 	//Add the Debug Draw to the world
-	if(debugDraw!=NULL)
+	if(debugDraw!=nullptr)
 	{
 		pDevice -> getWorld() -> SetDebugDraw(debugDraw);
 	}
@@ -296,26 +293,26 @@ bool ResourceManager::Shutdown()
 	iDevice = nullptr;
 
 	sLibrary->Finish();
-	sLibrary = NULL;
+	sLibrary = nullptr;
 
 	gDevice->ShutDown();
-	gDevice = NULL;
+	gDevice = nullptr;
 
 	sDevice->Shutdown();
-	sDevice = NULL;
+	sDevice = nullptr;
 
-	pDevice = NULL;
+	pDevice = nullptr;
 
 
-	aLibrary = NULL;
+	aLibrary = nullptr;
 
-	pLibrary = NULL;
+	pLibrary = nullptr;
 
-	oLibrary = NULL;
+	oLibrary = nullptr;
 
-	nLibrary = NULL;
+	nLibrary = nullptr;
 
-	factory = NULL;
+	factory = nullptr;
 
 
 

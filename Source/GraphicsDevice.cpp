@@ -10,10 +10,10 @@
 
 
 
-GraphicsDevice::GraphicsDevice(Uint32 width, Uint32 height) : SCREEN_WIDTH(width), SCREEN_HEIGHT(height)
+GraphicsDevice::GraphicsDevice(int width, int height) : SCREEN_WIDTH(width), SCREEN_HEIGHT(height)
 {
-	screen = NULL;
-	renderer = NULL;
+	screen = nullptr;
+	renderer = nullptr;
 }
 
 GraphicsDevice::~GraphicsDevice()
@@ -30,7 +30,7 @@ SDL_Window* GraphicsDevice::GetWindow()
 	return(screen);
 }
 
-bool GraphicsDevice::Initialize(bool fullScreen)
+bool GraphicsDevice::initialize(bool fullScreen)
 {
 
 
@@ -71,7 +71,7 @@ bool GraphicsDevice::Initialize(bool fullScreen)
 			SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
 	}
-	if(screen==NULL)
+	if(screen==nullptr)
 	{
 		printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
 		return(false);
@@ -79,7 +79,7 @@ bool GraphicsDevice::Initialize(bool fullScreen)
 
 	//Construct the renderer
 	renderer = SDL_CreateRenderer(screen,-1,SDL_RENDERER_ACCELERATED);
-	if(renderer==NULL)
+	if(renderer==nullptr)
 	{
 		printf( "Renderer could not be created! SDL_Error: %s\n", SDL_GetError() );
 		return(false);
@@ -91,7 +91,7 @@ bool GraphicsDevice::Initialize(bool fullScreen)
 	//========================================
 	//create view
 	//========================================
-	view = std::make_shared<View>();
+	view = std::make_unique<View>();
 	view -> Initialize (0, 0);
 
 	return(true);
@@ -102,11 +102,11 @@ bool GraphicsDevice::ShutDown()
 {
 	//Free the window
 	SDL_DestroyWindow(screen);
-	screen = NULL;
+	screen = nullptr;
 
 	//Free renderer
 	SDL_DestroyRenderer(renderer);
-	renderer = NULL;
+	renderer = nullptr;
 	
 
 	//Quit SDL Subsystems
@@ -181,14 +181,14 @@ void GraphicsDevice::Draw()
 		//draw the objects
 		for( auto object : currOverlay.objects)
 		{
-			object.first ->Draw(renderer, object.second, 0, NULL);
+			object.first ->Draw(renderer, object.second, 0, nullptr);
 
 		}
 
 		
 			
 //!!!!!!!!!!!!!!!!!!!!!!!!!!this needs to be elsewhere!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//	GAME_INT spheresFound = 0; //number of spheres found
+//	int spheresFound = 0; //number of spheres found
 //	//if we found all the spheres.
 //	if(spheresFound >= 6)
 //	{
@@ -196,7 +196,7 @@ void GraphicsDevice::Draw()
 //		//stop the physics on the trapdoor so we can walk onto that square.
 //		devices -> GetPhysicsDevice() -> SetStopPhysics(levelExit.get());
 //		//get rid of the notice stating we need to find the spheres.
-//		GAME_NOTICE notice = {15, 0, W, ""};
+//		Notice notice = {15, 0, W, ""};
 //		devices -> GetNoticesLibrary() -> RemoveAsset(notice);
 //
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -232,10 +232,10 @@ void GraphicsDevice::RemoveSpriteRenderer(RendererComponent* dSprite)
 		}
 	}
 }
-bool GraphicsDevice::SetFont(std::string path, GAME_INT size, GAME_RGBA color)
+bool GraphicsDevice::SetFont(std::string path, int size, RGBA color)
 {
 	font = TTF_OpenFont(path.c_str(), size);
-	if( font == NULL )
+	if( font == nullptr )
 	{
         printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
 	}
@@ -248,7 +248,7 @@ bool GraphicsDevice::SetFont(std::string path, GAME_INT size, GAME_RGBA color)
 
 //**************************************
 //adds text to be displayed to the text vector pased on a string and position
-void GraphicsDevice::Text2Screen(std::string text, GAME_VEC position)
+void GraphicsDevice::Text2Screen(std::string text, Vector2D position)
 //**************************************
 {
 	int widthIncrease = 10; //left and right padding
@@ -272,7 +272,7 @@ void GraphicsDevice::Text2Screen(std::string text, GAME_VEC position)
 
 	int width=0, height=0;
 	//grab textures' with and ehight.
-	SDL_QueryTexture(textSheetTexture, NULL, NULL, &width, &height);
+	SDL_QueryTexture(textSheetTexture, nullptr, nullptr, &width, &height);
 		//If we set a position of the box to -1, we center it.
 		//bottomRight needs to be the width + 1;
 	if(position.x == -1)
@@ -285,14 +285,14 @@ void GraphicsDevice::Text2Screen(std::string text, GAME_VEC position)
 		position.y = Center(SCREEN_HEIGHT, height);
 	}
 
-	GAME_VEC topLeft = {position.x - widthIncrease, position.y -heightIncrease};
-	GAME_VEC bottomRight = {position.x + width + widthIncrease, position.y + height + heightIncrease};
+	Vector2D topLeft = {position.x - widthIncrease, position.y -heightIncrease};
+	Vector2D bottomRight = {position.x + width + widthIncrease, position.y + height + heightIncrease};
 
-	GAME_RGBA background = {255, 255, 255, 255};
-	GAME_RGBA border = {0, 0, 0, 255};
+	RGBA background = {255, 255, 255, 255};
+	RGBA border = {0, 0, 0, 255};
 
 	
-	std::map<Texture*, GAME_VEC> objects;
+	std::map<Texture*, Vector2D> objects;
 	objects[textTexture] = position;
 
 	DrawOverlay(topLeft, bottomRight, background, border, objects);
@@ -301,10 +301,10 @@ void GraphicsDevice::Text2Screen(std::string text, GAME_VEC position)
 //**************************************
 //adds text to be displayed to the text vector pased on a string and position
 //this one let's us directly type the position's values
-void GraphicsDevice::Text2Screen(std::string text, GAME_FLT x, GAME_FLT y)
+void GraphicsDevice::Text2Screen(std::string text, float x, float y)
 //**************************************
 {
-	GAME_VEC position ={x,y};
+	Vector2D position ={x,y};
 	Text2Screen(text, position);
 }
 
@@ -313,7 +313,7 @@ void GraphicsDevice::Text2Screen(std::string text, GAME_FLT x, GAME_FLT y)
 void GraphicsDevice::Notice2Screen(std::string text)
 //**************************************
 {
-	GAME_VEC textVec = {-1,550};
+	Vector2D textVec = {-1,550};
 	Text2Screen(text, textVec);
 
 }
@@ -327,29 +327,29 @@ void GraphicsDevice::ReverseOrder()
 }
 //**************************************
 //draws a filled circle.
-void GraphicsDevice::DrawFilledCircle(GAME_VEC position, GAME_INT radius, GAME_RGBA RGBA)
+void GraphicsDevice::DrawFilledCircle(Vector2D position, int radius, RGBA RGBA)
 //**************************************
 {
 	filledCircleRGBA(renderer, position.x, position.y, radius, RGBA.R, RGBA.G, RGBA.B, RGBA.A);
 }
 
-bool GraphicsDevice::DrawBox(GAME_VEC topLeft, GAME_VEC bottomRight, GAME_RGBA RGBA)
+bool GraphicsDevice::DrawBox(Vector2D topLeft, Vector2D bottomRight, RGBA RGBA)
 {
 	boxRGBA(renderer, topLeft.x, topLeft.y, bottomRight.x, bottomRight.y, RGBA.R, RGBA.G, RGBA.B,RGBA.A);
 	return true;
 }
 
-void GraphicsDevice::DrawOverlay(GAME_VEC topLeft, GAME_VEC bottomRight, GAME_RGBA boxBackgroundColor, GAME_RGBA boxBorderColor, std::map<Texture*, GAME_VEC> objects)
+void GraphicsDevice::DrawOverlay(Vector2D topLeft, Vector2D bottomRight, RGBA boxBackgroundColor, RGBA boxBorderColor, std::map<Texture*, Vector2D> objects)
 {
 	overlay newOverlay = {topLeft, bottomRight, boxBackgroundColor, boxBorderColor, objects};
 	overlays.push_back(newOverlay);
 }
 
-GAME_FLT GraphicsDevice::Center(GAME_FLT centerOn, GAME_FLT width)
+float GraphicsDevice::Center(float centerOn, float width)
 {
 			
 			
-	GAME_FLT point = (centerOn - width)/2;
+	float point = (centerOn - width)/2;
 			
 	return point;
 }

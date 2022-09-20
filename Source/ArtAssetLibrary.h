@@ -11,7 +11,7 @@ class GraphicsDevice;
 class ArtAssetLibrary{
 public:
 	ArtAssetLibrary();
-	bool Initialize(GraphicsDevice* gDevice);
+	bool initialize(GraphicsDevice* gDevice);
 	Texture* Search(std::string);
 	bool AddAsset(std::string name, std::string path);
 private:

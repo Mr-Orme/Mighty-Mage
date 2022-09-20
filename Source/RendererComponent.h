@@ -9,26 +9,25 @@ class Texture;
 class RendererComponent : public Component
 {
 public:
-	RendererComponent(std::shared_ptr<GameObject>);
+	RendererComponent(GameObject* owner, ResourceManager* devices);
 	~RendererComponent();
 
-	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
+	bool initialize(ObjectFactoryPresets& presets);
 	
 	void Draw();
-	void Draw(GAME_VEC position, GAME_FLT angle);
+	void Draw(Vector2D position, float angle);
 	void Start();
-	std::shared_ptr<GameObject> Update();
+	std::unique_ptr<GameObject> update();
 	void Finish();
 
 	Texture* GetTexture(){return texture;}
-	GAME_VEC GetUpdatedPosition(std::shared_ptr<GameObject>);
+	Vector2D GetUpdatedPosition(GameObject*);
 
 	void SetTexture(Texture* texture){this -> texture = texture;}
 
 protected:
-	std::shared_ptr<ResourceManager> devices;
-	Texture* texture;
-	bool initialized;
+	Texture* texture{ nullptr };
+	bool initialized{ false };
 };
 
 #endif

@@ -24,7 +24,7 @@ class Texture{
 
         //Renders texture at given point
 		
-		void Draw(SDL_Renderer* renderer, GAME_VEC position, GAME_FLT angle, SDL_Rect* clip = NULL );
+		void Draw(SDL_Renderer* renderer, Vector2D position, float angle, SDL_Rect* clip = nullptr );
 
         //Gets image dimensions
         int getWidth();

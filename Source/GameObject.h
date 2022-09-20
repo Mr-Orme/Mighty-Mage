@@ -12,46 +12,44 @@ class Component;
 class GraphicsDevice;
 class PhysicsDevice;
 
-class GameObject : public std::enable_shared_from_this<GameObject>
+class GameObject
 {
 public:
 	GameObject();
 	~GameObject();
 	
-	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
-	void AddComponent(std::shared_ptr<Component> component);
+	bool initialize(ObjectFactoryPresets& presets);
+	void addComponent(std::unique_ptr<Component> component);
 
 	template<class T>
-	std::shared_ptr<T> GetComponent()
+	std::unique_ptr<T>& GetComponent()
 	{
-		for(auto comp : components)
+		for(auto& comp : components)
 		{
-			std::shared_ptr<T> target;
+			std::unique_ptr<T> target;
 			if((target = std::dynamic_pointer_cast<T>(comp)))
 			{
 				return(target);
 			}
 		}
 	
-		//Return NULL;
-		return(std::shared_ptr<T>());
+		//Return nullptr;
+		return(nullptr);
 	}
 	
-	std::shared_ptr<GameObject> Update();
+	std::unique_ptr<GameObject> update();
 
-	void SetJoinedWith(std::shared_ptr<GameObject> joinedWith){this -> joinedWith = joinedWith;}
+	void SetJoinedWith(GameObject* joinedWith){this -> joinedWith = joinedWith;}
 
 	std::string getObjectType(){return objectType;}
-	std::shared_ptr<GameObject> GetJoinedWith(){return joinedWith;}
-
-	bool removeComponents();
+	GameObject* getJoinedWith(){return joinedWith;}
+	
 
 protected:
 	
-	std::vector<std::shared_ptr<Component>> components;
-    bool initialized;
+	std::vector<std::unique_ptr<Component>> components;
 	std::string objectType;
-	std::shared_ptr<GameObject> joinedWith;
+	GameObject* joinedWith{ nullptr };
 
 };
 

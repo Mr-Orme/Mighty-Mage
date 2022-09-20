@@ -27,11 +27,11 @@ class GraphicsDevice
 public:
 
 	//Constructors and Destructors
-	GraphicsDevice(Uint32, Uint32);
+	GraphicsDevice(int, int);
 	~GraphicsDevice();
 
 	//Startup and Shutdown
-	bool Initialize(bool);
+	bool initialize(bool);
 	bool ShutDown();
 
 	//Rendering functions
@@ -39,27 +39,27 @@ public:
 	void Draw();
 	void Present();
 
-	void Text2Screen(std::string text, GAME_VEC position);
-	void Text2Screen(std::string text, GAME_FLT x, GAME_FLT y);
+	void Text2Screen(std::string text, Vector2D position);
+	void Text2Screen(std::string text, float x, float y);
 	void Notice2Screen(std::string text);
 
-	void DrawFilledCircle(GAME_VEC position, GAME_INT radius, GAME_RGBA RGBA);
-	bool DrawBox(GAME_VEC topLeft, GAME_VEC bottomRight, GAME_RGBA RGBA);
+	void DrawFilledCircle(Vector2D position, int radius, RGBA RGBA);
+	bool DrawBox(Vector2D topLeft, Vector2D bottomRight, RGBA RGBA);
 	
 	void DrawOverlay
 		(
 			//round corner box that contains overlay
-			GAME_VEC topLeft, GAME_VEC bottomRight, GAME_RGBA boxBackgroundColor, GAME_RGBA boxBorderColor, 
+			Vector2D topLeft, Vector2D bottomRight, RGBA boxBackgroundColor, RGBA boxBorderColor, 
 			//any objects drawn in stated box
 			//at given position
-			std::map<Texture*, GAME_VEC> objects
+			std::map<Texture*, Vector2D> objects
 			
 		);
 
 	void ReverseOrder();
 
 	//!!!!!!!!!!!!!!!!!!!!!Move where exit is!!!!!!!!!!!!!!!!!
-	std::shared_ptr<GameObject> GetExit(){ return levelExit; }
+	std::unique_ptr<GameObject> GetExit(){ return levelExit; }
 
 	//Accessors
 	void AddSpriteRenderer(RendererComponent*);
@@ -68,24 +68,24 @@ public:
 	//Getters
 	SDL_Renderer* GetRenderer();
 	SDL_Window* GetWindow();
-	GAME_INT GetScreenWidth(){return SCREEN_WIDTH;}
-	GAME_INT GetScreenHeight(){return SCREEN_HEIGHT;}
-	std::shared_ptr<View> GetView(){return view;}
+	int GetScreenWidth(){return SCREEN_WIDTH;}
+	int GetScreenHeight(){return SCREEN_HEIGHT;}
+	std::unique_ptr<View> GetView(){return view;}
 	
 	
 
 	//Setters
-	void SetView(std::shared_ptr<View> view){this -> view = view;}
-	void SetExit(std::shared_ptr<GameObject> levelExit){this -> levelExit = levelExit;}
-	bool SetFont(std::string path, GAME_INT size, GAME_RGBA color);
+	void SetView(std::unique_ptr<View> view){this -> view = view;}
+	void SetExit(std::unique_ptr<GameObject> levelExit){this -> levelExit = levelExit;}
+	bool SetFont(std::string path, int size, RGBA color);
 
 
 
 private:
-	GAME_FLT Center(GAME_FLT centerOn, GAME_FLT width);
+	float Center(float centerOn, float width);
 	//Parameters
-	const Uint32 SCREEN_WIDTH;
-	const Uint32 SCREEN_HEIGHT;
+	const int SCREEN_WIDTH;
+	const int SCREEN_HEIGHT;
 
 	//Window(s) to display graphics
 	SDL_Window* screen;
@@ -94,23 +94,23 @@ private:
 	//Renderers
 	std::vector<RendererComponent*> sprites;
 
-	std::shared_ptr<View> view;
+	std::unique_ptr<View> view;
 
 	typedef struct overlay
 	{
-		GAME_VEC topLeft;
-		GAME_VEC bottomRight;
-		GAME_RGBA boxBackgroundColor;
-		GAME_RGBA boxBorderColor;
-		std::map<Texture*, GAME_VEC> objects;
+		Vector2D topLeft;
+		Vector2D bottomRight;
+		RGBA boxBackgroundColor;
+		RGBA boxBorderColor;
+		std::map<Texture*, Vector2D> objects;
 	}overlay;
 
 	std::vector<overlay> overlays;
 
 	TTF_Font* font;
-	GAME_RGBA color;
+	RGBA color;
 
-	std::shared_ptr<GameObject> levelExit;
+	std::unique_ptr<GameObject> levelExit;
 
 };
 

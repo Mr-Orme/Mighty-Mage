@@ -6,11 +6,11 @@ Box2DDebugDraw::Box2DDebugDraw() {
 }
 
 Box2DDebugDraw::~Box2DDebugDraw() {
-	devices = NULL;
+	devices = nullptr;
 }
 
-bool Box2DDebugDraw::Initialize(ResourceManager* devices) {
-	if(devices == NULL)
+bool Box2DDebugDraw::initialize(ResourceManager* devices) {
+	if(devices == nullptr)
 	{
 		return false;
 	}

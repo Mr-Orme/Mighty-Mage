@@ -9,7 +9,7 @@ SoundAssetLibrary::SoundAssetLibrary()
 }
 //**************************************
 //set's the sound device, and set's the sound library in the sound device.
-bool SoundAssetLibrary::Initialize(SoundDevice* sDevice)
+bool SoundAssetLibrary::initialize(SoundDevice* sDevice)
 //**************************************
 {
 	this -> sDevice = sDevice;
@@ -49,7 +49,7 @@ Mix_Music* SoundAssetLibrary::SearchMusic(std::string name)
 	if(musicIter == musicLibrary.end())
 	{
 		{printf("Background File not found!") ;}
-		return NULL;
+		return nullptr;
 	}
 	else return musicIter -> second;
 }

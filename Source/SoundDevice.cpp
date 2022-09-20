@@ -7,7 +7,7 @@ SoundDevice::~SoundDevice()
 }
 //**************************************
 //set's up initial setting for sound device
-bool SoundDevice::Initialize()
+bool SoundDevice::initialize()
 //**************************************
 {
 	//allows for OGG support

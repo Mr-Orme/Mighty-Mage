@@ -4,7 +4,7 @@
 //**************************************
 //Sets all keystates to false. sets initial event to NA
 //NA should be passed in, but can be any valid event.
-bool InputDevice::Initialize()
+bool InputDevice::initialize()
 //**************************************
 {
 	//========================================
@@ -16,24 +16,24 @@ bool InputDevice::Initialize()
 		exit(1);
 	}
 
-	keyStates[GAME_DOWN] = false;
-	keyStates[GAME_UP] = false;
-	keyStates[GAME_LEFT] = false;
-	keyStates[GAME_RIGHT] = false;
-	keyStates[GAME_SPACE] = false;
-	keyStates[GAME_QUIT] = false;
-	keyStates[GAME_SHIFT] = false;
-	keyStates[GAME_B] = false;
-	Update();
+	keyStates[Event::down] = false;
+	keyStates[Event::up] = false;
+	keyStates[Event::left] = false;
+	keyStates[Event::right] = false;
+	keyStates[Event::space] = false;
+	keyStates[Event::quit] = false;
+	keyStates[Event::shift] = false;
+	keyStates[Event::key_b] = false;
+	update();
 	return true;
 }
 
 //**************************************
 //Updates the event based on the passed in SDL_EVENT
-void InputDevice::Update()
+void InputDevice::update()
 //**************************************
 {
-	GAME_EVENT gEvent;
+	Event gEvent;
 	if(SDL_PollEvent(event))
 	{
 		//updates the proper key state based on the event that was passed in
@@ -50,7 +50,7 @@ void InputDevice::Update()
 			keyStates.find(gEvent) -> second = false;
 			break;
 		case SDL_QUIT:
-			keyStates.find(GAME_QUIT) -> second = true;
+			keyStates.find(Event::quit) -> second = true;
 			break;
 		default:
 			break;
@@ -63,44 +63,44 @@ void InputDevice::Update()
 
 //**************************************
 //converts the SDL event to a game event
-GAME_EVENT InputDevice::Translate(SDL_Event* event)
+Event InputDevice::Translate(SDL_Event* event)
 //**************************************
 {
 	//This switch is here in case we want to add other events, such as mouse events.
 	switch(event->key.keysym.sym)
 		{
 		case SDLK_LEFT:
-			return GAME_LEFT;
+			return Event::left;
 			break;
 		case SDLK_RIGHT:
-			return GAME_RIGHT;
+			return Event::right;
 			break;
 		case SDLK_UP:
-			return GAME_UP;
+			return Event::up;
 			break;
 		case SDLK_DOWN:
-			return GAME_DOWN;
+			return Event::down;
 			break;	
 		case SDLK_SPACE:
-			return GAME_SPACE;
+			return Event::space;
 			break;
 		case SDLK_RSHIFT:
 		case SDLK_LSHIFT:
-			return GAME_SHIFT;
+			return Event::shift;
 			break;
 		case SDLK_b:
-			return GAME_B;
+			return Event::key_b;
 			break;
 		}
 
 
 
-	return GAME_NA;
+	return Event::NA;
 }
 
 //**************************************
 //returns the state of a key
-bool InputDevice::GetEvent(GAME_EVENT event)
+bool InputDevice::GetEvent(Event event)
 //**************************************
 {
 	return (keyStates.find(event) -> second);

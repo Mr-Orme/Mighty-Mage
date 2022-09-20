@@ -10,13 +10,13 @@ class PhysicsAssetLibrary{
 public:
 	void Print();
 			//Asset Name, Asset Factory
-	GAME_PHYSICS Search(std::string name);
-	//bool Initialize(std::string path);
-	bool Initialize();
-	bool AddAsset(std::string name, GAME_PHYSICS physics);
+	PhysicsStats Search(std::string name);
+	//bool initialize(std::string path);
+	bool initialize();
+	bool AddAsset(std::string name, PhysicsStats physics);
 
 protected:
-	std::map<std::string, GAME_PHYSICS> library;
+	std::map<std::string, PhysicsStats> library;
 	
 
 private:

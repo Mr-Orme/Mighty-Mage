@@ -10,30 +10,29 @@
 //based on the object type, it grabs components.
 // and adds them to a newly created object.
 //it initializes the object which also initializes all the components
-std::shared_ptr<GameObject> ObjectFactory::Create(GAME_OBJECTFACTORY_PRESETS& presets)
+std::unique_ptr<GameObject> ObjectFactory::Create(ObjectFactoryPresets& presets)
 //**************************************
 {
 
 	//Create pointer to new objects
-	std::shared_ptr<GameObject> newObject = std::make_shared<GameObject>();
+	std::unique_ptr<GameObject> newObject = std::make_unique<GameObject>();
 	//Get list of components for the new object
-	std::vector<std::shared_ptr<Component>> componentList = presets.devices -> GetComponentLibrary() ->Search(presets.objectType, newObject);
+	std::vector<std::unique_ptr<Component>> componentList = presets.devices -> GetComponentLibrary() ->Search(presets.objectType, newObject.get());
 	//Add each to the object
-	for (auto comp : componentList)
+	for (auto& comp : componentList)
 	{
-		newObject -> AddComponent(comp);
+		newObject -> addComponent(std::move(comp));
 	}
 
 	//the object can be walked over if this is not empty.
 	if(!presets.gDirection.empty())
 	{
 		//add the ghost component
-		std::shared_ptr<GhostComponent> ghost = std::make_shared<GhostComponent>(newObject);
-		newObject -> AddComponent(ghost);
+		newObject -> addComponent(std::make_unique<GhostComponent>(newObject));
 	}
 		
 	//Initialize the new object (this will also initialize components)
-	if (newObject -> Initialize(presets))
+	if (newObject -> initialize(presets))
 	{
 		//return the created and initialized object.
 		return newObject;
@@ -41,7 +40,7 @@ std::shared_ptr<GameObject> ObjectFactory::Create(GAME_OBJECTFACTORY_PRESETS& pr
 	else
 	{
 		std::cout << "Object did not initialize!" << std::endl;
-		return NULL;
+		return nullptr;
 	}
 }
 

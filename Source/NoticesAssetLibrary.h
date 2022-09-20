@@ -8,12 +8,12 @@
 class NoticesAssetLibrary{
 public:
 	NoticesAssetLibrary();
-	bool Initialize();
-	GAME_NOTICE Search(GAME_NOTICE square);
-	bool AddAsset(GAME_NOTICE notice);
-	bool RemoveAsset(GAME_NOTICE notice);
+	bool initialize();
+	Notice Search(Notice square);
+	bool AddAsset(Notice notice);
+	bool RemoveAsset(Notice notice);
 private:
-	std::vector<GAME_NOTICE> library;
+	std::vector<Notice> library;
 	
 
 };

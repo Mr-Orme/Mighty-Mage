@@ -4,7 +4,7 @@
 //**************************************
 //Finds an item in the library and returns the physics struct
 //associated with it.
-GAME_PHYSICS PhysicsAssetLibrary::Search(std::string searchText)
+PhysicsStats PhysicsAssetLibrary::Search(std::string searchText)
 //**************************************
 {
 	return(library.find(searchText) -> second);
@@ -12,7 +12,7 @@ GAME_PHYSICS PhysicsAssetLibrary::Search(std::string searchText)
 
 //**************************************
 //Nothing here, move along.
-bool PhysicsAssetLibrary::Initialize()
+bool PhysicsAssetLibrary::initialize()
 //**************************************
 {
 	return true;
@@ -20,7 +20,7 @@ bool PhysicsAssetLibrary::Initialize()
 
 //**************************************
 //the name of the object type and a physics structured is passed in and saved to the library.
-bool PhysicsAssetLibrary::AddAsset(std::string name, GAME_PHYSICS physics)
+bool PhysicsAssetLibrary::AddAsset(std::string name, PhysicsStats physics)
 //**************************************
 {
 	//this game never has friction.
@@ -34,7 +34,7 @@ bool PhysicsAssetLibrary::AddAsset(std::string name, GAME_PHYSICS physics)
 void PhysicsAssetLibrary::Print()
 //**************************************
 {
-	std::map<std::string, GAME_PHYSICS>::iterator galIter;
+	std::map<std::string, PhysicsStats>::iterator galIter;
 	
 	for(galIter = library.begin(); galIter != library.end(); galIter++)
 	{
@@ -47,7 +47,7 @@ void PhysicsAssetLibrary::Print()
 			"Linear Damping: " << galIter -> second.linearDamping << std::endl <<
 			"Force: " << galIter -> second.force << std::endl <<
 			"Friction: " << galIter -> second.friction << std::endl <<		
-			"Object Shape: " << galIter -> second.objectShape << std::endl <<
+			"Object Shape: " << (int)galIter -> second.objectShape << std::endl <<
 			"Spin Speed: " << galIter -> second.spinSpeed  << std::endl <<
 			std::endl;
 	}

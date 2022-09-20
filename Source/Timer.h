@@ -9,7 +9,7 @@ class Timer
 public:
 	//Initializes variables
 	Timer();
-	bool Initialize(GAME_INT);
+	bool initialize(int);
 
 	//The various clock actions
 	void start();
@@ -18,7 +18,7 @@ public:
 	void unpause();
 
 	//Gets the timer's time
-	GAME_INT getTicks();
+	int getTicks();
 
 	//Checks the status of the timer
 	bool isStarted();
@@ -29,11 +29,11 @@ public:
 
 private:
 	//The clock time when the timer started
-	GAME_INT startTicks;
-	GAME_FLT mpf; //millisecond per frame
+	int startTicks;
+	float mpf; //millisecond per frame
 
 	//The ticks stored when the timer was paused
-	GAME_INT pausedTicks;
+	int pausedTicks;
 
 	//The timer status
 	bool paused;

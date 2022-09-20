@@ -8,7 +8,7 @@ ArtAssetLibrary::ArtAssetLibrary()
 
 //**************************************
 //This function sets the graphic's device for the library.
-bool ArtAssetLibrary::Initialize(GraphicsDevice* gDevice)
+bool ArtAssetLibrary::initialize(GraphicsDevice* gDevice)
 
 //**************************************
 {

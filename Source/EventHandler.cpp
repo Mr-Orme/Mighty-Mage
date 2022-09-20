@@ -1,11 +1,11 @@
 #include "EventHandler.h"
 
-bool EventHandler::Initialize()
+bool EventHandler::initialize()
 {
 	listenerID = 0;
 	return true;
 }
-GAME_INT EventHandler::RegisterEventListener(MMEvents MMEvent, std::function<void(MMEvents, void*)> callback)
+int EventHandler::RegisterEventListener(MMEvents MMEvent, std::function<void(MMEvents, void*)> callback)
 {
 	//save the callback function to the appropriate map
 	//First dimension is the event type
@@ -17,7 +17,7 @@ GAME_INT EventHandler::RegisterEventListener(MMEvents MMEvent, std::function<voi
 	//-1 because we just ++'ed the listenerID
 	return listenerID-1;
 }
-bool EventHandler::RemoveEventListener(MMEvents MMEvent, GAME_INT removeMe)
+bool EventHandler::RemoveEventListener(MMEvents MMEvent, int removeMe)
 {
 	//erases the listener based on the event & ID passed.
 	notifications[MMEvent].erase(notifications[MMEvent].find(removeMe));	

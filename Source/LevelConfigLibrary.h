@@ -8,7 +8,7 @@
 class LevelConfigLibrary{
 public:
 	LevelConfigLibrary();
-	bool Initialize();
+	bool initialize();
 	std::string Search(std::string name);
 	bool AddAsset(std::string name, std::string path);
 	bool RemoveAsset(std::string name);

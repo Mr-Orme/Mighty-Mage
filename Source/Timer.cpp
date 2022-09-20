@@ -12,11 +12,11 @@ Timer::Timer()
 	mpf = 0.0f;
 }
 
-bool Timer::Initialize(GAME_INT fps)
+bool Timer::initialize(int fps)
 {
 	if(fps>0)
 	{
-		mpf = (GAME_FLT)1000/fps;
+		mpf = (float)1000/fps;
 		return(true);
 	}
 	else{
@@ -74,7 +74,7 @@ void Timer::unpause()
     }
 }
 
-Uint32 Timer::getTicks()
+int Timer::getTicks()
 {
     //If the timer is running
     if( started == true )
@@ -111,6 +111,6 @@ void Timer::fpsRegulate()
 	//Pause for a length of time such that frame rate is maintained
 	if(getTicks() < mpf)
 	{
-		SDL_Delay((GAME_INT)mpf - getTicks());
+		SDL_Delay((int)mpf - getTicks());
 	}
 }

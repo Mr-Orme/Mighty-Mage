@@ -5,22 +5,22 @@
 #include "GameObject.h"
 #include "Definitions.h"
 
-
+class ResourceManager;
 class Component
 {
 public:
-	Component(std::shared_ptr<GameObject> owner);
+	Component(GameObject* owner, ResourceManager* devices);
 	~Component();
-	void OwnerDestroyed();
-
-	virtual bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets)=0;
-	std::shared_ptr<GameObject> GetOwner();
-	virtual void Start()=0;
-	virtual std::shared_ptr<GameObject> Update()=0;
-	virtual void Finish()=0;
+	
+	virtual bool initialize(ObjectFactoryPresets& presets)=0;
+	virtual std::unique_ptr<GameObject> update()=0;
+	
+	ResourceManager* GetDevices() { return devices; }
+	GameObject* getOwner();
 
 protected:
-	std::shared_ptr<GameObject> _owner;
+	GameObject* _owner{ nullptr };
+	ResourceManager* devices{ nullptr };
 };
 
 

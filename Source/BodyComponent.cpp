@@ -2,18 +2,24 @@
 #include "RendererComponent.h"
 #include "ResourceManager.h"
 
-BodyComponent::BodyComponent(std::shared_ptr<GameObject> owner):Component(owner){}
-BodyComponent::~BodyComponent(){}
+BodyComponent::BodyComponent(GameObject* owner, ResourceManager* devices):Component(owner, devices){}
+BodyComponent::~BodyComponent()
+{
+	//remove the physics body
+	if (!devices->GetPhysicsDevice()->RemoveObject(_owner))
+	{
+		printf("Object could not be removed from Physics World");
+		exit(1);
+	}
+}
 
 //**************************************
 //Based on the presets struct passed in, a fixture is created
-bool BodyComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
+bool BodyComponent::initialize(ObjectFactoryPresets& presets)
 //**************************************
 {
-	
-	std::shared_ptr<RendererComponent> compRenderer = _owner -> GetComponent<RendererComponent>();
-	GAME_PHYSICS physics;
-	if(compRenderer != NULL)
+	PhysicsStats physics;
+	if(_owner->GetComponent<RendererComponent>() != nullptr)
 	{
 		//store the resource manager.
 		devices = presets.devices;
@@ -24,7 +30,7 @@ bool BodyComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
 		//Create fixture.
 		devices -> GetPhysicsDevice() -> createFixture
 			(
-			_owner.get(),
+			_owner,
 			physics,
 			presets
 			);
@@ -33,30 +39,16 @@ bool BodyComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
 	return true;
 }
 
-void BodyComponent::Start(){}
 //**************************************
 //finds the current position, subtract's off the last frame's position
 //to get the change in position. This is for the auto scrolling feature.
 //the newpostion then becomes the old position.
-std::shared_ptr<GameObject> BodyComponent::Update()
+std::unique_ptr<GameObject> BodyComponent::update()
 //**************************************
 {
-	GAME_VEC newPosition = devices -> GetPhysicsDevice() -> GetPosition(_owner.get());
+	Vector2D newPosition = devices -> GetPhysicsDevice() -> GetPosition(_owner);
 	dPosition.x =  newPosition.x- oldPosition.x;
 	dPosition.y =  newPosition.y- oldPosition.y;
 	oldPosition = newPosition;
-	return NULL;
-}
-//**************************************
-//**************************************
-//When this component is done, it destroys the body associated with the owner.
-void BodyComponent::Finish()
-//**************************************
-{
-	//remove the physics body
-	if(!devices -> GetPhysicsDevice() -> RemoveObject(_owner.get()))
-	{
-		printf( "Object could not be removed from Physics World");
-		exit(1);					
-	}
+	return nullptr;
 }

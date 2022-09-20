@@ -2,7 +2,7 @@
 #pragma once
 //so no include guards are needed
 
-#include <Box2D\Box2D.h>
+#include "box2d.h"
 //#include "GameFunctions.h"
 #include "ResourceManager.h"
 
@@ -11,7 +11,7 @@ class Box2DDebugDraw : public b2Draw {
 	public:	
 		Box2DDebugDraw();
 		~Box2DDebugDraw();
-		bool Initialize(ResourceManager* devices);
+		bool initialize(ResourceManager* devices);
 
 		void DrawPoint(const b2Vec2& p, float size, const b2Color& color) override;
 		void DrawPolygon(const b2Vec2 *vertices, int32 vertexCount, const b2Color &color) override;

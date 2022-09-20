@@ -5,7 +5,7 @@
 ObjectAssetLibrary::ObjectAssetLibrary(){}
 //**************************************
 //Nothing happening here, move along
-bool ObjectAssetLibrary::Initialize()
+bool ObjectAssetLibrary::initialize()
 //**************************************
 {
 	return true;
@@ -14,7 +14,7 @@ bool ObjectAssetLibrary::Initialize()
 //**************************************
 //Takes the name of the object and returns it's stats.
 //right now it is just health, but that will change.
-GAME_OBJECT_STATS  ObjectAssetLibrary::Search(std::string name)
+ObjectStats  ObjectAssetLibrary::Search(std::string name)
 //**************************************
 {
 	return (library.find(name) -> second);
@@ -22,7 +22,7 @@ GAME_OBJECT_STATS  ObjectAssetLibrary::Search(std::string name)
 
 //**************************************
 //takes the name of the object and a vecotr of enums of types of stats and saves it to the library.
-bool ObjectAssetLibrary::AddAsset(std::string name, GAME_OBJECT_STATS stats)
+bool ObjectAssetLibrary::AddAsset(std::string name, ObjectStats stats)
 //**************************************
 {
 	library[name] = stats;

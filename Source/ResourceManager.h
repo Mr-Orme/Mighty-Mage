@@ -21,7 +21,7 @@ public:
 	ResourceManager();
 	~ResourceManager();
 	
-	bool Initialize(GAME_INT SCREEN_WIDTH, GAME_INT SCREEN_HEIGHT, std::string assetPath);
+	bool initialize(int SCREEN_WIDTH, int SCREEN_HEIGHT, std::string assetPath);
 	bool Shutdown();
 
 	//Device Getters
@@ -42,51 +42,51 @@ public:
 	ObjectFactory* GetObjectFactory() {return factory.get();}
 
 	//Other Getters
-	GAME_INT GetFPS(){return GAME_FPS;}
-	GAME_VEC GetCityCorner(){return cityCorner;}
-	GAME_LEVEL GetLevel(){return level;}
+	int GetFPS(){return GAME_FPS;}
+	Vector2D GetCityCorner(){return cityCorner;}
+	Levels GetLevel(){return level;}
 	bool GetLoadBasement(){return loadBasement;}
 
 	//Device Setters
-	void SetGraphicsDevice(std::shared_ptr<GraphicsDevice> gDevice){this -> gDevice = gDevice;}
-	void SetInputDevice(std::shared_ptr<InputDevice> iDevice){this -> iDevice = iDevice;}
-	void SetPhysicsDevice(std::shared_ptr<PhysicsDevice> pDevice){this -> pDevice = pDevice;}
-	void SetSoundDevice(std::shared_ptr<SoundDevice> sDevice){this -> sDevice = sDevice;}
+	void SetGraphicsDevice(std::unique_ptr<GraphicsDevice> gDevice){this -> gDevice = gDevice;}
+	void SetInputDevice(std::unique_ptr<InputDevice> iDevice){this -> iDevice = iDevice;}
+	void SetPhysicsDevice(std::unique_ptr<PhysicsDevice> pDevice){this -> pDevice = pDevice;}
+	void SetSoundDevice(std::unique_ptr<SoundDevice> sDevice){this -> sDevice = sDevice;}
 
 	//Library Setters
-	void SetArtLibrary(std::shared_ptr<ArtAssetLibrary> aLibrary){this -> aLibrary = aLibrary;}
-	void SetPhysicsLibrary(std::shared_ptr<PhysicsAssetLibrary> pLibrary){this -> pLibrary = pLibrary;}
-	void SetComponentLibrary(std::shared_ptr<ComponentAssetLibrary> cLibrary){this -> cLibrary = cLibrary;}
-	void SetObjectLibrary(std::shared_ptr<ObjectAssetLibrary> oLibrary){this -> oLibrary = oLibrary;}
-	void SetNoticesLibrary(std::shared_ptr<NoticesAssetLibrary> nLibrary){this -> nLibrary = nLibrary;}
-	void SetSoundLibrary(std::shared_ptr<SoundAssetLibrary> sLibrary){this -> sLibrary = sLibrary;}
+	void SetArtLibrary(std::unique_ptr<ArtAssetLibrary> aLibrary){this -> aLibrary = aLibrary;}
+	void SetPhysicsLibrary(std::unique_ptr<PhysicsAssetLibrary> pLibrary){this -> pLibrary = pLibrary;}
+	void SetComponentLibrary(std::unique_ptr<ComponentAssetLibrary> cLibrary){this -> cLibrary = cLibrary;}
+	void SetObjectLibrary(std::unique_ptr<ObjectAssetLibrary> oLibrary){this -> oLibrary = oLibrary;}
+	void SetNoticesLibrary(std::unique_ptr<NoticesAssetLibrary> nLibrary){this -> nLibrary = nLibrary;}
+	void SetSoundLibrary(std::unique_ptr<SoundAssetLibrary> sLibrary){this -> sLibrary = sLibrary;}
 
 	//Other Setters
-	void SetFPS(GAME_INT fps){ GAME_FPS = fps;}
-	void SetCityCorner(GAME_VEC cityCorner){this -> cityCorner = cityCorner;}
-	void SetLevel(GAME_LEVEL level){this -> level = level;}
+	void SetFPS(int fps){ GAME_FPS = fps;}
+	void SetCityCorner(Vector2D cityCorner){this -> cityCorner = cityCorner;}
+	void SetLevel(Levels level){this -> level = level;}
 	void SetLoadBasement(bool loadBasement){this -> loadBasement = loadBasement;}
 
 protected:
 	//Devices
-	std::shared_ptr<GraphicsDevice> gDevice;
-	std::shared_ptr<InputDevice> iDevice;
-	std::shared_ptr<PhysicsDevice> pDevice;
-	std::shared_ptr<SoundDevice> sDevice;
+	std::unique_ptr<GraphicsDevice> gDevice;
+	std::unique_ptr<InputDevice> iDevice;
+	std::unique_ptr<PhysicsDevice> pDevice;
+	std::unique_ptr<SoundDevice> sDevice;
 
 	//LIbraries
-	std::shared_ptr<ArtAssetLibrary> aLibrary;
-	std::shared_ptr<PhysicsAssetLibrary> pLibrary;
-	std::shared_ptr<ComponentAssetLibrary> cLibrary;
-	std::shared_ptr<ObjectAssetLibrary> oLibrary;
-	std::shared_ptr<NoticesAssetLibrary> nLibrary;
-	std::shared_ptr<SoundAssetLibrary> sLibrary;
+	std::unique_ptr<ArtAssetLibrary> aLibrary;
+	std::unique_ptr<PhysicsAssetLibrary> pLibrary;
+	std::unique_ptr<ComponentAssetLibrary> cLibrary;
+	std::unique_ptr<ObjectAssetLibrary> oLibrary;
+	std::unique_ptr<NoticesAssetLibrary> nLibrary;
+	std::unique_ptr<SoundAssetLibrary> sLibrary;
 
-	std::shared_ptr<ObjectFactory> factory;
+	std::unique_ptr<ObjectFactory> factory;
 	
-	GAME_INT GAME_FPS;
-	GAME_VEC cityCorner;
-	GAME_LEVEL level;
+	int GAME_FPS;
+	Vector2D cityCorner;
+	Levels level;
 	bool loadBasement;
 };
 

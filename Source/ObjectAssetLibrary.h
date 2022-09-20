@@ -14,12 +14,12 @@ class GameObject;
 class ObjectAssetLibrary{
 public:
 	ObjectAssetLibrary();
-	bool Initialize();
-	GAME_OBJECT_STATS Search(std::string name);
-	bool AddAsset(std::string name, GAME_OBJECT_STATS stats);
+	bool initialize();
+	ObjectStats Search(std::string name);
+	bool AddAsset(std::string name, ObjectStats stats);
 private:
 			//name					List of components
-	std::map<std::string, GAME_OBJECT_STATS> library;
+	std::map<std::string, ObjectStats> library;
 
 
 };

@@ -5,12 +5,12 @@
 #include "View.h"
 #include "ResourceManager.h"
 #include <memory>
-RendererComponent::RendererComponent(std::shared_ptr<GameObject> owner):Component(owner){initialized = false;}
+RendererComponent::RendererComponent(GameObject* owner, ResourceManager* devices) :Component(owner, devices){}
 RendererComponent::~RendererComponent(){}
 
 //**************************************
 //on the first pass, we set up the texture for the object
-bool RendererComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
+bool RendererComponent::initialize(ObjectFactoryPresets& presets)
 //**************************************
 {
 	//this will get hit twice, so we only want it done once.
@@ -31,21 +31,21 @@ bool RendererComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
 void RendererComponent::Draw()
 //**************************************
 {
-	GAME_VEC updatedPosition;
+	Vector2D updatedPosition;
 	
 
 	//adjust position.
 	updatedPosition = GetUpdatedPosition(_owner);
 
-	GAME_FLT angle = devices -> GetPhysicsDevice() -> GetAngle(_owner.get());
+	float angle = devices -> GetPhysicsDevice() -> getAngle(_owner);
 
 	//Draw sprite.
 	Draw(updatedPosition, angle);
 }
 
-void RendererComponent::Draw(GAME_VEC position, GAME_FLT angle)
+void RendererComponent::Draw(Vector2D position, float angle)
 {
-	texture ->Draw(devices -> GetGraphicsDevice() -> GetRenderer(), position, angle, NULL);
+	texture ->Draw(devices -> GetGraphicsDevice() -> GetRenderer(), position, angle, nullptr);
 }
 
 void RendererComponent::Start()
@@ -53,15 +53,15 @@ void RendererComponent::Start()
 
 }
 
-std::shared_ptr<GameObject> RendererComponent::Update(){return NULL;}
+std::unique_ptr<GameObject> RendererComponent::update(){return nullptr;}
 
 //**************************************
 //adjusts the position based on the view.
-GAME_VEC RendererComponent::GetUpdatedPosition(std::shared_ptr<GameObject> owner)
+Vector2D RendererComponent::GetUpdatedPosition(GameObject* owner)
 //**************************************
 {
-	GAME_VEC updatedPosition;
-	GAME_VEC position = devices -> GetPhysicsDevice() -> GetPosition(owner.get());
+	Vector2D updatedPosition;
+	Vector2D position = devices -> GetPhysicsDevice() -> GetPosition(owner);
 	//adjust position.
 	updatedPosition.x = 
 		  position.x

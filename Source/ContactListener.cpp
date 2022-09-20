@@ -10,8 +10,8 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 	b2Body* bodyA = contact->GetFixtureA()->GetBody();
 	b2Body* bodyB = contact->GetFixtureB()->GetBody();
 	//Cast them to object pointers
-	GameObject* objectA = static_cast<GameObject*>(bodyA -> GetUserData());
-	GameObject* objectB = static_cast<GameObject*>(bodyB -> GetUserData());
+	GameObject* objectA = reinterpret_cast<GameObject*>(bodyA->GetUserData().pointer);
+	GameObject* objectB = reinterpret_cast<GameObject*>(bodyB->GetUserData().pointer);
 
 	//find their types
 	std::string objectAType = objectA -> getObjectType();
@@ -48,34 +48,34 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 		{
 			objectB -> GetComponent<UserInputComponent>() -> SetWallHit(false);
 		}
-		std::shared_ptr<GhostComponent> ghost =  objectA -> GetComponent<GhostComponent>();
-		if(ghost != NULL)
+		std::unique_ptr<GhostComponent> ghost =  objectA -> GetComponent<GhostComponent>();
+		if(ghost != nullptr)
 		{
-			std::map<GAME_DIRECTION, bool> ghostMap = ghost -> getGhostDirection();
+			std::map<Direction, bool> ghostMap = ghost -> getGhostDirection();
 			
 			for(auto direction : ghostMap)
 			{
 				switch (direction.first)
 				{
-				case N:
+				case Direction::N:
 					if(direction.second && bodyB -> GetLinearVelocity().y <=0) 
 					{
 						contact -> SetEnabled(false);
 					}
 					break;
-				case S:
+				case Direction::S:
 					if(direction.second && bodyB -> GetLinearVelocity().y >=0)
 					{
 						contact -> SetEnabled(false);
 					}
 					break;
-				case E:
+				case Direction::E:
 					if(direction.second && bodyB -> GetLinearVelocity().x >=0)
 					{
 						contact -> SetEnabled(false);
 					}
 					break;
-				case W:
+				case Direction::W:
 					if(direction.second && bodyB -> GetLinearVelocity().x <=0) 
 					{
 						contact -> SetEnabled(false);
@@ -97,7 +97,7 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 void ContactListener::PickUpItem(GameObject* player, GameObject* item)
 {
 	//grab the resource manager from the player's body component
-	std::shared_ptr<ResourceManager> devices = player -> GetComponent<BodyComponent>() -> GetDevices();
+	std::unique_ptr<ResourceManager> devices = player -> GetComponent<BodyComponent>() -> GetDevices();
 	//if there is space to add it to the backpack, play the "found item" sound. . .
 	if(player -> GetComponent<BackpackComponent>() -> AddItem(item))
 	{

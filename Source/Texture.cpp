@@ -7,7 +7,7 @@ Texture::Texture()
 {
 	width = 0;
 	height = 0;
-	texture = NULL;
+	texture = nullptr;
 }
 
 
@@ -24,13 +24,13 @@ bool Texture::load(SDL_Renderer* renderer, std::string path )
 	free();
 
 	//The image that's loaded
-    SDL_Surface* surface = NULL;
+    SDL_Surface* surface = nullptr;
     
     //Load the image
     surface = IMG_Load( path.c_str() );
     
     //If the image loaded
-	if( surface == NULL)
+	if( surface == nullptr)
 	{
    		printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
 
@@ -43,7 +43,7 @@ bool Texture::load(SDL_Renderer* renderer, std::string path )
 		//Create an optimized image
 		texture = SDL_CreateTextureFromSurface(renderer,surface);
      
-		if(texture == NULL)
+		if(texture == nullptr)
 		{
 			printf( "Unable to create texture from image %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
 
@@ -52,7 +52,7 @@ bool Texture::load(SDL_Renderer* renderer, std::string path )
 		{
 
             //Set the height and width from the texture
-			SDL_QueryTexture(texture,NULL,NULL,&width,&height);
+			SDL_QueryTexture(texture,nullptr,nullptr,&width,&height);
 
 			//Free the loaded image; no longer needed
 			SDL_FreeSurface(surface);
@@ -61,7 +61,7 @@ bool Texture::load(SDL_Renderer* renderer, std::string path )
 
 	}
 
-	return(texture!=NULL);
+	return(texture!=nullptr);
 
 }
 
@@ -69,36 +69,36 @@ bool Texture::load(SDL_Texture* texture)
 {
 	this -> texture = texture;
 	//Set the height and width from the texture
-	SDL_QueryTexture(texture,NULL,NULL,&width,&height);
+	SDL_QueryTexture(texture,nullptr,nullptr,&width,&height);
 	return true;
 }
 
 void Texture::free()
 {
-	if(texture != NULL)
+	if(texture != nullptr)
 	{
 		SDL_DestroyTexture(texture);
-  		texture = NULL;
+  		texture = nullptr;
 		width = 0;
 		height = 0;
 	}
 }
 	   
 
-void Texture::Draw(SDL_Renderer* renderer, GAME_VEC position, GAME_FLT angle, SDL_Rect* clip)
+void Texture::Draw(SDL_Renderer* renderer, Vector2D position, float angle, SDL_Rect* clip)
 {
 
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { position.x, position.y, width, height};
 
     //Set clip rendering dimensions
-    if( clip != NULL ){
+    if( clip != nullptr ){
         renderQuad.w = clip->w;
         renderQuad.h = clip->h;
     }
 
     //Render to screen
-    SDL_RenderCopyEx(renderer, texture, clip, &renderQuad, angle,NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, texture, clip, &renderQuad, angle,nullptr, SDL_FLIP_NONE);
 
 }
 

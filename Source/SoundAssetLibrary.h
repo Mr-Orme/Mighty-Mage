@@ -11,7 +11,7 @@ class SoundAssetLibrary{
 public:
 	SoundAssetLibrary();
 	bool Finish();
-	bool Initialize(SoundDevice* sDevice);
+	bool initialize(SoundDevice* sDevice);
 	Mix_Chunk* SearchSoundEffects(std::string name);
 	Mix_Music* SearchMusic(std::string name);
 	bool AddSoundEffect(std::string name, std::string path);

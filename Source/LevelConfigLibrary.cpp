@@ -1,7 +1,7 @@
 #include "LevelConfigLibrary.h"
 
 LevelConfigLibrary::LevelConfigLibrary(){}
-bool LevelConfigLibrary::Initialize(){return true;}
+bool LevelConfigLibrary::initialize(){return true;}
 std::string LevelConfigLibrary::Search(std::string name)
 {
 	return(library.find(name) -> second);

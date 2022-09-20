@@ -4,12 +4,12 @@
 #include "ObjectFactory.h"
 #include "ComponentsList.h"
 
-BackpackComponent::BackpackComponent(std::shared_ptr<GameObject> owner):Component(owner){}
+BackpackComponent::BackpackComponent(GameObject* owner, ResourceManager* devices):Component(owner, devices){}
 BackpackComponent::~BackpackComponent(){}
 
 //**************************************
 //sets devices
-bool BackpackComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
+bool BackpackComponent::initialize(ObjectFactoryPresets& presets)
 //**************************************
 {
 	devices = presets.devices;
@@ -19,15 +19,15 @@ bool BackpackComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
 	//and not on the screen size. . .
 	slotSize = 25; //pixels
 	GraphicsDevice* gDevice = devices -> GetGraphicsDevice();
-	GAME_INT SCREEN_WIDTH = gDevice -> GetScreenWidth();
-	GAME_INT SCREEN_HEIGHT = gDevice -> GetScreenHeight();
+	int SCREEN_WIDTH = gDevice -> GetScreenWidth();
+	int SCREEN_HEIGHT = gDevice -> GetScreenHeight();
 	topLeft.x = SCREEN_WIDTH*.1;
 	topLeft.y = SCREEN_HEIGHT*.1;
 	bottomRight.x = SCREEN_WIDTH-topLeft.x;
 	bottomRight.y = SCREEN_HEIGHT-topLeft.y;
 
 	//***************************Set up backpack and find dimensions **********************
-	GAME_VEC backpackDimensions = {bottomRight.x - topLeft.x, bottomRight.y - topLeft.y};
+	Vector2D backpackDimensions = {bottomRight.x - topLeft.x, bottomRight.y - topLeft.y};
 	//maximum number of rows in backpack
 	maxRows = backpackDimensions.x/slotSize;
 	maxColumns = backpackDimensions.y/slotSize;
@@ -54,10 +54,10 @@ bool BackpackComponent::AddItem(GameObject* item)
 //**************************************
 {
 	//grab the shared pointer from the owner
-	std::shared_ptr<GameObject> itemSP = item -> GetComponent<RendererComponent>() -> GetOwner();
+	std::unique_ptr<GameObject> itemSP{ item->GetComponent<RendererComponent>()->getOwner() };
 
 	//return whether it was added or not
-	return (ToBackpack(itemSP));
+	return (ToBackpack(std::move(itemSP)));
 	
 }
 
@@ -65,17 +65,17 @@ void BackpackComponent::Start(){}
 	
 	//Have this iterate through all items in inventory and draw them. .  . Must happen after Graphic's
 	//Device does it's draw. . .
-std::shared_ptr<GameObject> BackpackComponent::Update()
+std::unique_ptr<GameObject> BackpackComponent::update()
 	{
 		if (open)
 		{
 			
-			GAME_RGBA background = {255, 255, 255 , 220};
-			GAME_RGBA border = {0,0,0,255};
+			RGBA background = {255, 255, 255 , 220};
+			RGBA border = {0,0,0,255};
 
-			std::map<Texture*, GAME_VEC> objects;
+			std::map<Texture*, Vector2D> objects;
 			//grab all textures and their positions;
-			for(auto item : inventory)
+			for(const auto& item : inventory)
 			{
 				objects[(item -> GetComponent<RendererComponent>() -> GetTexture())] = item -> GetComponent<InventoryComponent>() -> GetPackPosition();
 			}
@@ -85,24 +85,24 @@ std::shared_ptr<GameObject> BackpackComponent::Update()
 
 			
 		}
-		return NULL;
+		return nullptr;
 	}
 	void BackpackComponent::Finish(){}
 
-	bool BackpackComponent::ToBackpack(std::shared_ptr<GameObject> item)
+	bool BackpackComponent::ToBackpack(std::unique_ptr<GameObject> item)
 	{
 		
 
 			GraphicsDevice* gDevice = devices -> GetGraphicsDevice();
-			GAME_INT SCREEN_WIDTH = gDevice -> GetScreenWidth();
-			GAME_INT SCREEN_HEIGHT = gDevice -> GetScreenHeight();
-			GAME_VEC topLeft = {SCREEN_WIDTH*.1, SCREEN_HEIGHT*.1};
-			GAME_VEC bottomRight = {SCREEN_WIDTH-topLeft.x, SCREEN_HEIGHT-topLeft.y};
+			int SCREEN_WIDTH = gDevice -> GetScreenWidth();
+			int SCREEN_HEIGHT = gDevice -> GetScreenHeight();
+			Vector2D topLeft = {SCREEN_WIDTH*.1, SCREEN_HEIGHT*.1};
+			Vector2D bottomRight = {SCREEN_WIDTH-topLeft.x, SCREEN_HEIGHT-topLeft.y};
 
 			
 
 			//**********************Find Item dimensions*************************
-			std::shared_ptr<RendererComponent> rend = item -> GetComponent<RendererComponent>();
+			std::unique_ptr<RendererComponent> rend = item -> GetComponent<RendererComponent>();
 			//number of sequential rows we need (+.5 makes sure we round up)
 			int numRows = (rend -> GetTexture() -> getWidth()/slotSize) + .5;
 			//number of sequential columns we need
@@ -185,7 +185,7 @@ std::shared_ptr<GameObject> BackpackComponent::Update()
 				//back up to the proper row
 				currRow--;
 				//calculate position based on row & column.
-				GAME_VEC position = {currColumn*slotSize + topLeft.x+5, currRow*slotSize + topLeft.y+5};
+				Vector2D position = {currColumn*slotSize + topLeft.x+5, currRow*slotSize + topLeft.y+5};
 				
 				
 				

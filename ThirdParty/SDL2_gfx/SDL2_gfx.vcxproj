@@ -82,6 +82,10 @@
     <IncludePath>D:\Google Drive\MightyMage\ThirdParty\SDL2\include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\Google Drive\MightyMage\ThirdParty\SDL2\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\Users\ormes\source\repos\Mr-Orme\Mighty-Mage\ThirdParty\SDL2\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\ormes\source\repos\Mr-Orme\Mighty-Mage\ThirdParty\SDL2\lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>

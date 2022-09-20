@@ -5,12 +5,12 @@
 #include "PhysicsDevice.h"
 
 
-HealthComponent::HealthComponent(std::shared_ptr<GameObject> owner):Component(owner){}
+HealthComponent::HealthComponent(std::unique_ptr<GameObject> owner):Component(owner){}
 HealthComponent::~HealthComponent(){}
 
 //**************************************
 //gets health and resource manager from passed presets, the object starts out alive.
-bool HealthComponent::Initialize(GAME_OBJECTFACTORY_PRESETS& presets)
+bool HealthComponent::initialize(ObjectFactoryPresets& presets)
 //**************************************
 {
 	isDead = false;
@@ -26,10 +26,10 @@ bool HealthComponent::KillObject(std::string deathSprite)
 //**************************************
 {
 	//Stop the physics of the object
-	devices -> GetPhysicsDevice() -> SetStopPhysics(_owner.get());
+	devices -> GetPhysicsDevice() -> SetStopPhysics(_owner);
 
 	//grab the renderer
-	std::shared_ptr<RendererComponent> compRenderer = _owner -> GetComponent<RendererComponent>();
+	std::unique_ptr<RendererComponent> compRenderer = _owner -> GetComponent<RendererComponent>();
 	//change the sprite
 	compRenderer -> SetTexture(devices -> GetArtLibrary() -> Search(deathSprite));	
 	return true;
@@ -50,24 +50,24 @@ void HealthComponent::Start()
 
 //**************************************
 //checks for death and deals with it
-std::shared_ptr<GameObject> HealthComponent::Update()
+std::unique_ptr<GameObject> HealthComponent::update()
 //**************************************
 {
 	//if dead
 	if(health <= 0)
 	{
 		//if this is a joined object
-		if(_owner -> GetJoinedWith() != NULL)
+		if(_owner -> getJoinedWith() != nullptr)
 		{
 			//Turn off the joined object
-			std::shared_ptr<GameObject> joined =  _owner -> GetJoinedWith();
+			std::unique_ptr<GameObject> joined =  _owner -> getJoinedWith();
 			devices -> GetPhysicsDevice() -> SetStopPhysics(joined.get());
 			//destroy the joints
-			devices -> GetPhysicsDevice() -> DestroyJoint(_owner.get());
+			devices -> GetPhysicsDevice() -> DestroyJoint(_owner);
 		}
 		//kill it
 		KillObject();
 	}
-	return NULL;
+	return nullptr;
 }
 void HealthComponent::Finish(){}

@@ -10,19 +10,19 @@ class GameObject;
 class GhostComponent : public Component
 {
 public:
-	GhostComponent(std::shared_ptr<GameObject>);
+	GhostComponent(std::unique_ptr<GameObject>);
 	~GhostComponent();
-	bool Initialize(GAME_OBJECTFACTORY_PRESETS& presets);
+	bool initialize(ObjectFactoryPresets& presets);
 
-	std::map<GAME_DIRECTION, bool> getGhostDirection(){return ghostDirection;}
-	void SetGhostDirection(GAME_DIRECTION direction, bool isGhost){ghostDirection[direction]=isGhost;}
-	void SetGhostDirection(std::map<GAME_DIRECTION, bool> ghostDirection){this -> ghostDirection = ghostDirection;}
+	std::map<Direction, bool> getGhostDirection(){return ghostDirection;}
+	void SetGhostDirection(Direction direction, bool isGhost){ghostDirection[direction]=isGhost;}
+	void SetGhostDirection(std::map<Direction, bool> ghostDirection){this -> ghostDirection = ghostDirection;}
 
 	void Start();
-	std::shared_ptr<GameObject> Update();
+	std::unique_ptr<GameObject> update();
 	void Finish();
 protected:
-	std::map<GAME_DIRECTION, bool> ghostDirection;
+	std::map<Direction, bool> ghostDirection;
 };
 
 #endif

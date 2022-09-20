@@ -7,7 +7,7 @@ NoticesAssetLibrary::NoticesAssetLibrary()
 
 //**************************************
 //This function sets the graphic's device for the library.
-bool NoticesAssetLibrary::Initialize()
+bool NoticesAssetLibrary::initialize()
 
 //**************************************
 {
@@ -20,7 +20,7 @@ bool NoticesAssetLibrary::Initialize()
 //and returns that notice.
 //if not found, it sets the text to nothing of the notice passed in and
 //returns that notice.
-GAME_NOTICE NoticesAssetLibrary::Search(GAME_NOTICE square)
+Notice NoticesAssetLibrary::Search(Notice square)
 //**************************************
 {
 	for (auto notices : library)
@@ -35,7 +35,7 @@ GAME_NOTICE NoticesAssetLibrary::Search(GAME_NOTICE square)
 }
 //**************************************
 //adds a notice to the library vector
-bool NoticesAssetLibrary::AddAsset(GAME_NOTICE notice)
+bool NoticesAssetLibrary::AddAsset(Notice notice)
 //**************************************
 {
 	library.push_back(notice);
@@ -45,11 +45,11 @@ bool NoticesAssetLibrary::AddAsset(GAME_NOTICE notice)
 //**************************************
 //Based on your position in the game space and direction of the passed in notice
 //a notice is found and removed from the library.
-bool NoticesAssetLibrary::RemoveAsset(GAME_NOTICE notice)
+bool NoticesAssetLibrary::RemoveAsset(Notice notice)
 //**************************************
 {
 	bool foundNotice = false;
-	std::vector<GAME_NOTICE>::iterator notices;
+	std::vector<Notice>::iterator notices;
 	//iterate through all notices
 	for (notices = library.begin(); notices != library.end(); notices++)
 	{

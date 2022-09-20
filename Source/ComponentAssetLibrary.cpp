@@ -6,7 +6,7 @@
 ComponentAssetLibrary::ComponentAssetLibrary(){}
 //**************************************
 //Nothing happening here, move along
-bool ComponentAssetLibrary::Initialize()
+bool ComponentAssetLibrary::initialize()
 //**************************************
 {
 	return true;
@@ -16,41 +16,37 @@ bool ComponentAssetLibrary::Initialize()
 //Takes the name of the object and a pointer to it
 //creates components based on it's type and adds them to a vector
 //which is returned.
-std::vector<std::shared_ptr<Component>> ComponentAssetLibrary::Search(std::string name, std::shared_ptr<GameObject> owner)
+std::vector<std::unique_ptr<Component>> ComponentAssetLibrary::search(std::string name, GameObject* owner)
 //**************************************
 {
-	//Vector of pointers to return
-	std::vector<std::shared_ptr<Component>> componentListPtrs;
 	
-	//finds the list of components associated with the name of the object passed.
-	std::vector<GAME_COMPONENT_LIST> componentList = library.find(name) -> second;
-
-	//Iterate through the list of components
-	//add the proper component to the list of components to return.
-	for( auto comp: componentList)
+	std::vector<std::unique_ptr<Component>> componentListPtrs;
+	
+	auto componentList{ library.find(name)->second };
+	for( auto components: componentList)
 	{
-		switch (comp)
+		switch (components)
 		{
-		case GAME_BODY_COMP:
-			componentListPtrs.push_back(std::make_shared<BodyComponent>(owner));
+		case Components::body:
+			componentListPtrs.push_back(std::make_unique<BodyComponent>(owner));
 			break;
-		case GAME_HEALTH_COMP:
-			componentListPtrs.push_back(std::make_shared<HealthComponent>(owner));
+		case Components::health:
+			componentListPtrs.push_back(std::make_unique<HealthComponent>(owner));
 			break;
-		case GAME_RENDERER_COMP:
-			componentListPtrs.push_back(std::make_shared<RendererComponent>(owner));
+		case Components::renderer:
+			componentListPtrs.push_back(std::make_unique<RendererComponent>(owner));
 			break;
-		case GAME_USERINPUT_COMP:
-			componentListPtrs.push_back(std::make_shared<UserInputComponent>(owner));
+		case Components::userInput:
+			componentListPtrs.push_back(std::make_unique<UserInputComponent>(owner));
 			break;
-		case GAME_BACKPACK_COMP:
-			componentListPtrs.push_back(std::make_shared<BackpackComponent>(owner));
+		case Components::backpack:
+			componentListPtrs.push_back(std::make_unique<BackpackComponent>(owner));
 			break;
-		case GAME_INVENTORY_COMP:
-			componentListPtrs.push_back(std::make_shared<InventoryComponent>(owner));
+		case Components::inventory:
+			componentListPtrs.push_back(std::make_unique<InventoryComponent>(owner));
 			break;
-		case GAME_GHOST_COMP:
-			componentListPtrs.push_back(std::make_shared<GhostComponent>(owner));
+		case Components::ghost:
+			componentListPtrs.push_back(std::make_unique<GhostComponent>(owner));
 			break;
 		default:
 			break;
@@ -63,7 +59,7 @@ std::vector<std::shared_ptr<Component>> ComponentAssetLibrary::Search(std::strin
 //**************************************
 //takes the name of the object and a vecotr of enums of types of components and saves it to the library.
 //The components cannot be created until there is an actual owner for it.
-bool ComponentAssetLibrary::AddAsset(std::string name, std::vector<GAME_COMPONENT_LIST> componentList)
+bool ComponentAssetLibrary::addAsset(std::string name, std::vector<Components> componentList)
 //**************************************
 {
 	library[name] = componentList;

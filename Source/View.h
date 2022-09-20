@@ -9,17 +9,17 @@ public:
 	View();
 	~View();
 
-	bool Initialize(GAME_FLT x, GAME_FLT y);
-	bool Update(GAME_FLT gameTime);
+	bool initialize(float x, float y);
+	bool Update(float gameTime);
 	void Print();
 	
-	GAME_VEC getPosition(){return position;}
+	Vector2D getPosition(){return position;}
 
-	void setPosition(GAME_VEC position){this -> position = position;}
-	void setX(GAME_FLT x){this -> position.x = x;}
-	void setY(GAME_FLT y){this -> position.y = y;}
+	void setPosition(Vector2D position){this -> position = position;}
+	void setX(float x){this -> position.x = x;}
+	void setY(float y){this -> position.y = y;}
 private:
-	GAME_VEC position;
+	Vector2D position;
 };
 
 

@@ -11,7 +11,7 @@ class ResourceManager;
 class ObjectFactory
 {
 public:
-	std::shared_ptr<GameObject> Create(GAME_OBJECTFACTORY_PRESETS& presets);
+	std::unique_ptr<GameObject> Create(ObjectFactoryPresets& presets);
 	protected:
 	
 };

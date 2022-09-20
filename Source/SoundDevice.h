@@ -9,7 +9,7 @@ class SoundAssetLibrary;
 class SoundDevice{
 public:
 	~SoundDevice();
-	bool Initialize();
+	bool initialize();
 	void Shutdown();
 
 	bool PlaySound(std::string sound, int numLoops);
