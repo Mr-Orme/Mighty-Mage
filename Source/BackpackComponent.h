@@ -15,7 +15,7 @@ public:
 
 	bool initialize(ObjectFactoryPresets& presets);
 
-	bool AddItem(GameObject* item);
+	bool AddItem(std::unique_ptr<GameObject> item);
 
 	std::vector<std::unique_ptr<GameObject>>& GetInventory(){return inventory;}
 
@@ -28,14 +28,14 @@ public:
 protected:
 	bool ToBackpack(std::unique_ptr<GameObject> item);
 	std::vector<std::unique_ptr<GameObject>> inventory;
-	bool** backpack;
+	bool** backpack{ nullptr };
 	
-	int slotSize;
-	Vector2D topLeft;
-	Vector2D bottomRight;
-	int maxRows;
-	int maxColumns;
-	bool open;
+	int slotSize{ 0 };
+	Vector2D topLeft{ 0,0 };
+	Vector2D bottomRight{ 0,0 };
+	int maxRows{ 0 };
+	int maxColumns{ 0 };
+	bool open{ false };
 };
 
 #endif

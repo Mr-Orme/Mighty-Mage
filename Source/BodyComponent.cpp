@@ -52,3 +52,8 @@ std::unique_ptr<GameObject> BodyComponent::update()
 	oldPosition = newPosition;
 	return nullptr;
 }
+
+float BodyComponent::getAngle() const
+{
+	return devices->GetPhysicsDevice()->getAngle(_owner);
+}

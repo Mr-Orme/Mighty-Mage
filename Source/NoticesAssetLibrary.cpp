@@ -5,14 +5,7 @@ NoticesAssetLibrary::NoticesAssetLibrary()
 	
 }
 
-//**************************************
-//This function sets the graphic's device for the library.
-bool NoticesAssetLibrary::initialize()
 
-//**************************************
-{
-	return true;
-}
 
 //**************************************
 //Based on your position in the game space and direction you are facing

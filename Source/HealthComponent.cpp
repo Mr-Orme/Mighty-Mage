@@ -5,7 +5,7 @@
 #include "PhysicsDevice.h"
 
 
-HealthComponent::HealthComponent(std::unique_ptr<GameObject> owner):Component(owner){}
+HealthComponent::HealthComponent(GameObject* owner, ResourceManager* devices):Component(owner, devices){}
 HealthComponent::~HealthComponent(){}
 
 //**************************************
@@ -60,8 +60,8 @@ std::unique_ptr<GameObject> HealthComponent::update()
 		if(_owner -> getJoinedWith() != nullptr)
 		{
 			//Turn off the joined object
-			std::unique_ptr<GameObject> joined =  _owner -> getJoinedWith();
-			devices -> GetPhysicsDevice() -> SetStopPhysics(joined.get());
+			GameObject* joined =  _owner -> getJoinedWith();
+			devices -> GetPhysicsDevice() -> SetStopPhysics(joined);
 			//destroy the joints
 			devices -> GetPhysicsDevice() -> DestroyJoint(_owner);
 		}

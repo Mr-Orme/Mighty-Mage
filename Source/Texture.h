@@ -5,39 +5,33 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "Definitions.h"
+class GraphicsDevice;
+class Texture {
 
-class Texture{
+public:
 
-    public:
-        //Initializes variables
-        Texture();
+    Texture(std::string path, GraphicsDevice* gDevice);
+    Texture(SDL_Texture* texture);
+    ~Texture();
 
-        //Deallocates memory
-        ~Texture();
+    
+   
 
-        //Loads image at specified path
-        bool load(SDL_Renderer* renderer, std::string path );
-		bool load(SDL_Texture* texture);
+    void run(SDL_Renderer* renderer, Vector2D position, float angle, SDL_Rect* clip = nullptr);
 
-        //Deallocates texture
-        void free();
-
-        //Renders texture at given point
-		
-		void run(SDL_Renderer* renderer, Vector2D position, float angle, SDL_Rect* clip = nullptr );
-
-        //Gets image dimensions
-        int getWidth();
-        int getHeight();
+    Vector2D getDimensions() { return dimensions; }
 
     private:
-
+        void load(SDL_Texture* texture);
+        void load(std::string path);
         //The actual hardware texture
-        SDL_Texture* texture;
+        SDL_Texture* texture{ nullptr };
+
+        GraphicsDevice* gDevice{ nullptr };
 
         //Image dimensions
-        int width;
-        int height;
+        Vector2D dimensions{};
+
 
 };
 

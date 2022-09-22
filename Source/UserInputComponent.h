@@ -14,7 +14,7 @@ class ObjectFactory;
 class UserInputComponent : public Component
 {
 public:
-	UserInputComponent(std::unique_ptr<GameObject> owner);
+	UserInputComponent(GameObject* owner, ResourceManager* devices);
 	~UserInputComponent();
 	
 	bool initialize(ObjectFactoryPresets& presets);
@@ -26,15 +26,13 @@ public:
 	std::unique_ptr<GameObject> update();
 	void Finish();
 protected:
-	int frameCount;
-	std::unique_ptr<ResourceManager> devices;
-
+	int frameCount{ 0 };
 	//ObjectFactoryPresets presets;
 	PhysicsStats physics;
-	Vector2D zeroVec;
+	Vector2D zeroVec{};
 	std::map<Event, bool> pressControl;
-	bool wallHit;
-	bool noWall;
+	bool wallHit{ false };
+	bool noWall{ true };
 	
 };
 

@@ -15,9 +15,13 @@ std::unique_ptr<GameObject> ObjectFactory::Create(ObjectFactoryPresets& presets)
 {
 
 	//Create pointer to new objects
-	std::unique_ptr<GameObject> newObject = std::make_unique<GameObject>();
+	std::unique_ptr<GameObject> newObject{ std::make_unique<GameObject>() };
 	//Get list of components for the new object
-	std::vector<std::unique_ptr<Component>> componentList = presets.devices -> getComponentLibrary() ->Search(presets.objectType, newObject.get());
+	std::vector<std::unique_ptr<Component>> componentList
+	{ 
+		presets.devices->getComponentLibrary()->
+		search(presets.objectType, newObject.get()) 
+	};
 	//Add each to the object
 	for (auto& comp : componentList)
 	{
@@ -28,7 +32,7 @@ std::unique_ptr<GameObject> ObjectFactory::Create(ObjectFactoryPresets& presets)
 	if(!presets.gDirection.empty())
 	{
 		//add the ghost component
-		newObject -> addComponent(std::make_unique<GhostComponent>(newObject));
+		newObject -> addComponent(std::make_unique<GhostComponent>(newObject.get(), presets.devices));
 	}
 		
 	//Initialize the new object (this will also initialize components)

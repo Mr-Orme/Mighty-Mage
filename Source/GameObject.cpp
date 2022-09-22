@@ -17,8 +17,13 @@ bool GameObject::initialize(ObjectFactoryPresets& presets)
 {
 	setType(presets.objectType);
 	
-	if (std::unique_ptr<RendererComponent>& component = getComponent<RendererComponent>(); component != nullptr)
+	if (
+		RendererComponent* component{ getComponent<RendererComponent>() };
+		component != nullptr
+		)
+	{
 		component->initialize(presets);
+	}
 
 	//initialize all components
 	for ( auto& comp :components)

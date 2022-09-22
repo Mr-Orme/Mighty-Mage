@@ -14,7 +14,6 @@ class GameObject;
 class ObjectAssetLibrary{
 public:
 	ObjectAssetLibrary();
-	bool initialize();
 	ObjectStats Search(std::string name);
 	bool AddAsset(std::string name, ObjectStats stats);
 private:

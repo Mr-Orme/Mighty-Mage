@@ -44,7 +44,7 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 	//========================================
 	//Construct Physics Device
 	//========================================
-	pDevice = std::make_unique<PhysicsDevice>(0, 0);
+	pDevice = std::make_unique<PhysicsDevice>(0.0f, 0.0f);
 
 
 	if (!pDevice->initialize())
@@ -66,32 +66,31 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 	//========================================
 	//Construct Art Library
 	//========================================
-	aLibrary = std::make_unique<ArtAssetLibrary>();
-	//needs to be an xml file just likes physics.
-	aLibrary->initialize(gDevice.get());
+	aLibrary = std::make_unique<ArtAssetLibrary>(gDevice.get());
+	
+	
 	//========================================
 	//Construct Physics Library
 	//========================================
 	pLibrary = std::make_unique<PhysicsAssetLibrary>();
-	pLibrary->initialize();
+	
 
 	//========================================
 	//Construct Physics Library
 	//========================================
-	cLibrary = std::make_unique<ComponentAssetLibrary>();
-	cLibrary->initialize();
+	cLibrary = std::make_unique<ComponentAssetLibrary>(this);
+	
 
 	//========================================
 	//Construct Objects Library
 	//========================================
 	oLibrary = std::make_unique<ObjectAssetLibrary>();
-	oLibrary->initialize();
 
 	//========================================
 	//Construct Notices Library
 	//========================================
 	nLibrary = std::make_unique<NoticesAssetLibrary>();
-	nLibrary->initialize();
+	
 
 	//========================================
 	//Construct Sound Library
@@ -104,6 +103,7 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 	//========================================
 
 	//prepare XML file for parsing.
+	//TODO::move to library constructors.
 	TiXmlDocument assetFile(assetPath);
 	if (!assetFile.LoadFile()) { return; };
 	TiXmlElement* assetType = assetFile.FirstChildElement()->FirstChildElement();
@@ -302,12 +302,3 @@ ResourceManager::~ResourceManager(){
 
 
 
-//**************************************
-//prepares all asset libraries based on path passed xml file
-//and creastes and initialzies all devices
-bool ResourceManager::initialize(Vector2D screenDimensions, std::string assetPath)
-{
-	
-
-	return true;
-}

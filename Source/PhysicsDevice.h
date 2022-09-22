@@ -11,6 +11,7 @@ class Object;
 
 class PhysicsDevice{
 public:
+	//TODO::make Vector2D
 	PhysicsDevice(float gravityX, float gravityY);
 	bool initialize();
 	bool Update(float dt);

@@ -3,13 +3,7 @@
 
 
 ObjectAssetLibrary::ObjectAssetLibrary(){}
-//**************************************
-//Nothing happening here, move along
-bool ObjectAssetLibrary::initialize()
-//**************************************
-{
-	return true;
-}
+
 
 //**************************************
 //Takes the name of the object and returns it's stats.

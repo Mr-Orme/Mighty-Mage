@@ -15,8 +15,10 @@ public:
 	bool initialize(ObjectFactoryPresets& presets);
 
 	bool canPass(Direction) const;
-	void SetGhostDirection(Direction direction, bool isGhost){ghostDirection[direction]=isGhost;}
-	void SetGhostDirection(std::map<Direction, bool> ghostDirection){this -> ghostDirection = ghostDirection;}
+	void SetGhostDirection(Direction direction, bool isGhost)
+		{ghostDirection[direction]=isGhost;}
+	void SetGhostDirection(std::map<Direction, bool> ghostDirection)
+		{this -> ghostDirection = ghostDirection;}
 
 	
 	std::unique_ptr<GameObject> update() override;

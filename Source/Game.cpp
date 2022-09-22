@@ -26,12 +26,8 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 	//========================================
 	//Construct Device Manager
 	//========================================
-	devices = std::make_unique<ResourceManager>();
-	devices->initialize(screenDimensions, assetConfigFile);
+	devices = std::make_unique<ResourceManager>(screenDimensions, assetConfigFile);
 	
-
-
-
 	///Get a few things ready
 	ObjectFactoryPresets presets;
 	presets.devices = devices.get();
@@ -83,7 +79,7 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 				//grab the x value, this is the "Square" of the map where it is located.
 				squareElement->QueryFloatAttribute("x", &temp);
 				//translate to pixel positoin for Graphics Device
-				presets.position.x = (temp *squareDimension) + squarePosition.x;
+				presets.position.x = (int)((temp *squareDimension) + squarePosition.x);
 
 				//grab the y value
 				squareElement->QueryFloatAttribute("y", &temp);
@@ -92,7 +88,7 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 				float fractPart, intPart;
 				fractPart = modff(temp, &intPart);
 				//The SDL top starts at 0, Our map is reversed, so we need to subtract the integer part from 15 and add back on the fractinal part.
-				presets.position.y = (((15 - intPart) + fractPart) * squareDimension) + squarePosition.y;
+				presets.position.y = (int)((((15 - intPart) + fractPart) * squareDimension) + squarePosition.y);
 
 				//grab the angle
 				squareElement->QueryFloatAttribute("angle", &presets.angle);
@@ -158,9 +154,9 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 				}
 
 				//Create a pointer to a new object and initialize it.
-				std::unique_ptr<GameObject> newObject = objectFactory->Create(presets);
+				
 				//add new object
-				objects.push_back(newObject);
+				objects.emplace_back(objectFactory->Create(presets));
 				//***************************************
 
 				//***********LEFT WALL**********************
@@ -193,9 +189,9 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 				if (left != "none")
 				{
 					//Create a pointer to a new object and initialize it.
-					std::unique_ptr<GameObject> newObject = objectFactory->Create(presets);
+					
 					//add new object
-					objects.push_back(newObject);
+					objects.emplace_back(objectFactory->Create(presets));
 				}
 				//***************************************
 
@@ -223,9 +219,9 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 				if (floor != "none")
 				{
 					//Create a pointer to a new object and initialize it.
-					std::unique_ptr<GameObject> newObject = objectFactory->Create(presets);
+					
 					//add new object
-					objects.push_back(newObject);
+					objects.emplace_back(objectFactory->Create(presets));
 				}
 				//***************************************
 				//move x to next square to the right (we already moved ten in the code above).
@@ -315,8 +311,8 @@ void Game::update()
 	for (objectIter = objects.begin(); objectIter != objects.end(); objectIter++)
 	{
 		//check for health component
-		std::unique_ptr<HealthComponent>& compHealth = (*objectIter)->getComponent<HealthComponent>();
-		std::unique_ptr<InventoryComponent>& compInventory = (*objectIter)->getComponent<InventoryComponent>();
+		HealthComponent* compHealth{ (*objectIter)->getComponent<HealthComponent>() };
+		InventoryComponent* compInventory{ (*objectIter)->getComponent<InventoryComponent>() };
 		if (compHealth != nullptr)
 		{
 			if (compHealth->GetIsDead())
@@ -329,7 +325,7 @@ void Game::update()
 			else if (compInventory != nullptr && compInventory->GetPickedUp())
 			{
 				//remove the sprite from the automatic draw list
-				devices->GetGraphicsDevice()->RemoveSpriteRenderer((*objectIter)->getComponent<RendererComponent>().get());
+				devices->GetGraphicsDevice()->RemoveSpriteRenderer((*objectIter)->getComponent<RendererComponent>());
 				//stop the physics on it
 				devices->GetPhysicsDevice()->SetStopPhysics((*objectIter).get());
 				//remove object from the vector.
@@ -344,7 +340,10 @@ void Game::update()
 	//add any objects created in the previous iteration
 	if (!newObjects.empty())
 	{
-		objects.insert(objects.end(), newObjects.begin(), newObjects.end());
+		for (auto& object : newObjects)
+		{
+			objects.push_back(std::move(object));
+		}
 		newObjects.clear();
 	}
 
@@ -356,7 +355,7 @@ void Game::update()
 		//if it returned an object, add it to the list to be added.
 		if (temp != nullptr)
 		{
-			newObjects.push_back(temp);
+			newObjects.push_back(std::move(temp));
 		}
 
 
@@ -367,17 +366,17 @@ void Game::update()
 //Starts the graphic deivce, 
 //Graphic Device draws the sprites
 //Then calls the graphic device's present method to show the frame.
-bool Game::run()
-//**************************************
-{
-	devices -> GetGraphicsDevice() -> Begin();	
-	devices -> GetGraphicsDevice() -> run();
-	
-	if (debug) devices->GetPhysicsDevice()->getWorld()->DebugDraw(); //-> DrawDebugData();
-	
-	devices -> GetGraphicsDevice() -> Present();
-	return true;
-}
+//bool Game::run()
+////**************************************
+//{
+//	devices -> GetGraphicsDevice() -> Begin();	
+//	devices -> GetGraphicsDevice() -> run();
+//	
+//	if (debug) devices->GetPhysicsDevice()->getWorld()->DebugDraw(); //-> DrawDebugData();
+//	
+//	devices -> GetGraphicsDevice() -> Present();
+//	return true;
+//}
 
 //**************************************
 //Clears the object vector and ResourceManager in

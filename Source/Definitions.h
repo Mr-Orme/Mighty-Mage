@@ -26,7 +26,7 @@ class GameObject;
 enum class Event {NA,up,down,left,right,space, shift, key_b, quit, numEvents};
 enum class Direction {N =0, E = 90, S = 180, W = 270};
 enum class Colors {red, yellow, blue, orange, green, purple, numColors};
-enum class Levels {main, basement,};
+enum class Levels {sorpigal, sorpigal_basement,};
 
 enum class Components 
 {

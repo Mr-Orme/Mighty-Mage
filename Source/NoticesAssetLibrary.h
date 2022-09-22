@@ -8,7 +8,6 @@
 class NoticesAssetLibrary{
 public:
 	NoticesAssetLibrary();
-	bool initialize();
 	Notice Search(Notice square);
 	bool AddAsset(Notice notice);
 	bool RemoveAsset(Notice notice);

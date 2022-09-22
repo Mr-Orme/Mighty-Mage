@@ -8,7 +8,7 @@ class ResourceManager;
 class HealthComponent : public Component
 {
 public:
-	HealthComponent(std::unique_ptr<GameObject>);
+	HealthComponent(GameObject* owner, ResourceManager* devices);
 	~HealthComponent();
 
 	bool initialize(ObjectFactoryPresets& presets);
@@ -27,8 +27,8 @@ public:
 	std::unique_ptr<GameObject> update();
 	void Finish();
 protected:
-	int health;
-	bool isDead;
+	int health{ 0 };
+	bool isDead{ false };
 	
 };
 

@@ -10,13 +10,7 @@ PhysicsStats PhysicsAssetLibrary::Search(std::string searchText)
 	return(library.find(searchText) -> second);
 }
 
-//**************************************
-//Nothing here, move along.
-bool PhysicsAssetLibrary::initialize()
-//**************************************
-{
-	return true;
-}
+
 
 //**************************************
 //the name of the object type and a physics structured is passed in and saved to the library.

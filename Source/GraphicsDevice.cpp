@@ -6,29 +6,20 @@
 #include "GraphicsDevice.h"
 //#include "InputDevice.h"
 #include "View.h"
+#include "Definitions.h"
 
 
 
 
-GraphicsDevice::GraphicsDevice(int width, int height) : SCREEN_WIDTH(width), screenDimensions.y(height)
-{
-	screen = nullptr;
-	renderer = nullptr;
-}
+GraphicsDevice::GraphicsDevice(Vector2D screenDimensions) : screenDimensions(screenDimensions)
+{}
 
 GraphicsDevice::~GraphicsDevice()
 {
-	/*if(!ShutDown())
-	{
-		printf( "SDL could not shut down! SDL_Error: %s\n", SDL_GetError() );
-		exit(1);
-	}*/
+
 }
 
-SDL_Window* GraphicsDevice::GetWindow()
-{
-	return(screen);
-}
+
 
 bool GraphicsDevice::initialize(bool fullScreen)
 {
@@ -61,14 +52,14 @@ bool GraphicsDevice::initialize(bool fullScreen)
 		screen = SDL_CreateWindow("Demonstration Window",
 			SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED,
-			SCREEN_WIDTH, screenDimensions.y, SDL_WINDOW_FULLSCREEN);
+			screenDimensions.x, screenDimensions.y, SDL_WINDOW_FULLSCREEN);
 	}
 	else
 	{
 		screen = SDL_CreateWindow("Demonstration Window",
 			SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED,
-			SCREEN_WIDTH, screenDimensions.y, SDL_WINDOW_SHOWN);
+			screenDimensions.x, screenDimensions.y, SDL_WINDOW_SHOWN);
 
 	}
 	if(screen==nullptr)
@@ -91,8 +82,9 @@ bool GraphicsDevice::initialize(bool fullScreen)
 	//========================================
 	//create view
 	//========================================
-	view = std::make_unique<View>();
-	view -> Initialize (0, 0);
+	Vector2D startPosition{ 0,0 };
+	view = std::make_unique<View>(startPosition);
+	
 
 	return(true);
 
@@ -145,7 +137,7 @@ void GraphicsDevice::run()
 	while(!overlays.empty())
 	{
 
-		overlay currOverlay = overlays.back();
+		Overlay currOverlay{ std::move(overlays.back()) };
 		overlays.pop_back();
 
 		
@@ -179,7 +171,7 @@ void GraphicsDevice::run()
 		);
 
 		//draw the objects
-		for( auto object : currOverlay.objects)
+		for( auto& object : currOverlay.objects)
 		{
 			object.first ->run(renderer, object.second, 0, nullptr);
 
@@ -209,11 +201,7 @@ void GraphicsDevice::run()
 void GraphicsDevice::Present()
 {
 	SDL_RenderPresent(renderer);
-}
-
-SDL_Renderer* GraphicsDevice::GetRenderer()
-{
-	return(renderer);
+	notices.clear();
 }
 
 void GraphicsDevice::AddSpriteRenderer(RendererComponent* sprite)
@@ -256,7 +244,7 @@ void GraphicsDevice::Text2Screen(std::string text, Vector2D position)
 
 	
 	//set color of text
-	SDL_Color textColor = {color.R, color.G, color.B, color.A};
+	SDL_Color textColor {(Uint8)color.R, (Uint8)color.G, (Uint8)color.B, (Uint8)color.A};
 
 	//create texture
 	SDL_Texture* textSheetTexture = SDL_CreateTextureFromSurface( 
@@ -265,37 +253,36 @@ void GraphicsDevice::Text2Screen(std::string text, Vector2D position)
 																	font, 
 																	text.c_str(), 
 																	textColor));
-
-	//create a texture for the game.
-	Texture* textTexture = new Texture();
-	textTexture -> load(textSheetTexture);
-
-	int width=0, height=0;
+	Vector2D dimensions;
 	//grab textures' with and ehight.
-	SDL_QueryTexture(textSheetTexture, nullptr, nullptr, &width, &height);
+	SDL_QueryTexture(textSheetTexture, nullptr, nullptr, &dimensions.x, &dimensions.y);
 		//If we set a position of the box to -1, we center it.
 		//bottomRight needs to be the width + 1;
 	if(position.x == -1)
 	{
-		position.x = Center(SCREEN_WIDTH, width);
+		position.x = Center(screenDimensions.x, dimensions.x);
 			
 	}
 	if(position.y == -1)
 	{
-		position.y = Center(screenDimensions.y, height);
+		position.y = Center(screenDimensions.y, dimensions.y);
 	}
 
 	Vector2D topLeft = {position.x - widthIncrease, position.y -heightIncrease};
-	Vector2D bottomRight = {position.x + width + widthIncrease, position.y + height + heightIncrease};
+	Vector2D bottomRight = {position.x + dimensions.x + widthIncrease, position.y + dimensions.y + heightIncrease};
 
 	RGBA background = {255, 255, 255, 255};
 	RGBA border = {0, 0, 0, 255};
 
-	
-	std::map<Texture*, Vector2D> objects;
-	objects[textTexture] = position;
-
-	DrawOverlay(topLeft, bottomRight, background, border, objects);
+	notices.push_back(std::make_unique<Texture>(textSheetTexture));
+	addOverlay(
+		{ 
+			topLeft, 
+			bottomRight, 
+			background, 
+			border, 
+			{ {notices.back().get(), position} } 
+		});
 
 }
 //**************************************
@@ -339,10 +326,10 @@ bool GraphicsDevice::DrawBox(Vector2D topLeft, Vector2D bottomRight, RGBA RGBA)
 	return true;
 }
 
-void GraphicsDevice::DrawOverlay(Vector2D topLeft, Vector2D bottomRight, RGBA boxBackgroundColor, RGBA boxBorderColor, std::map<Texture*, Vector2D> objects)
+void GraphicsDevice::addOverlay(Overlay overlay )
 {
-	overlay newOverlay = {topLeft, bottomRight, boxBackgroundColor, boxBorderColor, objects};
-	overlays.push_back(newOverlay);
+	
+	overlays.push_back(std::move(overlay));
 }
 
 float GraphicsDevice::Center(float centerOn, float width)

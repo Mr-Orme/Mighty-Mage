@@ -10,7 +10,7 @@ class GameObject;
 class InventoryComponent : public Component
 {
 public:
-	InventoryComponent(std::unique_ptr<GameObject>);
+	InventoryComponent(GameObject* owner, ResourceManager* devices);
 	~InventoryComponent();
 
 	bool initialize(ObjectFactoryPresets& presets);
@@ -25,8 +25,8 @@ public:
 	std::unique_ptr<GameObject> update();
 	void Finish();
 protected:
-	bool pickedUp;
-	Vector2D packPosition;
+	bool pickedUp{ false };
+	Vector2D packPosition{ 0,0 };
 };
 
 #endif

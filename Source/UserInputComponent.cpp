@@ -4,20 +4,13 @@
 #include "GameObject.h"
 
 
-UserInputComponent::UserInputComponent(std::unique_ptr<GameObject> owner):Component(owner){}
+UserInputComponent::UserInputComponent(GameObject* owner, ResourceManager* devices):Component(owner, devices){}
 UserInputComponent::~UserInputComponent(){}
 
 //**************************************
 //Set up some defaults
 bool UserInputComponent::initialize(ObjectFactoryPresets& presets)
 {
-	frameCount = 0;
-	zeroVec.x = 0;
-	zeroVec.y = 0;
-	devices = presets.devices;
-	wallHit = false;
-	noWall =true;
-
 	for (int i = 0; i < (int)Event::numEvents; i++)
 	{
 		Event eventNum = static_cast<Event>(i);
@@ -80,8 +73,8 @@ std::unique_ptr<GameObject> UserInputComponent::update()
 		if(devices -> GetInputDevice() -> GetEvent(Event::up))
 		{
 			//Calculate force vector for a forward push
-			applyForce.x = (float)cosf((devices -> GetPhysicsDevice() -> getAngle(_owner)*PI/180)-(PI/2))*forceMultiplier;
-			applyForce.y = (float)sinf((devices -> GetPhysicsDevice() -> getAngle(_owner)*PI/180)-(PI/2))*forceMultiplier;
+			applyForce.x = (int)cosf((devices -> GetPhysicsDevice() -> getAngle(_owner)*PI/180)-(PI/2))*forceMultiplier;
+			applyForce.y = (int)sinf((devices -> GetPhysicsDevice() -> getAngle(_owner)*PI/180)-(PI/2))*forceMultiplier;
 			//PUSH BABY PUSH!!!
 			devices -> GetPhysicsDevice() -> SetLinearVelocity(_owner, applyForce);
 			//if last play is done and the player is still moving
@@ -109,8 +102,8 @@ std::unique_ptr<GameObject> UserInputComponent::update()
 		else if(devices -> GetInputDevice() -> GetEvent(Event::down))
 		{
 			//Force reversed from the UP force by adding PI to the angle.
-			applyForce.x = (float)cosf((devices -> GetPhysicsDevice() -> getAngle(_owner)*PI/180)+(PI/2))*forceMultiplier;
-			applyForce.y = (float)sinf((devices -> GetPhysicsDevice() -> getAngle(_owner)*PI/180)+(PI/2))*forceMultiplier;
+			applyForce.x = (int)(cosf((devices -> GetPhysicsDevice() -> getAngle(_owner)*PI/180.0f)+(PI/2.0f))*(float)forceMultiplier);
+			applyForce.y = (int)(sinf((devices -> GetPhysicsDevice() -> getAngle(_owner)*PI/180.0f)+(PI/2.0f))*(float)forceMultiplier);
 
 			//PUSH BABY PUSH!!!
 			devices -> GetPhysicsDevice() -> SetLinearVelocity(_owner, applyForce);
@@ -180,7 +173,7 @@ std::unique_ptr<GameObject> UserInputComponent::update()
 	{
 		if(pressControl[Event::key_b])
 		{
-			std::unique_ptr<BackpackComponent> backpack = _owner -> getComponent<BackpackComponent>();	
+			BackpackComponent* backpack = _owner -> getComponent<BackpackComponent>();	
 			if(backpack != nullptr)
 			{
 				if(backpack -> GetOpen()) backpack -> SetOpen(false);
@@ -218,7 +211,7 @@ std::unique_ptr<GameObject> UserInputComponent::update()
 	//grab a few things we are going to need.
 	PhysicsDevice* pDevice = devices -> GetPhysicsDevice();
 	GraphicsDevice* gDevice = devices -> GetGraphicsDevice();
-	std::unique_ptr<View> view = devices -> GetGraphicsDevice() -> GetView();
+	View* view = devices -> GetGraphicsDevice() -> GetView();
 	
 	//position plus view
 	Vector2D position = _owner -> getComponent<RendererComponent>() -> GetUpdatedPosition(_owner);
@@ -231,7 +224,7 @@ std::unique_ptr<GameObject> UserInputComponent::update()
 		view -> setX(view -> getPosition().x-jump.x);				
 	}
 	//right
-	else if(position.x > gDevice -> GetScreenWidth() - border)
+	else if(position.x > gDevice -> getScreenDimensions().x - border)
 	{ 
 		view -> setX(view -> getPosition().x-jump.x);
 	}
@@ -241,7 +234,7 @@ std::unique_ptr<GameObject> UserInputComponent::update()
 		view -> setY(view -> getPosition().y-jump.y);				
 	}
 	//bottom
-	else if(position.y  > gDevice -> GetScreenHeight() - border)
+	else if(position.y  > gDevice -> getScreenDimensions().y - border)
 	{
 		view -> setY(view -> getPosition().y-jump.y);
 	}
@@ -271,7 +264,7 @@ std::unique_ptr<GameObject> UserInputComponent::update()
 	
 	//*****************************TO Basement*********************************************
 	//if we are on the main level and make it to the proper spot
-	if(devices -> GetLevel() == Levels::main && square.x == 14 && square.y == 0)
+	if(devices -> GetLevel() == Levels::sorpigal && square.x == 14 && square.y == 0)
 	{
 		//load the basement.
 		//NOTE: actual loading of basement is done by the Game class, this just tells the class

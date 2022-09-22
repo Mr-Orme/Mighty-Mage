@@ -1,33 +1,33 @@
 #include <iostream>
 #include "Texture.h"
+#include "GraphicsDevice.h"
 
-using namespace std;
-
-Texture::Texture()
+Texture::Texture(std::string path, GraphicsDevice* gDevice):gDevice(gDevice)
 {
-	width = 0;
-	height = 0;
-	texture = nullptr;
+	load(path);
+}
+
+Texture::Texture(SDL_Texture* texture)
+{
+	load(texture);
 }
 
 
 Texture::~Texture()
 {
-	free();
+	if (texture != nullptr)
+	{
+		SDL_DestroyTexture(texture);
+		texture = nullptr;
+	}
 }
 
 
-bool Texture::load(SDL_Renderer* renderer, std::string path )
+void Texture::load(std::string path )
 {
 
-	//Destroy existing texture information
-	free();
-
 	//The image that's loaded
-    SDL_Surface* surface = nullptr;
-    
-    //Load the image
-    surface = IMG_Load( path.c_str() );
+	SDL_Surface* surface{ IMG_Load(path.c_str()) };
     
     //If the image loaded
 	if( surface == nullptr)
@@ -41,7 +41,7 @@ bool Texture::load(SDL_Renderer* renderer, std::string path )
         SDL_SetColorKey( surface, SDL_TRUE, SDL_MapRGB( surface->format, 255, 0, 255 ) );
 
 		//Create an optimized image
-		texture = SDL_CreateTextureFromSurface(renderer,surface);
+		texture = SDL_CreateTextureFromSurface(gDevice->GetRenderer() , surface);
      
 		if(texture == nullptr)
 		{
@@ -52,7 +52,7 @@ bool Texture::load(SDL_Renderer* renderer, std::string path )
 		{
 
             //Set the height and width from the texture
-			SDL_QueryTexture(texture,nullptr,nullptr,&width,&height);
+			SDL_QueryTexture(texture,nullptr,nullptr,&dimensions.x,&dimensions.y);
 
 			//Free the loaded image; no longer needed
 			SDL_FreeSurface(surface);
@@ -61,27 +61,16 @@ bool Texture::load(SDL_Renderer* renderer, std::string path )
 
 	}
 
-	return(texture!=nullptr);
+
 
 }
 
-bool Texture::load(SDL_Texture* texture)
+void Texture::load(SDL_Texture* texture)
 {
 	this -> texture = texture;
 	//Set the height and width from the texture
-	SDL_QueryTexture(texture,nullptr,nullptr,&width,&height);
-	return true;
-}
-
-void Texture::free()
-{
-	if(texture != nullptr)
-	{
-		SDL_DestroyTexture(texture);
-  		texture = nullptr;
-		width = 0;
-		height = 0;
-	}
+	SDL_QueryTexture(texture,nullptr,nullptr, &dimensions.x, &dimensions.y);
+	
 }
 	   
 
@@ -89,7 +78,7 @@ void Texture::run(SDL_Renderer* renderer, Vector2D position, float angle, SDL_Re
 {
 
 	//Set rendering space and render to screen
-	SDL_Rect renderQuad = { position.x, position.y, width, height};
+	SDL_Rect renderQuad = { position.x, position.y, dimensions.x,dimensions.y };
 
     //Set clip rendering dimensions
     if( clip != nullptr ){
@@ -100,14 +89,4 @@ void Texture::run(SDL_Renderer* renderer, Vector2D position, float angle, SDL_Re
     //Render to screen
     SDL_RenderCopyEx(renderer, texture, clip, &renderQuad, angle,nullptr, SDL_FLIP_NONE);
 
-}
-
-
-int Texture::getWidth(){
-	return(width);
-}
-
-
-int Texture::getHeight(){
-	return(height);
 }

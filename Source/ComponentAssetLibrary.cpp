@@ -1,21 +1,17 @@
 #include "ComponentAssetLibrary.h"
 #include "ComponentsList.h"
 #include "GameObject.h"
+#include "ResourceManager.h"
 
+ComponentAssetLibrary::ComponentAssetLibrary(ResourceManager* devices) :devices(devices)
+{}
 
-ComponentAssetLibrary::ComponentAssetLibrary(){}
-//**************************************
-//Nothing happening here, move along
-bool ComponentAssetLibrary::initialize()
-//**************************************
-{
-	return true;
-}
 
 //**************************************
 //Takes the name of the object and a pointer to it
 //creates components based on it's type and adds them to a vector
 //which is returned.
+//TODO::This is a really bad name for this!
 std::vector<std::unique_ptr<Component>> ComponentAssetLibrary::search(std::string name, GameObject* owner)
 //**************************************
 {
@@ -28,25 +24,25 @@ std::vector<std::unique_ptr<Component>> ComponentAssetLibrary::search(std::strin
 		switch (components)
 		{
 		case Components::body:
-			componentListPtrs.push_back(std::make_unique<BodyComponent>(owner));
+			componentListPtrs.emplace_back(std::make_unique<BodyComponent>(owner, devices));
 			break;
 		case Components::health:
-			componentListPtrs.push_back(std::make_unique<HealthComponent>(owner));
+			componentListPtrs.emplace_back(std::make_unique<HealthComponent>(owner, devices));
 			break;
 		case Components::renderer:
-			componentListPtrs.push_back(std::make_unique<RendererComponent>(owner));
+			componentListPtrs.emplace_back(std::make_unique<RendererComponent>(owner, devices));
 			break;
 		case Components::userInput:
-			componentListPtrs.push_back(std::make_unique<UserInputComponent>(owner));
+			componentListPtrs.emplace_back(std::make_unique<UserInputComponent>(owner, devices));
 			break;
 		case Components::backpack:
-			componentListPtrs.push_back(std::make_unique<BackpackComponent>(owner));
+			componentListPtrs.emplace_back(std::make_unique<BackpackComponent>(owner, devices));
 			break;
 		case Components::inventory:
-			componentListPtrs.push_back(std::make_unique<InventoryComponent>(owner));
+			componentListPtrs.emplace_back(std::make_unique<InventoryComponent>(owner, devices));
 			break;
 		case Components::ghost:
-			componentListPtrs.push_back(std::make_unique<GhostComponent>(owner));
+			componentListPtrs.emplace_back(std::make_unique<GhostComponent>(owner, devices));
 			break;
 		default:
 			break;

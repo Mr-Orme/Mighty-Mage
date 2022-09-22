@@ -4,7 +4,9 @@
 #include "ObjectFactory.h"
 #include "ComponentsList.h"
 
-BackpackComponent::BackpackComponent(GameObject* owner, ResourceManager* devices):Component(owner, devices){}
+BackpackComponent::BackpackComponent(GameObject* owner, ResourceManager* devices)	:
+	Component(owner, devices)
+{}
 BackpackComponent::~BackpackComponent(){}
 
 //**************************************
@@ -20,8 +22,8 @@ bool BackpackComponent::initialize(ObjectFactoryPresets& presets)
 	slotSize = 25; //pixels
 	Vector2D screenDimensions{ devices->GetGraphicsDevice()->getScreenDimensions() };
 	
-	topLeft.x = screenDimensions.x *.1;
-	topLeft.y = screenDimensions.y*.1;
+	topLeft.x = (int)(screenDimensions.x *.1);
+	topLeft.y = (int)(screenDimensions.y*.1);
 	bottomRight.x = screenDimensions.x-topLeft.x;
 	bottomRight.y = screenDimensions.y-topLeft.y;
 
@@ -49,14 +51,11 @@ bool BackpackComponent::initialize(ObjectFactoryPresets& presets)
 //**************************************
 //kills the item passed in, grabs it's rendere, and saves it to, what is essentially
 //the Graphics device's backpack vector.
-bool BackpackComponent::AddItem(GameObject* item)
+bool BackpackComponent::AddItem(std::unique_ptr<GameObject> item)
 //**************************************
 {
-	//grab the  pointer from the owner
-	auto itemSP{ item->getComponent<RendererComponent>()->getOwner() };
-
 	//return whether it was added or not
-	return (ToBackpack(std::make_uniqitemSP));
+	return (ToBackpack(std::move(item)));
 	
 }
 
@@ -70,16 +69,18 @@ std::unique_ptr<GameObject> BackpackComponent::update()
 		{
 			
 			RGBA background = {255, 255, 255 , 220};
-			RGBA border = {0,0,0,255};
-
+			RGBA border = {0,0,0,255};			
 			std::map<Texture*, Vector2D> objects;
-			//grab all textures and their positions;
 			for(const auto& item : inventory)
 			{
-				objects[(item -> getComponent<RendererComponent>() -> GetTexture())] = item -> getComponent<InventoryComponent>() -> GetPackPosition();
+				objects.emplace
+				(
+					item -> getComponent<RendererComponent>() -> GetTexture(), 
+					item -> getComponent<InventoryComponent>() -> GetPackPosition()
+				);
 			}
 			
-			devices -> GetGraphicsDevice() -> DrawOverlay(topLeft, bottomRight, background, border, objects);
+			devices->GetGraphicsDevice()->addOverlay({ topLeft, bottomRight, background, border, objects });
 				
 
 			
@@ -93,23 +94,23 @@ std::unique_ptr<GameObject> BackpackComponent::update()
 		
 
 		Vector2D screenDimensions{ devices->GetGraphicsDevice()->getScreenDimensions()};
-			Vector2D topLeft {screenDimensions.x*.1, screenDimensions.y*.1};
+			Vector2D topLeft { (int)(screenDimensions.x*.1), (int)(screenDimensions.y*.1)};
 			Vector2D bottomRight {screenDimensions.x-topLeft.x, screenDimensions.y-topLeft.y};
 
 			
 
 			//**********************Find Item dimensions*************************
-			auto rend = item -> getComponent<RendererComponent>();
+			auto rend{ item->getComponent<RendererComponent>() };
 			//number of sequential rows we need (+.5 makes sure we round up)
-			int numRows = (rend -> GetTexture() -> getWidth()/slotSize) + .5;
+			int numRows{ (int)(((float)rend->GetTexture()->getDimensions().x / slotSize) + .5) };
 			//number of sequential columns we need
-			int numColumns = (rend -> GetTexture() -> getHeight()/slotSize) + .5;
+			int numColumns{ (int)(((float)rend->GetTexture()->getDimensions().y / slotSize) + .5) };
 			//********************************************************************
 				
 			//number of sequential open rows found 
 			int seqRows{ 0 };
 			//current row & column we are checking
-			Vector2D currPosition;
+			Vector2D currPosition{ 0,0 };
 				
 			//Found a row that the item can fit in
 			bool rowFound = false;
@@ -198,9 +199,9 @@ std::unique_ptr<GameObject> BackpackComponent::update()
 					}
 				}
 				//save it to the inventory vector
-				inventory.push_back(item);
+				inventory.push_back(std::move(item));
 				//remove the item from the list of level objects
-				item -> getComponent<InventoryComponent>() -> SetPickedUp(true);
+				inventory.back() -> getComponent<InventoryComponent>() -> SetPickedUp(true);
 				//we found a spot for it.
 				return true;
 			}

@@ -1,6 +1,6 @@
 #include "InventoryComponent.h"
 
-InventoryComponent::InventoryComponent(std::unique_ptr<GameObject> owner):Component(owner){}
+InventoryComponent::InventoryComponent(GameObject* owner, ResourceManager* devices) :Component(owner, devices) {}
 
 InventoryComponent::~InventoryComponent(){}
 

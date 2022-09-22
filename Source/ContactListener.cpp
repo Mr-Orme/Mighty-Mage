@@ -39,7 +39,7 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 			objectB->getComponent<UserInputComponent>()->SetWallHit(false);
 		}
 		
-		if (auto ghost = objectA->getComponent<GhostComponent>();
+		if (auto ghost{ objectA->getComponent<GhostComponent>() };
 			ghost != nullptr &&
 			(bodyB->GetLinearVelocity().y <= 0 && ghost->canPass(Direction::N))
 			|| (bodyB->GetLinearVelocity().y >= 0 && ghost->canPass(Direction::S))
@@ -57,10 +57,11 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 void ContactListener::PickUpItem(GameObject* player, GameObject* item)
 {
 	//TODO::strip item and make new item to pass to backback, move all components. mark to delete item...
+	// Maybe use event handler somehow?
 	//grab the resource manager from the player's body component
 	ResourceManager* devices = player -> getComponent<BodyComponent>() -> GetDevices();
 	//if there is space to add it to the backpack, play the "found item" sound. . .
-	if(player -> getComponent<BackpackComponent>() -> AddItem(item))
+	//if(player -> getComponent<BackpackComponent>() -> AddItem(item))
 	{
 		devices -> GetSoundDevice() -> PlaySound("found",0,3);
 	}

@@ -1,7 +1,7 @@
 #include <iostream>
 #include "View.h"
 
-View::View()
+View::View(Vector2D centerPosition):position(centerPosition)
 {
 
 }
@@ -11,16 +11,6 @@ View::~View()
 	
 }
 
-//**************************************
-//Set initial values
-bool View::initialize(float x, float y)
-//**************************************
-{
-	//this -> iDevice = iDevice;
-	position.x = x;
-	position.y = y;
-	return true;
-}
 
 //**************************************
 //NOT USED

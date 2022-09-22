@@ -20,8 +20,6 @@ class ResourceManager
 public:
 	ResourceManager(Vector2D screenDimensions, std::string assetPath);
 	~ResourceManager();
-	
-	bool initialize(Vector2D screenDimensions, std::string assetPath);
 
 	//Device Getters
 	GraphicsDevice* GetGraphicsDevice(){return gDevice.get();}
@@ -49,10 +47,10 @@ public:
 	
 
 	//Other Setters
-	/*void SetFPS(int fps){ FPS = fps;}
+	void SetFPS(int fps){ FPS = fps;}
 	void SetCityCorner(Vector2D cityCorner){this -> cityCorner = cityCorner;}
 	void SetLevel(Levels level){this -> level = level;}
-	void SetLoadBasement(bool loadBasement){this -> loadBasement = loadBasement;}*/
+	void SetLoadBasement(bool loadBasement){this -> loadBasement = loadBasement;}
 
 protected:
 	//Devices

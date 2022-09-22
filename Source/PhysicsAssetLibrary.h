@@ -12,7 +12,6 @@ public:
 			//Asset Name, Asset Factory
 	PhysicsStats Search(std::string name);
 	//bool initialize(std::string path);
-	bool initialize();
 	bool AddAsset(std::string name, PhysicsStats physics);
 
 protected:

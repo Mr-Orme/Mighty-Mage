@@ -1,19 +1,10 @@
 #include "ArtAssetLibrary.h"
 #include "Texture.h"
 #include "GraphicsDevice.h"
-ArtAssetLibrary::ArtAssetLibrary()
+ArtAssetLibrary::ArtAssetLibrary(GraphicsDevice* gDevice):
+	gDevice(gDevice)
 {
 	
-}
-
-//**************************************
-//This function sets the graphic's device for the library.
-bool ArtAssetLibrary::initialize(GraphicsDevice* gDevice)
-
-//**************************************
-{
-	this -> gDevice = gDevice;
-	return true;
 }
 
 //**************************************
@@ -21,14 +12,8 @@ bool ArtAssetLibrary::initialize(GraphicsDevice* gDevice)
 bool ArtAssetLibrary::AddAsset(std::string name, std::string path)
 //**************************************
 {
-	//Texture variable
-	Texture* tempTexture;
+	library.emplace(std::make_pair(name, std::make_unique<Texture>(path, gDevice) ));
 	
-	//Make a new texture and assign
-	tempTexture = new Texture();
-	if(!tempTexture -> load(gDevice -> GetRenderer(), path)){return false;}
-	//add to library
-	library[name] = tempTexture;
 	return true;
 }
 
@@ -39,5 +24,5 @@ Texture* ArtAssetLibrary::Search(std::string searchString)
 
 //**************************************
 {
-	return (library.find(searchString) ->second);
+	return (library.find(searchString) ->second.get());
 }
