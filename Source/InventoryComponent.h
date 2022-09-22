@@ -13,17 +13,18 @@ public:
 	InventoryComponent(GameObject* owner, ResourceManager* devices);
 	~InventoryComponent();
 
-	bool initialize(ObjectFactoryPresets& presets);
+	std::unique_ptr<GameObject> update() override;
+	bool initialize(ObjectFactoryPresets& presets) override;
 
-	bool GetPickedUp(){return pickedUp;}
-	Vector2D GetPackPosition(){return packPosition;}
+	bool isPickedUp() const {return pickedUp;}
+	Vector2D locationInPack() const {return packPosition;}
 	
-	void SetPickedUp(bool pickedUp){this -> pickedUp = pickedUp;}
-	void SetPackPosition(Vector2D packPosition){this -> packPosition = packPosition;}
+	void pickUp(){pickedUp = true;}
+	void placeInPack(Vector2D packPosition){this -> packPosition = packPosition;}
 
-	void Start();
-	std::unique_ptr<GameObject> update();
-	void Finish();
+
+	
+
 protected:
 	bool pickedUp{ false };
 	Vector2D packPosition{ 0,0 };

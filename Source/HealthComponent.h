@@ -11,21 +11,13 @@ public:
 	HealthComponent(GameObject* owner, ResourceManager* devices);
 	~HealthComponent();
 
-	bool initialize(ObjectFactoryPresets& presets);
+	std::unique_ptr<GameObject> update() override;
+	bool initialize(ObjectFactoryPresets& presets) override;
 
-	int GetHealth(){return health;}
-	bool GetIsDead(){return isDead;}
-
-	void SetHealth(int health){this -> health = health;}
-	void SetIsDead(bool isDead){this -> isDead = isDead;}
-
-
-	bool KillObject(std::string deathSprite);
-	bool KillObject();
+	bool isDead() const {return isDead;}
 	
-	void Start();
-	std::unique_ptr<GameObject> update();
-	void Finish();
+	bool killMe(std::string deathSprite);
+	bool killMe();
 protected:
 	int health{ 0 };
 	bool isDead{ false };

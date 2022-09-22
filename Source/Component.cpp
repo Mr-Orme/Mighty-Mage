@@ -10,7 +10,4 @@ Component::Component(GameObject* owner, ResourceManager* devices)
 Component::~Component(){}
 
 
-GameObject* Component::getOwner()
-{
-	return(_owner);
-}
+

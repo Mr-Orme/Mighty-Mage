@@ -17,7 +17,7 @@ bool BackpackComponent::initialize(ObjectFactoryPresets& presets)
 	devices = presets.devices;
 	open = false;
 	
-	//probably want to base the backpack size on the number of slots we want
+	//probably want to base the openSlots size on the number of slots we want
 	//and not on the screen size. . .
 	slotSize = 25; //pixels
 	Vector2D screenDimensions{ devices->GetGraphicsDevice()->getScreenDimensions() };
@@ -27,22 +27,16 @@ bool BackpackComponent::initialize(ObjectFactoryPresets& presets)
 	bottomRight.x = screenDimensions.x-topLeft.x;
 	bottomRight.y = screenDimensions.y-topLeft.y;
 
-	//***************************Set up backpack and find dimensions **********************
+	//***************************Set up openSlots and find dimensions **********************
 	Vector2D backpackDimensions = {bottomRight.x - topLeft.x, bottomRight.y - topLeft.y};
-	//maximum number of rows in backpack
+	//maximum number of rows in openSlots
 	maxRows = backpackDimensions.x/slotSize;
 	maxColumns = backpackDimensions.y/slotSize;
 			
-	backpack = new bool*[maxRows];
-	//initialize backpack with all slots empty.
-	for(int i = 0; i < maxRows; i++)
+	openSlots.resize(maxRows);
+	for(auto& column : openSlots)
 	{
-		backpack[i] = new bool[maxColumns];
-		for (int j = 0; j < maxColumns; j++)
-		{
-			backpack[i][j] = true;
-		}
-
+		column.resize(maxColumns, true);
 	}
 	//*************************************************************************************
 	return true;
@@ -50,16 +44,14 @@ bool BackpackComponent::initialize(ObjectFactoryPresets& presets)
 
 //**************************************
 //kills the item passed in, grabs it's rendere, and saves it to, what is essentially
-//the Graphics device's backpack vector.
-bool BackpackComponent::AddItem(std::unique_ptr<GameObject> item)
+//the Graphics device's openSlots vector.
+bool BackpackComponent::addItem(std::unique_ptr<GameObject> item)
 //**************************************
 {
 	//return whether it was added or not
 	return (ToBackpack(std::move(item)));
 	
 }
-
-void BackpackComponent::Start(){}
 	
 	//Have this iterate through all items in inventory and draw them. .  . Must happen after Graphic's
 	//Device does it's draw. . .
@@ -76,7 +68,7 @@ std::unique_ptr<GameObject> BackpackComponent::update()
 				objects.emplace
 				(
 					item -> getComponent<RendererComponent>() -> GetTexture(), 
-					item -> getComponent<InventoryComponent>() -> GetPackPosition()
+					item -> getComponent<InventoryComponent>() -> locationInPack()
 				);
 			}
 			
@@ -87,7 +79,6 @@ std::unique_ptr<GameObject> BackpackComponent::update()
 		}
 		return nullptr;
 	}
-	void BackpackComponent::Finish(){}
 
 	bool BackpackComponent::ToBackpack(std::unique_ptr<GameObject> item)
 	{
@@ -131,7 +122,7 @@ std::unique_ptr<GameObject> BackpackComponent::update()
 				while (!columnFound  && currPosition.y < maxColumns)
 				{
 					//If it is empty, add one to our sequential columns
-					if(backpack[currPosition.x][currPosition.y]) seqColumns++;
+					if(openSlots[currPosition.x][currPosition.y]) seqColumns++;
 					//if it is not empty, start sequential column count over.
 					else seqColumns = 0;
 					//If we have found enough sequential columns, set the found to true
@@ -163,7 +154,7 @@ std::unique_ptr<GameObject> BackpackComponent::update()
 						for(int c = currPosition.y; c < currPosition.y + numColumns; c++)
 						{
 							//if even one is not empty, this row is no good.
-							if(!backpack[currPosition.x+r][currPosition.y+c]) rowGood = false;
+							if(!openSlots[currPosition.x+r][currPosition.y+c]) rowGood = false;
 						}
 						//if we have found enough rows
 						if(r >= numRows-1) rowFound = true;
@@ -187,7 +178,7 @@ std::unique_ptr<GameObject> BackpackComponent::update()
 				
 				
 				//Set the position of the item to be in the proper spot in the inventory
-				item -> getComponent<InventoryComponent>() -> SetPackPosition(position);
+				item -> getComponent<InventoryComponent>() -> placeInPack(position);
 				
 				
 				//mark used slots. . .
@@ -195,13 +186,13 @@ std::unique_ptr<GameObject> BackpackComponent::update()
 				{
 					for(int j = currPosition.y; j < currPosition.y + numColumns; j++)
 					{
-						backpack[i][j] = false;
+						openSlots[i][j] = false;
 					}
 				}
 				//save it to the inventory vector
 				inventory.push_back(std::move(item));
 				//remove the item from the list of level objects
-				inventory.back() -> getComponent<InventoryComponent>() -> SetPickedUp(true);
+				inventory.back() -> getComponent<InventoryComponent>() -> pickUp();
 				//we found a spot for it.
 				return true;
 			}

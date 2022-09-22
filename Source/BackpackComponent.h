@@ -2,6 +2,7 @@
 #define BACKPACK_H
 
 #include <vector>
+#include <array>
 #include "Component.h"
 #include "Definitions.h"
 class ResourceManager;
@@ -13,22 +14,22 @@ public:
 	BackpackComponent(GameObject* owner, ResourceManager* devices);
 	~BackpackComponent();
 
-	bool initialize(ObjectFactoryPresets& presets);
+	bool initialize(ObjectFactoryPresets& presets) override;
 
-	bool AddItem(std::unique_ptr<GameObject> item);
+	bool addItem(std::unique_ptr<GameObject> item);
+	//TODO::Remove this
+	//std::vector<std::unique_ptr<GameObject>>& GetInventory(){return inventory;}
 
-	std::vector<std::unique_ptr<GameObject>>& GetInventory(){return inventory;}
+	void openPack(bool open){this -> open = open;}
+	bool isOpen(){return open;}
 
-	void SetOpen(bool open){this -> open = open;}
-	bool GetOpen(){return open;}
-
-	void Start();
-	std::unique_ptr<GameObject> update();
-	void Finish();
+	
+	std::unique_ptr<GameObject> update() override;
+	
 protected:
 	bool ToBackpack(std::unique_ptr<GameObject> item);
 	std::vector<std::unique_ptr<GameObject>> inventory;
-	bool** backpack{ nullptr };
+	std::vector<std::vector<bool> > openSlots;
 	
 	int slotSize{ 0 };
 	Vector2D topLeft{ 0,0 };

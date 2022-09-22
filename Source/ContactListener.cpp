@@ -59,9 +59,9 @@ void ContactListener::PickUpItem(GameObject* player, GameObject* item)
 	//TODO::strip item and make new item to pass to backback, move all components. mark to delete item...
 	// Maybe use event handler somehow?
 	//grab the resource manager from the player's body component
-	ResourceManager* devices = player -> getComponent<BodyComponent>() -> GetDevices();
+	ResourceManager* devices = player -> getComponent<BodyComponent>() -> getDevices();
 	//if there is space to add it to the backpack, play the "found item" sound. . .
-	//if(player -> getComponent<BackpackComponent>() -> AddItem(item))
+	//if(player -> getComponent<BackpackComponent>() -> addItem(item))
 	{
 		devices -> GetSoundDevice() -> PlaySound("found",0,3);
 	}

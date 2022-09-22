@@ -39,7 +39,7 @@ std::unique_ptr<GameObject> UserInputComponent::update()
 	
 	std::string sound = "walking";
 
-	if(!_owner -> getComponent<BackpackComponent>() -> GetOpen())
+	if(!_owner -> getComponent<BackpackComponent>() -> isOpen())
 	{
 		//run if shift is being held down.
 		if(devices -> GetInputDevice() -> GetEvent(Event::shift))
@@ -176,8 +176,8 @@ std::unique_ptr<GameObject> UserInputComponent::update()
 			BackpackComponent* backpack = _owner -> getComponent<BackpackComponent>();	
 			if(backpack != nullptr)
 			{
-				if(backpack -> GetOpen()) backpack -> SetOpen(false);
-				else backpack -> SetOpen(true);
+				if(backpack -> isOpen()) backpack -> openPack(false);
+				else backpack -> openPack(true);
 			}
 			pressControl[Event::key_b] = false;
 		}

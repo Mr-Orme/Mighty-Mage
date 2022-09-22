@@ -5,7 +5,8 @@
 #include "PhysicsDevice.h"
 
 
-HealthComponent::HealthComponent(GameObject* owner, ResourceManager* devices):Component(owner, devices){}
+HealthComponent::HealthComponent(GameObject* owner, ResourceManager* devices)
+	:Component(owner, devices){}
 HealthComponent::~HealthComponent(){}
 
 //**************************************
@@ -13,16 +14,15 @@ HealthComponent::~HealthComponent(){}
 bool HealthComponent::initialize(ObjectFactoryPresets& presets)
 //**************************************
 {
-	isDead = false;
 	devices = presets.devices;
 	health = devices -> GetObjectLibrary() -> Search(presets.objectType).health;
 	return true;
 }
 
 //**************************************
-//This "KillObject" is for items that leave a sprite that is dead 
+//This "killMe" is for items that leave a sprite that is dead 
 //and does not interact with the world
-bool HealthComponent::KillObject(std::string deathSprite)
+bool HealthComponent::killMe(std::string deathSprite)
 //**************************************
 {
 	//Stop the physics of the object
@@ -36,7 +36,7 @@ bool HealthComponent::KillObject(std::string deathSprite)
 }
 //**************************************
 //For objects that disappear from the game.
-bool HealthComponent::KillObject()
+bool HealthComponent::killMe()
 //**************************************
 {
 	//this will cause it to be elimanted on the next game update
@@ -66,7 +66,7 @@ std::unique_ptr<GameObject> HealthComponent::update()
 			devices -> GetPhysicsDevice() -> DestroyJoint(_owner);
 		}
 		//kill it
-		KillObject();
+		killMe();
 	}
 	return nullptr;
 }

@@ -315,14 +315,14 @@ void Game::update()
 		InventoryComponent* compInventory{ (*objectIter)->getComponent<InventoryComponent>() };
 		if (compHealth != nullptr)
 		{
-			if (compHealth->GetIsDead())
+			if (compHealth->isDead())
 			{
 				
 				objects.erase(objectIter);
 				objectIter--;
 			}
 			//if it got picked up. . 
-			else if (compInventory != nullptr && compInventory->GetPickedUp())
+			else if (compInventory != nullptr && compInventory->isPickedUp())
 			{
 				//remove the sprite from the automatic draw list
 				devices->GetGraphicsDevice()->RemoveSpriteRenderer((*objectIter)->getComponent<RendererComponent>());

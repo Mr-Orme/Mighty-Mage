@@ -12,16 +12,19 @@ class GhostComponent : public Component
 public:
 	GhostComponent(GameObject* owner, ResourceManager* devices);
 	~GhostComponent();
-	bool initialize(ObjectFactoryPresets& presets);
-
+	
+	bool initialize(ObjectFactoryPresets& presets) override;
+	std::unique_ptr<GameObject> update() override;
+	//TODO::Can I eliminate canPass somehow??
 	bool canPass(Direction) const;
-	void SetGhostDirection(Direction direction, bool isGhost)
+	//TODO:: remove if not needed
+	/*void addGhostDirection(Direction direction, bool isGhost)
 		{ghostDirection[direction]=isGhost;}
 	void SetGhostDirection(std::map<Direction, bool> ghostDirection)
-		{this -> ghostDirection = ghostDirection;}
+		{this -> ghostDirection = ghostDirection;}*/
 
 	
-	std::unique_ptr<GameObject> update() override;
+	
 protected:
 	std::map<Direction, bool> ghostDirection;
 };

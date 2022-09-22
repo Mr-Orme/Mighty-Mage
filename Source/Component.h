@@ -2,10 +2,12 @@
 #define COMPONENT_H
 
 #include <memory>
-#include "GameObject.h"
+
 #include "Definitions.h"
 
+class GameObject;
 class ResourceManager;
+
 class Component
 {
 public:
@@ -14,9 +16,9 @@ public:
 	
 	virtual bool initialize(ObjectFactoryPresets& presets)=0;
 	virtual std::unique_ptr<GameObject> update()=0;
-	
-	ResourceManager* GetDevices() { return devices; }
-	GameObject* getOwner();
+	//TODO::try and eliminate getDevices
+	ResourceManager* getDevices() const { return devices; }
+	GameObject* getOwner() const {return(_owner);}
 
 protected:
 	GameObject* _owner{ nullptr };

@@ -184,7 +184,7 @@ void GraphicsDevice::run()
 //	//if we found all the spheres.
 //	if(spheresFound >= 6)
 //	{
-//		ResourceManager* devices = levelExit -> getComponent<BodyComponent>() -> GetDevices().get();
+//		ResourceManager* devices = levelExit -> getComponent<BodyComponent>() -> getDevices().get();
 //		//stop the physics on the trapdoor so we can walk onto that square.
 //		devices -> GetPhysicsDevice() -> SetStopPhysics(levelExit.get());
 //		//get rid of the notice stating we need to find the spheres.
