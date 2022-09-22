@@ -202,7 +202,7 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 	TiXmlElement* notices = assetType->FirstChildElement();
 	do
 	{
-		//get information from file
+		//get information from file TODO:: x and y directly in notice
 		Notice notice;
 		int x, y;
 		std::string direction;
