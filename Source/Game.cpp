@@ -289,7 +289,12 @@ bool Game::run()
 	frameRate->start();
 
 	update();
-	run();
+	devices->GetGraphicsDevice()->Begin();
+		devices -> GetGraphicsDevice() -> run();
+		
+		if (debug) devices->GetPhysicsDevice()->getWorld()->DebugDraw(); //-> DrawDebugData();
+		
+		devices -> GetGraphicsDevice() -> Present();
 
 	//pauses until proper refresh time has passed.
 	frameRate->fpsRegulate();

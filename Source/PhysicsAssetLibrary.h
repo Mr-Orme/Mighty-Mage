@@ -8,11 +8,9 @@
 
 class PhysicsAssetLibrary{
 public:
-	void Print();
-			//Asset Name, Asset Factory
-	PhysicsStats Search(std::string name);
-	//bool initialize(std::string path);
-	bool AddAsset(std::string name, PhysicsStats physics);
+			//TODO::try and combine a bunch of libraries...
+	PhysicsStats search(std::string name);
+	bool addAsset(std::string name, PhysicsStats physics);
 
 protected:
 	std::map<std::string, PhysicsStats> library;

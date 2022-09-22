@@ -20,6 +20,7 @@ public:
 	std::unique_ptr<GameObject> update() override;
 
 	float getAngle() const;
+	Direction getDirection() const;
 	Vector2D getPosition() const { return dPosition; }
 
 protected:

@@ -1,38 +1,26 @@
-/*
-* Author:	Sean Orme
-*			UALR
-* 
-* Date:		May, 2015	
-*
-* File:		GraphicsDevice.h
-*
-* Purpose:	Declaration of the SDL GraphicsDevice class
-*/
-
 #ifndef GRAPHICSDEVICE_H
 #define GRAPHICSDEVICE_H
 
 #include <vector>
 #include <map>
+#include <string>
+
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_ttf.h"
-#include "RendererComponent.h"
+#include "Definitions.h"
+
 class View;
-//class InputDevice;
+class RendererComponent;
+class Texture;
 
 class GraphicsDevice
-{
-		
+{		
 public:
 
 	//Constructors and Destructors
-	GraphicsDevice(Vector2D screenDimensions);
+	GraphicsDevice(Vector2D screenDimensions, bool fullScreen = false);
 	~GraphicsDevice();
-
-	//Startup and Shutdown
-	bool initialize(bool);
-	bool ShutDown();
 
 	//Rendering functions
 	void Begin();

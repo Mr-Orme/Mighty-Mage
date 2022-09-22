@@ -4,14 +4,14 @@
 #include <map>
 #include <string>
 #include "Definitions.h"
-
+//Keeps track of paths to level xml files
+//TODO::implement this library.
 class LevelConfigLibrary{
 public:
 	LevelConfigLibrary();
-	bool initialize();
-	std::string Search(std::string name);
-	bool AddAsset(std::string name, std::string path);
-	bool RemoveAsset(std::string name);
+	std::string search(std::string name);
+	bool addAsset(std::string name, std::string path);
+	bool removeAsset(std::string name);
 private:
 	std::map<std::string, std::string> library;
 };

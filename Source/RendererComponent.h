@@ -12,18 +12,20 @@ public:
 	RendererComponent(GameObject* owner, ResourceManager* devices);
 	~RendererComponent();
 
-	bool initialize(ObjectFactoryPresets& presets);
+	std::unique_ptr<GameObject> update() override;
+	bool initialize(ObjectFactoryPresets& presets) override;
 	
 	void run();
 	void run(Vector2D position, float angle);
-	void Start();
-	std::unique_ptr<GameObject> update();
-	void Finish();
 
-	Texture* GetTexture(){return texture;}
-	Vector2D GetUpdatedPosition(GameObject*);
+	
 
-	void SetTexture(Texture* texture){this -> texture = texture;}
+
+	Texture* getTexture() const {return texture;}
+	//TODO::move viewAdjustedPosition to BodyComponent
+	Vector2D viewAdjustedPosition(GameObject*);
+
+	void changeSprite(Texture* texture){this -> texture = texture;}
 
 protected:
 	Texture* texture{ nullptr };

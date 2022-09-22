@@ -13,12 +13,12 @@ NoticesAssetLibrary::NoticesAssetLibrary()
 //and returns that notice.
 //if not found, it sets the text to nothing of the notice passed in and
 //returns that notice.
-Notice NoticesAssetLibrary::Search(Notice square)
+Notice NoticesAssetLibrary::search(Notice square)
 //**************************************
 {
 	for (auto notices : library)
-	{
-		if(notices.x == square.x && notices.y == square.y && notices.direction == square.direction)
+	{//TODO::this naming is weird.
+		if(notices.square.x == square.square.x && notices.square.y == square.square.y && notices.direction == square.direction)
 		{
 			return notices;
 		}
@@ -28,7 +28,7 @@ Notice NoticesAssetLibrary::Search(Notice square)
 }
 //**************************************
 //adds a notice to the library vector
-bool NoticesAssetLibrary::AddAsset(Notice notice)
+bool NoticesAssetLibrary::addAsset(Notice notice)
 //**************************************
 {
 	library.push_back(notice);
@@ -38,7 +38,7 @@ bool NoticesAssetLibrary::AddAsset(Notice notice)
 //**************************************
 //Based on your position in the game space and direction of the passed in notice
 //a notice is found and removed from the library.
-bool NoticesAssetLibrary::RemoveAsset(Notice notice)
+bool NoticesAssetLibrary::removeAsset(Notice notice)
 //**************************************
 {
 	bool foundNotice = false;
@@ -47,7 +47,7 @@ bool NoticesAssetLibrary::RemoveAsset(Notice notice)
 	for (notices = library.begin(); notices != library.end(); notices++)
 	{
 		//if position and direction match, delete the notice from the library.
-		if(notices -> x == notice.x && notices -> y == notice.y && notices -> direction == notice.direction)
+		if(notices ->square.x == notice.square.x && notices ->square.y == notice.square.y && notices -> direction == notice.direction)
 		{
 			library.erase(notices);
 			notices--;

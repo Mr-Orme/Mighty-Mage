@@ -9,7 +9,7 @@ ArtAssetLibrary::ArtAssetLibrary(GraphicsDevice* gDevice):
 
 //**************************************
 //Adds a texture to the library based on the object's name and the path to it's sprite
-bool ArtAssetLibrary::AddAsset(std::string name, std::string path)
+bool ArtAssetLibrary::addAsset(std::string name, std::string path)
 //**************************************
 {
 	library.emplace(std::make_pair(name, std::make_unique<Texture>(path, gDevice) ));
@@ -20,7 +20,7 @@ bool ArtAssetLibrary::AddAsset(std::string name, std::string path)
 //**************************************
 //This function takes a string and finds the appropriate art asset in the library
 //it returns the art object's texture.
-Texture* ArtAssetLibrary::Search(std::string searchString)
+Texture* ArtAssetLibrary::search(std::string searchString)
 
 //**************************************
 {

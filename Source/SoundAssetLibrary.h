@@ -10,17 +10,19 @@
 class SoundAssetLibrary{
 public:
 	SoundAssetLibrary();
-	bool Finish();
+	~SoundAssetLibrary();
+	//TODO::see if I can get rid of this initialize method.
 	bool initialize(SoundDevice* sDevice);
-	Mix_Chunk* SearchSoundEffects(std::string name);
-	Mix_Music* SearchMusic(std::string name);
-	bool AddSoundEffect(std::string name, std::string path);
-	bool AddBackgroundMusic(std::string name, std::string path);
-	bool RemoveAsset(std::string name);
+	//TODO::reduce the reliance on strings in these libraries..
+	Mix_Chunk* searchSoundEffects(std::string name);
+	Mix_Music* searchMusic(std::string name);
+	bool addSoundEffect(std::string name, std::string path);
+	bool addBackgroundMusic(std::string name, std::string path);
+	bool removeAsset(std::string name);
 private:
 	std::map<std::string, Mix_Chunk* > soundEffectLibrary;
 	std::map<std::string, Mix_Music* > musicLibrary;
-	SoundDevice* sDevice;
+	SoundDevice* sDevice{nullptr};
 
 };
 

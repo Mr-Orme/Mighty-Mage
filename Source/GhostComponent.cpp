@@ -1,5 +1,5 @@
 #include "GhostComponent.h"
-
+#include "GameObject.h"
 GhostComponent::GhostComponent(GameObject* owner, ResourceManager* devices)
 	:Component(owner, devices){}
 

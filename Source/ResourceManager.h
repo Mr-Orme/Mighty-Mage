@@ -52,6 +52,9 @@ public:
 	void SetLevel(Levels level){this -> level = level;}
 	void SetLoadBasement(bool loadBasement){this -> loadBasement = loadBasement;}
 
+	bool isExitSquare(Vector2D currSquare) const;
+	const int pixelsPerSquare{ 110 };
+	const int blocksPerMap{ 15 };
 protected:
 	//Devices
 	std::unique_ptr<GraphicsDevice> gDevice;
@@ -73,6 +76,9 @@ protected:
 	Vector2D cityCorner;
 	Levels level;
 	bool loadBasement;
+	std::vector<Vector2D> exits;
+
+	
 };
 
 #endif

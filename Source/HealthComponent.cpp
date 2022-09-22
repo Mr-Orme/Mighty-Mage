@@ -15,7 +15,7 @@ bool HealthComponent::initialize(ObjectFactoryPresets& presets)
 //**************************************
 {
 	devices = presets.devices;
-	health = devices -> GetObjectLibrary() -> Search(presets.objectType).health;
+	health = devices -> GetObjectLibrary() -> search(presets.objectType).health;
 	return true;
 }
 
@@ -31,7 +31,7 @@ bool HealthComponent::killMe(std::string deathSprite)
 	//grab the renderer
 	auto compRenderer{ _owner->getComponent<RendererComponent>() };
 	//change the sprite
-	compRenderer -> SetTexture(devices -> GetArtLibrary() -> Search(deathSprite));	
+	compRenderer -> changeSprite(devices -> GetArtLibrary() -> search(deathSprite));	
 	return true;
 }
 //**************************************
@@ -40,12 +40,8 @@ bool HealthComponent::killMe()
 //**************************************
 {
 	//this will cause it to be elimanted on the next game update
-	isDead = true;
+	dead = true;
 	return true;
-}
-void HealthComponent::Start()
-{
-	
 }
 
 //**************************************
@@ -70,4 +66,3 @@ std::unique_ptr<GameObject> HealthComponent::update()
 	}
 	return nullptr;
 }
-void HealthComponent::Finish(){}

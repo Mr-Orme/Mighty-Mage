@@ -14,13 +14,13 @@ public:
 	std::unique_ptr<GameObject> update() override;
 	bool initialize(ObjectFactoryPresets& presets) override;
 
-	bool isDead() const {return isDead;}
+	bool isDead() const {return dead;}
 	
 	bool killMe(std::string deathSprite);
 	bool killMe();
 protected:
 	int health{ 0 };
-	bool isDead{ false };
+	bool dead{ false };
 	
 };
 

@@ -25,7 +25,7 @@ bool BodyComponent::initialize(ObjectFactoryPresets& presets)
 		devices = presets.devices;
 				
 		//Get physics based on object type.
-		physics = devices -> GetPhysicsLibrary() -> Search(presets.objectType);
+		physics = devices -> GetPhysicsLibrary() -> search(presets.objectType);
 				
 		//Create fixture.
 		devices -> GetPhysicsDevice() -> createFixture
@@ -56,4 +56,9 @@ std::unique_ptr<GameObject> BodyComponent::update()
 float BodyComponent::getAngle() const
 {
 	return devices->GetPhysicsDevice()->getAngle(_owner);
+}
+
+Direction BodyComponent::getDirection() const
+{
+	return static_cast<Direction>(abs((int(getAngle()) % 360)));
 }

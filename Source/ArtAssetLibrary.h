@@ -12,8 +12,8 @@ class GraphicsDevice;
 class ArtAssetLibrary{
 public:
 	ArtAssetLibrary(GraphicsDevice* gDevice);
-	Texture* Search(std::string);
-	bool AddAsset(std::string name, std::string path);
+	Texture* search(std::string);
+	bool addAsset(std::string name, std::string path);
 private:
 	std::map<std::string, std::unique_ptr<Texture>> library;
 	GraphicsDevice* gDevice;

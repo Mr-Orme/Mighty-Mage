@@ -199,7 +199,7 @@ bool PhysicsDevice::createFixture
 	}
 
 	//********Adjust postion because SDL is top left, while box2d is center*************
-	Texture* texture = object -> getComponent<RendererComponent>() -> GetTexture();
+	Texture* texture = object -> getComponent<RendererComponent>() -> getTexture();
 	//subtract off half the width.
 	presets.position.x += (texture -> getDimensions().x/2);
 	//subtract off half the height
@@ -222,13 +222,13 @@ bool PhysicsDevice::createFixture
 	{
 	case PhysicsStats::BodyShape::rectangle:
 		//rectangle's dimensions
-		pShape.SetAsBox(RW2PW(compRenderer -> GetTexture() -> getDimensions().x/2.0f), RW2PW(compRenderer -> GetTexture() -> getDimensions().y/2.0f));
+		pShape.SetAsBox(RW2PW(compRenderer -> getTexture() -> getDimensions().x/2.0f), RW2PW(compRenderer -> getTexture() -> getDimensions().y/2.0f));
 		shapefd.shape = &pShape;
 		break;
 	case PhysicsStats::BodyShape::circle:
 		//circle radius based on object's width.
-		float width = compRenderer -> GetTexture() -> getDimensions().x/2.0f;
-		float height = compRenderer -> GetTexture() -> getDimensions().y/2.0f;
+		float width = compRenderer -> getTexture() -> getDimensions().x/2.0f;
+		float height = compRenderer -> getTexture() -> getDimensions().y/2.0f;
 
 		if (width > height)	cShape.m_radius = (RW2PW(width));
 		else cShape.m_radius = (RW2PW(height));
@@ -378,7 +378,7 @@ Vector2D PhysicsDevice::AlignCenters(GameObject* object)
 	b2Body* body = FindBody(object);
 	b2Vec2 physPosition = body -> GetPosition();
 	Vector2D position;
-	Texture* texture = object -> getComponent<RendererComponent>() -> GetTexture();
+	Texture* texture = object -> getComponent<RendererComponent>() -> getTexture();
 
 		//subtract off half the width.
 		position.x = PW2RW(physPosition.x) - (texture -> getDimensions().x/2);

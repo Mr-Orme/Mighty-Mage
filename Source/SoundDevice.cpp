@@ -48,7 +48,7 @@ bool SoundDevice::PlaySound(std::string sound, int numLoops)
 bool SoundDevice::PlaySound(std::string sound, int numLoops, int channel)
 //**************************************
 {
-		Mix_PlayChannel(channel, sLibrary ->SearchSoundEffects(sound), numLoops);
+		Mix_PlayChannel(channel, sLibrary ->searchSoundEffects(sound), numLoops);
 		return true;
 }
 //**************************************
@@ -56,7 +56,7 @@ bool SoundDevice::PlaySound(std::string sound, int numLoops, int channel)
 void SoundDevice::SetBackground(std::string background)
 //**************************************
 {
-	if(Mix_PlayMusic(sLibrary -> SearchMusic(background), -1) == -1)
+	if(Mix_PlayMusic(sLibrary -> searchMusic(background), -1) == -1)
 	{printf("Mix_PlayMusic: %s\n", Mix_GetError());}
 }
 void SoundDevice::Shutdown()

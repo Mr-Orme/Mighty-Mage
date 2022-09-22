@@ -67,12 +67,12 @@ std::unique_ptr<GameObject> BackpackComponent::update()
 			{
 				objects.emplace
 				(
-					item -> getComponent<RendererComponent>() -> GetTexture(), 
+					item -> getComponent<RendererComponent>() -> getTexture(), 
 					item -> getComponent<InventoryComponent>() -> locationInPack()
 				);
 			}
-			
-			devices->GetGraphicsDevice()->addOverlay({ topLeft, bottomRight, background, border, objects });
+			GraphicsDevice::Overlay temp{ topLeft, bottomRight, background, border, objects };
+			devices->GetGraphicsDevice()->addOverlay(temp);
 				
 
 			
@@ -93,9 +93,9 @@ std::unique_ptr<GameObject> BackpackComponent::update()
 			//**********************Find Item dimensions*************************
 			auto rend{ item->getComponent<RendererComponent>() };
 			//number of sequential rows we need (+.5 makes sure we round up)
-			int numRows{ (int)(((float)rend->GetTexture()->getDimensions().x / slotSize) + .5) };
+			int numRows{ (int)(((float)rend->getTexture()->getDimensions().x / slotSize) + .5) };
 			//number of sequential columns we need
-			int numColumns{ (int)(((float)rend->GetTexture()->getDimensions().y / slotSize) + .5) };
+			int numColumns{ (int)(((float)rend->getTexture()->getDimensions().y / slotSize) + .5) };
 			//********************************************************************
 				
 			//number of sequential open rows found 

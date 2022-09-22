@@ -6,7 +6,10 @@
 #include "ResourceManager.h"
 #include <memory>
 RendererComponent::RendererComponent(GameObject* owner, ResourceManager* devices) :Component(owner, devices){}
-RendererComponent::~RendererComponent(){}
+RendererComponent::~RendererComponent()
+{
+	devices->GetGraphicsDevice()->RemoveSpriteRenderer(this);
+}
 
 //**************************************
 //on the first pass, we set up the texture for the object
@@ -21,7 +24,7 @@ bool RendererComponent::initialize(ObjectFactoryPresets& presets)
 		devices -> GetGraphicsDevice() -> AddSpriteRenderer(this);
 
 		//grab the sprite from the library.
-		texture = presets.devices -> GetArtLibrary() -> Search(presets.objectType);
+		texture = presets.devices -> GetArtLibrary() -> search(presets.objectType);
 		initialized = true;
 	}
 	return true;
@@ -35,7 +38,7 @@ void RendererComponent::run()
 	
 
 	//adjust position.
-	updatedPosition = GetUpdatedPosition(_owner);
+	updatedPosition = viewAdjustedPosition(_owner);
 
 	float angle = devices -> GetPhysicsDevice() -> getAngle(_owner);
 
@@ -48,16 +51,13 @@ void RendererComponent::run(Vector2D position, float angle)
 	texture ->run(devices -> GetGraphicsDevice() -> GetRenderer(), position, angle, nullptr);
 }
 
-void RendererComponent::Start()
-{
 
-}
 
 std::unique_ptr<GameObject> RendererComponent::update(){return nullptr;}
 
 //**************************************
 //adjusts the position based on the view.
-Vector2D RendererComponent::GetUpdatedPosition(GameObject* owner)
+Vector2D RendererComponent::viewAdjustedPosition(GameObject* owner)
 //**************************************
 {
 	Vector2D updatedPosition;
@@ -73,10 +73,3 @@ Vector2D RendererComponent::GetUpdatedPosition(GameObject* owner)
 	return updatedPosition;
 }
 
-//**************************************
-//When dead, must remove the sprite from the list
-void RendererComponent::Finish()
-//**************************************
-{
-	devices -> GetGraphicsDevice() -> RemoveSpriteRenderer(this);
-}

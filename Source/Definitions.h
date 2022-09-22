@@ -99,8 +99,7 @@ struct RGBA
 
 struct Notice
 {
-	int x;
-	int y;
+	Vector2D square;
 	Direction direction;
 	std::string text;
 };

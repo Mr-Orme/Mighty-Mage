@@ -8,9 +8,9 @@
 class NoticesAssetLibrary{
 public:
 	NoticesAssetLibrary();
-	Notice Search(Notice square);
-	bool AddAsset(Notice notice);
-	bool RemoveAsset(Notice notice);
+	Notice search(Notice square);
+	bool addAsset(Notice notice);
+	bool removeAsset(Notice notice);
 private:
 	std::vector<Notice> library;
 	

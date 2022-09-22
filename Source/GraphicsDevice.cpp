@@ -1,4 +1,6 @@
 #include<iostream>
+#include <map>
+#include <vector>
 #include "SDL2_gfxPrimitives.h"
 #include "ResourceManager.h"
 #include "ComponentsList.h"
@@ -7,46 +9,37 @@
 //#include "InputDevice.h"
 #include "View.h"
 #include "Definitions.h"
+#include "Texture.h"
 
 
 
-
-GraphicsDevice::GraphicsDevice(Vector2D screenDimensions) : screenDimensions(screenDimensions)
-{}
-
-GraphicsDevice::~GraphicsDevice()
-{
-
-}
-
-
-
-bool GraphicsDevice::initialize(bool fullScreen)
+GraphicsDevice::GraphicsDevice(Vector2D screenDimensions, bool fullScreen) : 
+	screenDimensions(screenDimensions)
 {
 
 
 	//Initialize all SDL subsystems
-	if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
-		printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
-		return(false);
+		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+		return;
 	}
 
 	//Initialize SDL_image subsystems
-	if(!IMG_Init(IMG_INIT_PNG))
+	if (!IMG_Init(IMG_INIT_PNG))
 	{
-		printf( "SDL_image could not initialize! SDL_Error: %s\n", IMG_GetError() );
-		return(false);
+		printf("SDL_image could not initialize! SDL_Error: %s\n", IMG_GetError());
+		return;
 	}
 
 	//Initialize SDL_ttf subsystems
-	if(TTF_Init()==-1)
+	if (TTF_Init() == -1)
 	{
-		printf( "SDL_ttf could not initialize! SDL_Error: %s\n", TTF_GetError() );
-		return(false);
+		printf("SDL_ttf could not initialize! SDL_Error: %s\n", TTF_GetError());
+		return;
 	}
 
-	if(!fullScreen)
+	if (fullScreen)
 	{
 		//Construct and check window construction
 		screen = SDL_CreateWindow("Demonstration Window",
@@ -62,35 +55,32 @@ bool GraphicsDevice::initialize(bool fullScreen)
 			screenDimensions.x, screenDimensions.y, SDL_WINDOW_SHOWN);
 
 	}
-	if(screen==nullptr)
+	if (screen == nullptr)
 	{
-		printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
-		return(false);
+		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+		return;
 	}
 
 	//Construct the renderer
-	renderer = SDL_CreateRenderer(screen,-1,SDL_RENDERER_ACCELERATED);
-	if(renderer==nullptr)
+	renderer = SDL_CreateRenderer(screen, -1, SDL_RENDERER_ACCELERATED);
+	if (renderer == nullptr)
 	{
-		printf( "Renderer could not be created! SDL_Error: %s\n", SDL_GetError() );
-		return(false);
+		printf("Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
+		return;
 	}
 
 	//Set the background color (default)
-	SDL_SetRenderDrawColor(renderer,0,0,0,255);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
 	//========================================
 	//create view
 	//========================================
 	Vector2D startPosition{ 0,0 };
 	view = std::make_unique<View>(startPosition);
-	
-
-	return(true);
 
 }
 
-bool GraphicsDevice::ShutDown()
+GraphicsDevice::~GraphicsDevice()
 {
 	//Free the window
 	SDL_DestroyWindow(screen);
@@ -107,10 +97,9 @@ bool GraphicsDevice::ShutDown()
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
-
-
-	return(true);
 }
+
+
 
 
 
@@ -189,7 +178,7 @@ void GraphicsDevice::run()
 //		devices -> GetPhysicsDevice() -> SetStopPhysics(levelExit.get());
 //		//get rid of the notice stating we need to find the spheres.
 //		Notice notice = {15, 0, W, ""};
-//		devices -> GetNoticesLibrary() -> RemoveAsset(notice);
+//		devices -> GetNoticesLibrary() -> removeAsset(notice);
 //
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 

@@ -31,11 +31,7 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 //Construct Graphical Device
 //========================================
 	gDevice = std::make_unique<GraphicsDevice>(screenDimensions);
-	if (!gDevice->initialize(true))
-	{
-		printf("Graphics Device could not Initialize!");
-		exit(1);
-	}
+
 	//color of fonts
 	RGBA RGBA{ 0, 0, 0, 255 };
 
@@ -131,7 +127,7 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 			if (currentComponent == "Renderer")
 			{
 				//add the coresponding asset to the library.
-				aLibrary->AddAsset(aName, compElement->Attribute("sprite"));
+				aLibrary->addAsset(aName, compElement->Attribute("sprite"));
 				//add the component to the list
 				componentList.push_back(Components::renderer);
 			}
@@ -156,7 +152,7 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 				if (bodyShape == "rectangle") { physics.objectShape = PhysicsStats::BodyShape::rectangle; }
 				else if (bodyShape == "circle") { physics.objectShape = PhysicsStats::BodyShape::circle; }
 				//add to library
-				pLibrary->AddAsset(aName, physics);
+				pLibrary->addAsset(aName, physics);
 
 				//add component to list
 				componentList.push_back(Components::body);
@@ -167,7 +163,7 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 				ObjectStats stats;
 				compElement->QueryIntAttribute("health", &stats.health);
 				//add to library
-				oLibrary->AddAsset(aName, stats);
+				oLibrary->addAsset(aName, stats);
 				//add component
 				componentList.push_back(Components::health);
 			}
@@ -204,23 +200,19 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 	{
 		//get information from file TODO:: x and y directly in notice
 		Notice notice;
-		int x, y;
 		std::string direction;
-		notices->QueryIntAttribute("x", &x);
-		notices->QueryIntAttribute("y", &y);
+		notices->QueryIntAttribute("x", &notice.square.x);
+		notices->QueryIntAttribute("y", &notice.square.y);
 		notices->QueryStringAttribute("direction", &direction);
 		notice.text = notices->GetText();
 
-		//store in notice, in proper format.
-		notice.x = x;
-		notice.y = y;
 		if (direction == "N") notice.direction = Direction::N;
 		else if (direction == "E") notice.direction = Direction::E;
 		else if (direction == "S") notice.direction = Direction::S;
 		else if (direction == "W") notice.direction = Direction::W;
 
 		//add it to the library.
-		nLibrary->AddAsset(notice);
+		nLibrary->addAsset(notice);
 
 		//get the next notice
 		notices = notices->NextSiblingElement();
@@ -245,11 +237,11 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 		//add to library based on whether it is background music or not.
 		if (background)
 		{
-			sLibrary->AddBackgroundMusic(name, path);
+			sLibrary->addBackgroundMusic(name, path);
 		}
 		else
 		{
-			sLibrary->AddSoundEffect(name, path);
+			sLibrary->addSoundEffect(name, path);
 		}
 		sounds = sounds->NextSiblingElement();
 	}
@@ -275,29 +267,22 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 
 ResourceManager::~ResourceManager(){
 
-	iDevice = nullptr;
-
-	sLibrary->Finish();
-	sLibrary = nullptr;
-
-	gDevice->ShutDown();
-	gDevice = nullptr;
-
 	sDevice->Shutdown();
 	sDevice = nullptr;
+}
 
-	pDevice = nullptr;
-
-
-	aLibrary = nullptr;
-
-	pLibrary = nullptr;
-
-	oLibrary = nullptr;
-
-	nLibrary = nullptr;
-
-	factory = nullptr;
+bool ResourceManager::isExitSquare(Vector2D currSquare) const
+{
+	for (auto square : exits)
+	{
+		//TODO:: overload == for Vector2D
+		//TODO:: 14,0 exit square added for main level!
+		if (square.x == currSquare.x && square.y == currSquare.y)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 

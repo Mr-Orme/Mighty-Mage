@@ -1,17 +1,18 @@
 #include "LevelConfigLibrary.h"
 
 LevelConfigLibrary::LevelConfigLibrary(){}
-bool LevelConfigLibrary::initialize(){return true;}
-std::string LevelConfigLibrary::Search(std::string name)
+
+
+std::string LevelConfigLibrary::search(std::string name)
 {
 	return(library.find(name) -> second);
 }
-bool LevelConfigLibrary::AddAsset(std::string name, std::string path)
+bool LevelConfigLibrary::addAsset(std::string name, std::string path)
 {
 	library[name]=path;
 	return true;
 }
-bool LevelConfigLibrary::RemoveAsset(std::string name)
+bool LevelConfigLibrary::removeAsset(std::string name)
 {
 	std::map<std::string, std::string>::iterator toDelete;
 	toDelete = library.find(name);

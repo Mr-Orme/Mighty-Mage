@@ -32,11 +32,11 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 	{
 		if (objectA->isWall())
 		{
-			objectB->getComponent<UserInputComponent>()->SetWallHit(true);
+			objectB->getComponent<UserInputComponent>()->collidingWithWall(true);
 		}
 		else
 		{
-			objectB->getComponent<UserInputComponent>()->SetWallHit(false);
+			objectB->getComponent<UserInputComponent>()->collidingWithWall(false);
 		}
 		
 		if (auto ghost{ objectA->getComponent<GhostComponent>() };
