@@ -233,7 +233,7 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 		sounds->QueryStringAttribute("path", &path);
 		bool background;
 		sounds->QueryBoolAttribute("background", &background);
-
+		
 		//add to library based on whether it is background music or not.
 		if (background)
 		{
@@ -241,7 +241,13 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 		}
 		else
 		{
-			sLibrary->addSoundEffect(name, path);
+			float duration{};
+			sounds->QueryFloatAttribute("duration", &duration);
+			if (duration != 0)
+			{
+				duration = FPS * duration;
+			}
+			sLibrary->addSoundEffect(name, path, duration);
 		}
 		sounds = sounds->NextSiblingElement();
 	}

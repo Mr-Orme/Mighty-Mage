@@ -9,6 +9,8 @@ class SoundAssetLibrary;
 class SoundDevice{
 public:
 	~SoundDevice();
+	SoundDevice();
+
 	bool initialize();
 	void Shutdown();
 
@@ -23,6 +25,7 @@ public:
 
 private:
 	SoundAssetLibrary* sLibrary;
+	
 };
 
 

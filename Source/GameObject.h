@@ -35,7 +35,7 @@ public:
 		return(nullptr);
 	}
 	
-	std::unique_ptr<GameObject> update();
+	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects);
 
 	void SetJoinedWith(GameObject* joinedWith){this -> joinedWith = joinedWith;}
 

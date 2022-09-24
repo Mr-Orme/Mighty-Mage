@@ -46,14 +46,14 @@ void GameObject::addComponent(std::unique_ptr<Component> component)
 
 //**************************************
 //runs the update method for all attached components
-std::unique_ptr<GameObject> GameObject::update()
+std::unique_ptr<GameObject> GameObject::update(std::vector<std::unique_ptr<GameObject>>& objects)
 //**************************************
 
 {
 	std::unique_ptr<GameObject> newObject{ nullptr };
 	for (auto& comp : components)
 	{
-		std::unique_ptr<GameObject> tempObject{ comp->update() };
+		std::unique_ptr<GameObject> tempObject{ comp->update(objects) };
 		if(tempObject != nullptr)
 		{
 			newObject = std::move(tempObject);

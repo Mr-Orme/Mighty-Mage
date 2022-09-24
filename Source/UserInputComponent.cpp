@@ -4,310 +4,137 @@
 #include "GameObject.h"
 
 
-UserInputComponent::UserInputComponent(GameObject* owner, ResourceManager* devices):Component(owner, devices){}
-UserInputComponent::~UserInputComponent(){}
-
-//**************************************
-//Set up some defaults
-bool UserInputComponent::initialize(ObjectFactoryPresets& presets)
+UserInputComponent::UserInputComponent(GameObject* owner, ResourceManager* devices):Component(owner, devices)
 {
 	for (int i = 0; i < (int)Event::numEvents; i++)
 	{
 		Event eventNum = static_cast<Event>(i);
 		pressControl[eventNum] = true;
 	}
-
-
-	return true;
 }
+
+UserInputComponent::~UserInputComponent(){}
+
+
 
 
 //**************************************
 //reacts to keyboard input and adjusts the world accoringly.
-std::unique_ptr<GameObject> UserInputComponent::update()
+std::unique_ptr<GameObject> UserInputComponent::update(std::vector<std::unique_ptr<GameObject>>& objects)
 //**************************************
 {
-	frameCount++;
-	bool locationMarker{ false };
-	Vector2D applyForce;
-	int soundWait = devices -> GetFPS()/5;//adjusts how long between playing of sound effects.
 	
-	std::string sound{ "walking" };
-
-	if(!_owner -> getComponent<BackpackComponent>() -> isOpen())
-	{
-		//run if shift is being held down.
-		if(devices -> GetInputDevice() -> GetEvent(Event::shift))
-		{
-			forceMultiplier = baseForceMultiplier * runMultiplier;
-			//play it faster
-			soundWait = devices -> GetFPS()/8;
-			//do the run sound
-			sound = "run";
-		}
-		else
-		{
-			//back to walk speeds
-			forceMultiplier = baseForceMultiplier;
-		
-		}
+	dealWithButtonPresses();
 	
-		//checks to see if it is time to play the sound effect or not.
-		bool playWalk = false;
-		if(frameCount > soundWait+1) 
-		{
-			frameCount = soundWait +1;
-			playWalk = true;
-		}
-
-		//grab current velocity
-		Vector2D velocity = devices -> GetPhysicsDevice() -> GetVelocity(_owner);
-			
-
-		//If the up or down arrow is pressed
-		if(devices -> GetInputDevice() -> GetEvent(Event::up))
-		{
-			//Calculate force vector for a forward push
-			applyForce.x = (int)cosf((devices -> GetPhysicsDevice() -> getAngle(_owner)*PI/180)-(PI/2))*forceMultiplier;
-			applyForce.y = (int)sinf((devices -> GetPhysicsDevice() -> getAngle(_owner)*PI/180)-(PI/2))*forceMultiplier;
-			//PUSH BABY PUSH!!!
-			devices -> GetPhysicsDevice() -> SetLinearVelocity(_owner, applyForce);
-			//if last play is done and the player is still moving
-			if(playWalk ==true && (abs(velocity.x) > 1 || abs(velocity.y) >1))
-			{
-				//play walking sound
-				devices -> GetSoundDevice() -> PlaySound(sound,0,1);
-				frameCount = 0;
-			}
-		
-			//nowall makes sure we don't play the wall hitting sound if we are parallel with and next to
-			//a wall. Without out it, the wall hit sound will play once we when we start moving.
-			//wallHit is set by the contactListener
-			//If we are hitting a wall we should not be moving, so velocity is checked.
-			//there usually is some very small velocity even when running into a wall, which is why it checks
-			//for less than one.
-			if(!noWall && wallHit && abs(velocity.x) <1 && abs(velocity.y) < 1)
-			{
-				devices -> GetSoundDevice() -> PlaySound("wall",0,2);
-			}
-			noWall = false;
-
-		}
-		//otherwise, if the down arrow is pressed.
-		else if(devices -> GetInputDevice() -> GetEvent(Event::down))
-		{
-			//Force reversed from the UP force by adding PI to the angle.
-			applyForce.x = (int)(cosf((devices -> GetPhysicsDevice() -> getAngle(_owner)*PI/180.0f)+(PI/2.0f))*(float)forceMultiplier);
-			applyForce.y = (int)(sinf((devices -> GetPhysicsDevice() -> getAngle(_owner)*PI/180.0f)+(PI/2.0f))*(float)forceMultiplier);
-
-			//PUSH BABY PUSH!!!
-			devices -> GetPhysicsDevice() -> SetLinearVelocity(_owner, applyForce);
-			//if last play is done and still moving
-			if(playWalk ==true && (abs(velocity.x) > 1 || abs(velocity.y) >1))
-			{
-				//play walking sound
-				devices -> GetSoundDevice() -> PlaySound(sound,0,1);
-			
-				frameCount = 0;
-			}
-			//same as up arrow....
-			if(!noWall && wallHit && abs(velocity.x) <1 && abs(velocity.y) < 1)
-			{
-				devices -> GetSoundDevice() -> PlaySound("wall",0,2);
-			}
-			noWall = false;
-
-		
-		}
-		//if neither are pressed, remove velocity.
-		else
-		{
-			devices->GetPhysicsDevice()->SetLinearVelocity(_owner, { 0,0 });
-			//make sure we won't make a wall sound the first frame after we press an up or down arrow.
-			noWall = true;
-		}
+	devices->GetGraphicsDevice()->GetView()->borderDectection(
+		_owner->getComponent<BodyComponent>()->getPosition());
 	
-		//Check for left or right buttons
-		// the "turn" variable makes sure we only turn once every time we push the button
-		if(devices -> GetInputDevice() -> GetEvent(Event::right))
-		{
-			//change the angle
-			if(pressControl[Event::right])
-			{
-				//set angle by angle adjust
-				devices -> GetPhysicsDevice() -> SetAngle(
-					_owner, 
-					devices -> GetPhysicsDevice() -> getAngle(_owner)+angleAdjust);
-				//stop forward motion
-				devices->GetPhysicsDevice()->SetLinearVelocity(_owner, { 0,0 });
-				//ensures we only turn once per press
-				pressControl[Event::right] = false;
-			}
-			//same as else on up and down arrows
-			noWall = true;
-		}
-		else pressControl[Event::right] = true;
-		if(devices -> GetInputDevice() -> GetEvent(Event::left))
-		{
-			//similar to turn right.
-			if(pressControl[Event::left])
-			{
-				devices -> GetPhysicsDevice() -> SetAngle(_owner, devices -> GetPhysicsDevice() -> getAngle(_owner)-angleAdjust);
-				devices->GetPhysicsDevice()->SetLinearVelocity(_owner, { 0,0 });
-				pressControl[Event::left] = false;
-			}
-			//same as else on up and down arrows
-			noWall = true;
-		
-		}
-		else pressControl[Event::left] = true;
-	}
-	else devices->GetPhysicsDevice()->SetLinearVelocity(_owner, { 0,0 });
+	displayNotices();
 	
-	if(devices -> GetInputDevice() -> GetEvent(Event::key_b))
-	{
-		if(pressControl[Event::key_b])
-		{
-				
-			if (BackpackComponent* backpack{ _owner->getComponent<BackpackComponent>() }; 
-				backpack != nullptr)
-			{
-				if(backpack -> isOpen()) backpack -> openPack(false);
-				else backpack -> openPack(true);
-			}
-			pressControl[Event::key_b] = false;
-		}
-		
-	}
-	else pressControl[Event::key_b] = true;
-
-
-
-	//*************************************** True to 90**********************
-	//sometimes the angle get's off perpendicular.
-	int angle = (int(devices -> GetPhysicsDevice() -> getAngle(_owner)));
-	
-	if(angle >360 && angle < 460) angle = 90;
-	if (angle <0) angle = 270;
-	if (angle < 45 && angle >= 315) devices -> GetPhysicsDevice() -> SetAngle(_owner, 0);
-	else if (angle < 135 && angle >= 45) devices -> GetPhysicsDevice() -> SetAngle(_owner, 90);
-	else if (angle < 225 && angle >= 135) devices -> GetPhysicsDevice() -> SetAngle(_owner, 180);
-	else if (angle < 315 && angle >= 225) devices -> GetPhysicsDevice() -> SetAngle(_owner, 270);
-
-
-
-	//*************************************** BORDER DETECTION**********************
-		
-	
-	
-	//the amount the screen moves is based upon the last change in position for the player.
-	Vector2D jump{ _owner->getComponent<BodyComponent>()->getPosition() };
-	
-	//grab a few things we are going to need.
-	GraphicsDevice* gDevice = devices -> GetGraphicsDevice();
-	View* view = devices -> GetGraphicsDevice() -> GetView();
-	
-	//position plus view
-	//TODO:: viewAdjustedPosition to body, plus rename. relative vs actual?
-	Vector2D position = _owner -> getComponent<RendererComponent>() -> viewAdjustedPosition(_owner);
-	
-	//Check distance for each border and adjust view if too close.
-	//it is alway "-" jump because the DPosition's sign changes based on the direction of movement
-	//left
-	if(position.x < border)
-	{
-		view -> setX(view -> getPosition().x-jump.x);				
-	}
-	//right
-	else if(position.x > gDevice -> getScreenDimensions().x - border)
-	{ 
-		view -> setX(view -> getPosition().x-jump.x);
-	}
-	//top
-	if(position.y < border)
-	{
-		view -> setY(view -> getPosition().y-jump.y);				
-	}
-	//bottom
-	else if(position.y  > gDevice -> getScreenDimensions().y - border)
-	{
-		view -> setY(view -> getPosition().y-jump.y);
-	}
-		
-	//*********************************************************************************
-
-	//*****************************NOTICES*********************************************
+	return nullptr;
+}
+void UserInputComponent::displayNotices()
+{
 	//this is the game square in the 15x15 map.
-	Vector2D square{ currentSquare() };
+	BodyComponent* body{ _owner->getComponent<BodyComponent>() };
+	
 
 	//set up ntoice
-	Notice notice {
-		square, 
-		_owner->getComponent<BodyComponent>()->getDirection(),
-		""};
+	Notice notice{
+		body->currentSquare(),
+		body->getDirection(),
+		"" };
 
 
 	//if there is a notice
-	notice = devices -> GetNoticesLibrary() -> search(notice);
-	if( notice.text != "")
+	notice = devices->GetNoticesLibrary()->search(notice);
+	if (notice.text != "")
 	{
 		//display it.
-		devices -> GetGraphicsDevice() -> Notice2Screen(notice.text);
+		devices->GetGraphicsDevice()->Notice2Screen(notice.text);
 	}
-
-
-	//*********************************************************************************
-	
 	//*****************************TO Basement*********************************************
 	//if we are on the main level and make it to the proper spot
 
-	
-	if(devices->isExitSquare(square))
+	//TODO::Move exit check to somewhere else...
+	if (devices->isExitSquare(body->currentSquare()))
 	{
 		//load the basement.
 		//NOTE: actual loading of basement is done by the Game class, this just tells the class
 		//it is time to load.
 		//TODO::make more generic to load any level!
-		devices -> SetLoadBasement(true);
+		devices->SetLoadBasement(true);
 	}
-	//*********************************************************************************
-
-	if(locationMarker)//Debugging
-	{
-		Vector2D playerPosition = devices -> GetPhysicsDevice() -> GetPosition(_owner);
-		std::string playerPositionText = "(" + std::to_string(playerPosition.x) + ", " + std::to_string(playerPosition.y) + ")";
-		devices -> GetGraphicsDevice() ->Text2Screen(playerPositionText, position);
-	}
-
-	return nullptr;
+	//********************************************************************************
 }
-//TODO:: move currentSquare method to body component
-//**************************************
-//find's the 15x15 game square based on current position
-Vector2D UserInputComponent::currentSquare()
-//**************************************
+void UserInputComponent::dealWithButtonPresses()
 {
-	Vector2D playerPosition
-		{_owner->getComponent<RendererComponent>()->viewAdjustedPosition(_owner) };
-	Vector2D viewPosition  
-		{devices -> GetGraphicsDevice() -> GetView() -> getPosition()};
-	Vector2D cityCorner {devices -> GetCityCorner()};
+	if (!_owner->getComponent<BackpackComponent>()->isOpen())
+	{
+		if (devices->GetInputDevice()->GetEvent(Event::up))
+		{
+			_owner->getComponent<BodyComponent>()->moveForward();
 
-	//the city corner plus the view get's us the top left corner of the view.
-	//subtract off the player's position on the screen to get the actual spot of the player.
-	//divide the number of pixels in each square.
-	//Adjust the y, because the 15x15 square starts in the bottom left corner, while SDL starts in the top left.
-	Vector2D square = 
-					{
-						int((cityCorner.x + viewPosition.x - playerPosition.x)*-1/devices->pixelsPerSquare),
-						devices->blocksPerMap+int((cityCorner.y + viewPosition.y - playerPosition.y)/devices->pixelsPerSquare)
-					};
-	return square;					
-	//this code is here for use for debugging.
-	//run player position on himself
-	/*std::string playerPositionText = "(" + std::to_string(playerPosition.x) + ", " + std::to_string(playerPosition.y) + ")";
-	
-	Vector2D position = _owner -> getComponent<RendererComponent>() -> viewAdjustedPosition(devices -> GetPhysicsDevice() -> GetPosition(_owner));
-	devices -> GetGraphicsDevice() ->Text2Screen(playerPositionText, position);*/
+		}
+		else if (devices->GetInputDevice()->GetEvent(Event::down))
+		{
+			_owner->getComponent<BodyComponent>()->moveBackward();
 
+		}
+		else
+		{
+			_owner->getComponent<BodyComponent>()->stop();
+		}
+
+		//Check for left or right buttons
+		// the "turn" variable makes sure we only turn once every time we push the button
+		if (devices->GetInputDevice()->GetEvent(Event::right))
+		{
+			//change the angle
+			if (pressControl[Event::right])
+			{
+				_owner->getComponent<BodyComponent>()->turnRight();
+				//ensures we only turn once per press
+				pressControl[Event::right] = false;
+			}
+		}
+		else pressControl[Event::right] = true;
+		if (devices->GetInputDevice()->GetEvent(Event::left))
+		{
+			//similar to turn right.
+			if (pressControl[Event::left])
+			{
+				_owner->getComponent<BodyComponent>()->turnLeft();
+				pressControl[Event::left] = false;
+			}
+		}
+		else pressControl[Event::left] = true;
+	}
+	else _owner->getComponent<BodyComponent>()->stop();
+
+	if (devices->GetInputDevice()->GetEvent(Event::key_b))
+	{
+		if (pressControl[Event::key_b])
+		{
+
+			if (BackpackComponent* backpack{ _owner->getComponent<BackpackComponent>() };
+				backpack != nullptr)
+			{
+				if (backpack->isOpen()) backpack->openPack(false);
+				else backpack->openPack(true);
+			}
+			pressControl[Event::key_b] = false;
+		}
+
+	}
+	else pressControl[Event::key_b] = true;
+
+
+}
+
+void UserInputComponent::displayLocation()
+{
+	Vector2D playerPosition = devices->GetPhysicsDevice()->GetPosition(_owner);
+	std::string playerPositionText = "(" + std::to_string(playerPosition.x) + ", " + std::to_string(playerPosition.y) + ")";
+	devices->GetGraphicsDevice()->Text2Screen(playerPositionText, { 10,10 });
 }

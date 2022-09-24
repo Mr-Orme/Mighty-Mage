@@ -1,9 +1,14 @@
 #include "SoundDevice.h"
 #include "SoundAssetLibrary.h"
-
+#include "Timer.h"
+#include "FrameCounter.h"
 SoundDevice::~SoundDevice()
 {
 	Shutdown();
+}
+SoundDevice::SoundDevice()
+{
+
 }
 //**************************************
 //set's up initial setting for sound device
@@ -48,14 +53,22 @@ bool SoundDevice::PlaySound(std::string sound, int numLoops)
 bool SoundDevice::PlaySound(std::string sound, int numLoops, int channel)
 //**************************************
 {
-		Mix_PlayChannel(channel, sLibrary ->searchSoundEffects(sound), numLoops);
-		return true;
+	//TODO::update timer to allow for time passed on these..
+	auto& [theSound, timeBetweenPlays, lastPlayed] = sLibrary->searchSoundEffects(sound);
+	
+	if (FrameCounter::framesSince(lastPlayed) > timeBetweenPlays)
+	{
+		lastPlayed = FrameCounter::currentFrame();
+		Mix_PlayChannel(channel, theSound, numLoops);
+	}
+	return true;
 }
 //**************************************
 //set's the background music to play.
 void SoundDevice::SetBackground(std::string background)
 //**************************************
 {
+	Mix_VolumeMusic(.5 * MIX_MAX_VOLUME);
 	if(Mix_PlayMusic(sLibrary -> searchMusic(background), -1) == -1)
 	{printf("Mix_PlayMusic: %s\n", Mix_GetError());}
 }

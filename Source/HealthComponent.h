@@ -11,7 +11,7 @@ public:
 	HealthComponent(GameObject* owner, ResourceManager* devices);
 	~HealthComponent();
 
-	std::unique_ptr<GameObject> update() override;
+	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;
 	bool initialize(ObjectFactoryPresets& presets) override;
 
 	bool isDead() const {return dead;}

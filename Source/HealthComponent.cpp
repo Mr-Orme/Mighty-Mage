@@ -46,7 +46,7 @@ bool HealthComponent::killMe()
 
 //**************************************
 //checks for death and deals with it
-std::unique_ptr<GameObject> HealthComponent::update()
+std::unique_ptr<GameObject> HealthComponent::update(std::vector<std::unique_ptr<GameObject>>& objects)
 //**************************************
 {
 	//if dead

@@ -10,11 +10,11 @@ SoundAssetLibrary::SoundAssetLibrary()
 SoundAssetLibrary::~SoundAssetLibrary()
 {
 	//iterates through sound effects.
-	std::map<std::string, Mix_Chunk*>::iterator soundIter;
+	std::map<std::string, SoundEffect>::iterator soundIter;
 	for (soundIter = soundEffectLibrary.begin(); soundIter != soundEffectLibrary.end(); soundIter++)
 	{
 		//removes sound effect.
-		Mix_FreeChunk(soundIter->second);
+		Mix_FreeChunk(soundIter->second.sound);
 	}
 	//itersates through music.
 	std::map<std::string, Mix_Music* >::iterator musicIter;
@@ -35,17 +35,19 @@ bool SoundAssetLibrary::initialize(SoundDevice* sDevice)
 }
 //**************************************
 //finds a sound effect in the library, based on the passed name
-Mix_Chunk* SoundAssetLibrary::searchSoundEffects(std::string name)
+SoundEffect& SoundAssetLibrary::searchSoundEffects(std::string name)
 //**************************************
 {
 	return soundEffectLibrary.find(name) -> second;
 }
 //**************************************
 //adds a sound effect to the sound effect library
-bool SoundAssetLibrary::addSoundEffect(std::string name, std::string path)
+bool SoundAssetLibrary::addSoundEffect(std::string name, std::string path, int timeBetweenPlays)
 //**************************************
 {
-	if(soundEffectLibrary[name] = Mix_LoadWAV(path.c_str())) return true;
+	SoundEffect theSound { Mix_LoadWAV(path.c_str()), timeBetweenPlays, 0.0f };
+	soundEffectLibrary.emplace(std::make_pair(name, theSound));
+		return true;
 	
 }
 //**************************************

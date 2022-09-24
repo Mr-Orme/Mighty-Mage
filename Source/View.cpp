@@ -1,7 +1,9 @@
+
 #include <iostream>
 #include "View.h"
-
-View::View(Vector2D centerPosition):position(centerPosition)
+#include "BodyComponent.h"
+View::View(Vector2D centerPosition, const Vector2D& screenDimensions):
+	position(centerPosition), screenDimensions(screenDimensions)
 {
 
 }
@@ -29,4 +31,35 @@ void View::Print()
 		"View X: " << position.x << std::endl <<
 		"View Y: " << position.y << std:: endl <<
 		std::endl;
+}
+
+void View::borderDectection(Vector2D objectPosition)
+{
+	objectPosition = relativePosition(objectPosition);
+	
+	//left
+	if (objectPosition.x < border)
+	{
+		setX(getPosition().x + (border-objectPosition.x));
+	}
+	//right
+	else if (objectPosition.x >screenDimensions.x - border)
+	{
+		setX(getPosition().x - (objectPosition.x - (screenDimensions.x - border)));
+	}
+	//top
+	if (objectPosition.y < border)
+	{
+		setY(getPosition().y + (border-objectPosition.y));
+	}
+	//bottom
+	else if (objectPosition.y > screenDimensions.y - border)
+	{
+		setY(getPosition().y - (objectPosition.y - (screenDimensions.y - border)));
+	}
+}
+
+Vector2D View::relativePosition(Vector2D objectPosition)
+{
+	return { position.x + objectPosition.x, position.y + objectPosition.y };
 }

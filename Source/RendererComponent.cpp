@@ -34,16 +34,10 @@ bool RendererComponent::initialize(ObjectFactoryPresets& presets)
 void RendererComponent::run()
 //**************************************
 {
-	Vector2D updatedPosition;
-	
-
-	//adjust position.
-	updatedPosition = viewAdjustedPosition(_owner);
-
-	float angle = devices -> GetPhysicsDevice() -> getAngle(_owner);
-
-	//run sprite.
-	run(updatedPosition, angle);
+	BodyComponent* body{ _owner->getComponent<BodyComponent>() };
+	run(
+		devices->GetGraphicsDevice()->GetView()->relativePosition(body->getPosition()),
+		body->getAngle());
 }
 
 void RendererComponent::run(Vector2D position, float angle)
@@ -53,23 +47,7 @@ void RendererComponent::run(Vector2D position, float angle)
 
 
 
-std::unique_ptr<GameObject> RendererComponent::update(){return nullptr;}
+std::unique_ptr<GameObject> RendererComponent::update(std::vector<std::unique_ptr<GameObject>>& objects){return nullptr;}
 
-//**************************************
-//adjusts the position based on the view.
-Vector2D RendererComponent::viewAdjustedPosition(GameObject* owner)
-//**************************************
-{
-	Vector2D updatedPosition;
-	Vector2D position = devices -> GetPhysicsDevice() -> GetPosition(owner);
-	//adjust position.
-	updatedPosition.x = 
-		  position.x
-		+ devices -> GetGraphicsDevice() -> GetView() -> getPosition().x;
-	updatedPosition.y = 
-		  position.y
-		+ devices -> GetGraphicsDevice() -> GetView() -> getPosition().y;
-	
-	return updatedPosition;
-}
+
 

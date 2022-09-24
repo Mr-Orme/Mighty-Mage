@@ -14,7 +14,7 @@ public:
 	~GhostComponent();
 	
 	bool initialize(ObjectFactoryPresets& presets) override;
-	std::unique_ptr<GameObject> update() override;
+	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;
 	//TODO::Can I eliminate canPass somehow??
 	bool canPass(Direction) const;
 	//TODO:: remove if not needed

@@ -4,6 +4,9 @@
 #include "Definitions.h"
 #include "SDL.h"
 #include <map>
+#include <memory>
+#include <vector>
+class GameObject;
 class InputDevice{
 public:
 	bool initialize();

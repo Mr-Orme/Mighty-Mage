@@ -2,7 +2,7 @@
 #define COMPONENT_H
 
 #include <memory>
-
+#include <vector>
 #include "Definitions.h"
 
 class GameObject;
@@ -14,8 +14,8 @@ public:
 	Component(GameObject* owner, ResourceManager* devices);
 	~Component();
 	
-	virtual bool initialize(ObjectFactoryPresets& presets)=0;
-	virtual std::unique_ptr<GameObject> update()=0;
+	virtual bool initialize(ObjectFactoryPresets& presets);
+	virtual std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects)=0;
 	//TODO::try and eliminate getDevices
 	ResourceManager* getDevices() const { return devices; }
 	GameObject* getOwner() const {return(_owner);}

@@ -76,7 +76,7 @@ GraphicsDevice::GraphicsDevice(Vector2D screenDimensions, bool fullScreen) :
 	//create view
 	//========================================
 	Vector2D startPosition{ 0,0 };
-	view = std::make_unique<View>(startPosition);
+	view = std::make_unique<View>(startPosition, this->screenDimensions);
 
 }
 

@@ -4,6 +4,23 @@
 #include "GameObject.h"
 #include "ComponentsList.h"
 
+Direction travelDirection(b2Body* body)
+{
+	auto object{ reinterpret_cast<GameObject*>(body->GetUserData().pointer) };
+	if (body->GetLinearVelocity().y <= 0)
+	{
+
+		return object->getComponent<BodyComponent>()->getDirection();
+	}
+	else if (body->GetLinearVelocity().y >= 0)
+	{
+		//going backwards.
+		return (Direction)(((int)object->getComponent<BodyComponent>()->getDirection() + 180) % 360);
+		
+	}
+
+	return Direction::N;
+}
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {
     //Grab the two Physics Bodies involved in the Contact
@@ -32,19 +49,40 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 	{
 		if (objectA->isWall())
 		{
-			objectB->getComponent<UserInputComponent>()->collidingWithWall(true);
-		}
-		else
-		{
-			objectB->getComponent<UserInputComponent>()->collidingWithWall(false);
+			bool playWallSound{ false };
+			BodyComponent* playerBody{ objectB->getComponent<BodyComponent>() };
+			BodyComponent* wallBody{ objectA->getComponent<BodyComponent>() };
+			Vector2D playerSquare{ playerBody->currentSquare() };
+			Vector2D wallSquare{ wallBody->currentSquare() };
+			//adjust wall sqaure if player.x > wall.x or player.y < wall.y
+	
+			switch (travelDirection(bodyB))
+			{
+			case Direction::N:
+			case Direction::S:
+				if (playerBody->getPosition().x > wallBody->getPosition().x)
+				{
+					wallSquare++;
+				}
+				playWallSound = playerSquare.x == wallSquare.x;
+				break;
+			case Direction::W:
+			case Direction::E:
+				if (playerBody->getPosition().y > wallBody->getPosition().y)
+				{
+					wallSquare++;
+				}
+				playWallSound = playerSquare.y == wallSquare.y;
+				break;
+			default:
+				break;
+			}
+			if(playWallSound)
+				playerBody->getDevices()->GetSoundDevice()->PlaySound("wall", 0, 2);
 		}
 		
 		if (auto ghost{ objectA->getComponent<GhostComponent>() };
-			ghost != nullptr &&
-			(bodyB->GetLinearVelocity().y <= 0 && ghost->canPass(Direction::N))
-			|| (bodyB->GetLinearVelocity().y >= 0 && ghost->canPass(Direction::S))
-			|| (bodyB->GetLinearVelocity().x >= 0 && ghost->canPass(Direction::E))
-			|| (bodyB->GetLinearVelocity().x <= 0 && ghost->canPass(Direction::W))
+			ghost != nullptr && ghost->canPass(travelDirection(bodyB))
 			)
 		{
 			contact->SetEnabled(false);
@@ -53,15 +91,17 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 	}
 
 }
+void ContactListener::PostSolve(b2Contact*, const b2ContactImpulse*)
+{
+}
+
 
 void ContactListener::PickUpItem(GameObject* player, GameObject* item)
 {
-	//TODO::strip item and make new item to pass to backback, move all components. mark to delete item...
-	// Maybe use event handler somehow?
-	//grab the resource manager from the player's body component
+
 	ResourceManager* devices = player -> getComponent<BodyComponent>() -> getDevices();
-	//if there is space to add it to the backpack, play the "found item" sound. . .
-	//if(player -> getComponent<BackpackComponent>() -> addItem(item))
+
+	if(player -> getComponent<BackpackComponent>() -> pickUpItem(item))
 	{
 		devices -> GetSoundDevice() -> PlaySound("found",0,3);
 	}

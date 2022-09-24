@@ -43,7 +43,76 @@ struct Vector2D
 {
     int x;
     int y;
+
+	const Vector2D& operator+=(const Vector2D& rhs)
+	{
+		x += rhs.x;
+		y += rhs.y;
+
+		return *this;
+	}
+	Vector2D& operator++()
+	{
+		x++;
+		y++;
+
+		return *this;
+	}
+	Vector2D& operator++(int)
+	{
+		Vector2D temp = *this;
+		++* this;
+		return temp;
+	}
+	const Vector2D& operator-=(const Vector2D& rhs)
+	{
+		x -= rhs.x;
+		y -= rhs.y;
+
+		return *this;
+	}
+
+	const Vector2D& operator*=(const int& rhs)
+	{
+		x *= rhs;
+		y *= rhs;
+
+		return *this;
+	}
+
+	const Vector2D& operator/=(const int& rhs)
+	{
+		x /= rhs;
+		y /= rhs;
+
+		return *this;
+	}
+
+	bool operator==(const Vector2D& rhs)const
+	{
+		return (x == rhs.x && y == rhs.y);
+	}
+
+	bool operator!=(const Vector2D& rhs)const
+	{
+		return !(*this == rhs);
+	}
+	Vector2D operator-(const Vector2D& rhs)
+	{
+		return{ x - rhs.x, y - rhs.y };
+	}
+
 };
+
+//-----------------------------------------------------------------------some more operator overloads
+//inline Vector2D operator*(const Vector2D& lhs, int rhs);
+//inline Vector2D operator*(int lhs, const Vector2D& rhs);
+//inline Vector2D operator-(const Vector2D& lhs, const Vector2D& rhs);
+//inline Vector2D operator+(const Vector2D& lhs, const Vector2D& rhs);
+//inline Vector2D operator/(const Vector2D& lhs, int val);
+//std::ostream& operator<<(std::ostream& os, const Vector2D& rhs);
+//std::ifstream& operator>>(std::ifstream& is, Vector2D& lhs);
+
 
 
 struct RotationStats

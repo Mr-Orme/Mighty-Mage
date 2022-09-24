@@ -17,31 +17,25 @@ public:
 	UserInputComponent(GameObject* owner, ResourceManager* devices);
 	~UserInputComponent();
 	
-	std::unique_ptr<GameObject> update() override;
-	bool initialize(ObjectFactoryPresets& presets) override;
+	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;
 	
+	
+	//TODO::This should not be here....
 	void collidingWithWall(bool wallHit){this -> wallHit = wallHit;}
 
 	
 
 protected:
-	Vector2D currentSquare();
-
+	void displayNotices();
+	void dealWithButtonPresses();
+	void displayLocation();
 	int frameCount{ 0 };
-	//ObjectFactoryPresets presets;
-	PhysicsStats physics;
 
 	std::map<Event, bool> pressControl;
 	bool wallHit{ false };
 	bool noWall{ true };
 
-	const int baseForceMultiplier{ 1500 }; //How fast does the player move.
-	int forceMultiplier{ baseForceMultiplier };
-	const int runMultiplier{ 3 }; //How many times faster is running then walking
-	const int angleAdjust{ 90 }; //How many degrees does the player turn each time
-
-	//Disntance from edge of screen before screen updates.	
-	const int border{ 200 };
+	
 };
 
 #endif

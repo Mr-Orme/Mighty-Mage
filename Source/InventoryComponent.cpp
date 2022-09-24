@@ -4,11 +4,4 @@ InventoryComponent::InventoryComponent(GameObject* owner, ResourceManager* devic
 
 InventoryComponent::~InventoryComponent(){}
 
-bool InventoryComponent::initialize(ObjectFactoryPresets& presets)
-{
-	pickedUp = false;
-	return true;
-}
-
-
-std::unique_ptr<GameObject> InventoryComponent::update(){return nullptr;}
+std::unique_ptr<GameObject> InventoryComponent::update(std::vector<std::unique_ptr<GameObject>>& objects){return nullptr;}

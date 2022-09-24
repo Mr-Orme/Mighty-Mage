@@ -47,7 +47,7 @@
 	
 		<GameAsset name="Player">
 			<Component name="Renderer" sprite="./Assets/Images/player.png"/>
-			<Component name="Body" density="1.0f" restitution="0.0f" angularDamping="4.0f" linearDamping="0.0f" bodyType="GAME_DYNAMIC" bodyShape="circle" physicsOn = "true"/>
+			<Component name="Body" density="1.0f" restitution="0.0f" angularDamping="4.0f" linearDamping="0.0f" bodyType="dynamic" bodyShape="circle" physicsOn = "true"/>
 			<Component name="Health" health="18"/>
 			<Component name="Backpack" />
 			<Component name="UserInput" />
@@ -73,10 +73,10 @@
 		<Notice x="1" y="13" direction = "W">You have found the Wizard's wand and freed the town from it's Curse!!!</Notice>
 	</Notices>
 	<Sounds>
-		<Sound name="found" path="./Assets/Sounds/found.ogg" background="false"/>
-		<Sound name="walking" path="./Assets/Sounds/walking.ogg" background="false"/>
-		<Sound name="run" path="./Assets/Sounds/run.ogg" background="false"/>
-		<Sound name="wall" path="./Assets/Sounds/wall.ogg" background="false"/>
+    <Sound name="found" path="./Assets/Sounds/found.ogg" duration="0" background="false"/>
+    <Sound name="walking" path="./Assets/Sounds/walking.ogg" duration=".9" background="false"/>
+    <Sound name="run" path="./Assets/Sounds/walking.ogg" duration=".6" background="false"/>
+    <Sound name="wall" path="./Assets/Sounds/wall.ogg" duration=".5" background="false"/>
 		<Sound name="main" path="./Assets/Sounds/basement.ogg" background="true"/>
 	
 	</Sounds>

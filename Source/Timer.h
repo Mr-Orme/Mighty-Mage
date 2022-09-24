@@ -8,8 +8,8 @@ class Timer
 {
 public:
 	//Initializes variables
-	Timer();
-	bool initialize(int);
+	Timer(int FPS);
+	
 
 	//The various clock actions
 	void start();
@@ -29,15 +29,15 @@ public:
 
 private:
 	//The clock time when the timer started
-	int startTicks;
-	float mpf; //millisecond per frame
+	int startTicks{};
+	float mpf{}; //millisecond per frame
 
 	//The ticks stored when the timer was paused
-	int pausedTicks;
+	int pausedTicks{};
 
 	//The timer status
-	bool paused;
-	bool started;
+	bool paused{false};
+	bool started{false};
 };
 
 #endif

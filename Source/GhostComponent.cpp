@@ -21,4 +21,4 @@ bool GhostComponent::canPass(Direction direction) const
 }
 
 
-std::unique_ptr<GameObject> GhostComponent::update(){return nullptr;}
+std::unique_ptr<GameObject> GhostComponent::update(std::vector<std::unique_ptr<GameObject>>& objects){return nullptr;}

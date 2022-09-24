@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <array>
+#include <memory>
 #include "Component.h"
 #include "Definitions.h"
 class ResourceManager;
@@ -16,7 +17,7 @@ public:
 
 	bool initialize(ObjectFactoryPresets& presets) override;
 
-	bool addItem(std::unique_ptr<GameObject> item);
+	bool pickUpItem(GameObject* item);
 	//TODO::Remove this
 	//std::vector<std::unique_ptr<GameObject>>& GetInventory(){return inventory;}
 
@@ -24,13 +25,13 @@ public:
 	bool isOpen(){return open;}
 
 	
-	std::unique_ptr<GameObject> update() override;
+	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;
 	
 protected:
 	bool ToBackpack(std::unique_ptr<GameObject> item);
 	std::vector<std::unique_ptr<GameObject>> inventory;
 	std::vector<std::vector<bool> > openSlots;
-	
+	GameObject* pickedUpItem{ nullptr };
 	int slotSize{ 0 };
 	Vector2D topLeft{ 0,0 };
 	Vector2D bottomRight{ 0,0 };

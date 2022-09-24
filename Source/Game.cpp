@@ -1,5 +1,7 @@
 #include "Game.h"
 #include "ComponentsList.h"
+#include "FrameCounter.h"
+#include "Timer.h"
 
 Game::Game()
 {}
@@ -27,7 +29,7 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 	//Construct Device Manager
 	//========================================
 	devices = std::make_unique<ResourceManager>(screenDimensions, assetConfigFile);
-	
+	frameTimer = std::make_unique<Timer>(devices->GetFPS());
 	///Get a few things ready
 	ObjectFactoryPresets presets;
 	presets.devices = devices.get();
@@ -261,7 +263,7 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 bool Game::run()
 //**************************************
 {
-
+	FrameCounter::incrementFrame();
 	//check to see if we have quit;
 	if (devices->GetInputDevice()->GetEvent(Event::quit) == true)
 	{
@@ -277,16 +279,11 @@ bool Game::run()
 	//Poll for new events
 	devices->GetInputDevice()->update();
 
-	//Construct Frame Timer
-	Timer* frameRate = new Timer();
-	if (!frameRate->initialize(devices->GetFPS()))
-	{
-		printf("Frame Timer could not intialize! SDL_Error: %s\n", SDL_GetError());
-		exit(1);
-	}
+	
+	
 
 	//Start Frame Timer
-	frameRate->start();
+	frameTimer->start();
 
 	update();
 	devices->GetGraphicsDevice()->Begin();
@@ -297,7 +294,7 @@ bool Game::run()
 		devices -> GetGraphicsDevice() -> Present();
 
 	//pauses until proper refresh time has passed.
-	frameRate->fpsRegulate();
+	frameTimer->fpsRegulate();
 	return true;
 }
 //**************************************
@@ -315,28 +312,25 @@ void Game::update()
 	//clean out dead objects
 	for (objectIter = objects.begin(); objectIter != objects.end(); objectIter++)
 	{
-		//check for health component
-		HealthComponent* compHealth{ (*objectIter)->getComponent<HealthComponent>() };
-		InventoryComponent* compInventory{ (*objectIter)->getComponent<InventoryComponent>() };
-		if (compHealth != nullptr)
+		if (*objectIter == nullptr)
 		{
-			if (compHealth->isDead())
+			objectIter = objects.erase(objectIter);
+			objectIter--;
+		}
+		else
+		{
+			//check for health component
+			HealthComponent* compHealth{ (*objectIter)->getComponent<HealthComponent>() };
+			InventoryComponent* compInventory{ (*objectIter)->getComponent<InventoryComponent>() };
+			if (compHealth != nullptr)
 			{
-				
-				objects.erase(objectIter);
-				objectIter--;
-			}
-			//if it got picked up. . 
-			else if (compInventory != nullptr && compInventory->isPickedUp())
-			{
-				//remove the sprite from the automatic draw list
-				devices->GetGraphicsDevice()->RemoveSpriteRenderer((*objectIter)->getComponent<RendererComponent>());
-				//stop the physics on it
-				devices->GetPhysicsDevice()->SetStopPhysics((*objectIter).get());
-				//remove object from the vector.
-				objectIter = objects.erase(objectIter);
+				if (compHealth->isDead())
+				{
 
-
+					objectIter = objects.erase(objectIter);
+					objectIter--;
+				}
+				//if it got picked up. . 
 			}
 		}
 	}
@@ -356,11 +350,14 @@ void Game::update()
 	for (auto& object : objects)
 	{
 		//run update method for the object
-		std::unique_ptr<GameObject> temp{ object->update() };
-		//if it returned an object, add it to the list to be added.
-		if (temp != nullptr)
+		if (object != nullptr)
 		{
-			newObjects.push_back(std::move(temp));
+			std::unique_ptr<GameObject> temp{ object->update(objects) };
+			//if it returned an object, add it to the list to be added.
+			if (temp != nullptr)
+			{
+				newObjects.push_back(std::move(temp));
+			}
 		}
 
 

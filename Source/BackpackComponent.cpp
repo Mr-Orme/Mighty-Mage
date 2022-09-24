@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "BackpackComponent.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
@@ -45,18 +46,28 @@ bool BackpackComponent::initialize(ObjectFactoryPresets& presets)
 //**************************************
 //kills the item passed in, grabs it's rendere, and saves it to, what is essentially
 //the Graphics device's openSlots vector.
-bool BackpackComponent::addItem(std::unique_ptr<GameObject> item)
+bool BackpackComponent::pickUpItem(GameObject* item)
 //**************************************
 {
-	//return whether it was added or not
-	return (ToBackpack(std::move(item)));
-	
+	pickedUpItem = item;
+	return true;
 }
 	
 	//Have this iterate through all items in inventory and draw them. .  . Must happen after Graphic's
 	//Device does it's draw. . .
-std::unique_ptr<GameObject> BackpackComponent::update()
+std::unique_ptr<GameObject> BackpackComponent::update(std::vector<std::unique_ptr<GameObject>>& objects)
 	{
+	if(pickedUpItem!=nullptr)
+	{
+		if (auto toPickUp{ std::find_if(objects.begin(), objects.end(),
+			[&](std::unique_ptr<GameObject>& object) {
+				return pickedUpItem == object.get();
+			}) }; toPickUp != objects.end())
+		{
+			ToBackpack(std::move(*toPickUp));
+			
+		}
+	}
 		if (open)
 		{
 			
@@ -81,8 +92,9 @@ std::unique_ptr<GameObject> BackpackComponent::update()
 	}
 
 	bool BackpackComponent::ToBackpack(std::unique_ptr<GameObject> item)
-	{
-		
+	{	//TODO::Remove this when graphics device no longer deals with this.
+		devices->GetGraphicsDevice()->RemoveSpriteRenderer(item->getComponent<RendererComponent>());
+		item->getComponent<BodyComponent>()->turnOffPhysics();
 
 		Vector2D screenDimensions{ devices->GetGraphicsDevice()->getScreenDimensions()};
 			Vector2D topLeft { (int)(screenDimensions.x*.1), (int)(screenDimensions.y*.1)};
@@ -189,11 +201,11 @@ std::unique_ptr<GameObject> BackpackComponent::update()
 						openSlots[i][j] = false;
 					}
 				}
-				//save it to the inventory vector
+				
 				inventory.push_back(std::move(item));
-				//remove the item from the list of level objects
-				inventory.back() -> getComponent<InventoryComponent>() -> pickUp();
-				//we found a spot for it.
+				
+				
+				
 				return true;
 			}
 			//we didn't find a spot for it.

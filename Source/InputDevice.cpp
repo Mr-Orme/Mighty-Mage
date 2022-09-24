@@ -34,26 +34,29 @@ void InputDevice::update()
 //**************************************
 {
 	Event gEvent;
+	
 	if(SDL_PollEvent(event))
 	{
-		//updates the proper key state based on the event that was passed in
-		switch (event -> type)
+		gEvent = Translate(event);
+		if (gEvent != Event::NA)
 		{
-		case SDL_KEYDOWN:
-			//translates the SDL even to a game event.
-			gEvent = Translate(event);
-			keyStates.find(gEvent) -> second = true;
-			break;
-		case SDL_KEYUP:
-			//translates the SDL even to a game event.
-			gEvent = Translate(event);
-			keyStates.find(gEvent) -> second = false;
-			break;
-		case SDL_QUIT:
-			keyStates.find(Event::quit) -> second = true;
-			break;
-		default:
-			break;
+			//updates the proper key state based on the event that was passed in
+			switch (event->type)
+			{
+			case SDL_KEYDOWN:
+				//translates the SDL even to a game event.
+				keyStates.find(gEvent)->second = true;
+				break;
+			case SDL_KEYUP:
+				//translates the SDL even to a game event.
+				keyStates.find(gEvent)->second = false;
+				break;
+			case SDL_QUIT:
+				keyStates.find(gEvent)->second = true;
+				break;
+			default:
+				break;
+			}
 		}
 	}
 	
@@ -92,9 +95,6 @@ Event InputDevice::Translate(SDL_Event* event)
 			return Event::key_b;
 			break;
 		}
-
-
-
 	return Event::NA;
 }
 

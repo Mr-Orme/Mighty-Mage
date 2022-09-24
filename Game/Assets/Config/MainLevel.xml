@@ -17,7 +17,7 @@
 		<YSphere x="0.2" y ="5.3" angle="0"/>
 	</Extras>
   
-    <Row id="15">
+   <Row id="15">
 		<Square id="0" floor="ghost" top = "wall" left = "wall" />
 		<Square id="1" floor="none" top = "wall" left = "wall" />
 		<Square id="2" floor="none" top = "wall" left = "door" />

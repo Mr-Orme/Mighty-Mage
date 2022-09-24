@@ -17,7 +17,7 @@
 #include <string>
 #include <vector>
 #include <memory>
-
+class Timer;
 class Game{
 public:
 	
@@ -42,6 +42,7 @@ private:
 	float gameTime{};
 	bool debug{ false };
 	Vector2D screenDimensions{800, 600};
+	std::unique_ptr<Timer> frameTimer{ nullptr };
 	
 	
 };
