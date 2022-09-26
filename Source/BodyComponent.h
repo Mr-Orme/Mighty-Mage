@@ -4,7 +4,8 @@
 #include <memory>
 
 #include "Component.h"
-#include "Definitions.h"
+#include "ObjectFactory.h"
+#include "Vector2D.h"
 
 class ResourceManager;
 class GameObject;
@@ -12,10 +13,12 @@ class GameObject;
 class BodyComponent : public Component
 {
 public:
+	enum class Direction { N = 0, E = 90, S = 180, W = 270 };
+
 	BodyComponent(GameObject* owner, ResourceManager* devices);
 	~BodyComponent();
 
-	bool initialize(ObjectFactoryPresets& presets) override;
+	bool initialize(ObjectFactory::Presets& presets) override;
 
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;
 	

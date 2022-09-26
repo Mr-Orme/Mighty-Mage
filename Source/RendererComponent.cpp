@@ -4,16 +4,17 @@
 #include "ArtAssetLibrary.h"
 #include "View.h"
 #include "ResourceManager.h"
+#include "GameObject.h"
 #include <memory>
 RendererComponent::RendererComponent(GameObject* owner, ResourceManager* devices) :Component(owner, devices){}
 RendererComponent::~RendererComponent()
 {
-	devices->GetGraphicsDevice()->RemoveSpriteRenderer(this);
+	//devices->GetGraphicsDevice()->RemoveSpriteRenderer(this);
 }
 
 //**************************************
 //on the first pass, we set up the texture for the object
-bool RendererComponent::initialize(ObjectFactoryPresets& presets)
+bool RendererComponent::initialize(ObjectFactory::Presets& presets)
 //**************************************
 {
 	//this will get hit twice, so we only want it done once.
@@ -21,7 +22,7 @@ bool RendererComponent::initialize(ObjectFactoryPresets& presets)
 	{
 		devices = presets.devices;
 		//Set this as the renderer for this object
-		devices -> GetGraphicsDevice() -> AddSpriteRenderer(this);
+		//devices -> GetGraphicsDevice() -> AddSpriteRenderer(this);
 
 		//grab the sprite from the library.
 		texture = presets.devices -> GetArtLibrary() -> search(presets.objectType);
@@ -36,18 +37,22 @@ void RendererComponent::run()
 {
 	BodyComponent* body{ _owner->getComponent<BodyComponent>() };
 	run(
-		devices->GetGraphicsDevice()->GetView()->relativePosition(body->getPosition()),
+		devices->GetGraphicsDevice()->getView()->relativePosition(body->getPosition()),
 		body->getAngle());
 }
 
 void RendererComponent::run(Vector2D position, float angle)
 {
-	texture ->run(devices -> GetGraphicsDevice() -> GetRenderer(), position, angle, nullptr);
+	texture ->run(devices -> GetGraphicsDevice() -> getRenderer(), position, angle, nullptr);
 }
 
 
 
-std::unique_ptr<GameObject> RendererComponent::update(std::vector<std::unique_ptr<GameObject>>& objects){return nullptr;}
+std::unique_ptr<GameObject> RendererComponent::update(std::vector<std::unique_ptr<GameObject>>& objects)
+{
+	run();
+	return nullptr;
+}
 
 
 

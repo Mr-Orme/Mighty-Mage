@@ -5,13 +5,13 @@ GhostComponent::GhostComponent(GameObject* owner, ResourceManager* devices)
 
 GhostComponent::~GhostComponent(){}
 
-bool GhostComponent::initialize(ObjectFactoryPresets& presets)
+bool GhostComponent::initialize(ObjectFactory::Presets& presets)
 {
 	ghostDirection = presets.gDirection;
 	return true;
 }
 
-bool GhostComponent::canPass(Direction direction) const
+bool GhostComponent::canPass(BodyComponent::Direction direction) const
 {
 	if (const auto canGo{ ghostDirection.find(direction) }; canGo != ghostDirection.end())
 	{

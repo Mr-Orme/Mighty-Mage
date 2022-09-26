@@ -1,17 +1,18 @@
-//only include this header 1 time per compile
+
 #pragma once
-//so no include guards are needed
 
 #include "box2d.h"
-//#include "GameFunctions.h"
-#include "ResourceManager.h"
+
+class PhysicsDevice;
+class GraphicsDevice;
+class ResourceManager;
 
 class Box2DDebugDraw : public b2Draw {
 
 	public:	
-		Box2DDebugDraw();
+		Box2DDebugDraw(ResourceManager* devices);
 		~Box2DDebugDraw();
-		bool initialize(ResourceManager* devices);
+		
 
 		void DrawPoint(const b2Vec2& p, float size, const b2Color& color) override;
 		void DrawPolygon(const b2Vec2 *vertices, int32 vertexCount, const b2Color &color) override;
@@ -23,7 +24,8 @@ class Box2DDebugDraw : public b2Draw {
 
 	private:
 
-		ResourceManager* devices;
+		PhysicsDevice* pDevice;
+		GraphicsDevice* gDevice;
 		int circleAccuracy;
 
 };

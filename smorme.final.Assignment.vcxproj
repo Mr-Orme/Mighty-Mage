@@ -53,6 +53,7 @@
     <ClCompile Include="Source\tinyxml\tinyxml.cpp" />
     <ClCompile Include="Source\tinyxml\tinyxmlerror.cpp" />
     <ClCompile Include="Source\tinyxml\tinyxmlparser.cpp" />
+    <ClCompile Include="Source\Vector2D.cpp" />
     <ClCompile Include="Source\View.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -75,7 +76,6 @@
     <ClInclude Include="Source\ComponentsList.h" />
     <ClInclude Include="Source\UserInputComponent.h" />
     <ClInclude Include="Source\ContactListener.h" />
-    <ClInclude Include="Source\Definitions.h" />
     <ClInclude Include="Source\GraphicsDevice.h" />
     <ClInclude Include="Source\InputDevice.h" />
     <ClInclude Include="Source\PhysicsDevice.h" />
@@ -89,6 +89,7 @@
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\tinyxml\tinystr.h" />
     <ClInclude Include="Source\tinyxml\tinyxml.h" />
+    <ClInclude Include="Source\Vector2D.h" />
     <ClInclude Include="Source\View.h" />
     <ClInclude Include="ThirdParty\Box2D\Box2D\Box2D.h" />
   </ItemGroup>

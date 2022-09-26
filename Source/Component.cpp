@@ -9,7 +9,7 @@ Component::Component(GameObject* owner, ResourceManager* devices)
 
 Component::~Component(){}
 
-bool Component::initialize(ObjectFactoryPresets& presets)
+bool Component::initialize(ObjectFactory::Presets& presets)
 {
 	return true;
 }

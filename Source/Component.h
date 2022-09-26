@@ -3,18 +3,19 @@
 
 #include <memory>
 #include <vector>
-#include "Definitions.h"
-
+#include "ObjectFactory.h"
+#include "Vector2D.h"
 class GameObject;
 class ResourceManager;
 
 class Component
 {
 public:
+	
 	Component(GameObject* owner, ResourceManager* devices);
 	~Component();
 	
-	virtual bool initialize(ObjectFactoryPresets& presets);
+	virtual bool initialize(ObjectFactory::Presets& presets);
 	virtual std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects)=0;
 	//TODO::try and eliminate getDevices
 	ResourceManager* getDevices() const { return devices; }

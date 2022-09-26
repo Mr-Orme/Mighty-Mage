@@ -4,7 +4,8 @@
 #include "GameObject.h"
 #include "ObjectFactory.h"
 #include "ComponentsList.h"
-
+#include "Texture.h"
+#include "Vector2D.h"
 BackpackComponent::BackpackComponent(GameObject* owner, ResourceManager* devices)	:
 	Component(owner, devices)
 {}
@@ -12,15 +13,11 @@ BackpackComponent::~BackpackComponent(){}
 
 //**************************************
 //sets devices
-bool BackpackComponent::initialize(ObjectFactoryPresets& presets)
+bool BackpackComponent::initialize(ObjectFactory::Presets& presets)
 //**************************************
 {
 	devices = presets.devices;
-	open = false;
-	
-	//probably want to base the openSlots size on the number of slots we want
-	//and not on the screen size. . .
-	slotSize = 25; //pixels
+
 	Vector2D screenDimensions{ devices->GetGraphicsDevice()->getScreenDimensions() };
 	
 	topLeft.x = (int)(screenDimensions.x *.1);
@@ -28,18 +25,7 @@ bool BackpackComponent::initialize(ObjectFactoryPresets& presets)
 	bottomRight.x = screenDimensions.x-topLeft.x;
 	bottomRight.y = screenDimensions.y-topLeft.y;
 
-	//***************************Set up openSlots and find dimensions **********************
-	Vector2D backpackDimensions = {bottomRight.x - topLeft.x, bottomRight.y - topLeft.y};
-	//maximum number of rows in openSlots
-	maxRows = backpackDimensions.x/slotSize;
-	maxColumns = backpackDimensions.y/slotSize;
-			
-	openSlots.resize(maxRows);
-	for(auto& column : openSlots)
-	{
-		column.resize(maxColumns, true);
-	}
-	//*************************************************************************************
+	reset();
 	return true;
 }
 
@@ -57,7 +43,7 @@ bool BackpackComponent::pickUpItem(GameObject* item)
 	//Device does it's draw. . .
 std::unique_ptr<GameObject> BackpackComponent::update(std::vector<std::unique_ptr<GameObject>>& objects)
 	{
-	if(pickedUpItem!=nullptr)
+	if (pickedUpItem != nullptr)
 	{
 		if (auto toPickUp{ std::find_if(objects.begin(), objects.end(),
 			[&](std::unique_ptr<GameObject>& object) {
@@ -65,14 +51,11 @@ std::unique_ptr<GameObject> BackpackComponent::update(std::vector<std::unique_pt
 			}) }; toPickUp != objects.end())
 		{
 			ToBackpack(std::move(*toPickUp));
-			
+			pickedUpItem = nullptr;
 		}
 	}
 		if (open)
-		{
-			
-			RGBA background = {255, 255, 255 , 220};
-			RGBA border = {0,0,0,255};			
+		{			
 			std::map<Texture*, Vector2D> objects;
 			for(const auto& item : inventory)
 			{
@@ -82,18 +65,16 @@ std::unique_ptr<GameObject> BackpackComponent::update(std::vector<std::unique_pt
 					item -> getComponent<InventoryComponent>() -> locationInPack()
 				);
 			}
-			GraphicsDevice::Overlay temp{ topLeft, bottomRight, background, border, objects };
-			devices->GetGraphicsDevice()->addOverlay(temp);
-				
-
 			
+			devices->GetGraphicsDevice()->
+				addOverlay({ topLeft, bottomRight, background, border, objects });
 		}
 		return nullptr;
 	}
 
 	bool BackpackComponent::ToBackpack(std::unique_ptr<GameObject> item)
 	{	//TODO::Remove this when graphics device no longer deals with this.
-		devices->GetGraphicsDevice()->RemoveSpriteRenderer(item->getComponent<RendererComponent>());
+		//devices->GetGraphicsDevice()->RemoveSpriteRenderer(item->getComponent<RendererComponent>());
 		item->getComponent<BodyComponent>()->turnOffPhysics();
 
 		Vector2D screenDimensions{ devices->GetGraphicsDevice()->getScreenDimensions()};
@@ -120,7 +101,7 @@ std::unique_ptr<GameObject> BackpackComponent::update(std::vector<std::unique_pt
 
 			//let's find a spot for it. . .
 			//while we have not reached the last row, and we have not found a row to put it in.
-			while(currPosition.x < maxRows && !rowFound)
+			while(currPosition.x < max.x && !rowFound)
 			{
 				//Not yet found a column that the item can fit in
 				bool columnFound = false;
@@ -131,7 +112,7 @@ std::unique_ptr<GameObject> BackpackComponent::update(std::vector<std::unique_pt
 					
 				//check for enough empty columns in the current row
 				//While we haven't found a set of columns that works and we have not reached the last column
-				while (!columnFound  && currPosition.y < maxColumns)
+				while (!columnFound  && currPosition.y < max.y)
 				{
 					//If it is empty, add one to our sequential columns
 					if(openSlots[currPosition.x][currPosition.y]) seqColumns++;
@@ -160,7 +141,7 @@ std::unique_ptr<GameObject> BackpackComponent::update(std::vector<std::unique_pt
 						//we have not found enough empty rows
 						//we have not reached the last row
 						//The slots in the columns in the last row we checked are all empty
-					while (!rowFound && r < maxRows && rowGood)
+					while (!rowFound && r < max.x && rowGood)
 					{
 						//iterate through the proper columns in this row
 						for(int c = currPosition.y; c < currPosition.y + numColumns; c++)
@@ -210,4 +191,18 @@ std::unique_ptr<GameObject> BackpackComponent::update(std::vector<std::unique_pt
 			}
 			//we didn't find a spot for it.
 			return false;
+	}
+
+	void BackpackComponent::reset()
+	{
+		Vector2D backpackDimensions { bottomRight.x - topLeft.x, bottomRight.y - topLeft.y };
+		
+		max.x = backpackDimensions.x / slotSize;
+		max.y = backpackDimensions.y / slotSize;
+		openSlots.clear();
+		openSlots.resize(max.x);
+		for (auto& column : openSlots)
+		{
+			column.resize(max.y, true);
+		}
 	}

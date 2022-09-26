@@ -41,7 +41,7 @@ void Texture::load(std::string path )
         SDL_SetColorKey( surface, SDL_TRUE, SDL_MapRGB( surface->format, 255, 0, 255 ) );
 
 		//Create an optimized image
-		texture = SDL_CreateTextureFromSurface(gDevice->GetRenderer() , surface);
+		texture = SDL_CreateTextureFromSurface(gDevice->getRenderer() , surface);
      
 		if(texture == nullptr)
 		{

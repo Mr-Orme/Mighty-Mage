@@ -5,7 +5,7 @@
 #include <string>
 #include <memory>
 #include <vector>
-#include "Definitions.h"
+
 
 class Component;
 class GameObject;
@@ -13,6 +13,16 @@ class GraphicsDevice;
 	
 class ComponentAssetLibrary{
 public:
+	enum class Components
+	{
+		body,
+		health,
+		renderer,
+		userInput,
+		backpack,
+		inventory,
+		ghost,
+	};
 	ComponentAssetLibrary(ResourceManager* devices);
 
 	std::vector<std::unique_ptr<Component>> search(std::string name, GameObject* owner);

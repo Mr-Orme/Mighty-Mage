@@ -3,14 +3,14 @@
 #define USERINPUT_H
 
 #include "Component.h"
-#include "Definitions.h"
+
 
 
 class ResourceManager;
 class ArtAssetLibrary;
 class PhysicsAssetLibrary;
 class ObjectFactory;
-
+enum class Event { NA, up, down, left, right, space, shift, key_b, quit, numEvents };
 class UserInputComponent : public Component
 {
 public:

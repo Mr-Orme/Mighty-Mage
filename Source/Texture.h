@@ -4,7 +4,7 @@
 
 #include "SDL.h"
 #include "SDL_image.h"
-#include "Definitions.h"
+
 class GraphicsDevice;
 class Texture {
 

@@ -8,15 +8,19 @@
 #include "GraphicsDevice.h"
 //#include "InputDevice.h"
 #include "View.h"
-#include "Definitions.h"
+
 #include "Texture.h"
 
 
 
-GraphicsDevice::GraphicsDevice(Vector2D screenDimensions, bool fullScreen) : 
+GraphicsDevice::GraphicsDevice(
+	Vector2D screenDimensions, 
+	std::string fontPath,
+	int fontSize,
+	RGBA fontColor, 
+	bool fullScreen) :
 	screenDimensions(screenDimensions)
 {
-
 
 	//Initialize all SDL subsystems
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
@@ -78,6 +82,8 @@ GraphicsDevice::GraphicsDevice(Vector2D screenDimensions, bool fullScreen) :
 	Vector2D startPosition{ 0,0 };
 	view = std::make_unique<View>(startPosition, this->screenDimensions);
 
+	setFont(fontPath, fontSize, fontColor);
+
 }
 
 GraphicsDevice::~GraphicsDevice()
@@ -104,23 +110,14 @@ GraphicsDevice::~GraphicsDevice()
 
 
 
-void GraphicsDevice::Begin()
+void GraphicsDevice::begin()
 {
 	SDL_RenderClear(renderer);
 }
 
-void GraphicsDevice::run()
+void GraphicsDevice::drawOverlays()
 {
-	//********************************draw level*************************************
-	for(auto sprite : sprites)
-	{
-		sprite->run();
-	}
-	//*********************************************************************************
-
-
-
-	//********************************draw overlays*************************************
+	
 	int cornerRadius = 3; //radius of curve of message box corners.
 	//the text vector holds any messages.
 	while(!overlays.empty())
@@ -168,7 +165,7 @@ void GraphicsDevice::run()
 
 		
 			
-//!!!!!!!!!!!!!!!!!!!!!!!!!!this needs to be elsewhere!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//TODO::!!!!!!!!!!!!!!!!!!!!!!!!!!this needs to be elsewhere!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //	int spheresFound = 0; //number of spheres found
 //	//if we found all the spheres.
 //	if(spheresFound >= 6)
@@ -187,29 +184,29 @@ void GraphicsDevice::run()
 	SDL_SetRenderDrawColor(renderer,0,0,0,255);
 }
 
-void GraphicsDevice::Present()
+void GraphicsDevice::present()
 {
 	SDL_RenderPresent(renderer);
 	notices.clear();
 }
 
-void GraphicsDevice::AddSpriteRenderer(RendererComponent* sprite)
-{
-	sprites.push_back(sprite);
-}
-void GraphicsDevice::RemoveSpriteRenderer(RendererComponent* dSprite)
-{
-	std::vector<RendererComponent*>::iterator spriteIter;
-	for(spriteIter=sprites.begin(); spriteIter!=sprites.end(); spriteIter++)
-	{
-		if(*spriteIter == dSprite)
-		{
-			spriteIter = sprites.erase(spriteIter);
-			
-		}
-	}
-}
-bool GraphicsDevice::SetFont(std::string path, int size, RGBA color)
+//void GraphicsDevice::AddSpriteRenderer(RendererComponent* sprite)
+//{
+//	sprites.push_back(sprite);
+//}
+//void GraphicsDevice::RemoveSpriteRenderer(RendererComponent* dSprite)
+//{
+//	std::vector<RendererComponent*>::iterator spriteIter;
+//	for(spriteIter=sprites.begin(); spriteIter!=sprites.end(); spriteIter++)
+//	{
+//		if(*spriteIter == dSprite)
+//		{
+//			spriteIter = sprites.erase(spriteIter);
+//			
+//		}
+//	}
+//}
+bool GraphicsDevice::setFont(std::string path, int size, RGBA color)
 {
 	font = TTF_OpenFont(path.c_str(), size);
 	if( font == nullptr )
@@ -225,7 +222,7 @@ bool GraphicsDevice::SetFont(std::string path, int size, RGBA color)
 
 //**************************************
 //adds text to be displayed to the text vector pased on a string and position
-void GraphicsDevice::Text2Screen(std::string text, Vector2D position)
+void GraphicsDevice::text2Screen(std::string text, Vector2D position)
 //**************************************
 {
 	int widthIncrease = 10; //left and right padding
@@ -249,12 +246,12 @@ void GraphicsDevice::Text2Screen(std::string text, Vector2D position)
 		//bottomRight needs to be the width + 1;
 	if(position.x == -1)
 	{
-		position.x = Center(screenDimensions.x, dimensions.x);
+		position.x = center(screenDimensions.x, dimensions.x);
 			
 	}
 	if(position.y == -1)
 	{
-		position.y = Center(screenDimensions.y, dimensions.y);
+		position.y = center(screenDimensions.y, dimensions.y);
 	}
 
 	Vector2D topLeft = {position.x - widthIncrease, position.y -heightIncrease};
@@ -277,42 +274,40 @@ void GraphicsDevice::Text2Screen(std::string text, Vector2D position)
 //**************************************
 //adds text to be displayed to the text vector pased on a string and position
 //this one let's us directly type the position's values
-void GraphicsDevice::Text2Screen(std::string text, float x, float y)
+void GraphicsDevice::text2Screen(std::string text, float x, float y)
 //**************************************
 {
 	Vector2D position ={x,y};
-	Text2Screen(text, position);
+	text2Screen(text, position);
 }
 
 //**************************************
 //a notice appears in the inventory bar at the bottom of the screen.
-void GraphicsDevice::Notice2Screen(std::string text)
+void GraphicsDevice::notice2Screen(std::string text)
 //**************************************
 {
 	Vector2D textVec = {-1,550};
-	Text2Screen(text, textVec);
+	text2Screen(text, textVec);
 
 }
 
-//**************************************
-//reverses the order of sprites so that the player is on top.
-void GraphicsDevice::ReverseOrder()
-//**************************************
-{
-	std::reverse(sprites.begin(), sprites.end());
-}
 //**************************************
 //draws a filled circle.
-void GraphicsDevice::DrawFilledCircle(Vector2D position, int radius, RGBA RGBA)
+void GraphicsDevice::drawFilledCircle(Vector2D position, int radius, RGBA color)
 //**************************************
 {
-	filledCircleRGBA(renderer, position.x, position.y, radius, RGBA.R, RGBA.G, RGBA.B, RGBA.A);
+	filledCircleRGBA(renderer, position.x, position.y, radius, color.R, color.G, color.B, color.A);
 }
 
-bool GraphicsDevice::DrawBox(Vector2D topLeft, Vector2D bottomRight, RGBA RGBA)
+bool GraphicsDevice::drawBox(Vector2D topLeft, Vector2D bottomRight, RGBA color)
 {
-	boxRGBA(renderer, topLeft.x, topLeft.y, bottomRight.x, bottomRight.y, RGBA.R, RGBA.G, RGBA.B,RGBA.A);
+	boxRGBA(renderer, topLeft.x, topLeft.y, bottomRight.x, bottomRight.y, color.R, color.G, color.B, color.A);
 	return true;
+}
+
+void GraphicsDevice::drawLine(Vector2D start, Vector2D end, RGBA color)
+{
+	lineRGBA(renderer, start.x,start.y,end.x,end.y,color.R, color.G, color.B, color.A);
 }
 
 void GraphicsDevice::addOverlay(Overlay overlay )
@@ -321,7 +316,7 @@ void GraphicsDevice::addOverlay(Overlay overlay )
 	overlays.push_back(std::move(overlay));
 }
 
-float GraphicsDevice::Center(float centerOn, float width)
+float GraphicsDevice::center(float centerOn, float width)
 {
 			
 			

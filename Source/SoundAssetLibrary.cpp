@@ -24,15 +24,7 @@ SoundAssetLibrary::~SoundAssetLibrary()
 		Mix_FreeMusic(musicIter->second);
 	}
 }
-//**************************************
-//set's the sound device, and set's the sound library in the sound device.
-bool SoundAssetLibrary::initialize(SoundDevice* sDevice)
-//**************************************
-{
-	this -> sDevice = sDevice;
-	sDevice -> SetSoundLibrary(this);
-	return true;
-}
+
 //**************************************
 //finds a sound effect in the library, based on the passed name
 SoundEffect& SoundAssetLibrary::searchSoundEffects(std::string name)

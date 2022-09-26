@@ -1,22 +1,19 @@
 #include "Box2DDebugDraw.h"
 #include "SDL2_gfxPrimitives.h"
+#include "ResourceManager.h"
 
-Box2DDebugDraw::Box2DDebugDraw() {
+Box2DDebugDraw::Box2DDebugDraw(ResourceManager* devices) :
+	pDevice(devices->GetPhysicsDevice()),
+	gDevice(devices->GetGraphicsDevice())
+{
 	circleAccuracy = 9;
+	
 }
 
 Box2DDebugDraw::~Box2DDebugDraw() {
-	devices = nullptr;
+	
 }
 
-bool Box2DDebugDraw::initialize(ResourceManager* devices) {
-	if(devices == nullptr)
-	{
-		return false;
-	}
-	this->devices = devices;
-	return true;
-}
 
 void Box2DDebugDraw::DrawPoint(const b2Vec2& p, float size, const b2Color& color)
 {
@@ -25,37 +22,49 @@ void Box2DDebugDraw::DrawPoint(const b2Vec2& p, float size, const b2Color& color
 void Box2DDebugDraw::DrawPolygon(const b2Vec2 *vertices, int32 vertexCount, const b2Color &color)
 {
 	//std::cout <<"Draw Polygon";
-   	// Draw Shape Vertices using SDL2_gfx (white)
-	SDL_SetRenderDrawColor(devices -> GetGraphicsDevice() -> GetRenderer(),0,0,255,255);
+   	SDL_SetRenderDrawColor(gDevice -> getRenderer(),0,0,255,255);
 
-	// Draw Bound Box Vertices using SDL2 Primitives
 	for(int i=0; i<(vertexCount-1); i++) {
-		lineRGBA(devices -> GetGraphicsDevice() ->GetRenderer(), devices -> GetPhysicsDevice() -> PW2RW(vertices[i].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[i].y),devices -> GetPhysicsDevice() -> PW2RW(vertices[i+1].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[i+1].y),255,255,255,100);
-		//SDL_RenderDrawLine(devices -> GetGraphicsDevice() ->GetRenderer(),devices -> GetPhysicsDevice() -> PW2RW(vertices[i].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[i].y),devices -> GetPhysicsDevice() -> PW2RW(vertices[i+1].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[i+1].y));
+		gDevice->drawLine(
+			{ (int)pDevice->PW2RW(vertices[i].x),(int)pDevice->PW2RW(vertices[i].y) },
+			{ (int)pDevice->PW2RW(vertices[i + 1].x),(int)pDevice->PW2RW(vertices[i + 1].y) },
+			{ 255,255,255,100 }
+		);
 	}	
 	//draw a line from the last to the first
-    lineRGBA(devices -> GetGraphicsDevice() ->GetRenderer(),devices -> GetPhysicsDevice() -> PW2RW(vertices[vertexCount-1].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[vertexCount-1].y),devices -> GetPhysicsDevice() -> PW2RW(vertices[0].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[0].y),255,255,255,100);
+    gDevice->drawLine(
+		{ (int)pDevice->PW2RW(vertices[vertexCount - 1].x),(int)pDevice->PW2RW(vertices[vertexCount - 1].y) },
+		{ (int)pDevice->PW2RW(vertices[0].x), (int)pDevice->PW2RW(vertices[0].y) }, 
+		{ 255, 255, 255, 100 }
+	);
 
     //reset color (black)
-    SDL_SetRenderDrawColor(devices -> GetGraphicsDevice() ->GetRenderer(),0,0,0,255);
+    SDL_SetRenderDrawColor(gDevice ->getRenderer(),0,0,0,255);
 }
 
 void Box2DDebugDraw::DrawSolidPolygon(const b2Vec2 *vertices, int32 vertexCount, const b2Color &color)
 {
 	//std::cout << "Draw Solid Polygon";
    	// Draw Bound Box Vertices using SDL2 Primitives (Green)
-    SDL_SetRenderDrawColor(devices -> GetGraphicsDevice() ->GetRenderer(),0,255,0,255);
+    SDL_SetRenderDrawColor(gDevice ->getRenderer(),0,255,0,255);
 
 	// Draw Bound Box Vertices using SDL2 Primitives
-	for(int i=0; i<(vertexCount-1); i++) {
-        lineRGBA(devices -> GetGraphicsDevice() ->GetRenderer(),devices -> GetPhysicsDevice() -> PW2RW(vertices[i].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[i].y),devices -> GetPhysicsDevice() -> PW2RW(vertices[i+1].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[i+1].y),255,0,0,100);
-		//SDL_RenderDrawLine(devices -> GetGraphicsDevice() ->GetRenderer(),devices -> GetPhysicsDevice() -> PW2RW(vertices[i].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[i].y),devices -> GetPhysicsDevice() -> PW2RW(vertices[i+1].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[i+1].y));
-	}	
+	for (int i = 0; i < (vertexCount - 1); i++) {
+		gDevice->drawLine(
+			{ (int)pDevice->PW2RW(vertices[i].x),(int)pDevice->PW2RW(vertices[i].y) },
+			{ (int)pDevice->PW2RW(vertices[i + 1].x),(int)pDevice->PW2RW(vertices[i + 1].y) },
+			{ 255,255,255,100 }
+		);
+	}
 	//draw a line from the last to the first
-    lineRGBA(devices -> GetGraphicsDevice() ->GetRenderer(),devices -> GetPhysicsDevice() -> PW2RW(vertices[vertexCount-1].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[vertexCount-1].y),devices -> GetPhysicsDevice() -> PW2RW(vertices[0].x),devices -> GetPhysicsDevice() -> PW2RW(vertices[0].y),255,0,0,100);
+	gDevice->drawLine(
+		{ (int)pDevice->PW2RW(vertices[vertexCount - 1].x),(int)pDevice->PW2RW(vertices[vertexCount - 1].y) },
+		{ (int)pDevice->PW2RW(vertices[0].x), (int)pDevice->PW2RW(vertices[0].y) },
+		{ 255, 255, 255, 100 }
+	);
 
     //reset color (black)
-    SDL_SetRenderDrawColor(devices -> GetGraphicsDevice() ->GetRenderer(),0,0,0,255);
+    SDL_SetRenderDrawColor(gDevice ->getRenderer(),0,0,0,255);
 }
 
 void Box2DDebugDraw::DrawCircle(const b2Vec2 &center, float radius, const b2Color &color) 

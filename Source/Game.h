@@ -7,11 +7,12 @@
 #include "PhysicsAssetLibrary.h"
 
 #include "ObjectFactory.h"
+#include "Vector2D.h"
 
 #include "View.h"
 #include "Timer.h"
 
-#include "Definitions.h"
+
 #include "tinyxml\tinyxml.h"
 
 #include <string>

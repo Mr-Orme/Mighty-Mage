@@ -40,22 +40,22 @@ void View::borderDectection(Vector2D objectPosition)
 	//left
 	if (objectPosition.x < border)
 	{
-		setX(getPosition().x + (border-objectPosition.x));
+		setX(getViewingWindowPosition().x + (border-objectPosition.x));
 	}
 	//right
 	else if (objectPosition.x >screenDimensions.x - border)
 	{
-		setX(getPosition().x - (objectPosition.x - (screenDimensions.x - border)));
+		setX(getViewingWindowPosition().x - (objectPosition.x - (screenDimensions.x - border)));
 	}
 	//top
 	if (objectPosition.y < border)
 	{
-		setY(getPosition().y + (border-objectPosition.y));
+		setY(getViewingWindowPosition().y + (border-objectPosition.y));
 	}
 	//bottom
 	else if (objectPosition.y > screenDimensions.y - border)
 	{
-		setY(getPosition().y - (objectPosition.y - (screenDimensions.y - border)));
+		setY(getViewingWindowPosition().y - (objectPosition.y - (screenDimensions.y - border)));
 	}
 }
 

@@ -1,25 +1,29 @@
 #ifndef PHYSICSDEVICE_H
 #define PHYSICSDEVICE_H
 
-#include "Definitions.h"
-#include "Box2D.h"
-#include "Texture.h"
-#include "PhysicsAssetLibrary.h"
-#include "GameObject.h"
 
-class Object;
+#include "ContactListener.h"
+#include "Box2D.h"
+
+class GameObject;
+class Box2DDebugDraw;
+class ResourceManager;
+
 
 class PhysicsDevice{
 public:
 	//TODO::make Vector2D
-	PhysicsDevice(float gravityX, float gravityY);
-	bool initialize();
+	PhysicsDevice(float gravityX, float gravityY, ResourceManager* devices);
+
 	bool Update(float dt);
+
+	void debugDraw();
+
 	bool createFixture
 		(
 		GameObject* object,
 		PhysicsStats physics,
-		ObjectFactoryPresets presets
+			ObjectFactory::Presets presets
 		);
 
 	bool SetTransform(GameObject* object, Vector2D position, float angle);
@@ -30,13 +34,14 @@ public:
 	bool SetStatic(GameObject* object);
 	bool SetStopPhysics(GameObject* object);
 	bool SetAngle(GameObject* object, float angle);
+	
 
 	float GetAngularVelocity(GameObject* object);
 	Vector2D GetPosition(GameObject* object);
 	float getAngle(GameObject* object);
 	Vector2D GetVelocity(GameObject* object);
 	Vector2D GetLinearVelocity(GameObject* object);
-	b2World* getWorld(){ return world; }
+	
 	
 	bool CreatRevolvingJoint(GameObject* object1, GameObject* object2, Vector2D anchor1, Vector2D anchor2);
 
@@ -47,17 +52,23 @@ public:
 	bool RemoveObject(GameObject* object);
 	bool DestroyJoint(GameObject* object);
 		
-	b2World* world;
 	
-	inline float PW2RW(float x){return x*physicsModifier;}
-	inline float RW2PW(float x){return x/physicsModifier;}
-	inline float RW2PW(int x){return (float)x/physicsModifier;}
-	inline float RW2PWAngle(float x){return((float)x*(2.0f*3.14159f)/360.0f);} //degrees to radians
-	inline float PW2RWAngle(float x){return((float)x*360.0f/(2.0f*3.14159f));} //radians to degrees
+	
+	inline float PW2RW(float x) { return x * physicsModifier; }
 private:
+	const float physicsModifier = 10.0f;
+	inline float RW2PW(float x) { return x / physicsModifier; }
+	inline float RW2PW(int x) { return (float)x / physicsModifier; }
+	inline float RW2PWAngle(float x) { return((float)x * (2.0f * 3.14159f) / 360.0f); } //degrees to radians
+	inline float PW2RWAngle(float x) { return((float)x * 360.0f / (2.0f * 3.14159f)); } //radians to degrees
 	bool DestroyJoint(b2Body* body);
-	const b2Vec2 gravity;
 	Vector2D AlignCenters(GameObject* object);
+	
+	std::unique_ptr<b2World> world{ nullptr };
+	std::unique_ptr<Box2DDebugDraw> debugDrawer{ nullptr };
+	std::unique_ptr<ContactListener> listner{ nullptr };
+	const b2Vec2 gravity;
+	
 
 	
 

@@ -1,18 +1,11 @@
 #include <iostream>
 #include "InputDevice.h"
 
-//**************************************
-//Sets all keystates to false. sets initial event to NA
-//NA should be passed in, but can be any valid event.
-bool InputDevice::initialize()
-//**************************************
+InputDevice::InputDevice():
+	event(std::make_unique<SDL_Event>())
 {
-	//========================================
-	//Construct Event System
-	//========================================
-	event = new SDL_Event();
-	if(!event){
-		printf( "SDL Event could not initialize!");
+	if (!event) {
+		printf("SDL Event could not initialize!");
 		exit(1);
 	}
 
@@ -25,7 +18,6 @@ bool InputDevice::initialize()
 	keyStates[Event::shift] = false;
 	keyStates[Event::key_b] = false;
 	update();
-	return true;
 }
 
 //**************************************
@@ -35,9 +27,9 @@ void InputDevice::update()
 {
 	Event gEvent;
 	
-	if(SDL_PollEvent(event))
+	if(SDL_PollEvent(event.get()))
 	{
-		gEvent = Translate(event);
+		gEvent = Translate(event.get());
 		if (gEvent != Event::NA)
 		{
 			//updates the proper key state based on the event that was passed in

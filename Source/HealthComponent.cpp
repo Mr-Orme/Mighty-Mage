@@ -3,6 +3,7 @@
 #include "BodyComponent.h"
 #include "ResourceManager.h"
 #include "PhysicsDevice.h"
+#include "GameObject.h"
 
 
 HealthComponent::HealthComponent(GameObject* owner, ResourceManager* devices)
@@ -11,7 +12,7 @@ HealthComponent::~HealthComponent(){}
 
 //**************************************
 //gets health and resource manager from passed presets, the object starts out alive.
-bool HealthComponent::initialize(ObjectFactoryPresets& presets)
+bool HealthComponent::initialize(ObjectFactory::Presets& presets)
 //**************************************
 {
 	devices = presets.devices;

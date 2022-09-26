@@ -1,7 +1,7 @@
 #ifndef INPUTDEVICE_H
 #define INPUTDEVICE_H
 
-#include "Definitions.h"
+
 #include "SDL.h"
 #include <map>
 #include <memory>
@@ -9,7 +9,8 @@
 class GameObject;
 class InputDevice{
 public:
-	bool initialize();
+	InputDevice();
+	
 	void update();
 	void Print(SDL_Event* event);
 
@@ -17,7 +18,7 @@ public:
 
 private:
 	Event Translate(SDL_Event* event);
-	SDL_Event* event;
+	std::unique_ptr<SDL_Event> event;
 	std::map<Event, bool> keyStates;
 };
 

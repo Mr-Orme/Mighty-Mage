@@ -5,7 +5,8 @@
 #include <array>
 #include <memory>
 #include "Component.h"
-#include "Definitions.h"
+#include "Vector2D.h"
+#include "ObjectFactory.h"
 class ResourceManager;
 class GameObject;
 
@@ -15,29 +16,30 @@ public:
 	BackpackComponent(GameObject* owner, ResourceManager* devices);
 	~BackpackComponent();
 
-	bool initialize(ObjectFactoryPresets& presets) override;
+	bool initialize(ObjectFactory::Presets& presets) override;
+
+	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;
 
 	bool pickUpItem(GameObject* item);
-	//TODO::Remove this
-	//std::vector<std::unique_ptr<GameObject>>& GetInventory(){return inventory;}
 
 	void openPack(bool open){this -> open = open;}
-	bool isOpen(){return open;}
-
-	
-	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;
+	bool isOpen() const {return open;}
 	
 protected:
 	bool ToBackpack(std::unique_ptr<GameObject> item);
+	void reset();
 	std::vector<std::unique_ptr<GameObject>> inventory;
 	std::vector<std::vector<bool> > openSlots;
+
 	GameObject* pickedUpItem{ nullptr };
-	int slotSize{ 0 };
+	const int slotSize{ 25 };//pixels
 	Vector2D topLeft{ 0,0 };
 	Vector2D bottomRight{ 0,0 };
-	int maxRows{ 0 };
-	int maxColumns{ 0 };
+	Vector2D max{ 0,0 };
 	bool open{ false };
+
+	RGBA background{ 255, 255, 255 , 220 };
+	RGBA border{ 0,0,0,255 };
 };
 
 #endif

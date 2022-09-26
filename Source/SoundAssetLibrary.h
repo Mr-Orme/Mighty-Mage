@@ -3,7 +3,7 @@
 
 #include <map>
 #include <string>
-#include "Definitions.h"
+
 
 #include "SoundDevice.h"
 //TODO::SoundEffects have a time between plays!
@@ -17,8 +17,7 @@ class SoundAssetLibrary{
 public:
 	SoundAssetLibrary();
 	~SoundAssetLibrary();
-	//TODO::see if I can get rid of this initialize method.
-	bool initialize(SoundDevice* sDevice);
+		
 	//TODO::reduce the reliance on strings in these libraries..
 	SoundEffect& searchSoundEffects(std::string name);
 	Mix_Music* searchMusic(std::string name);
@@ -28,7 +27,7 @@ public:
 private:
 	std::map<std::string, SoundEffect > soundEffectLibrary;
 	std::map<std::string, Mix_Music* > musicLibrary;
-	SoundDevice* sDevice{nullptr};
+	//SoundDevice* sDevice{nullptr};
 
 };
 

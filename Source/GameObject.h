@@ -4,7 +4,8 @@
 #include<memory>
 #include<iostream>
 #include<vector>
-#include "Definitions.h"
+#include "ObjectFactory.h"
+#include "BodyComponent.h"
 
 class Component;
 class GraphicsDevice;
@@ -15,43 +16,41 @@ class GameObject
 public:
 	GameObject();
 	~GameObject();
-	enum class Type{player, wall, floor, door, extra};
-	bool initialize(ObjectFactoryPresets& presets);
-	void addComponent(std::unique_ptr<Component> component);
 
-	template<class T>
-	T* getComponent()
-	{
-		for(auto& comp : components)
-		{
-			
-			if (auto result{ dynamic_cast<T*>(comp.get()) }; result !=nullptr)
-			{
-				return(result);
-			}
-		}
-	
-		//Return nullptr;
-		return(nullptr);
-	}
+	enum class Type{player, wall, floor, door, extra};
+
+	bool initialize(ObjectFactory::Presets& presets);
+	void addComponent(std::unique_ptr<Component> component);
 	
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects);
 
 	void SetJoinedWith(GameObject* joinedWith){this -> joinedWith = joinedWith;}
+	GameObject* getJoinedWith() const {return joinedWith;}
 
-	bool isWall() const;
-	bool isPlayer() const;
-	bool isDoor() const;
-	GameObject* getJoinedWith(){return joinedWith;}
-	
+	bool isA(Type name) const;
+
+	template<class T>
+	T* getComponent()
+	{
+		for (auto& comp : components)
+		{
+
+			if (auto result{ dynamic_cast<T*>(comp.get()) }; result != nullptr)
+			{
+				return(result);
+			}
+		}
+
+		return(nullptr);
+	}
 
 protected:
 	void setType(std::string);
 
 	std::vector<std::unique_ptr<Component>> components;
 
-	Type name{ Type::floor };
-	Direction direction{ Direction::N };
+	Type name{ Type::extra };
+	BodyComponent::Direction direction{ BodyComponent::Direction::N };
 	GameObject* joinedWith{ nullptr };
 
 };

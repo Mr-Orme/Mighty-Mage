@@ -31,7 +31,7 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 	devices = std::make_unique<ResourceManager>(screenDimensions, assetConfigFile);
 	frameTimer = std::make_unique<Timer>(devices->GetFPS());
 	///Get a few things ready
-	ObjectFactoryPresets presets;
+	ObjectFactory::Presets presets;
 	presets.devices = devices.get();
 	ObjectFactory* objectFactory = devices->GetObjectFactory();
 
@@ -118,7 +118,8 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 				objects.push_back(objectFactory->Create(presets));
 
 				//mark the exit
-				if (presets.objectType == "Trapdoor") devices->GetGraphicsDevice()->SetExit(objects.back().get());
+				//TODO::Make exits more generic. Perhaps an exit component?
+				if (presets.objectType == "Trapdoor") devices->setExit(objects.back().get());
 
 				//make sure presests is ready for loading the level
 				presets.position = squarePosition;
@@ -244,16 +245,8 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 		if (label != "Extras") presets.position.y += 110;
 	} while (rowElement);
 
-	//reverse the order of the sprites so the player is on top of everything.
-	devices->GetGraphicsDevice()->ReverseOrder();
-
-	//start background music
-
 	devices->GetSoundDevice()->SetBackground("main");
 
-
-
-	//Successfully loaded level
 	return true;
 }
 
@@ -284,14 +277,15 @@ bool Game::run()
 
 	//Start Frame Timer
 	frameTimer->start();
-
+	devices->GetGraphicsDevice()->begin();
+	
 	update();
-	devices->GetGraphicsDevice()->Begin();
-		devices -> GetGraphicsDevice() -> run();
+	
+	devices -> GetGraphicsDevice() -> drawOverlays();
 		
-		if (debug) devices->GetPhysicsDevice()->getWorld()->DebugDraw(); //-> DrawDebugData();
+	if (debug) devices->GetPhysicsDevice()->debugDraw(); 
 		
-		devices -> GetGraphicsDevice() -> Present();
+	devices -> GetGraphicsDevice() -> present();
 
 	//pauses until proper refresh time has passed.
 	frameTimer->fpsRegulate();
@@ -371,12 +365,12 @@ void Game::update()
 //bool Game::run()
 ////**************************************
 //{
-//	devices -> GetGraphicsDevice() -> Begin();	
+//	devices -> GetGraphicsDevice() -> begin();	
 //	devices -> GetGraphicsDevice() -> run();
 //	
 //	if (debug) devices->GetPhysicsDevice()->getWorld()->DebugDraw(); //-> DrawDebugData();
 //	
-//	devices -> GetGraphicsDevice() -> Present();
+//	devices -> GetGraphicsDevice() -> present();
 //	return true;
 //}
 

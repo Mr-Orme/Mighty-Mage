@@ -1,6 +1,10 @@
 #include "BodyComponent.h"
 #include "RendererComponent.h"
 #include "ResourceManager.h"
+#include "GameObject.h"
+#include "Texture.h"
+#include "ObjectFactory.h"
+#include "Vector2D.h"
 
 BodyComponent::BodyComponent(GameObject* owner, ResourceManager* devices):Component(owner, devices){}
 BodyComponent::~BodyComponent()
@@ -9,13 +13,13 @@ BodyComponent::~BodyComponent()
 	if (!devices->GetPhysicsDevice()->RemoveObject(_owner))
 	{
 		printf("Object could not be removed from Physics World");
-		exit(1);
+		//exit(1);
 	}
 }
 
 //**************************************
 //Based on the presets struct passed in, a fixture is created
-bool BodyComponent::initialize(ObjectFactoryPresets& presets)
+bool BodyComponent::initialize(ObjectFactory::Presets& presets)
 //**************************************
 {
 	PhysicsStats physics;
@@ -98,7 +102,7 @@ float BodyComponent::getAngle() const
 	return devices->GetPhysicsDevice()->getAngle(_owner);
 }
 
-Direction BodyComponent::getDirection() const
+BodyComponent::Direction BodyComponent::getDirection() const
 {
 	return static_cast<Direction>(abs((int(getAngle()) % 360)));
 }
@@ -118,12 +122,12 @@ Vector2D BodyComponent::currentSquare() const
 //**************************************
 {
 	Vector2D position
-	{ devices->GetGraphicsDevice()->GetView()->relativePosition(getPosition()) };
+	{ devices->GetGraphicsDevice()->getView()->relativePosition(getPosition()) };
 	Vector2D dimensions{ getDimenions() };
 	Vector2D center{ position.x + .5 * dimensions.x, position.y + .5 * dimensions.y };
 
 	Vector2D viewPosition
-	{ devices->GetGraphicsDevice()->GetView()->getPosition() };
+	{ devices->GetGraphicsDevice()->getView()->getViewingWindowPosition() };
 	Vector2D cityCorner{ devices->GetCityCorner() };
 
 	//the city corner plus the view get's us the top left corner of the view.
@@ -141,7 +145,7 @@ Vector2D BodyComponent::currentSquare() const
 	/*std::string playerPositionText = "(" + std::to_string(position.x) + ", " + std::to_string(position.y) + ")";
 
 	Vector2D position = _owner -> getComponent<RendererComponent>() -> relativePosition(devices -> GetPhysicsDevice() -> GetPosition(_owner));
-	devices -> GetGraphicsDevice() ->Text2Screen(playerPositionText, position);*/
+	devices -> GetGraphicsDevice() ->text2Screen(playerPositionText, position);*/
 }
 
 Vector2D BodyComponent::getDimenions() const
@@ -168,8 +172,8 @@ void BodyComponent::linearMovement(Way direction)
 	Vector2D velocity = devices->GetPhysicsDevice()->GetVelocity(_owner);
 	//Calculate force vector for a forward push
 	
-	applyForce.x = (int)cosf((devices->GetPhysicsDevice()->getAngle(_owner) * PI / 180) + direction*(PI / 2)) * forceMultiplier;
-	applyForce.y = (int)sinf((devices->GetPhysicsDevice()->getAngle(_owner) * PI / 180) + direction*(PI / 2)) * forceMultiplier;
+	applyForce.x = (int)cosf((devices->GetPhysicsDevice()->getAngle(_owner) * Pi / 180) + direction*(Pi / 2)) * forceMultiplier;
+	applyForce.y = (int)sinf((devices->GetPhysicsDevice()->getAngle(_owner) * Pi / 180) + direction*(Pi / 2)) * forceMultiplier;
 	
 	//PUSH BABY PUSH!!!
 	devices->GetPhysicsDevice()->SetLinearVelocity(_owner, applyForce);

@@ -3,6 +3,7 @@
 #include "View.h"
 #include "ResourceManager.h"
 #include "Texture.h"
+#include "GameObject.h"
 #include <memory>
 
 //************************************************
@@ -10,7 +11,7 @@
 //based on the object type, it grabs components.
 // and adds them to a newly created object.
 //it initializes the object which also initializes all the components
-std::unique_ptr<GameObject> ObjectFactory::Create(ObjectFactoryPresets& presets)
+std::unique_ptr<GameObject> ObjectFactory::Create(Presets& presets)
 //**************************************
 {
 

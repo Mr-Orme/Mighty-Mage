@@ -6,7 +6,7 @@
 #include <memory>
 
 
-class Texture;
+#include "Texture.h"
 class GraphicsDevice;
 
 class ArtAssetLibrary{
@@ -16,7 +16,7 @@ public:
 	bool addAsset(std::string name, std::string path);
 private:
 	std::map<std::string, std::unique_ptr<Texture>> library;
-	GraphicsDevice* gDevice;
+	GraphicsDevice* gDevice{ nullptr };
 
 };
 

@@ -1,7 +1,7 @@
 #ifndef SOUNDDEVICE_H
 #define SOUNDDEVICE_H
 
-#include "Definitions.h"
+
 #include "SDL_Mixer.h"
 #include <string>
 
@@ -9,11 +9,8 @@ class SoundAssetLibrary;
 class SoundDevice{
 public:
 	~SoundDevice();
-	SoundDevice();
-
-	bool initialize();
-	void Shutdown();
-
+	SoundDevice(SoundAssetLibrary* sLibrary);
+	
 	bool PlaySound(std::string sound, int numLoops);
 	bool PlaySound(std::string sound, int numLoops, int channel);
 	
@@ -24,7 +21,8 @@ public:
 
 
 private:
-	SoundAssetLibrary* sLibrary;
+	SoundAssetLibrary* sLibrary{ nullptr };
+	const int numChannels{ 100 };
 	
 };
 

@@ -26,7 +26,7 @@ std::unique_ptr<GameObject> UserInputComponent::update(std::vector<std::unique_p
 	
 	dealWithButtonPresses();
 	
-	devices->GetGraphicsDevice()->GetView()->borderDectection(
+	devices->GetGraphicsDevice()->getView()->borderDectection(
 		_owner->getComponent<BodyComponent>()->getPosition());
 	
 	displayNotices();
@@ -51,17 +51,15 @@ void UserInputComponent::displayNotices()
 	if (notice.text != "")
 	{
 		//display it.
-		devices->GetGraphicsDevice()->Notice2Screen(notice.text);
+		devices->GetGraphicsDevice()->notice2Screen(notice.text);
 	}
 	//*****************************TO Basement*********************************************
 	//if we are on the main level and make it to the proper spot
 
-	//TODO::Move exit check to somewhere else...
+	//TODO::make exiting a component!
 	if (devices->isExitSquare(body->currentSquare()))
 	{
-		//load the basement.
-		//NOTE: actual loading of basement is done by the Game class, this just tells the class
-		//it is time to load.
+		
 		//TODO::make more generic to load any level!
 		devices->SetLoadBasement(true);
 	}
@@ -136,5 +134,5 @@ void UserInputComponent::displayLocation()
 {
 	Vector2D playerPosition = devices->GetPhysicsDevice()->GetPosition(_owner);
 	std::string playerPositionText = "(" + std::to_string(playerPosition.x) + ", " + std::to_string(playerPosition.y) + ")";
-	devices->GetGraphicsDevice()->Text2Screen(playerPositionText, { 10,10 });
+	devices->GetGraphicsDevice()->text2Screen(playerPositionText, { 10,10 });
 }

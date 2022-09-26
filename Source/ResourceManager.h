@@ -1,5 +1,8 @@
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
+
+#include "tinyxml\tinyxml.h"
+
 #include "GraphicsDevice.h"
 #include "InputDevice.h"
 #include "PhysicsDevice.h"
@@ -12,9 +15,9 @@
 #include "SoundAssetLibrary.h"
 #include "View.h"
 
-#include "Definitions.h"
-class ObjectFactory;
 
+class ObjectFactory;
+enum class Levels { sorpigal, sorpigal_basement, };
 class ResourceManager
 {
 public:
@@ -43,7 +46,7 @@ public:
 	Vector2D GetCityCorner(){return cityCorner;}
 	Levels GetLevel(){return level;}
 	bool GetLoadBasement(){return loadBasement;}
-
+	GameObject* getExit() { return levelExit; }
 	
 
 	//Other Setters
@@ -51,18 +54,21 @@ public:
 	void SetCityCorner(Vector2D cityCorner){this -> cityCorner = cityCorner;}
 	void SetLevel(Levels level){this -> level = level;}
 	void SetLoadBasement(bool loadBasement){this -> loadBasement = loadBasement;}
+	void setExit(GameObject* levelExit) { this->levelExit = levelExit; }
 
 	bool isExitSquare(Vector2D currSquare) const;
 	const int pixelsPerSquare{ 110 };
 	const int blocksPerMap{ 15 };
 protected:
+	void loadLibraries(std::string assetPath);
+	void populateComponentLibrary(TiXmlElement* asset);
 	//Devices
 	std::unique_ptr<GraphicsDevice> gDevice;
 	std::unique_ptr<InputDevice> iDevice;
 	std::unique_ptr<PhysicsDevice> pDevice;
 	std::unique_ptr<SoundDevice> sDevice;
 
-	//LIbraries
+	//Libraries
 	std::unique_ptr<ArtAssetLibrary> aLibrary;
 	std::unique_ptr<PhysicsAssetLibrary> pLibrary;
 	std::unique_ptr<ComponentAssetLibrary> cLibrary;
@@ -77,6 +83,8 @@ protected:
 	Levels level;
 	bool loadBasement;
 	std::vector<Vector2D> exits;
+
+	GameObject* levelExit{ nullptr };
 
 	
 };

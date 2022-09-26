@@ -1,6 +1,7 @@
 #include "ComponentsList.h"
 #include "GameObject.h"
 
+
 GameObject::GameObject(){}
 
 GameObject::~GameObject()
@@ -13,7 +14,7 @@ GameObject::~GameObject()
 	//the renderer component needs to be initialized first because the body component depends on it
 	//It's initialization method has a check to see if it is already initialized 
 	//so that when we go through all the components and initialize them in the next step, it won't do it again.
-bool GameObject::initialize(ObjectFactoryPresets& presets)
+bool GameObject::initialize(ObjectFactory::Presets& presets)
 //**************************************
 {
 	setType(presets.objectType);
@@ -63,20 +64,11 @@ std::unique_ptr<GameObject> GameObject::update(std::vector<std::unique_ptr<GameO
 	return newObject;
 }
 
-bool GameObject::isWall() const
+bool GameObject::isA(Type name) const
 {
-	return name == Type::wall;
+	return this->name == name;
 }
 
-bool GameObject::isPlayer() const
-{
-	return name==Type::player;
-}
-
-bool GameObject::isDoor() const
-{
-	return name == Type::door;
-}
 
 void GameObject::setType(std::string sName)
 {

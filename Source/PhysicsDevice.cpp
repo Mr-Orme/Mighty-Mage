@@ -2,24 +2,25 @@
 #include "RendererComponent.h"
 #include "ContactListener.h"
 #include "GameObject.h"
+#include "Texture.h"
+#include "Box2DDebugDraw.h"
+#include "ResourceManager.h"
 #include <cmath>
 
 
-PhysicsDevice::PhysicsDevice(float gravityX, float gravityY):gravity(RW2PW(gravityX), RW2PW(gravityY))
+PhysicsDevice::PhysicsDevice(float gravityX, float gravityY, ResourceManager* devices):
+	gravity(RW2PW(gravityX), RW2PW(gravityY)),
+	debugDrawer(std::make_unique<Box2DDebugDraw>(devices)),
+	listner(std::make_unique<ContactListener>())
 {
+	world =std::make_unique<b2World>(gravity);
+	world->SetContactListener(listner.get());
 
+	debugDrawer->SetFlags(b2Draw::e_shapeBit | b2Draw::e_aabbBit);  //Turn on shape (red color) and aabb (green) 
+	world->SetDebugDraw(debugDrawer.get());
+	
 }
-//**************************************
-//Creates a new world on initialization
-bool PhysicsDevice::initialize()
-//**************************************
-{
-	world = new b2World(gravity);
-	if (world == nullptr) return false;
-	ContactListener* c1 = new ContactListener();
-	world -> SetContactListener(c1);
-	return true;
-}
+
 
 //**************************************
 //Steps the physics world
@@ -28,6 +29,11 @@ bool PhysicsDevice::Update(float dt)
 {	
 	world -> Step(dt, 8, 3);
 	return true;
+}
+
+void PhysicsDevice::debugDraw()
+{
+	world->DebugDraw();
 }
 
 //**************************************
@@ -54,6 +60,7 @@ bool PhysicsDevice::SetAngle(GameObject* object, float angle)
 	body -> SetTransform(body -> GetPosition(), RW2PWAngle(angle));
 	return true;
 }
+
 
 //**************************************
 //Sets angular velocity
@@ -166,7 +173,7 @@ bool PhysicsDevice::createFixture
 	(
 	GameObject* object,
 	PhysicsStats physics,
-	ObjectFactoryPresets presets
+		ObjectFactory::Presets presets
 	)
 //**************************************
 {

@@ -4,95 +4,96 @@
 #include "GameObject.h"
 #include "ComponentsList.h"
 
-Direction travelDirection(b2Body* body)
+BodyComponent::Direction travelDirection(b2Body* body)
 {
-	auto object{ reinterpret_cast<GameObject*>(body->GetUserData().pointer) };
-	if (body->GetLinearVelocity().y <= 0)
-	{
+	auto lv{ body->GetLinearVelocity() };
+	if (lv.x > 0) return BodyComponent::Direction::E;
+	else if (lv.x < 0) return BodyComponent::Direction::W;
+	else if (lv.y > 0) return BodyComponent::Direction::S;
+	else if (lv.y < 0) return BodyComponent::Direction::N;
+	return reinterpret_cast<GameObject*>(body->GetUserData().pointer)->getComponent<BodyComponent>()->getDirection();
 
-		return object->getComponent<BodyComponent>()->getDirection();
-	}
-	else if (body->GetLinearVelocity().y >= 0)
-	{
-		//going backwards.
-		return (Direction)(((int)object->getComponent<BodyComponent>()->getDirection() + 180) % 360);
-		
-	}
+}
+void wallCollision(BodyComponent* playerBody, BodyComponent* wallBody, BodyComponent::Direction travel)
+{
+	bool playWallSound{ false };
+	Vector2D playerSquare{ playerBody->currentSquare() };
+	Vector2D wallSquare{ wallBody->currentSquare() };
+	
 
-	return Direction::N;
+	switch (travel)
+	{
+	case BodyComponent::Direction::N:
+	case BodyComponent::Direction::S:
+		//HACK::because of how the level is built, the left and bottom walls are in the wrong square.
+		//this adjusts for that. Same in Direction::E
+		if (playerBody->getPosition().x > wallBody->getPosition().x + wallBody->getDimenions().x)
+		{
+			wallSquare.x--;
+		}
+		playWallSound = playerSquare.x == wallSquare.x;
+		break;
+	case BodyComponent::Direction::W:
+	case BodyComponent::Direction::E:
+		if (playerBody->getPosition().y >= wallBody->getPosition().y + wallBody->getDimenions().y)
+		{
+			wallSquare++;
+		}
+		playWallSound = playerSquare.y == wallSquare.y;
+		break;
+	default:
+		break;
+	}
+	if (playWallSound)
+		playerBody->getDevices()->GetSoundDevice()->PlaySound("wall", 0, 2);
 }
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {
-    //Grab the two Physics Bodies involved in the Contact
+    
 	b2Body* bodyA = contact->GetFixtureA()->GetBody();
 	b2Body* bodyB = contact->GetFixtureB()->GetBody();
-	//Cast them to object pointers
+	
 	GameObject* objectA = reinterpret_cast<GameObject*>(bodyA->GetUserData().pointer);
 	GameObject* objectB = reinterpret_cast<GameObject*>(bodyB->GetUserData().pointer);
 
-	//find their types
-	
-			
-	if(objectA->isPlayer())
+	if(objectA->isA(GameObject::Type::player))
 	{
-		
-		//if we found a pickupable item, grab it.
 		if(objectB -> getComponent<InventoryComponent>())
 		{
-			
 			PickUpItem(objectA, objectB);
 		}
 	}
 	
 	//walls always put the player as object B
-	else if (objectB->isPlayer())
+	else if (objectB->isA(GameObject::Type::player))
 	{
-		if (objectA->isWall())
-		{
-			bool playWallSound{ false };
-			BodyComponent* playerBody{ objectB->getComponent<BodyComponent>() };
-			BodyComponent* wallBody{ objectA->getComponent<BodyComponent>() };
-			Vector2D playerSquare{ playerBody->currentSquare() };
-			Vector2D wallSquare{ wallBody->currentSquare() };
-			//adjust wall sqaure if player.x > wall.x or player.y < wall.y
-	
-			switch (travelDirection(bodyB))
-			{
-			case Direction::N:
-			case Direction::S:
-				if (playerBody->getPosition().x > wallBody->getPosition().x)
-				{
-					wallSquare++;
-				}
-				playWallSound = playerSquare.x == wallSquare.x;
-				break;
-			case Direction::W:
-			case Direction::E:
-				if (playerBody->getPosition().y > wallBody->getPosition().y)
-				{
-					wallSquare++;
-				}
-				playWallSound = playerSquare.y == wallSquare.y;
-				break;
-			default:
-				break;
-			}
-			if(playWallSound)
-				playerBody->getDevices()->GetSoundDevice()->PlaySound("wall", 0, 2);
-		}
 		
 		if (auto ghost{ objectA->getComponent<GhostComponent>() };
 			ghost != nullptr && ghost->canPass(travelDirection(bodyB))
 			)
 		{
 			contact->SetEnabled(false);
+			return;
 		}
+
+		if (objectA->isA(GameObject::Type::wall))
+		{
+			
+			wallCollision(
+				objectB->getComponent<BodyComponent>(), 
+				objectA->getComponent<BodyComponent>(), 
+				travelDirection(bodyB)
+			);
+		}
+		
+		
 
 	}
 
 }
-void ContactListener::PostSolve(b2Contact*, const b2ContactImpulse*)
+void ContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
 {
+
 }
 
 
