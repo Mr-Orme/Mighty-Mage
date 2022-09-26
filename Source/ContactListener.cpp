@@ -3,18 +3,19 @@
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "ComponentsList.h"
+#include "Definitions.h"
 
-BodyComponent::Direction travelDirection(b2Body* body)
+Direction travelDirection(b2Body* body)
 {
 	auto lv{ body->GetLinearVelocity() };
-	if (lv.x > 0) return BodyComponent::Direction::E;
-	else if (lv.x < 0) return BodyComponent::Direction::W;
-	else if (lv.y > 0) return BodyComponent::Direction::S;
-	else if (lv.y < 0) return BodyComponent::Direction::N;
+	if (lv.x > 0) return Direction::E;
+	else if (lv.x < 0) return Direction::W;
+	else if (lv.y > 0) return Direction::S;
+	else if (lv.y < 0) return Direction::N;
 	return reinterpret_cast<GameObject*>(body->GetUserData().pointer)->getComponent<BodyComponent>()->getDirection();
 
 }
-void wallCollision(BodyComponent* playerBody, BodyComponent* wallBody, BodyComponent::Direction travel)
+void wallCollision(BodyComponent* playerBody, BodyComponent* wallBody, Direction travel)
 {
 	bool playWallSound{ false };
 	Vector2D playerSquare{ playerBody->currentSquare() };
@@ -23,8 +24,8 @@ void wallCollision(BodyComponent* playerBody, BodyComponent* wallBody, BodyCompo
 
 	switch (travel)
 	{
-	case BodyComponent::Direction::N:
-	case BodyComponent::Direction::S:
+	case Direction::N:
+	case Direction::S:
 		//HACK::because of how the level is built, the left and bottom walls are in the wrong square.
 		//this adjusts for that. Same in Direction::E
 		if (playerBody->getPosition().x > wallBody->getPosition().x + wallBody->getDimenions().x)
@@ -33,8 +34,8 @@ void wallCollision(BodyComponent* playerBody, BodyComponent* wallBody, BodyCompo
 		}
 		playWallSound = playerSquare.x == wallSquare.x;
 		break;
-	case BodyComponent::Direction::W:
-	case BodyComponent::Direction::E:
+	case Direction::W:
+	case Direction::E:
 		if (playerBody->getPosition().y >= wallBody->getPosition().y + wallBody->getDimenions().y)
 		{
 			wallSquare++;

@@ -3,12 +3,12 @@
 #include "ObjectFactory.h"
 #include "GameObject.h"
 
-
+using input = InputDevice::Inputs;
 UserInputComponent::UserInputComponent(GameObject* owner, ResourceManager* devices):Component(owner, devices)
 {
-	for (int i = 0; i < (int)Event::numEvents; i++)
+	for (int i = 0; i < (int)input::numEvents; i++)
 	{
-		Event eventNum = static_cast<Event>(i);
+		input eventNum = static_cast<input>(i);
 		pressControl[eventNum] = true;
 	}
 }
@@ -69,12 +69,12 @@ void UserInputComponent::dealWithButtonPresses()
 {
 	if (!_owner->getComponent<BackpackComponent>()->isOpen())
 	{
-		if (devices->GetInputDevice()->GetEvent(Event::up))
+		if (devices->GetInputDevice()->isPressed(input::up))
 		{
 			_owner->getComponent<BodyComponent>()->moveForward();
 
 		}
-		else if (devices->GetInputDevice()->GetEvent(Event::down))
+		else if (devices->GetInputDevice()->isPressed(input::down))
 		{
 			_owner->getComponent<BodyComponent>()->moveBackward();
 
@@ -86,33 +86,33 @@ void UserInputComponent::dealWithButtonPresses()
 
 		//Check for left or right buttons
 		// the "turn" variable makes sure we only turn once every time we push the button
-		if (devices->GetInputDevice()->GetEvent(Event::right))
+		if (devices->GetInputDevice()->isPressed(input::right))
 		{
 			//change the angle
-			if (pressControl[Event::right])
+			if (pressControl[input::right])
 			{
 				_owner->getComponent<BodyComponent>()->turnRight();
 				//ensures we only turn once per press
-				pressControl[Event::right] = false;
+				pressControl[input::right] = false;
 			}
 		}
-		else pressControl[Event::right] = true;
-		if (devices->GetInputDevice()->GetEvent(Event::left))
+		else pressControl[input::right] = true;
+		if (devices->GetInputDevice()->isPressed(input::left))
 		{
 			//similar to turn right.
-			if (pressControl[Event::left])
+			if (pressControl[input::left])
 			{
 				_owner->getComponent<BodyComponent>()->turnLeft();
-				pressControl[Event::left] = false;
+				pressControl[input::left] = false;
 			}
 		}
-		else pressControl[Event::left] = true;
+		else pressControl[input::left] = true;
 	}
 	else _owner->getComponent<BodyComponent>()->stop();
 
-	if (devices->GetInputDevice()->GetEvent(Event::key_b))
+	if (devices->GetInputDevice()->isPressed(input::key_b))
 	{
-		if (pressControl[Event::key_b])
+		if (pressControl[input::key_b])
 		{
 
 			if (BackpackComponent* backpack{ _owner->getComponent<BackpackComponent>() };
@@ -121,11 +121,11 @@ void UserInputComponent::dealWithButtonPresses()
 				if (backpack->isOpen()) backpack->openPack(false);
 				else backpack->openPack(true);
 			}
-			pressControl[Event::key_b] = false;
+			pressControl[input::key_b] = false;
 		}
 
 	}
-	else pressControl[Event::key_b] = true;
+	else pressControl[input::key_b] = true;
 
 
 }

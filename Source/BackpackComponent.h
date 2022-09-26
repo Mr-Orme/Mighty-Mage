@@ -7,6 +7,7 @@
 #include "Component.h"
 #include "Vector2D.h"
 #include "ObjectFactory.h"
+#include "GraphicsDevice.h"
 class ResourceManager;
 class GameObject;
 
@@ -16,7 +17,7 @@ public:
 	BackpackComponent(GameObject* owner, ResourceManager* devices);
 	~BackpackComponent();
 
-	bool initialize(ObjectFactory::Presets& presets) override;
+	bool initialize(ObjectFactoryPresets& presets) override;
 
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;
 

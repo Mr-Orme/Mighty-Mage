@@ -15,7 +15,7 @@ public:
 	Component(GameObject* owner, ResourceManager* devices);
 	~Component();
 	
-	virtual bool initialize(ObjectFactory::Presets& presets);
+	virtual bool initialize(ObjectFactoryPresets& presets);
 	virtual std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects)=0;
 	//TODO::try and eliminate getDevices
 	ResourceManager* getDevices() const { return devices; }

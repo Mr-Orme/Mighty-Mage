@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "ObjectFactory.h"
 #include "Vector2D.h"
+#include "Definitions.h"
 
 BodyComponent::BodyComponent(GameObject* owner, ResourceManager* devices):Component(owner, devices){}
 BodyComponent::~BodyComponent()
@@ -19,7 +20,7 @@ BodyComponent::~BodyComponent()
 
 //**************************************
 //Based on the presets struct passed in, a fixture is created
-bool BodyComponent::initialize(ObjectFactory::Presets& presets)
+bool BodyComponent::initialize(ObjectFactoryPresets& presets)
 //**************************************
 {
 	PhysicsStats physics;
@@ -29,15 +30,10 @@ bool BodyComponent::initialize(ObjectFactory::Presets& presets)
 		devices = presets.devices;
 				
 		//Get physics based on object type.
-		physics = devices -> GetPhysicsLibrary() -> search(presets.objectType);
+		presets.bodyInitializers.physics = devices -> GetPhysicsLibrary() -> search(presets.objectType);
 				
 		//Create fixture.
-		devices -> GetPhysicsDevice() -> createFixture
-			(
-			_owner,
-			physics,
-			presets
-			);
+		devices -> GetPhysicsDevice() -> createFixture(	_owner,	presets.bodyInitializers);
 	}
 	return true;
 }
@@ -102,7 +98,7 @@ float BodyComponent::getAngle() const
 	return devices->GetPhysicsDevice()->getAngle(_owner);
 }
 
-BodyComponent::Direction BodyComponent::getDirection() const
+Direction BodyComponent::getDirection() const
 {
 	return static_cast<Direction>(abs((int(getAngle()) % 360)));
 }
@@ -124,7 +120,7 @@ Vector2D BodyComponent::currentSquare() const
 	Vector2D position
 	{ devices->GetGraphicsDevice()->getView()->relativePosition(getPosition()) };
 	Vector2D dimensions{ getDimenions() };
-	Vector2D center{ position.x + .5 * dimensions.x, position.y + .5 * dimensions.y };
+	Vector2D center{ (int)(position.x + .5 * dimensions.x), (int)(position.y + .5 * dimensions.y) };
 
 	Vector2D viewPosition
 	{ devices->GetGraphicsDevice()->getView()->getViewingWindowPosition() };
@@ -157,7 +153,7 @@ void BodyComponent::linearMovement(Way direction)
 {
 	Vector2D applyForce{};
 	std::string walkSound{ "walking" };
-	if (devices->GetInputDevice()->GetEvent(Event::shift))
+	if (devices->GetInputDevice()->isPressed(InputDevice::Inputs::shift))
 	{
 		forceMultiplier = baseForceMultiplier * runMultiplier;
 		walkSound = "run";

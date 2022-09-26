@@ -12,7 +12,7 @@ public:
 	~HealthComponent();
 
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;
-	bool initialize(ObjectFactory::Presets& presets) override;
+	bool initialize(ObjectFactoryPresets& presets) override;
 
 	bool isDead() const {return dead;}
 	

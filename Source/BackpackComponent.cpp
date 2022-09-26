@@ -13,7 +13,7 @@ BackpackComponent::~BackpackComponent(){}
 
 //**************************************
 //sets devices
-bool BackpackComponent::initialize(ObjectFactory::Presets& presets)
+bool BackpackComponent::initialize(ObjectFactoryPresets& presets)
 //**************************************
 {
 	devices = presets.devices;

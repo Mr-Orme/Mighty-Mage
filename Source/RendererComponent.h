@@ -13,7 +13,7 @@ public:
 	~RendererComponent();
 
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;
-	bool initialize(ObjectFactory::Presets& presets) override;
+	bool initialize(ObjectFactoryPresets& presets) override;
 	
 	void run();
 	void run(Vector2D position, float angle);

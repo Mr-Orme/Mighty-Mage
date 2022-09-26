@@ -2,9 +2,10 @@
 #include "ResourceManager.h"
 #include "ComponentAssetLibrary.h"
 #include "ObjectFactory.h"
-
+#include "Definitions.h"
 #include "tinyxml\tinyxml.h"
 #include "Box2DDebugDraw.h"
+#include "Initializers.h"
 
 
 ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPath):
@@ -117,7 +118,7 @@ void ResourceManager::loadLibraries(std::string assetPath)
 			{
 				duration = FPS * duration;
 			}
-			sLibrary->addSoundEffect(name, path, duration);
+			sLibrary->addSoundEffect(name, path, (int)duration);
 		}
 		sounds = sounds->NextSiblingElement();
 	}
@@ -168,11 +169,11 @@ void ResourceManager::populateComponentLibrary(TiXmlElement* asset)
 				compElement->QueryStringAttribute("bodyShape", &bodyShape);
 
 				//convert strings to enums
-				if (bodyType == "dynamic") { physics.bodyType = PhysicsStats::BodyType::dynamic; }
-				else if (bodyType == "staticBody") { physics.bodyType = PhysicsStats::BodyType::staticBody; }
+				if (bodyType == "dynamic") { physics.bodyType = BodyType::Dynamic; }
+				else if (bodyType == "staticBody") { physics.bodyType = BodyType::Static; }
 
-				if (bodyShape == "rectangle") { physics.objectShape = PhysicsStats::BodyShape::rectangle; }
-				else if (bodyShape == "circle") { physics.objectShape = PhysicsStats::BodyShape::circle; }
+				if (bodyShape == "rectangle") { physics.bodyShape = BodyShape::Rectangle; }
+				else if (bodyShape == "circle") { physics.bodyShape = BodyShape::Circle; }
 				//add to library
 				pLibrary->addAsset(aName, physics);
 

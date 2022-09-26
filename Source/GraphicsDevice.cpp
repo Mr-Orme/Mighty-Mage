@@ -190,6 +190,11 @@ void GraphicsDevice::present()
 	notices.clear();
 }
 
+View* GraphicsDevice::getView()
+{
+	return view.get();
+}
+
 //void GraphicsDevice::AddSpriteRenderer(RendererComponent* sprite)
 //{
 //	sprites.push_back(sprite);
@@ -316,11 +321,11 @@ void GraphicsDevice::addOverlay(Overlay overlay )
 	overlays.push_back(std::move(overlay));
 }
 
-float GraphicsDevice::center(float centerOn, float width)
+int GraphicsDevice::center(int centerOn, int width)
 {
 			
 			
-	float point = (centerOn - width)/2;
+	int point = (int)((centerOn - width)/2.0f);
 			
 	return point;
 }

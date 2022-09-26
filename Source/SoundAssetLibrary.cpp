@@ -37,7 +37,7 @@ SoundEffect& SoundAssetLibrary::searchSoundEffects(std::string name)
 bool SoundAssetLibrary::addSoundEffect(std::string name, std::string path, int timeBetweenPlays)
 //**************************************
 {
-	SoundEffect theSound { Mix_LoadWAV(path.c_str()), timeBetweenPlays, 0.0f };
+	SoundEffect theSound { Mix_LoadWAV(path.c_str()), (unsigned int)timeBetweenPlays, 0 };
 	soundEffectLibrary.emplace(std::make_pair(name, theSound));
 		return true;
 	

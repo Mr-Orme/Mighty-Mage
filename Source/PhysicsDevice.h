@@ -4,7 +4,7 @@
 
 #include "ContactListener.h"
 #include "Box2D.h"
-
+#include "Initializers.h"
 class GameObject;
 class Box2DDebugDraw;
 class ResourceManager;
@@ -21,9 +21,7 @@ public:
 
 	bool createFixture
 		(
-		GameObject* object,
-		PhysicsStats physics,
-			ObjectFactory::Presets presets
+		GameObject* object, BodyPresets presets
 		);
 
 	bool SetTransform(GameObject* object, Vector2D position, float angle);

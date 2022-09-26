@@ -1,6 +1,6 @@
 #include "ComponentsList.h"
 #include "GameObject.h"
-
+#include "Definitions.h"
 
 GameObject::GameObject(){}
 
@@ -14,7 +14,7 @@ GameObject::~GameObject()
 	//the renderer component needs to be initialized first because the body component depends on it
 	//It's initialization method has a check to see if it is already initialized 
 	//so that when we go through all the components and initialize them in the next step, it won't do it again.
-bool GameObject::initialize(ObjectFactory::Presets& presets)
+bool GameObject::initialize(ObjectFactoryPresets& presets)
 //**************************************
 {
 	setType(presets.objectType);

@@ -10,7 +10,8 @@
 class Component;
 class GameObject;
 class GraphicsDevice;
-	
+class ResourceManager;
+
 class ComponentAssetLibrary{
 public:
 	enum class Components

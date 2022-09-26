@@ -1,17 +1,22 @@
+#include <memory>
+#include <vector>
+
 #include "GhostComponent.h"
+#include "Definitions.h"
 #include "GameObject.h"
+#include "ResourceManager.h"
 GhostComponent::GhostComponent(GameObject* owner, ResourceManager* devices)
 	:Component(owner, devices){}
 
 GhostComponent::~GhostComponent(){}
 
-bool GhostComponent::initialize(ObjectFactory::Presets& presets)
+bool GhostComponent::initialize(ObjectFactoryPresets& presets)
 {
 	ghostDirection = presets.gDirection;
 	return true;
 }
 
-bool GhostComponent::canPass(BodyComponent::Direction direction) const
+bool GhostComponent::canPass(Direction direction) const
 {
 	if (const auto canGo{ ghostDirection.find(direction) }; canGo != ghostDirection.end())
 	{

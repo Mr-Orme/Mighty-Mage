@@ -169,12 +169,7 @@ Vector2D PhysicsDevice::GetVelocity(GameObject* object)
 //**************************************
 //Creates a body and fixture for a passed in object
 //based on passed in values
-bool PhysicsDevice::createFixture
-	(
-	GameObject* object,
-	PhysicsStats physics,
-		ObjectFactory::Presets presets
-	)
+bool PhysicsDevice::createFixture(GameObject* object, BodyPresets presets)
 //**************************************
 {
 	RendererComponent* compRenderer{ object->getComponent<RendererComponent>() };
@@ -192,15 +187,15 @@ bool PhysicsDevice::createFixture
 	
 
 	//set body type
-	switch (physics.bodyType)
+	switch (presets.physics.bodyType)
 	{
-	case PhysicsStats::BodyType::staticBody:
+	case BodyType::Static:
 		bd -> type = b2_staticBody;
 		break;
-	case PhysicsStats::BodyType::kinematic:
+	case BodyType::Kinematic:
 		bd -> type = b2_kinematicBody;
 		break;
-	case PhysicsStats::BodyType::dynamic:
+	case BodyType::Dynamic:
 		bd -> type = b2_dynamicBody;
 		break;
 	}
@@ -221,18 +216,18 @@ bool PhysicsDevice::createFixture
 	b2Body* body = world -> CreateBody(bd);
 
 	//Set damping values on the body
-	body -> SetAngularDamping(physics.angularDamping);
-	body -> SetLinearDamping(physics.linearDamping);
+	body -> SetAngularDamping(presets.physics.angularDamping);
+	body -> SetLinearDamping(presets.physics.linearDamping);
 
 	//Set fixture's shape
-	switch (physics.objectShape)
+	switch (presets.physics.bodyShape)
 	{
-	case PhysicsStats::BodyShape::rectangle:
+	case BodyShape::Rectangle:
 		//rectangle's dimensions
 		pShape.SetAsBox(RW2PW(compRenderer -> getTexture() -> getDimensions().x/2.0f), RW2PW(compRenderer -> getTexture() -> getDimensions().y/2.0f));
 		shapefd.shape = &pShape;
 		break;
-	case PhysicsStats::BodyShape::circle:
+	case BodyShape::Circle:
 		//circle radius based on object's width.
 		float width = compRenderer -> getTexture() -> getDimensions().x/2.0f;
 		float height = compRenderer -> getTexture() -> getDimensions().y/2.0f;
@@ -244,14 +239,14 @@ bool PhysicsDevice::createFixture
 	}
 
 	//set fixture values based on passed in values.
-	shapefd.density = physics.density;
-	shapefd.friction = physics.friction;
-	shapefd.restitution = physics.restitution;
+	shapefd.density = presets.physics.density;
+	shapefd.friction = presets.physics.friction;
+	shapefd.restitution = presets.physics.restitution;
 
 	//create the fixture on the body.
 	body -> CreateFixture(&shapefd);
 	//body -> SetActive(physics.physicsOn);
-	body->SetEnabled(physics.physicsOn);
+	body->SetEnabled(presets.physics.physicsOn);
 	return true;
 	
 }
@@ -337,8 +332,8 @@ Vector2D PhysicsDevice::PV2GV(b2Vec2 physicsVec)
 //**************************************
 {
 	Vector2D temp;
-	temp.x = PW2RW(physicsVec.x);
-	temp.y = PW2RW(physicsVec.y);
+	temp.x = (int)PW2RW(physicsVec.x);
+	temp.y = (int)PW2RW(physicsVec.y);
 	return temp;
 }
 

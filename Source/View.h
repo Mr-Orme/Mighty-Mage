@@ -1,7 +1,7 @@
 #ifndef VIEW_H
 #define VIEW_H
 
-
+#include "Vector2D.h"
 class BodyComponent;
 
 class View{

@@ -2,7 +2,9 @@
 #include "ComponentsList.h"
 #include "FrameCounter.h"
 #include "Timer.h"
-
+#include "Definitions.h"
+#include "GameObject.h"
+#include "Initializers.h"
 Game::Game()
 {}
 
@@ -31,7 +33,7 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 	devices = std::make_unique<ResourceManager>(screenDimensions, assetConfigFile);
 	frameTimer = std::make_unique<Timer>(devices->GetFPS());
 	///Get a few things ready
-	ObjectFactory::Presets presets;
+	ObjectFactoryPresets presets;
 	presets.devices = devices.get();
 	ObjectFactory* objectFactory = devices->GetObjectFactory();
 
@@ -56,10 +58,10 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 
 	//Size, in pixels, of one square in the game space
 	int squareDimension = 110;
-	presets.position.x = 0;
-	presets.position.y = 0;
+	presets.bodyInitializers.position.x = 0;
+	presets.bodyInitializers.position.y = 0;
 	//keeps track of the game square we are currently on.
-	Vector2D squarePosition = { presets.position.x, presets.position.y };
+	Vector2D squarePosition = { presets.bodyInitializers.position.x, presets.bodyInitializers.position.y };
 
 	//========================================
 	//Add level elements to object array
@@ -81,7 +83,7 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 				//grab the x value, this is the "Square" of the map where it is located.
 				squareElement->QueryFloatAttribute("x", &temp);
 				//translate to pixel positoin for Graphics Device
-				presets.position.x = (int)((temp *squareDimension) + squarePosition.x);
+				presets.bodyInitializers.position.x = (int)((temp *squareDimension) + squarePosition.x);
 
 				//grab the y value
 				squareElement->QueryFloatAttribute("y", &temp);
@@ -90,10 +92,10 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 				float fractPart, intPart;
 				fractPart = modff(temp, &intPart);
 				//The SDL top starts at 0, Our map is reversed, so we need to subtract the integer part from 15 and add back on the fractinal part.
-				presets.position.y = (int)((((15 - intPart) + fractPart) * squareDimension) + squarePosition.y);
+				presets.bodyInitializers.position.y = (int)((((15 - intPart) + fractPart) * squareDimension) + squarePosition.y);
 
 				//grab the angle
-				squareElement->QueryFloatAttribute("angle", &presets.angle);
+				squareElement->QueryFloatAttribute("angle", &presets.bodyInitializers.angle);
 
 				//adjusts where we start the level based on the player's position
 				//and puts the player in the middle of the screen.
@@ -104,13 +106,13 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 					int halfWidth = devices->GetGraphicsDevice()->getScreenDimensions().x / 2;
 					int halfHeight = devices->GetGraphicsDevice()->getScreenDimensions().y / 2;
 					// sets the top left corenr of the map
-					squarePosition.x = presets.position.x*(-1) + halfWidth;
-					squarePosition.y = presets.position.y*(-1) + halfHeight;
+					squarePosition.x = presets.bodyInitializers.position.x*(-1) + halfWidth;
+					squarePosition.y = presets.bodyInitializers.position.y*(-1) + halfHeight;
 					//Keep track of that corner.
 					devices->SetCityCorner(squarePosition);
 					//puts the player in the middle of the screen.
-					presets.position.x = halfWidth;
-					presets.position.y = halfHeight;
+					presets.bodyInitializers.position.x = halfWidth;
+					presets.bodyInitializers.position.y = halfHeight;
 				}
 				//Create a pointer to a new object and initialize it.
 			
@@ -122,14 +124,14 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 				if (presets.objectType == "Trapdoor") devices->setExit(objects.back().get());
 
 				//make sure presests is ready for loading the level
-				presets.position = squarePosition;
+				presets.bodyInitializers.position = squarePosition;
 
 			}
 			else
 			{
 				//reset ghost direction map
 				presets.gDirection.clear();
-				presets.angle = 0;
+				presets.bodyInitializers.angle = 0;
 				//***********TOP WALL**********************
 				std::string top;
 				//WHat type of wall is on top
@@ -165,7 +167,7 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 				//***********LEFT WALL**********************
 				//left wall starts below the top wall which is 10 pixels tall.
 				presets.gDirection.clear();
-				presets.position.y += 10;
+				presets.bodyInitializers.position.y += 10;
 				//grab left wall
 				std::string left;
 				squareElement->QueryStringAttribute("left", &left);
@@ -202,7 +204,7 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 				//we are already 10 down, now move 10 over to position the floor tile not covering
 				//any other tiles.
 				presets.gDirection.clear();
-				presets.position.x += 10;
+				presets.bodyInitializers.position.x += 10;
 				std::string floor;
 				squareElement->QueryStringAttribute("floor", &floor);
 				if (floor == "wall")
@@ -228,9 +230,9 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 				}
 				//***************************************
 				//move x to next square to the right (we already moved ten in the code above).
-				presets.position.x += squareDimension - 10;
+				presets.bodyInitializers.position.x += squareDimension - 10;
 				//move back up to top of square
-				presets.position.y -= 10;
+				presets.bodyInitializers.position.y -= 10;
 
 			}
 			//Next square to the right
@@ -240,9 +242,9 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 		//get next row
 		rowElement = rowElement->NextSiblingElement();
 		//move x to beginning of row
-		presets.position.x = devices->GetCityCorner().x;
+		presets.bodyInitializers.position.x = devices->GetCityCorner().x;
 		//only move a row down if we are doing rows, not extras.
-		if (label != "Extras") presets.position.y += 110;
+		if (label != "Extras") presets.bodyInitializers.position.y += 110;
 	} while (rowElement);
 
 	devices->GetSoundDevice()->SetBackground("main");
@@ -258,7 +260,7 @@ bool Game::run()
 {
 	FrameCounter::incrementFrame();
 	//check to see if we have quit;
-	if (devices->GetInputDevice()->GetEvent(Event::quit) == true)
+	if (devices->GetInputDevice()->isPressed(InputDevice::Inputs::quit))
 	{
 		return false;
 	}

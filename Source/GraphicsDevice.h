@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <memory>
 
 #include "SDL.h"
 #include "SDL_image.h"
@@ -11,23 +12,12 @@
 #include "SDL2_gfxPrimitives.h"
 
 #include "Vector2D.h"
-#include "BodyComponent.h"
+#include "Definitions.h"
 class View;
 class RendererComponent;
 class Texture;
-struct RGBA
-{
-	int R;
-	int G;
-	int B;
-	int A;
-};
-struct Notice
-{
-	Vector2D square;
-	BodyComponent::Direction direction;
-	std::string text;
-};
+
+
 class GraphicsDevice
 {		
 public:
@@ -70,7 +60,7 @@ public:
 	//TODO::get rid of getRenderer.... Maybe pass in texture?
 	SDL_Renderer* getRenderer() { return renderer; }
 	Vector2D getScreenDimensions() { return screenDimensions; }
-	View* getView(){return view.get(); }
+	View* getView();
 	
 	//Setters
 	bool setFont(std::string path, int size, RGBA color);
@@ -78,7 +68,7 @@ public:
 
 
 private:
-	float center(float centerOn, float width);
+	int center(int centerOn, int width);
 	//Parameters
 	const Vector2D screenDimensions{};
 

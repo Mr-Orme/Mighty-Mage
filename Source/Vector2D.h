@@ -18,11 +18,8 @@
 const float Pi = 3.14159f;
 struct Vector2D
 {
-	int x;
-	int y;
-
-	Vector2D() :x(0.0), y(0.0) {}
-	Vector2D(float a, float b) :x(a), y(b) {}
+	int x{ 0 };
+	int y{ 0 };
 
 	//sets x and y to zero
 	void Zero() { x = 0.0; y = 0.0; }
@@ -80,7 +77,7 @@ struct Vector2D
 		
 		return *this;
 	}
-	Vector2D& operator++(int)
+	Vector2D operator++(int)
 	{
 		Vector2D temp = *this;
 		++* this;
@@ -196,7 +193,7 @@ inline int Vector2D::Sign(const Vector2D& v2)const
 //------------------------------------------------------------------------
 inline Vector2D Vector2D::Perp()const
 {
-	return Vector2D(-y, x);
+	return { -y, x };
 }
 
 //------------------------------ Distance --------------------------------
@@ -205,8 +202,8 @@ inline Vector2D Vector2D::Perp()const
 //------------------------------------------------------------------------
 inline float Vector2D::Distance(const Vector2D &v2)const
 {
-	float ySeparation = v2.y - y;
-	float xSeparation = v2.x - x;
+	int ySeparation{ v2.y - y };
+	int xSeparation{ v2.x - x };
 
 	return sqrt(ySeparation*ySeparation + xSeparation * xSeparation);
 }
@@ -254,7 +251,7 @@ inline void Vector2D::Reflect(const Vector2D& norm)
 //------------------------------------------------------------------------
 inline Vector2D Vector2D::GetReverse()const
 {
-	return Vector2D(-this->x, -this->y);
+	return { -this->x, -this->y };
 }
 
 
@@ -280,7 +277,7 @@ inline Vector2D Vec2DNormalize(const Vector2D &v)
 {
 	Vector2D vec = v;
 
-	float vector_length = vec.Length();
+	int vector_length = (int)vec.Length();
 
 	if (vector_length > std::numeric_limits<float>::epsilon())
 	{
@@ -304,8 +301,8 @@ inline float Vec2DDistance(const Vector2D &v1, const Vector2D &v2)
 inline float Vec2DDistanceSq(const Vector2D &v1, const Vector2D &v2)
 {
 
-	float ySeparation = v2.y - v1.y;
-	float xSeparation = v2.x - v1.x;
+	int ySeparation = v2.y - v1.y;
+	int xSeparation = v2.x - v1.x;
 
 	return ySeparation * ySeparation + xSeparation * xSeparation;
 }
@@ -387,7 +384,7 @@ inline Vector2D operator+(const Vector2D &lhs, const Vector2D &rhs)
 }
 
 //overload the / operator
-inline Vector2D operator/(const Vector2D &lhs, float val)
+inline Vector2D operator/(const Vector2D &lhs, int val)
 {
 	Vector2D result(lhs);
 	result.x /= val;
@@ -402,13 +399,13 @@ inline Vector2D operator/(const Vector2D &lhs, float val)
 //treats a window as a toroid
 inline void WrapAround(Vector2D &pos, int MaxX, int MaxY)
 {
-	if (pos.x > MaxX) { pos.x = 0.0; }
+	if (pos.x > MaxX) { pos.x = 0; }
 
 	if (pos.x < 0) { pos.x = (float)MaxX; }
 
 	if (pos.y < 0) { pos.y = (float)MaxY; }
 
-	if (pos.y > MaxY) { pos.y = 0.0; }
+	if (pos.y > MaxY) { pos.y = 0; }
 }
 
 //returns true if the point p is not inside the region defined by top_left

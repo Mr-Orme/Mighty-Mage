@@ -5,18 +5,18 @@ InputDevice::InputDevice():
 	event(std::make_unique<SDL_Event>())
 {
 	if (!event) {
-		printf("SDL Event could not initialize!");
+		printf("SDL Inputs could not initialize!");
 		exit(1);
 	}
 
-	keyStates[Event::down] = false;
-	keyStates[Event::up] = false;
-	keyStates[Event::left] = false;
-	keyStates[Event::right] = false;
-	keyStates[Event::space] = false;
-	keyStates[Event::quit] = false;
-	keyStates[Event::shift] = false;
-	keyStates[Event::key_b] = false;
+	keyStates[Inputs::down] = false;
+	keyStates[Inputs::up] = false;
+	keyStates[Inputs::left] = false;
+	keyStates[Inputs::right] = false;
+	keyStates[Inputs::space] = false;
+	keyStates[Inputs::quit] = false;
+	keyStates[Inputs::shift] = false;
+	keyStates[Inputs::key_b] = false;
 	update();
 }
 
@@ -25,12 +25,12 @@ InputDevice::InputDevice():
 void InputDevice::update()
 //**************************************
 {
-	Event gEvent;
+	Inputs gEvent;
 	
 	if(SDL_PollEvent(event.get()))
 	{
 		gEvent = Translate(event.get());
-		if (gEvent != Event::NA)
+		if (gEvent != Inputs::NA)
 		{
 			//updates the proper key state based on the event that was passed in
 			switch (event->type)
@@ -58,44 +58,44 @@ void InputDevice::update()
 
 //**************************************
 //converts the SDL event to a game event
-Event InputDevice::Translate(SDL_Event* event)
+InputDevice::Inputs InputDevice::Translate(SDL_Event* event)
 //**************************************
 {
 	//This switch is here in case we want to add other events, such as mouse events.
 	switch(event->key.keysym.sym)
 		{
 		case SDLK_LEFT:
-			return Event::left;
+			return Inputs::left;
 			break;
 		case SDLK_RIGHT:
-			return Event::right;
+			return Inputs::right;
 			break;
 		case SDLK_UP:
-			return Event::up;
+			return Inputs::up;
 			break;
 		case SDLK_DOWN:
-			return Event::down;
+			return Inputs::down;
 			break;	
 		case SDLK_SPACE:
-			return Event::space;
+			return Inputs::space;
 			break;
 		case SDLK_RSHIFT:
 		case SDLK_LSHIFT:
-			return Event::shift;
+			return Inputs::shift;
 			break;
 		case SDLK_b:
-			return Event::key_b;
+			return Inputs::key_b;
 			break;
 		}
-	return Event::NA;
+	return Inputs::NA;
 }
 
 //**************************************
 //returns the state of a key
-bool InputDevice::GetEvent(Event event)
+bool InputDevice::isPressed(Inputs key)
 //**************************************
 {
-	return (keyStates.find(event) -> second);
+	return (keyStates.find(key) -> second);
 }
 
 //**************************************

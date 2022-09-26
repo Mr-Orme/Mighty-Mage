@@ -5,7 +5,7 @@
 #include<iostream>
 #include<vector>
 #include "ObjectFactory.h"
-#include "BodyComponent.h"
+#include "Definitions.h"
 
 class Component;
 class GraphicsDevice;
@@ -19,7 +19,7 @@ public:
 
 	enum class Type{player, wall, floor, door, extra};
 
-	bool initialize(ObjectFactory::Presets& presets);
+	bool initialize(ObjectFactoryPresets& presets);
 	void addComponent(std::unique_ptr<Component> component);
 	
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects);
@@ -50,7 +50,7 @@ protected:
 	std::vector<std::unique_ptr<Component>> components;
 
 	Type name{ Type::extra };
-	BodyComponent::Direction direction{ BodyComponent::Direction::N };
+	Direction direction{ Direction::N };
 	GameObject* joinedWith{ nullptr };
 
 };

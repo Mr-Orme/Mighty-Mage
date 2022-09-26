@@ -9,17 +9,18 @@
 class GameObject;
 class InputDevice{
 public:
+	enum class Inputs { NA, up, down, left, right, space, shift, key_b, quit, numEvents };
 	InputDevice();
 	
 	void update();
 	void Print(SDL_Event* event);
 
-	bool GetEvent(Event event);
+	bool isPressed(Inputs key);
 
 private:
-	Event Translate(SDL_Event* event);
+	Inputs Translate(SDL_Event* event);
 	std::unique_ptr<SDL_Event> event;
-	std::map<Event, bool> keyStates;
+	std::map<Inputs, bool> keyStates;
 };
 
 

@@ -12,7 +12,7 @@ HealthComponent::~HealthComponent(){}
 
 //**************************************
 //gets health and resource manager from passed presets, the object starts out alive.
-bool HealthComponent::initialize(ObjectFactory::Presets& presets)
+bool HealthComponent::initialize(ObjectFactoryPresets& presets)
 //**************************************
 {
 	devices = presets.devices;
