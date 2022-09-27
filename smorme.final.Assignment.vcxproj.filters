@@ -87,18 +87,6 @@
     <ClCompile Include="Source\Texture.cpp">
       <Filter>Source Files\Resource Manager\Devices</Filter>
     </ClCompile>
-    <ClCompile Include="Source\tinyxml\tinystr.cpp">
-      <Filter>Source Files\third party\tinyXML</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\tinyxml\tinyxml.cpp">
-      <Filter>Source Files\third party\tinyXML</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\tinyxml\tinyxmlerror.cpp">
-      <Filter>Source Files\third party\tinyXML</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\tinyxml\tinyxmlparser.cpp">
-      <Filter>Source Files\third party\tinyXML</Filter>
-    </ClCompile>
     <ClCompile Include="Source\View.cpp">
       <Filter>Source Files\Resource Manager\Devices</Filter>
     </ClCompile>
@@ -165,6 +153,9 @@
     <ClCompile Include="Source\Vector2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ThirdParty\tinyxml2\tinyxml2.cpp">
+      <Filter>Source Files\third party\tinyXML</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Game.h">
@@ -199,12 +190,6 @@
     </ClInclude>
     <ClInclude Include="Source\View.h">
       <Filter>Header Files\Resource Manager\Devices</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\tinyxml\tinyxml.h">
-      <Filter>Header Files\third party\tinyXML</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\tinyxml\tinystr.h">
-      <Filter>Header Files\third party\tinyXML</Filter>
     </ClInclude>
     <ClInclude Include="Source\InventoryComponent.h">
       <Filter>Header Files\Components</Filter>
@@ -277,6 +262,9 @@
     </ClInclude>
     <ClInclude Include="Source\Initializers.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\tinyxml2\tinyxml2.h">
+      <Filter>Header Files\third party\tinyXML</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

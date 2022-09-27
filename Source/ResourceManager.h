@@ -1,8 +1,6 @@
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
-
-#include "tinyxml\tinyxml.h"
-
+#include "tinyxml2.h"
 #include "GraphicsDevice.h"
 #include "InputDevice.h"
 #include "PhysicsDevice.h"
@@ -25,7 +23,7 @@ public:
 	~ResourceManager();
 
 	//Device Getters
-	GraphicsDevice* GetGraphicsDevice(){return gDevice.get();}
+	GraphicsDevice* GetGraphicsDevice();
 	InputDevice* GetInputDevice(){return iDevice.get();}
 	PhysicsDevice* GetPhysicsDevice(){return pDevice.get();}
 	SoundDevice* GetSoundDevice(){return sDevice.get();}
@@ -61,7 +59,7 @@ public:
 	const int blocksPerMap{ 15 };
 protected:
 	void loadLibraries(std::string assetPath);
-	void populateComponentLibrary(TiXmlElement* asset);
+	void populateComponentLibrary(tinyxml2::XMLElement* asset);
 	//Devices
 	std::unique_ptr<GraphicsDevice> gDevice;
 	std::unique_ptr<InputDevice> iDevice;

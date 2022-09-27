@@ -53,6 +53,10 @@ bool SoundDevice::PlaySound(std::string sound, int numLoops, int channel)
 	}
 	return true;
 }
+bool SoundDevice::stopSounds()
+{
+	return Mix_HaltChannel(-1);
+}
 //**************************************
 //set's the background music to play.
 void SoundDevice::SetBackground(std::string background)

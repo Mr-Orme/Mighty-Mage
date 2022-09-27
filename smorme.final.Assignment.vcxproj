@@ -49,12 +49,9 @@
     <ClCompile Include="Source\Source.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
-    <ClCompile Include="Source\tinyxml\tinystr.cpp" />
-    <ClCompile Include="Source\tinyxml\tinyxml.cpp" />
-    <ClCompile Include="Source\tinyxml\tinyxmlerror.cpp" />
-    <ClCompile Include="Source\tinyxml\tinyxmlparser.cpp" />
     <ClCompile Include="Source\Vector2D.cpp" />
     <ClCompile Include="Source\View.cpp" />
+    <ClCompile Include="ThirdParty\tinyxml2\tinyxml2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\ArtAssetLibrary.h" />
@@ -89,11 +86,10 @@
     <ClInclude Include="Source\ResourceManager.h" />
     <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\Timer.h" />
-    <ClInclude Include="Source\tinyxml\tinystr.h" />
-    <ClInclude Include="Source\tinyxml\tinyxml.h" />
     <ClInclude Include="Source\Vector2D.h" />
     <ClInclude Include="Source\View.h" />
     <ClInclude Include="ThirdParty\Box2D\Box2D\Box2D.h" />
+    <ClInclude Include="ThirdParty\tinyxml2\tinyxml2.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Assets\Config\BasementAssets.xml" />
@@ -160,7 +156,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ProjectDir)Game\</OutDir>
     <IntDir>$(ProjectDir)Temp\</IntDir>
-    <IncludePath>$(ProjectDir)ThirdParty\SDL2_ttf\include;$(ProjectDir)ThirdParty\box2d\include\box2d;$(ProjectDir)ThirdParty\SDL2\include;$(ProjectDir)ThirdParty\SDL2_image\include;$(ProjectDir)ThirdParty\SDL2_gfx;$(ProjectDir)ThirdParty\SDL2_mixer\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ThirdParty\SDL2_ttf\include;$(ProjectDir)ThirdParty\box2d\include\box2d;$(ProjectDir)ThirdParty\SDL2\include;$(ProjectDir)ThirdParty\SDL2_image\include;$(ProjectDir)ThirdParty\SDL2_gfx;$(ProjectDir)ThirdParty\SDL2_mixer\include;$(ProjectDir)ThirdParty\tinyxml2;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)ThirdParty\SDL2_ttf\lib\x86;$(ProjectDir)ThirdParty\box2d\build\bin\Debug;$(ProjectDir)ThirdParty\SDL2\lib\x86;$(ProjectDir)ThirdParty\SDL2_image\lib\x86;$(ProjectDir)ThirdParty\SDL2_gfx\Win32\Debug;$(ProjectDir)ThirdParty\SDL2_mixer\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

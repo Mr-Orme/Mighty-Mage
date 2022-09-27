@@ -82,24 +82,22 @@ void UserInputComponent::dealWithButtonPresses()
 		else
 		{
 			_owner->getComponent<BodyComponent>()->stop();
+			devices->GetSoundDevice()->stopSounds();
 		}
 
-		//Check for left or right buttons
-		// the "turn" variable makes sure we only turn once every time we push the button
+		// the "pressControl" variable makes sure we only turn once every time we push the button
 		if (devices->GetInputDevice()->isPressed(input::right))
 		{
-			//change the angle
 			if (pressControl[input::right])
 			{
 				_owner->getComponent<BodyComponent>()->turnRight();
-				//ensures we only turn once per press
+		
 				pressControl[input::right] = false;
 			}
 		}
 		else pressControl[input::right] = true;
 		if (devices->GetInputDevice()->isPressed(input::left))
 		{
-			//similar to turn right.
 			if (pressControl[input::left])
 			{
 				_owner->getComponent<BodyComponent>()->turnLeft();

@@ -1,5 +1,5 @@
 #include "PhysicsAssetLibrary.h"
-#include "tinyxml\tinyxml.h"
+
 
 //**************************************
 //Finds an item in the library and returns the physics struct

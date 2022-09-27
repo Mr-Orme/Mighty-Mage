@@ -13,6 +13,7 @@ public:
 	
 	bool PlaySound(std::string sound, int numLoops);
 	bool PlaySound(std::string sound, int numLoops, int channel);
+	bool stopSounds();
 	
 	void SetBackground(std::string background);
 	void SetSoundLibrary(SoundAssetLibrary* sLibrary){this -> sLibrary = sLibrary;}

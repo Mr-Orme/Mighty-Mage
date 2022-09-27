@@ -383,9 +383,9 @@ Vector2D PhysicsDevice::AlignCenters(GameObject* object)
 	Texture* texture = object -> getComponent<RendererComponent>() -> getTexture();
 
 		//subtract off half the width.
-		position.x = PW2RW(physPosition.x) - (texture -> getDimensions().x/2);
+		position.x = (int)(PW2RW(physPosition.x) - (texture -> getDimensions().x/2.0f));
 		//subtract off half the height
-		position.y = PW2RW(physPosition.y) - (texture -> getDimensions().y/2);
+		position.y = (int)(PW2RW(physPosition.y) - (texture -> getDimensions().y/2.0f));
 	
 
 	return (position);

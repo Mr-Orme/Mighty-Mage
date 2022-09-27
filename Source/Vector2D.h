@@ -22,20 +22,20 @@ struct Vector2D
 	int y{ 0 };
 
 	//sets x and y to zero
-	void Zero() { x = 0.0; y = 0.0; }
+	void Zero() { x = 0; y = 0; }
 
 	//returns true if both x and y are zero
 	bool isZero()const { return (x*x + y * y) ==0; }
 
 	//returns the length of the vector
-	inline float    Length()const;
+	inline int    Length()const;
 
 	//returns the squared length of the vector (thereby avoiding the sqrt)
-	inline float    LengthSq()const;
+	inline int    LengthSq()const;
 
 	inline void      Normalize();
 
-	inline float    Dot(const Vector2D& v2)const;
+	inline int    Dot(const Vector2D& v2)const;
 
 	//returns positive if v2 is clockwise of this vector,
 	//negative if anticlockwise (assuming the Y axis is pointing down,
@@ -49,10 +49,10 @@ struct Vector2D
 	inline void      Truncate(float max);
 
 	//returns the distance between this vector and th one passed as a parameter
-	inline float    Distance(const Vector2D &v2)const;
+	inline int    Distance(const Vector2D &v2)const;
 
 	//squared version of above.
-	inline float    DistanceSq(const Vector2D &v2)const;
+	inline int    DistanceSq(const Vector2D &v2)const;
 
 	inline void      Reflect(const Vector2D& norm);
 
@@ -60,13 +60,13 @@ struct Vector2D
 	inline Vector2D  GetReverse()const;
 
 
-	float getAngleRadians(const Vector2D & v2)
+	int getAngleRadians(const Vector2D & v2)
 	{
-		return acos(Dot(v2));
+		return (int)acos(Dot(v2));
 	}
-	float getAngleDegrees(const Vector2D & v2)
+	int getAngleDegrees(const Vector2D & v2)
 	{
-		return (float)(getAngleRadians(v2) * 180 / Pi);
+		return getAngleRadians(v2) * 180 / Pi;
 	}
 	//we need some overloaded operators
 
@@ -99,7 +99,7 @@ struct Vector2D
 		return *this;
 	}
 
-	const Vector2D& operator*=(const float& rhs)
+	const Vector2D& operator*=(const int& rhs)
 	{
 		x *= rhs;
 		y *= rhs;
@@ -107,7 +107,7 @@ struct Vector2D
 		return *this;
 	}
 
-	const Vector2D& operator/=(const float& rhs)
+	const Vector2D& operator/=(const int& rhs)
 	{
 		x /= rhs;
 		y /= rhs;
@@ -128,11 +128,11 @@ struct Vector2D
 };
 
 //-----------------------------------------------------------------------some more operator overloads
-inline Vector2D operator*(const Vector2D &lhs, float rhs);
+inline Vector2D operator*(const Vector2D &lhs, int rhs);
 inline Vector2D operator*(float lhs, const Vector2D &rhs);
 inline Vector2D operator-(const Vector2D &lhs, const Vector2D &rhs);
 inline Vector2D operator+(const Vector2D &lhs, const Vector2D &rhs);
-inline Vector2D operator/(const Vector2D &lhs, float val);
+inline Vector2D operator/(const Vector2D &lhs, int val);
 std::ostream& operator<<(std::ostream& os, const Vector2D& rhs);
 std::ifstream& operator>>(std::ifstream& is, Vector2D& lhs);
 
@@ -143,9 +143,9 @@ std::ifstream& operator>>(std::ifstream& is, Vector2D& lhs);
 //
 //  returns the length of a 2D vector
 //------------------------------------------------------------------------
-inline float Vector2D::Length()const
+inline int Vector2D::Length()const
 {
-	return sqrt(x * x + y * y);
+	return (int)sqrt(x * x + y * y);
 }
 
 
@@ -153,7 +153,7 @@ inline float Vector2D::Length()const
 //
 //  returns the squared length of a 2D vector
 //------------------------------------------------------------------------
-inline float Vector2D::LengthSq()const
+inline int Vector2D::LengthSq()const
 {
 	return (x * x + y * y);
 }
@@ -163,7 +163,7 @@ inline float Vector2D::LengthSq()const
 //
 //  calculates the dot product
 //------------------------------------------------------------------------
-inline float Vector2D::Dot(const Vector2D &v2)const
+inline int Vector2D::Dot(const Vector2D &v2)const
 {
 	return x * v2.x + y * v2.y;
 }
@@ -200,12 +200,12 @@ inline Vector2D Vector2D::Perp()const
 //
 //  calculates the euclidean distance between two vectors
 //------------------------------------------------------------------------
-inline float Vector2D::Distance(const Vector2D &v2)const
+inline int Vector2D::Distance(const Vector2D &v2)const
 {
 	int ySeparation{ v2.y - y };
 	int xSeparation{ v2.x - x };
 
-	return sqrt(ySeparation*ySeparation + xSeparation * xSeparation);
+	return (int)sqrt(ySeparation*ySeparation + xSeparation * xSeparation);
 }
 
 
@@ -213,10 +213,10 @@ inline float Vector2D::Distance(const Vector2D &v2)const
 //
 //  calculates the euclidean distance squared between two vectors 
 //------------------------------------------------------------------------
-inline float Vector2D::DistanceSq(const Vector2D &v2)const
+inline int Vector2D::DistanceSq(const Vector2D &v2)const
 {
-	float ySeparation = v2.y - y;
-	float xSeparation = v2.x - x;
+	int ySeparation{ v2.y - y };
+	int xSeparation{ v2.x - x };
 
 	return ySeparation * ySeparation + xSeparation * xSeparation;
 }
@@ -349,7 +349,7 @@ inline float Vec2DLengthSq(const Vector2D& v)
 
 
 //------------------------------------------------------------------------operator overloads
-inline Vector2D operator*(const Vector2D &lhs, float rhs)
+inline Vector2D operator*(const Vector2D &lhs, int rhs)
 {
 	Vector2D result(lhs);
 	result *= rhs;

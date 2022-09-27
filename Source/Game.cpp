@@ -5,6 +5,7 @@
 #include "Definitions.h"
 #include "GameObject.h"
 #include "Initializers.h"
+#include "tinyxml2.h"
 Game::Game()
 {}
 
@@ -35,16 +36,16 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 	///Get a few things ready
 	ObjectFactoryPresets presets;
 	presets.devices = devices.get();
-	ObjectFactory* objectFactory = devices->GetObjectFactory();
+	ObjectFactory* objectFactory{ devices->GetObjectFactory() };
 
 	//========================================
 	//load the files
 	//========================================
-	TiXmlDocument currentLevel(levelConfig);
+	tinyxml2::XMLDocument currentLevel;
 	//if it does not load, the level or the physics did not load.
-	if (!currentLevel.LoadFile()){ return false; };
+	if (!currentLevel.LoadFile(levelConfig.c_str())==tinyxml2::XML_SUCCESS){ return false; };
 	//create a root variable and set to the first element "Level"
-	TiXmlElement* lRoot = currentLevel.FirstChildElement();;
+	tinyxml2::XMLElement* lRoot = currentLevel.FirstChildElement();;
 	//record the level;
 	int iLevel;
 	lRoot->QueryIntAttribute("level", &iLevel);
@@ -53,7 +54,7 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 
 
 	//get the first child element "Row"
-	TiXmlElement* rowElement = lRoot->FirstChildElement();
+	tinyxml2::XMLElement* rowElement = lRoot->FirstChildElement();
 
 
 	//Size, in pixels, of one square in the game space
@@ -69,7 +70,7 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 	do
 	{
 		//get's the first square;
-		TiXmlElement* squareElement = rowElement->FirstChildElement();
+		tinyxml2::XMLElement* squareElement = rowElement->FirstChildElement();
 		//This let's us know if we are doing extras or building actual squares.
 		std::string label = rowElement->Value();
 		do
@@ -133,9 +134,7 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 				presets.gDirection.clear();
 				presets.bodyInitializers.angle = 0;
 				//***********TOP WALL**********************
-				std::string top;
-				//WHat type of wall is on top
-				squareElement->QueryStringAttribute("top", &top);
+				std::string top{ squareElement->Attribute("top") };
 				if (top == "wall")
 				{
 					presets.objectType = "HWall";
@@ -168,9 +167,8 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 				//left wall starts below the top wall which is 10 pixels tall.
 				presets.gDirection.clear();
 				presets.bodyInitializers.position.y += 10;
-				//grab left wall
-				std::string left;
-				squareElement->QueryStringAttribute("left", &left);
+			
+				std::string left{ squareElement->Attribute("left") };
 				//set left wall
 				if (left == "wall")
 				{
@@ -205,8 +203,7 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 				//any other tiles.
 				presets.gDirection.clear();
 				presets.bodyInitializers.position.x += 10;
-				std::string floor;
-				squareElement->QueryStringAttribute("floor", &floor);
+				std::string floor{ squareElement->Attribute("floor") };
 				if (floor == "wall")
 				{
 					presets.objectType = "WallFloor";

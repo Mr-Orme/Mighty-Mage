@@ -13,8 +13,6 @@
 #include "Timer.h"
 
 
-#include "tinyxml\tinyxml.h"
-
 #include <string>
 #include <vector>
 #include <memory>

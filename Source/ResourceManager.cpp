@@ -3,10 +3,10 @@
 #include "ComponentAssetLibrary.h"
 #include "ObjectFactory.h"
 #include "Definitions.h"
-#include "tinyxml\tinyxml.h"
+
 #include "Box2DDebugDraw.h"
 #include "Initializers.h"
-
+#include "tinyxml2.h"
 
 ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPath):
 	factory(std::make_unique<ObjectFactory>()),
@@ -34,6 +34,11 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 ResourceManager::~ResourceManager(){
 }
 
+GraphicsDevice* ResourceManager::GetGraphicsDevice()
+{
+	return gDevice.get();
+}
+
 bool ResourceManager::isExitSquare(Vector2D currSquare) const
 {
 	for (auto square : exits)
@@ -52,12 +57,12 @@ void ResourceManager::loadLibraries(std::string assetPath)
 {
 	
 	//TODO::move to library constructors.
-	TiXmlDocument assetFile(assetPath);
-	if (!assetFile.LoadFile()) { return; };
-	TiXmlElement* assetType = assetFile.FirstChildElement()->FirstChildElement();
+	tinyxml2::XMLDocument assetFile;
+	if (!assetFile.LoadFile(assetPath.c_str()) == tinyxml2::XML_SUCCESS) { return; };
+	tinyxml2::XMLElement* assetType{ assetFile.FirstChildElement()->FirstChildElement() };
 
 	//get first asset
-	TiXmlElement* asset = assetType->FirstChildElement();
+	tinyxml2::XMLElement* asset{ assetType->FirstChildElement() };
 	//add each asset into each library.
 	
 	populateComponentLibrary(asset);
@@ -66,15 +71,16 @@ void ResourceManager::loadLibraries(std::string assetPath)
 	//move to notice section of file
 	assetType = assetType->NextSiblingElement();
 	//grab first notice
-	TiXmlElement* notices = assetType->FirstChildElement();
+	tinyxml2::XMLElement* notices{ assetType->FirstChildElement() };
 	do
 	{
 		//get information from file TODO:: x and y directly in notice
 		Notice notice;
-		std::string direction;
+		
 		notices->QueryIntAttribute("x", &notice.square.x);
 		notices->QueryIntAttribute("y", &notice.square.y);
-		notices->QueryStringAttribute("direction", &direction);
+		std::string direction {notices->Attribute("direction")};
+		
 		notice.text = notices->GetText();
 
 		if (direction == "N") notice.direction = Direction::N;
@@ -94,14 +100,12 @@ void ResourceManager::loadLibraries(std::string assetPath)
 	//move tos ound section of file
 	assetType = assetType->NextSiblingElement();
 	//grab first sound
-	TiXmlElement* sounds = assetType->FirstChildElement();
+	tinyxml2::XMLElement* sounds{ assetType->FirstChildElement() };
 	while (sounds)
 	{
 		//get information from file
-		std::string name;
-		sounds->QueryStringAttribute("name", &name);
-		std::string path;
-		sounds->QueryStringAttribute("path", &path);
+		std::string name{ sounds->Attribute("name") };
+		std::string path{ sounds->Attribute("path") };
 		bool background;
 		sounds->QueryBoolAttribute("background", &background);
 
@@ -128,7 +132,7 @@ void ResourceManager::loadLibraries(std::string assetPath)
 	//***********************************************************
 }
 
-void ResourceManager::populateComponentLibrary(TiXmlElement* asset)
+void ResourceManager::populateComponentLibrary(tinyxml2::XMLElement* asset)
 {
 	do
 	{
@@ -139,7 +143,7 @@ void ResourceManager::populateComponentLibrary(TiXmlElement* asset)
 		std::vector<ComponentAssetLibrary::Components> componentList;
 
 		//move to the components of the xml
-		TiXmlElement* compElement = asset->FirstChildElement();
+		tinyxml2::XMLElement* compElement = asset->FirstChildElement();
 
 		//Add each component to the vector
 		while (compElement)
@@ -163,11 +167,9 @@ void ResourceManager::populateComponentLibrary(TiXmlElement* asset)
 				compElement->QueryFloatAttribute("angularDamping", &physics.angularDamping);
 				compElement->QueryFloatAttribute("linearDamping", &physics.linearDamping);
 				compElement->QueryBoolAttribute("physicsOn", &physics.physicsOn);
-				std::string bodyType;
-				std::string bodyShape;
-				compElement->QueryStringAttribute("bodyType", &bodyType);
-				compElement->QueryStringAttribute("bodyShape", &bodyShape);
-
+				std::string bodyType{ compElement->Attribute("bodyType") };
+				std::string bodyShape{ compElement->Attribute("bodyShape") };
+				
 				//convert strings to enums
 				if (bodyType == "dynamic") { physics.bodyType = BodyType::Dynamic; }
 				else if (bodyType == "staticBody") { physics.bodyType = BodyType::Static; }
