@@ -1,5 +1,4 @@
 #include "Box2DDebugDraw.h"
-#include "SDL2_gfxPrimitives.h"
 #include "ResourceManager.h"
 
 Box2DDebugDraw::Box2DDebugDraw(ResourceManager* devices) :
@@ -22,7 +21,8 @@ void Box2DDebugDraw::DrawPoint(const b2Vec2& p, float size, const b2Color& color
 void Box2DDebugDraw::DrawPolygon(const b2Vec2 *vertices, int32 vertexCount, const b2Color &color)
 {
 	//std::cout <<"Draw Polygon";
-   	SDL_SetRenderDrawColor(gDevice -> getRenderer(),0,0,255,255);
+	gDevice->setDrawColor({ 0,0,255,255 });
+		
 
 	for(int i=0; i<(vertexCount-1); i++) {
 		gDevice->drawLine(
@@ -39,14 +39,14 @@ void Box2DDebugDraw::DrawPolygon(const b2Vec2 *vertices, int32 vertexCount, cons
 	);
 
     //reset color (black)
-    SDL_SetRenderDrawColor(gDevice ->getRenderer(),0,0,0,255);
+	gDevice->setDrawColor({ 0,0,0,255 });
 }
 
 void Box2DDebugDraw::DrawSolidPolygon(const b2Vec2 *vertices, int32 vertexCount, const b2Color &color)
 {
 	//std::cout << "Draw Solid Polygon";
    	// Draw Bound Box Vertices using SDL2 Primitives (Green)
-    SDL_SetRenderDrawColor(gDevice ->getRenderer(),0,255,0,255);
+	gDevice->setDrawColor({ 0,255,0,255 });
 
 	// Draw Bound Box Vertices using SDL2 Primitives
 	for (int i = 0; i < (vertexCount - 1); i++) {
@@ -64,7 +64,7 @@ void Box2DDebugDraw::DrawSolidPolygon(const b2Vec2 *vertices, int32 vertexCount,
 	);
 
     //reset color (black)
-    SDL_SetRenderDrawColor(gDevice ->getRenderer(),0,0,0,255);
+	gDevice->setDrawColor({ 0,0,0,255 });
 }
 
 void Box2DDebugDraw::DrawCircle(const b2Vec2 &center, float radius, const b2Color &color) 

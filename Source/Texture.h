@@ -12,13 +12,13 @@ class Texture {
 public:
 
     Texture(std::string path, GraphicsDevice* gDevice);
-    Texture(SDL_Texture* texture);
+    Texture(SDL_Texture* texture, GraphicsDevice* gDevice);
     ~Texture();
 
     
    
 
-    void run(SDL_Renderer* renderer, Vector2D position, float angle, SDL_Rect* clip = nullptr);
+    void draw(Vector2D position, float angle, Vector2D dimensions = {0,0});
 
     Vector2D getDimensions() { return dimensions; }
 

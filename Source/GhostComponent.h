@@ -17,13 +17,6 @@ public:
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;
 	//TODO::Can I eliminate canPass somehow??
 	bool canPass(Direction) const;
-	//TODO:: remove if not needed
-	/*void addGhostDirection(Direction direction, bool isGhost)
-		{ghostDirection[direction]=isGhost;}
-	void SetGhostDirection(std::map<Direction, bool> ghostDirection)
-		{this -> ghostDirection = ghostDirection;}*/
-
-	
 	
 protected:
 	std::map<Direction, bool> ghostDirection;

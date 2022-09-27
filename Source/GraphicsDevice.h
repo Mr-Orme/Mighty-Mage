@@ -43,8 +43,9 @@ public:
 	void drawFilledCircle(Vector2D position, int radius, RGBA color);
 	bool drawBox(Vector2D topLeft, Vector2D bottomRight, RGBA color);
 	void drawLine(Vector2D start, Vector2D end, RGBA color);
+	void drawSprite(SDL_Texture* texture, Vector2D position, Vector2D dimensions, float angle, Vector2D clipDimensions);
 	
-	
+	void setDrawColor(RGBA color);
 	struct Overlay
 	{
 		Vector2D topLeft;
@@ -57,8 +58,7 @@ public:
 	//TODO::z-order
 	//void reverseOrder();
 
-	//TODO::get rid of getRenderer.... Maybe pass in texture?
-	SDL_Renderer* getRenderer() { return renderer; }
+	SDL_Texture* createTexture(SDL_Surface* surface);
 	Vector2D getScreenDimensions() { return screenDimensions; }
 	View* getView();
 	

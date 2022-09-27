@@ -69,7 +69,7 @@ struct Vector2D
 		return getAngleRadians(v2) * 180 / Pi;
 	}
 	//we need some overloaded operators
-
+	
 	Vector2D& operator++()
 	{
 		x++;

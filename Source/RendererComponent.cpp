@@ -43,7 +43,7 @@ void RendererComponent::run()
 
 void RendererComponent::run(Vector2D position, float angle)
 {
-	texture ->run(devices -> GetGraphicsDevice() -> getRenderer(), position, angle, nullptr);
+	texture ->draw(position, angle);
 }
 
 

@@ -73,8 +73,7 @@ std::unique_ptr<GameObject> BackpackComponent::update(std::vector<std::unique_pt
 	}
 
 	bool BackpackComponent::ToBackpack(std::unique_ptr<GameObject> item)
-	{	//TODO::Remove this when graphics device no longer deals with this.
-		//devices->GetGraphicsDevice()->RemoveSpriteRenderer(item->getComponent<RendererComponent>());
+	{
 		item->getComponent<BodyComponent>()->turnOffPhysics();
 
 		Vector2D screenDimensions{ devices->GetGraphicsDevice()->getScreenDimensions()};

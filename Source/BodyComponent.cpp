@@ -90,7 +90,6 @@ void BodyComponent::moveBackward()
 void BodyComponent::stop()
 {
 	devices->GetPhysicsDevice()->SetLinearVelocity(_owner, { 0,0 });
-	//TODO::stop sound effects here!!
 }
 
 float BodyComponent::getAngle() const

@@ -7,7 +7,7 @@ Texture::Texture(std::string path, GraphicsDevice* gDevice):gDevice(gDevice)
 	load(path);
 }
 
-Texture::Texture(SDL_Texture* texture)
+Texture::Texture(SDL_Texture* texture, GraphicsDevice* gDevice):gDevice(gDevice)
 {
 	load(texture);
 }
@@ -41,7 +41,7 @@ void Texture::load(std::string path )
         SDL_SetColorKey( surface, SDL_TRUE, SDL_MapRGB( surface->format, 255, 0, 255 ) );
 
 		//Create an optimized image
-		texture = SDL_CreateTextureFromSurface(gDevice->getRenderer() , surface);
+		texture = gDevice->createTexture(surface);
      
 		if(texture == nullptr)
 		{
@@ -74,19 +74,9 @@ void Texture::load(SDL_Texture* texture)
 }
 	   
 
-void Texture::run(SDL_Renderer* renderer, Vector2D position, float angle, SDL_Rect* clip)
+void Texture::draw(Vector2D position, float angle, Vector2D clipDimensions)
 {
-
-	//Set rendering space and render to screen
-	SDL_Rect renderQuad = { position.x, position.y, dimensions.x,dimensions.y };
-
-    //Set clip rendering dimensions
-    if( clip != nullptr ){
-        renderQuad.w = clip->w;
-        renderQuad.h = clip->h;
-    }
-
-    //Render to screen
-    SDL_RenderCopyEx(renderer, texture, clip, &renderQuad, angle,nullptr, SDL_FLIP_NONE);
+	gDevice->drawSprite(texture, position, dimensions, angle, clipDimensions);
+	
 
 }

@@ -159,7 +159,7 @@ void GraphicsDevice::drawOverlays()
 		//draw the objects
 		for( auto& object : currOverlay.objects)
 		{
-			object.first ->run(renderer, object.second, 0, nullptr);
+			object.first ->draw(object.second, 0);
 
 		}
 
@@ -188,6 +188,11 @@ void GraphicsDevice::present()
 {
 	SDL_RenderPresent(renderer);
 	notices.clear();
+}
+
+SDL_Texture* GraphicsDevice::createTexture(SDL_Surface* surface)
+{
+	return SDL_CreateTextureFromSurface(renderer, surface);
 }
 
 View* GraphicsDevice::getView()
@@ -265,7 +270,7 @@ void GraphicsDevice::text2Screen(std::string text, Vector2D position)
 	RGBA background = {255, 255, 255, 255};
 	RGBA border = {0, 0, 0, 255};
 
-	notices.push_back(std::make_unique<Texture>(textSheetTexture));
+	notices.push_back(std::make_unique<Texture>(textSheetTexture, this));
 	addOverlay(
 		{ 
 			topLeft, 
@@ -313,6 +318,26 @@ bool GraphicsDevice::drawBox(Vector2D topLeft, Vector2D bottomRight, RGBA color)
 void GraphicsDevice::drawLine(Vector2D start, Vector2D end, RGBA color)
 {
 	lineRGBA(renderer, start.x,start.y,end.x,end.y,color.R, color.G, color.B, color.A);
+}
+
+void GraphicsDevice::drawSprite(SDL_Texture* texture, Vector2D position, Vector2D dimensions, float angle, Vector2D clipDimensions)
+{
+	//Set rendering space and render to screen
+	SDL_Rect renderQuad { position.x, position.y, dimensions.x,dimensions.y };
+
+	//Set clip rendering dimensions
+	if (clipDimensions != Vector2D{ 0, 0 }) {
+		renderQuad.w = clipDimensions.x;
+		renderQuad.h = clipDimensions.y;
+	}
+	
+	//Render to screen
+	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, angle, nullptr, SDL_FLIP_NONE);
+}
+
+void GraphicsDevice::setDrawColor(RGBA color)
+{
+	SDL_SetRenderDrawColor(renderer, color.R, color.G, color.B, color.A);
 }
 
 void GraphicsDevice::addOverlay(Overlay overlay )
