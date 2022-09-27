@@ -12,8 +12,8 @@ class ResourceManager;
 
 class PhysicsDevice{
 public:
-	//TODO::make Vector2D
-	PhysicsDevice(float gravityX, float gravityY, ResourceManager* devices);
+
+	PhysicsDevice(Vector2D gravity, ResourceManager* devices);
 
 	bool Update(float dt);
 

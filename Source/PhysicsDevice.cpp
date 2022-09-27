@@ -8,12 +8,12 @@
 #include <cmath>
 
 
-PhysicsDevice::PhysicsDevice(float gravityX, float gravityY, ResourceManager* devices):
-	gravity(RW2PW(gravityX), RW2PW(gravityY)),
+PhysicsDevice::PhysicsDevice(Vector2D gravity, ResourceManager* devices):
+	gravity(RW2PW(gravity.x), RW2PW(gravity.y)),
 	debugDrawer(std::make_unique<Box2DDebugDraw>(devices)),
 	listner(std::make_unique<ContactListener>())
 {
-	world =std::make_unique<b2World>(gravity);
+	world =std::make_unique<b2World>(this->gravity);
 	world->SetContactListener(listner.get());
 
 	debugDrawer->SetFlags(b2Draw::e_shapeBit | b2Draw::e_aabbBit);  //Turn on shape (red color) and aabb (green) 

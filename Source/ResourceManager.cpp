@@ -20,7 +20,7 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 
 	RGBA fontColor{ 0, 0, 0, 255 };
 	gDevice = std::make_unique<GraphicsDevice>(screenDimensions, "./Assets/Fonts/impact.ttf", 16, fontColor);
-	pDevice = std::make_unique<PhysicsDevice>(0.0f, 0.0f, this);
+	pDevice = std::make_unique<PhysicsDevice>(Vector2D{ 0,0 }, this);
 
 	sLibrary = std::make_unique<SoundAssetLibrary>();
 	sDevice = std::make_unique<SoundDevice>(sLibrary.get());
