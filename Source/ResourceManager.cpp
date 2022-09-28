@@ -104,7 +104,8 @@ void ResourceManager::loadLibraries(std::string assetPath)
 	while (sounds)
 	{
 		//get information from file
-		std::string name{ sounds->Attribute("name") };
+		int sound{ };
+		sounds->QueryIntAttribute("name", &sound);
 		std::string path{ sounds->Attribute("path") };
 		bool background;
 		sounds->QueryBoolAttribute("background", &background);
@@ -112,7 +113,7 @@ void ResourceManager::loadLibraries(std::string assetPath)
 		//add to library based on whether it is background music or not.
 		if (background)
 		{
-			sLibrary->addBackgroundMusic(name, path);
+			sLibrary->addBackgroundMusic((Locations)sound, path);
 		}
 		else
 		{
@@ -122,7 +123,7 @@ void ResourceManager::loadLibraries(std::string assetPath)
 			{
 				duration = FPS * duration;
 			}
-			sLibrary->addSoundEffect(name, path, (int)duration);
+			sLibrary->addSoundEffect((SoundEffect::Event)sound, path, (int)duration);
 		}
 		sounds = sounds->NextSiblingElement();
 	}

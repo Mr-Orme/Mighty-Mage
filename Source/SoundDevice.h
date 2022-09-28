@@ -3,6 +3,7 @@
 
 
 #include "SDL_Mixer.h"
+#include "SoundAssetLibrary.h"
 #include <string>
 
 class SoundAssetLibrary;
@@ -11,11 +12,10 @@ public:
 	~SoundDevice();
 	SoundDevice(SoundAssetLibrary* sLibrary);
 	
-	bool PlaySound(std::string sound, int numLoops);
-	bool PlaySound(std::string sound, int numLoops, int channel);
+	bool PlaySound(SoundEffect::Event sound, int numLoops, int channel=-1);
 	bool stopSounds();
 	
-	void SetBackground(std::string background);
+	void SetBackground(Locations location);
 	void SetSoundLibrary(SoundAssetLibrary* sLibrary){this -> sLibrary = sLibrary;}
 	
 

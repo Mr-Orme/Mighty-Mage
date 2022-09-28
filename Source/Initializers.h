@@ -96,11 +96,11 @@ struct UserInputPresets
 };
 struct SteeringPresets
 {
-	enum TargetType { setVector, mouse };
+	enum class TargetType { setVector, mouse };
 	bool createSteering{ false };
 	bool seek{ false };
 	bool arrive{ false };
-	TargetType type;
+	TargetType type{ TargetType::mouse };
 	Vector2D staticTargetVector;
 	ResourceManager* devices;
 };

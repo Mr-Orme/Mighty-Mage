@@ -97,10 +97,10 @@
 		<Notice x="14" y="0" direction = "W">You have broken the wizard's ward, you may descend!</Notice>
 	</Notices>
 	<Sounds>
-    <Sound name="found" path="./Assets/Sounds/found.ogg" duration="0" background="false"/>
-    <Sound name="walking" path="./Assets/Sounds/walking.ogg" duration=".85" background="false"/>
-    <Sound name="run" path="./Assets/Sounds/walking.ogg" duration=".6" background="false"/>
-    <Sound name="wall" path="./Assets/Sounds/wall.ogg" duration=".4" background="false"/>
-		<Sound name="main" path="./Assets/Sounds/main.ogg" background="true"/>
+    <Sound name="3" path="./Assets/Sounds/found.ogg" duration="0" background="false"/>
+    <Sound name="0" path="./Assets/Sounds/walking.ogg" duration=".85" background="false"/>
+    <Sound name="1" path="./Assets/Sounds/walking.ogg" duration=".6" background="false"/>
+    <Sound name="2" path="./Assets/Sounds/wall.ogg" duration=".4" background="false"/>
+		<Sound name="0" path="./Assets/Sounds/main.ogg" background="true"/>
 	</Sounds>
 </Main>

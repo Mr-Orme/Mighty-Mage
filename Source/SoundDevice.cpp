@@ -30,17 +30,8 @@ SoundDevice::SoundDevice(SoundAssetLibrary* sLibrary):sLibrary(sLibrary)
 }
 
 //**************************************
-//plays a sound for a number of loops, must be in the sound library.
-bool SoundDevice::PlaySound(std::string sound, int numLoops)
-//**************************************
-{
-	int channelID = -1; //Select first available channel
-	PlaySound(sound, numLoops, channelID);
-	return true;
-}
-//**************************************
 //same as above, but here we can specify a channel to play the sound on.
-bool SoundDevice::PlaySound(std::string sound, int numLoops, int channel)
+bool SoundDevice::PlaySound(SoundEffect::Event sound, int numLoops, int channel)
 //**************************************
 {
 	auto& [theSound, timeBetweenPlays, lastPlayed] = sLibrary->searchSoundEffects(sound);
@@ -58,10 +49,10 @@ bool SoundDevice::stopSounds()
 }
 //**************************************
 //set's the background music to play.
-void SoundDevice::SetBackground(std::string background)
+void SoundDevice::SetBackground(Locations location)
 //**************************************
 {
 	Mix_VolumeMusic((int)(0.5f * MIX_MAX_VOLUME));
-	if(Mix_PlayMusic(sLibrary -> searchMusic(background), -1) == -1)
+	if(Mix_PlayMusic(sLibrary -> searchMusic(location), -1) == -1)
 	{printf("Mix_PlayMusic: %s\n", Mix_GetError());}
 }

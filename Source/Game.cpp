@@ -244,7 +244,7 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 		if (label != "Extras") presets.bodyInitializers.position.y += 110;
 	} while (rowElement);
 
-	devices->GetSoundDevice()->SetBackground("main");
+	devices->GetSoundDevice()->SetBackground(Locations::sorpigal);
 
 	return true;
 }

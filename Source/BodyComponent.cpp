@@ -176,6 +176,6 @@ void BodyComponent::linearMovement(Way direction)
 	if (abs(velocity.x) > 1 || abs(velocity.y) > 1)
 	{
 		//play walking sound
-		devices->GetSoundDevice()->PlaySound(walkSound, 0, 1);
+		devices->GetSoundDevice()->PlaySound(SoundEffect::Event::walk, 0, 1);
 	}
 }

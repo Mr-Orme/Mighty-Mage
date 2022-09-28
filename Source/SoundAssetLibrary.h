@@ -3,32 +3,31 @@
 
 #include <map>
 #include <string>
-
-
-#include "SoundDevice.h"
-//TODO::SoundEffects have a time between plays!
+#include "SDL_Mixer.h"
+#include "Definitions.h"
 struct SoundEffect
 {
+	enum class Event { walk, run, hitWall, pickup, background };
 	Mix_Chunk* sound{ nullptr };
 	unsigned int timeBetweenPlays{ 0 };
 	unsigned int lastPlayed{ 0 };
 };
+
+
 class SoundAssetLibrary{
 public:
 	SoundAssetLibrary();
 	~SoundAssetLibrary();
-		
+			
 	//TODO::reduce the reliance on strings in these libraries..
-	SoundEffect& searchSoundEffects(std::string name);
-	Mix_Music* searchMusic(std::string name);
-	bool addSoundEffect(std::string name, std::string path, int timeBetweenPlays=0);
-	bool addBackgroundMusic(std::string name, std::string path);
-	bool removeAsset(std::string name);
+	SoundEffect& searchSoundEffects(SoundEffect::Event event);
+	Mix_Music* searchMusic(Locations location);
+	bool addSoundEffect(SoundEffect::Event event, std::string path, int timeBetweenPlays=0);
+	bool addBackgroundMusic(Locations location, std::string path);
+	
 private:
-	std::map<std::string, SoundEffect > soundEffectLibrary;
-	std::map<std::string, Mix_Music* > musicLibrary;
-	//SoundDevice* sDevice{nullptr};
-
+	std::map<SoundEffect::Event, SoundEffect > soundEffectLibrary;
+	std::map<Locations, Mix_Music* > musicLibrary;
 };
 
 
