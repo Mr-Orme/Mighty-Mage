@@ -17,13 +17,7 @@ public:
 	UserInputComponent(GameObject* owner, ResourceManager* devices);
 	~UserInputComponent();
 	
-	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;
-	
-	
-	//TODO::This should not be here....
-	void collidingWithWall(bool wallHit){this -> wallHit = wallHit;}
-
-	
+	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;	
 
 protected:
 	void displayNotices();
@@ -32,8 +26,7 @@ protected:
 	int frameCount{ 0 };
 
 	std::map<InputDevice::Inputs, bool> pressControl;
-	bool wallHit{ false };
-	bool noWall{ true };
+
 
 	
 };

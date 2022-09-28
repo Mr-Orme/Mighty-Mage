@@ -12,7 +12,7 @@ SoundDevice::SoundDevice(SoundAssetLibrary* sLibrary):sLibrary(sLibrary)
 	int flags = MIX_INIT_OGG;
 	int initted = Mix_Init(flags);
 
-	if (initted & flags != flags)
+	if ((initted & flags) != flags)
 	{
 		printf("Mix_Init: Failed to init required ogg and mod support!\n");
 		printf("Mix_Init: %s\n", Mix_GetError());
@@ -43,7 +43,6 @@ bool SoundDevice::PlaySound(std::string sound, int numLoops)
 bool SoundDevice::PlaySound(std::string sound, int numLoops, int channel)
 //**************************************
 {
-	//TODO::update timer to allow for time passed on these..
 	auto& [theSound, timeBetweenPlays, lastPlayed] = sLibrary->searchSoundEffects(sound);
 	
 	if (FrameCounter::framesSince(lastPlayed) > timeBetweenPlays)
@@ -62,7 +61,7 @@ bool SoundDevice::stopSounds()
 void SoundDevice::SetBackground(std::string background)
 //**************************************
 {
-	Mix_VolumeMusic(.5 * MIX_MAX_VOLUME);
+	Mix_VolumeMusic((int)(0.5f * MIX_MAX_VOLUME));
 	if(Mix_PlayMusic(sLibrary -> searchMusic(background), -1) == -1)
 	{printf("Mix_PlayMusic: %s\n", Mix_GetError());}
 }

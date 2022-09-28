@@ -37,7 +37,6 @@ public:
 	void present();
 
 	void text2Screen(std::string text, Vector2D position);
-	void text2Screen(std::string text, float x, float y);
 	void notice2Screen(std::string text);
 
 	void drawFilledCircle(Vector2D position, int radius, RGBA color);

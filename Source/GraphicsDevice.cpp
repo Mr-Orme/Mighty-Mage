@@ -281,15 +281,7 @@ void GraphicsDevice::text2Screen(std::string text, Vector2D position)
 		});
 
 }
-//**************************************
-//adds text to be displayed to the text vector pased on a string and position
-//this one let's us directly type the position's values
-void GraphicsDevice::text2Screen(std::string text, float x, float y)
-//**************************************
-{
-	Vector2D position ={x,y};
-	text2Screen(text, position);
-}
+
 
 //**************************************
 //a notice appears in the inventory bar at the bottom of the screen.

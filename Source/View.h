@@ -13,7 +13,6 @@ public:
 	bool Update(float gameTime);
 	void Print();
 	void borderDectection(Vector2D position);
-	//TODO:: rename. relative vs actual?
 	Vector2D relativePosition(Vector2D position);
 	Vector2D getViewingWindowPosition(){return position;}
 

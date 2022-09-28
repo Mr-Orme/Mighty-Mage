@@ -66,7 +66,7 @@ struct Vector2D
 	}
 	int getAngleDegrees(const Vector2D & v2)
 	{
-		return getAngleRadians(v2) * 180 / Pi;
+		return (int)(getAngleRadians(v2) * 180 / Pi);
 	}
 	//we need some overloaded operators
 	
@@ -103,6 +103,13 @@ struct Vector2D
 	{
 		x *= rhs;
 		y *= rhs;
+
+		return *this;
+	}
+	const Vector2D& operator*=(const float& rhs)
+	{
+		x = (int)(x * rhs);
+		y = (int)(y * rhs);
 
 		return *this;
 	}
@@ -261,12 +268,12 @@ inline Vector2D Vector2D::GetReverse()const
 //------------------------------------------------------------------------
 inline void Vector2D::Normalize()
 {
-	float vector_length = this->Length();
+	int vector_length = this->Length();
 
-	if (vector_length > std::numeric_limits<float>::epsilon())
+	if (vector_length > std::numeric_limits<int>::epsilon())
 	{
-		this->x /= vector_length;
-		this->y /= vector_length;
+		this->x = (int)(this->x / vector_length);
+		this->y = (int)(this->y / vector_length);
 	}
 }
 
@@ -289,16 +296,16 @@ inline Vector2D Vec2DNormalize(const Vector2D &v)
 }
 
 
-inline float Vec2DDistance(const Vector2D &v1, const Vector2D &v2)
+inline double Vec2DDistance(const Vector2D &v1, const Vector2D &v2)
 {
 
-	float ySeparation = v2.y - v1.y;
-	float xSeparation = v2.x - v1.x;
+	int ySeparation = v2.y - v1.y;
+	int xSeparation = v2.x - v1.x;
 
 	return sqrt(ySeparation*ySeparation + xSeparation * xSeparation);
 }
 
-inline float Vec2DDistanceSq(const Vector2D &v1, const Vector2D &v2)
+inline int Vec2DDistanceSq(const Vector2D &v1, const Vector2D &v2)
 {
 
 	int ySeparation = v2.y - v1.y;
@@ -307,12 +314,12 @@ inline float Vec2DDistanceSq(const Vector2D &v1, const Vector2D &v2)
 	return ySeparation * ySeparation + xSeparation * xSeparation;
 }
 
-inline float Vec2DLength(const Vector2D& v)
+inline double Vec2DLength(const Vector2D& v)
 {
 	return sqrt(v.x*v.x + v.y*v.y);
 }
 
-inline float Vec2DLengthSq(const Vector2D& v)
+inline int Vec2DLengthSq(const Vector2D& v)
 {
 	return (v.x*v.x + v.y*v.y);
 }
@@ -401,9 +408,9 @@ inline void WrapAround(Vector2D &pos, int MaxX, int MaxY)
 {
 	if (pos.x > MaxX) { pos.x = 0; }
 
-	if (pos.x < 0) { pos.x = (float)MaxX; }
+	if (pos.x < 0) { pos.x = MaxX; }
 
-	if (pos.y < 0) { pos.y = (float)MaxY; }
+	if (pos.y < 0) { pos.y = MaxY; }
 
 	if (pos.y > MaxY) { pos.y = 0; }
 }
