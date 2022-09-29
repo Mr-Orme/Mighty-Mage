@@ -3,9 +3,6 @@
 
 #include "ResourceManager.h"
 
-#include "ArtAssetLibrary.h"
-#include "PhysicsAssetLibrary.h"
-
 #include "ObjectFactory.h"
 #include "Vector2D.h"
 

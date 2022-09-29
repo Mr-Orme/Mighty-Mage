@@ -4,7 +4,7 @@
 #include "SDL2_gfxPrimitives.h"
 #include "ResourceManager.h"
 #include "ComponentsList.h"
-#include "ObjectFactory.h"
+
 #include "GraphicsDevice.h"
 //#include "InputDevice.h"
 #include "View.h"
@@ -200,13 +200,13 @@ View* GraphicsDevice::getView()
 	return view.get();
 }
 
-//void GraphicsDevice::AddSpriteRenderer(RendererComponent* sprite)
+//void GraphicsDevice::AddSpriteRenderer(SpriteComponent* sprite)
 //{
 //	sprites.push_back(sprite);
 //}
-//void GraphicsDevice::RemoveSpriteRenderer(RendererComponent* dSprite)
+//void GraphicsDevice::RemoveSpriteRenderer(SpriteComponent* dSprite)
 //{
-//	std::vector<RendererComponent*>::iterator spriteIter;
+//	std::vector<SpriteComponent*>::iterator spriteIter;
 //	for(spriteIter=sprites.begin(); spriteIter!=sprites.end(); spriteIter++)
 //	{
 //		if(*spriteIter == dSprite)

@@ -1,5 +1,5 @@
 #include "PhysicsDevice.h"
-#include "RendererComponent.h"
+#include "SpriteComponent.h"
 #include "ContactListener.h"
 #include "GameObject.h"
 #include "Texture.h"
@@ -172,7 +172,7 @@ Vector2D PhysicsDevice::GetVelocity(GameObject* object)
 bool PhysicsDevice::createFixture(GameObject* object, BodyPresets presets)
 //**************************************
 {
-	RendererComponent* compRenderer{ object->getComponent<RendererComponent>() };
+	SpriteComponent* compRenderer{ object->getComponent<SpriteComponent>() };
 	//new body definition
 	b2BodyDef* bd = new b2BodyDef;
 	//made need one or the other, depending on what was passed.
@@ -201,7 +201,7 @@ bool PhysicsDevice::createFixture(GameObject* object, BodyPresets presets)
 	}
 
 	//********Adjust postion because SDL is top left, while box2d is center*************
-	Texture* texture = object -> getComponent<RendererComponent>() -> getTexture();
+	Texture* texture = object -> getComponent<SpriteComponent>() -> getTexture();
 	//subtract off half the width.
 	presets.position.x += (texture -> getDimensions().x/2);
 	//subtract off half the height
@@ -380,7 +380,7 @@ Vector2D PhysicsDevice::AlignCenters(GameObject* object)
 	b2Body* body = FindBody(object);
 	b2Vec2 physPosition = body -> GetPosition();
 	Vector2D position;
-	Texture* texture = object -> getComponent<RendererComponent>() -> getTexture();
+	Texture* texture = object -> getComponent<SpriteComponent>() -> getTexture();
 
 		//subtract off half the width.
 		position.x = (int)(PW2RW(physPosition.x) - (texture -> getDimensions().x/2.0f));

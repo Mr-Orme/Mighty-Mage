@@ -1,9 +1,10 @@
 
+#include <iostream>
 #include "ResourceManager.h"
-#include "ComponentAssetLibrary.h"
+#include "ObjectLibrary.h"
 #include "ObjectFactory.h"
 #include "Definitions.h"
-
+#include "ComponentsList.h"
 #include "Box2DDebugDraw.h"
 #include "Initializers.h"
 #include "tinyxml2.h"
@@ -11,8 +12,7 @@
 ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPath):
 	factory(std::make_unique<ObjectFactory>()),
 	iDevice(std::make_unique<InputDevice>()),
-	pLibrary(std::make_unique<PhysicsAssetLibrary>()),
-	oLibrary(std::make_unique<ObjectAssetLibrary>()),
+	oLibrary(std::make_unique<ObjectLibrary>()),
 	nLibrary(std::make_unique<NoticesAssetLibrary>())
 {
 	//don't load the basement
@@ -24,9 +24,6 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 
 	sLibrary = std::make_unique<SoundAssetLibrary>();
 	sDevice = std::make_unique<SoundDevice>(sLibrary.get());
-	
-	aLibrary = std::make_unique<ArtAssetLibrary>(gDevice.get());
-	cLibrary = std::make_unique<ComponentAssetLibrary>(this);
 
 	loadLibraries(assetPath);
 }
@@ -137,11 +134,9 @@ void ResourceManager::populateComponentLibrary(tinyxml2::XMLElement* asset)
 {
 	do
 	{
-		//get the name of the asset
-		std::string aName = asset->Attribute("name");
+		std::string aName{ asset->Attribute("name") };
 
-		//where we will store the components.
-		std::vector<ComponentAssetLibrary::Components> componentList;
+		ObjectDefinition definition;
 
 		//move to the components of the xml
 		tinyxml2::XMLElement* compElement = asset->FirstChildElement();
@@ -154,49 +149,34 @@ void ResourceManager::populateComponentLibrary(tinyxml2::XMLElement* asset)
 			//find the component we just grabbed
 			if (currentComponent == "Renderer")
 			{
-				//add the coresponding asset to the library.
-				aLibrary->addAsset(aName, compElement->Attribute("sprite"));
-				//add the component to the list
-				componentList.push_back(ComponentAssetLibrary::Components::renderer);
+				definition.components.emplace_back(std::make_unique<SpriteComponent>(this, compElement->Attribute("sprite")));
 			}
 			else if (currentComponent == "Body")
 			{
-				PhysicsStats physics;
-				//Get physics properties
-				compElement->QueryFloatAttribute("density", &physics.density);
-				compElement->QueryFloatAttribute("restitution", &physics.restitution);
-				compElement->QueryFloatAttribute("angularDamping", &physics.angularDamping);
-				compElement->QueryFloatAttribute("linearDamping", &physics.linearDamping);
-				compElement->QueryBoolAttribute("physicsOn", &physics.physicsOn);
+
+				compElement->QueryFloatAttribute("density", &definition.physics.density);
+				compElement->QueryFloatAttribute("restitution", &definition.physics.restitution);
+				compElement->QueryFloatAttribute("angularDamping", &definition.physics.angularDamping);
+				compElement->QueryFloatAttribute("linearDamping", &definition.physics.linearDamping);
+				compElement->QueryBoolAttribute("physicsOn", &definition.physics.physicsOn);
 				std::string bodyType{ compElement->Attribute("bodyType") };
 				std::string bodyShape{ compElement->Attribute("bodyShape") };
 				
-				//convert strings to enums
-				if (bodyType == "dynamic") { physics.bodyType = BodyType::Dynamic; }
-				else if (bodyType == "staticBody") { physics.bodyType = BodyType::Static; }
 
-				if (bodyShape == "rectangle") { physics.bodyShape = BodyShape::Rectangle; }
-				else if (bodyShape == "circle") { physics.bodyShape = BodyShape::Circle; }
-				//add to library
-				pLibrary->addAsset(aName, physics);
+				if (bodyType == "dynamic") { definition.physics.bodyType = BodyType::Dynamic; }
+				else if (bodyType == "staticBody") { definition.physics.bodyType = BodyType::Static; }
 
-				//add component to list
-				componentList.push_back(ComponentAssetLibrary::Components::body);
+				if (bodyShape == "rectangle") { definition.physics.bodyShape = BodyShape::Rectangle; }
+				else if (bodyShape == "circle") { definition.physics.bodyShape = BodyShape::Circle; }
+
+
+				definition.components.emplace_back(std::make_unique<BodyComponent>());
 			}
-			else if (currentComponent == "Health")
-			{
-				// Get the health
-				ObjectStats stats;
-				compElement->QueryIntAttribute("health", &stats.health);
-				//add to library
-				oLibrary->addAsset(aName, stats);
-				//add component
-				componentList.push_back(ComponentAssetLibrary::Components::health);
-			}
-			else if (currentComponent == "UserInput") componentList.push_back(ComponentAssetLibrary::Components::userInput);
-			else if (currentComponent == "Backpack") componentList.push_back(ComponentAssetLibrary::Components::backpack);
-			else if (currentComponent == "Inventory") componentList.push_back(ComponentAssetLibrary::Components::inventory);
-			else if (currentComponent == "Ghost") componentList.push_back(ComponentAssetLibrary::Components::ghost);
+			else if (currentComponent == "UserInput") definition.components.emplace_back(std::make_unique<UserInputComponent>());
+			else if (currentComponent == "Backpack") definition.components.emplace_back(std::make_unique<BackpackComponent>());
+			else if (currentComponent == "Inventory") definition.components.emplace_back(std::make_unique<InventoryComponent>());
+			else if (currentComponent == "Ghost") definition.components.emplace_back(std::make_unique<GhostComponent>());
+			else if (currentComponent == "Health") definition.components.emplace_back(std::make_unique<HealthComponent>());
 			// if we have a misspeleed or non-existant component name in the file
 			else
 			{
@@ -208,10 +188,8 @@ void ResourceManager::populateComponentLibrary(tinyxml2::XMLElement* asset)
 		}
 
 		//Each asset should have at least one component!
-		if (componentList.empty()) return;
-
-		//add to library
-		cLibrary->addAsset(aName, componentList);
+		if (definition.components.empty()) return;
+		oLibrary->addAsset(aName, std::move(definition));
 
 		//Get the next Asset
 		asset = asset->NextSiblingElement();

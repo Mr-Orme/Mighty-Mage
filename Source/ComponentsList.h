@@ -11,7 +11,7 @@ if statements in ResourceManager.cpp
 #include "BodyComponent.h"
 
 #include "HealthComponent.h"
-#include "RendererComponent.h"
+#include "SpriteComponent.h"
 
 #include "UserInputComponent.h"
 #include "BackpackComponent.h"

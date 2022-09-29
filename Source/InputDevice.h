@@ -13,9 +13,9 @@ public:
 	InputDevice();
 	
 	void update();
-	void Print(SDL_Event* event);
-
 	bool isPressed(Inputs key);
+
+	void Print(SDL_Event* event);
 
 private:
 	Inputs Translate(SDL_Event* event);

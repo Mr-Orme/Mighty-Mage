@@ -1,13 +1,16 @@
 #include "BodyComponent.h"
-#include "RendererComponent.h"
+#include "SpriteComponent.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "Texture.h"
-#include "ObjectFactory.h"
+
 #include "Vector2D.h"
 #include "Definitions.h"
 
 BodyComponent::BodyComponent(GameObject* owner, ResourceManager* devices):Component(owner, devices){}
+BodyComponent::BodyComponent():Component()
+{
+}
 BodyComponent::~BodyComponent()
 {
 	//remove the physics body
@@ -23,16 +26,16 @@ BodyComponent::~BodyComponent()
 bool BodyComponent::initialize(ObjectFactoryPresets& presets)
 //**************************************
 {
-	PhysicsStats physics;
-	if(_owner->getComponent<RendererComponent>() != nullptr)
+	if (!Component::initialize(presets))
 	{
-		//store the resource manager.
+		std::cout << "Owner not present for Bodycomponent";
+		return false;
+	}
+	PhysicsStats physics;
+	if(_owner->getComponent<SpriteComponent>() != nullptr)
+	{
+		//TODO::do we need to set devices here?
 		devices = presets.devices;
-				
-		//Get physics based on object type.
-		presets.bodyInitializers.physics = devices -> GetPhysicsLibrary() -> search(presets.objectType);
-				
-		//Create fixture.
 		devices -> GetPhysicsDevice() -> createFixture(	_owner,	presets.bodyInitializers);
 	}
 	return true;
@@ -57,6 +60,11 @@ std::unique_ptr<GameObject> BodyComponent::update(std::vector<std::unique_ptr<Ga
 	else if (angle < 315 && angle >= 225) devices->GetPhysicsDevice()->SetAngle(_owner, 270);
 
 	return nullptr;
+}
+
+std::unique_ptr<Component> BodyComponent::copyMe() const
+{
+	return std::make_unique<BodyComponent>(*this);
 }
 
 void BodyComponent::turnLeft()
@@ -139,13 +147,13 @@ Vector2D BodyComponent::currentSquare() const
 	//run player position on himself
 	/*std::string playerPositionText = "(" + std::to_string(position.x) + ", " + std::to_string(position.y) + ")";
 
-	Vector2D position = _owner -> getComponent<RendererComponent>() -> relativePosition(devices -> GetPhysicsDevice() -> GetPosition(_owner));
+	Vector2D position = _owner -> getComponent<SpriteComponent>() -> relativePosition(devices -> GetPhysicsDevice() -> GetPosition(_owner));
 	devices -> GetGraphicsDevice() ->text2Screen(playerPositionText, position);*/
 }
 
 Vector2D BodyComponent::getDimenions() const
 {
-	return _owner->getComponent<RendererComponent>()->getTexture()->getDimensions();
+	return _owner->getComponent<SpriteComponent>()->getTexture()->getDimensions();
 }
 
 void BodyComponent::linearMovement(Way direction)

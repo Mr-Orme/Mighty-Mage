@@ -4,10 +4,11 @@
 #include<memory>
 #include<iostream>
 #include<vector>
-#include "ObjectFactory.h"
-#include "Definitions.h"
 
-class Component;
+#include "Definitions.h"
+#include "Initializers.h"
+
+#include "Component.h"
 class GraphicsDevice;
 class PhysicsDevice;
 
@@ -15,7 +16,7 @@ class GameObject
 {
 public:
 	GameObject();
-	~GameObject();
+	~GameObject() {}
 
 	enum class Type{player, wall, floor, door, extra};
 

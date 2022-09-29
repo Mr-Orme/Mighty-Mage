@@ -14,7 +14,7 @@
 #include "Vector2D.h"
 #include "Definitions.h"
 class View;
-class RendererComponent;
+class SpriteComponent;
 class Texture;
 
 

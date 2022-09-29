@@ -81,21 +81,17 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 				presets.objectType = squareElement->Value();
 
 				float temp;
-				//grab the x value, this is the "Square" of the map where it is located.
+				
 				squareElement->QueryFloatAttribute("x", &temp);
-				//translate to pixel positoin for Graphics Device
 				presets.bodyInitializers.position.x = (int)((temp *squareDimension) + squarePosition.x);
 
-				//grab the y value
+				
 				squareElement->QueryFloatAttribute("y", &temp);
-
-				//separate into fraction and integerparts;
 				float fractPart, intPart;
 				fractPart = modff(temp, &intPart);
 				//The SDL top starts at 0, Our map is reversed, so we need to subtract the integer part from 15 and add back on the fractinal part.
 				presets.bodyInitializers.position.y = (int)((((15 - intPart) + fractPart) * squareDimension) + squarePosition.y);
 
-				//grab the angle
 				squareElement->QueryFloatAttribute("angle", &presets.bodyInitializers.angle);
 
 				//adjusts where we start the level based on the player's position

@@ -12,9 +12,11 @@ class InventoryComponent : public Component
 {
 public:
 	InventoryComponent(GameObject* owner, ResourceManager* devices);
+	InventoryComponent() {}
 	~InventoryComponent();
 
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;
+	std::unique_ptr<Component> copyMe() const override;
 
 
 	Vector2D locationInPack() const {return packPosition;}

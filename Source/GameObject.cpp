@@ -4,10 +4,6 @@
 
 GameObject::GameObject(){}
 
-GameObject::~GameObject()
-{
-
-}
 
 //**************************************
 //Get's the components up and running based on passed presests
@@ -17,10 +13,11 @@ GameObject::~GameObject()
 bool GameObject::initialize(ObjectFactoryPresets& presets)
 //**************************************
 {
+	presets.owner = this;
 	setType(presets.objectType);
 	
 	if (
-		RendererComponent* component{ getComponent<RendererComponent>() };
+		SpriteComponent* component{ getComponent<SpriteComponent>() };
 		component != nullptr
 		)
 	{

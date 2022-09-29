@@ -4,6 +4,7 @@
 #include "ResourceManager.h"
 #include "Texture.h"
 #include "GameObject.h"
+#include "Initializers.h"
 #include <memory>
 
 //************************************************
@@ -17,16 +18,13 @@ std::unique_ptr<GameObject> ObjectFactory::Create(ObjectFactoryPresets& presets)
 
 	//Create pointer to new objects
 	std::unique_ptr<GameObject> newObject{ std::make_unique<GameObject>() };
-	//Get list of components for the new object
-	std::vector<std::unique_ptr<Component>> componentList
-	{ 
-		presets.devices->getComponentLibrary()->
-		search(presets.objectType, newObject.get()) 
-	};
+	ObjectDefinition& definition{ presets.devices->GetObjectLibrary()->search(presets.objectType) };
+	presets.bodyInitializers.physics = definition.physics;
+
 	//Add each to the object
-	for (auto& comp : componentList)
+	for (const auto& component : definition.components)
 	{
-		newObject -> addComponent(std::move(comp));
+		newObject -> addComponent(component->copyMe());
 	}
 
 	//the object can be walked over if this is not empty.

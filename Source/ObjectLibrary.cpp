@@ -1,14 +1,14 @@
-#include "ObjectAssetLibrary.h"
+#include "ObjectLibrary.h"
 #include "GameObject.h"
 
 
-ObjectAssetLibrary::ObjectAssetLibrary(){}
+ObjectLibrary::ObjectLibrary(){}
 
 
 //**************************************
 //Takes the name of the object and returns it's stats.
 //right now it is just health, but that will change.
-ObjectStats  ObjectAssetLibrary::search(std::string name)
+ObjectDefinition&  ObjectLibrary::search(std::string name)
 //**************************************
 {
 	return (library.find(name) -> second);
@@ -16,9 +16,9 @@ ObjectStats  ObjectAssetLibrary::search(std::string name)
 
 //**************************************
 //takes the name of the object and a vecotr of enums of types of stats and saves it to the library.
-bool ObjectAssetLibrary::addAsset(std::string name, ObjectStats stats)
+bool ObjectLibrary::addAsset(std::string name, ObjectDefinition stats)
 //**************************************
 {
-	library[name] = stats;
+	library[name] = std::move(stats);
 	return true;
 }

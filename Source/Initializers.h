@@ -11,7 +11,7 @@
 //class BodyCallBack;
 class ResourceManager;
 class BodyComponent;
-class RendererComponent;
+class SpriteComponent;
 class Texture;
 
 struct ObjectStats
@@ -21,9 +21,6 @@ struct ObjectStats
 struct SpritePresets
 {
 	bool createSprite{ false };
-	std::shared_ptr<Texture> spriteTexture{ nullptr };
-	ResourceManager* Devices{ nullptr };
-
 };
 struct RotateBody
 {
@@ -58,7 +55,7 @@ struct BodyPresets
 	Vector2D position{ 0,0 };
 	float angle{ 0.0f };
 	PhysicsStats physics;
-	RendererComponent* sprite{ nullptr };
+	SpriteComponent* sprite{ nullptr };
 	//std::vector<std::unique_ptr<BodyCallBack>> callBacks;
 };
 
@@ -102,7 +99,7 @@ struct SteeringPresets
 	bool arrive{ false };
 	TargetType type{ TargetType::mouse };
 	Vector2D staticTargetVector;
-	ResourceManager* devices;
+	
 };
 struct ObjectFactoryPresets
 {
@@ -115,6 +112,7 @@ struct ObjectFactoryPresets
 	std::map<Direction, bool> gDirection;
 	//int health{ 0 };//move to new AssetLibraryGame
 	ResourceManager* devices{ nullptr };
+	GameObject* owner{ nullptr };
 };
 #endif // !INITIALIZERS_H
 

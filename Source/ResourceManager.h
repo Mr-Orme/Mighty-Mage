@@ -5,10 +5,7 @@
 #include "InputDevice.h"
 #include "PhysicsDevice.h"
 #include "SoundDevice.h"
-#include "ArtAssetLibrary.h"
-#include "PhysicsAssetLibrary.h"
-#include "ComponentAssetLibrary.h"
-#include "ObjectAssetLibrary.h"
+#include "ObjectLibrary.h"
 #include "NoticesAssetLibrary.h"
 #include "SoundAssetLibrary.h"
 #include "View.h"
@@ -22,17 +19,12 @@ public:
 	ResourceManager(Vector2D screenDimensions, std::string assetPath);
 	~ResourceManager();
 
-	//Device Getters
 	GraphicsDevice* GetGraphicsDevice();
 	InputDevice* GetInputDevice(){return iDevice.get();}
 	PhysicsDevice* GetPhysicsDevice(){return pDevice.get();}
 	SoundDevice* GetSoundDevice(){return sDevice.get();}
 
-	//Device Setters
-	ArtAssetLibrary* GetArtLibrary(){return aLibrary.get();}
-	PhysicsAssetLibrary* GetPhysicsLibrary(){return pLibrary.get();}
-	ComponentAssetLibrary* getComponentLibrary(){return cLibrary.get();}
-	ObjectAssetLibrary* GetObjectLibrary(){return oLibrary.get();}
+	ObjectLibrary* GetObjectLibrary(){return oLibrary.get();}
 	NoticesAssetLibrary* GetNoticesLibrary(){return nLibrary.get();}
 	SoundAssetLibrary* GetSoundLibrary(){return sLibrary.get();}
 
@@ -61,25 +53,22 @@ protected:
 	void loadLibraries(std::string assetPath);
 	void populateComponentLibrary(tinyxml2::XMLElement* asset);
 	//Devices
-	std::unique_ptr<GraphicsDevice> gDevice;
-	std::unique_ptr<InputDevice> iDevice;
-	std::unique_ptr<PhysicsDevice> pDevice;
-	std::unique_ptr<SoundDevice> sDevice;
+	std::unique_ptr<GraphicsDevice> gDevice{ nullptr };
+	std::unique_ptr<InputDevice> iDevice{ nullptr };
+	std::unique_ptr<PhysicsDevice> pDevice{ nullptr };
+	std::unique_ptr<SoundDevice> sDevice{ nullptr };
 
 	//Libraries
-	std::unique_ptr<ArtAssetLibrary> aLibrary;
-	std::unique_ptr<PhysicsAssetLibrary> pLibrary;
-	std::unique_ptr<ComponentAssetLibrary> cLibrary;
-	std::unique_ptr<ObjectAssetLibrary> oLibrary;
-	std::unique_ptr<NoticesAssetLibrary> nLibrary;
-	std::unique_ptr<SoundAssetLibrary> sLibrary;
+	std::unique_ptr<ObjectLibrary> oLibrary{ nullptr };
+	std::unique_ptr<NoticesAssetLibrary> nLibrary{ nullptr };
+	std::unique_ptr<SoundAssetLibrary> sLibrary{ nullptr };
 
-	std::unique_ptr<ObjectFactory> factory;
+	std::unique_ptr<ObjectFactory> factory{ nullptr };
 	
 	int FPS{ 100 };
-	Vector2D cityCorner;
-	Levels level;
-	bool loadBasement;
+	Vector2D cityCorner{ 0,0 };
+	Levels level{ Levels::sorpigal };
+	bool loadBasement{ false };
 	std::vector<Vector2D> exits;
 
 	GameObject* levelExit{ nullptr };

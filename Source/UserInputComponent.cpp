@@ -1,6 +1,6 @@
 #include "ComponentsList.h"
 #include "ResourceManager.h"
-#include "ObjectFactory.h"
+
 #include "GameObject.h"
 
 using input = InputDevice::Inputs;
@@ -32,6 +32,10 @@ std::unique_ptr<GameObject> UserInputComponent::update(std::vector<std::unique_p
 	displayNotices();
 	
 	return nullptr;
+}
+std::unique_ptr<Component> UserInputComponent::copyMe() const
+{
+	return std::make_unique<UserInputComponent>(*this);
 }
 void UserInputComponent::displayNotices()
 {

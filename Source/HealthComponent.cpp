@@ -1,5 +1,5 @@
 #include "HealthComponent.h"
-#include "RendererComponent.h"
+#include "SpriteComponent.h"
 #include "BodyComponent.h"
 #include "ResourceManager.h"
 #include "PhysicsDevice.h"
@@ -8,16 +8,16 @@
 
 HealthComponent::HealthComponent(GameObject* owner, ResourceManager* devices)
 	:Component(owner, devices){}
+HealthComponent::HealthComponent()
+{
+}
 HealthComponent::~HealthComponent(){}
 
-//**************************************
-//gets health and resource manager from passed presets, the object starts out alive.
-bool HealthComponent::initialize(ObjectFactoryPresets& presets)
-//**************************************
+
+
+std::unique_ptr<Component> HealthComponent::copyMe() const
 {
-	devices = presets.devices;
-	health = devices -> GetObjectLibrary() -> search(presets.objectType).health;
-	return true;
+	return std::make_unique<HealthComponent>(*this);
 }
 
 //**************************************
@@ -30,9 +30,9 @@ bool HealthComponent::killMe(std::string deathSprite)
 	devices -> GetPhysicsDevice() -> SetStopPhysics(_owner);
 
 	//grab the renderer
-	auto compRenderer{ _owner->getComponent<RendererComponent>() };
+	auto compRenderer{ _owner->getComponent<SpriteComponent>() };
 	//change the sprite
-	compRenderer -> changeSprite(devices -> GetArtLibrary() -> search(deathSprite));	
+	//compRenderer -> changeSprite(devices -> GetArtLibrary() -> search(deathSprite));	
 	return true;
 }
 //**************************************

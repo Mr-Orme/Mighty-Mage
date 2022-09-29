@@ -105,25 +105,16 @@
     <ClCompile Include="Source\HealthComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\RendererComponent.cpp">
+    <ClCompile Include="Source\SpriteComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="Source\UserInputComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ArtAssetLibrary.cpp">
-      <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ComponentAssetLibrary.cpp">
-      <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
-    </ClCompile>
     <ClCompile Include="Source\NoticesAssetLibrary.cpp">
       <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ObjectAssetLibrary.cpp">
-      <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PhysicsAssetLibrary.cpp">
+    <ClCompile Include="Source\ObjectLibrary.cpp">
       <Filter>Source Files\Resource Manager\Asset Libraries</Filter>
     </ClCompile>
     <ClCompile Include="Source\SoundAssetLibrary.cpp">
@@ -206,25 +197,16 @@
     <ClInclude Include="Source\HealthComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\RendererComponent.h">
+    <ClInclude Include="Source\SpriteComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Source\UserInputComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ArtAssetLibrary.h">
-      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ComponentAssetLibrary.h">
-      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
-    </ClInclude>
     <ClInclude Include="Source\NoticesAssetLibrary.h">
       <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ObjectAssetLibrary.h">
-      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PhysicsAssetLibrary.h">
+    <ClInclude Include="Source\ObjectLibrary.h">
       <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
     </ClInclude>
     <ClInclude Include="Source\SoundAssetLibrary.h">

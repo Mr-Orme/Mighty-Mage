@@ -4,9 +4,10 @@
 #include <memory>
 
 #include "Component.h"
-#include "ObjectFactory.h"
+
 #include "Vector2D.h"
 #include "Definitions.h"
+
 
 class ResourceManager;
 class GameObject;
@@ -17,11 +18,12 @@ public:
 	
 
 	BodyComponent(GameObject* owner, ResourceManager* devices);
+	BodyComponent();
 	~BodyComponent();
 
 	bool initialize(ObjectFactoryPresets& presets) override;
-
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;
+	std::unique_ptr<Component> copyMe() const override;
 	
 	void turnLeft();
 	void turnRight();
