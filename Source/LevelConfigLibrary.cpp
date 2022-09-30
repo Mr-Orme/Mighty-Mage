@@ -3,22 +3,21 @@
 LevelConfigLibrary::LevelConfigLibrary(){}
 
 
-std::string LevelConfigLibrary::search(std::string name)
+std::pair<std::string, std::string> LevelConfigLibrary::search(Levels level)
 {
-	return(library.find(name) -> second);
+	return(library.find(level) -> second);
 }
-bool LevelConfigLibrary::addAsset(std::string name, std::string path)
+bool LevelConfigLibrary::addAsset(Levels level, std::string path, std::string assets)
 {
-	library[name]=path;
+	library[level] = { path, assets };
 	return true;
 }
-bool LevelConfigLibrary::removeAsset(std::string name)
+bool LevelConfigLibrary::removeAsset(Levels level)
 {
-	std::map<std::string, std::string>::iterator toDelete;
-	toDelete = library.find(name);
-	if(toDelete != library.end())
+	
+	if(auto toDelete{ library.find(level) }; toDelete != library.end())
 	{
-		library.erase(library.find(name));
+		library.erase(toDelete);
 		return true;
 	}
 	else

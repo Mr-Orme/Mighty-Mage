@@ -1,9 +1,11 @@
 #include "Box2DDebugDraw.h"
 #include "ResourceManager.h"
+#include "GraphicsDevice.h"
+#include "PhysicsDevice.h"
 
 Box2DDebugDraw::Box2DDebugDraw(ResourceManager* devices) :
-	pDevice(devices->GetPhysicsDevice()),
-	gDevice(devices->GetGraphicsDevice())
+	pDevice(devices->getPhysicsDevice()),
+	gDevice(devices->getGraphicsDevice())
 {
 	circleAccuracy = 9;
 	

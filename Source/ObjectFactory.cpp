@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "GameObject.h"
 #include "Initializers.h"
+#include "ObjectLibrary.h"
 #include <memory>
 
 //************************************************
@@ -18,7 +19,7 @@ std::unique_ptr<GameObject> ObjectFactory::Create(ObjectFactoryPresets& presets)
 
 	//Create pointer to new objects
 	std::unique_ptr<GameObject> newObject{ std::make_unique<GameObject>() };
-	ObjectDefinition& definition{ presets.devices->GetObjectLibrary()->search(presets.objectType) };
+	ObjectDefinition& definition{ presets.devices->getObjectLibrary()->search(presets.objectType) };
 	presets.bodyInitializers.physics = definition.physics;
 
 	//Add each to the object

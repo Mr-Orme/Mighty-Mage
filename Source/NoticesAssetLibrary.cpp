@@ -1,3 +1,4 @@
+
 #include "NoticesAssetLibrary.h"
 #include "GraphicsDevice.h"
 NoticesAssetLibrary::NoticesAssetLibrary()
@@ -13,18 +14,16 @@ NoticesAssetLibrary::NoticesAssetLibrary()
 //and returns that notice.
 //if not found, it sets the text to nothing of the notice passed in and
 //returns that notice.
-Notice NoticesAssetLibrary::search(Notice square)
+bool NoticesAssetLibrary::search(Notice& square)
 //**************************************
 {
-	for (auto notices : library)
-	{//TODO::this naming is weird.
-		if(notices.square.x == square.square.x && notices.square.y == square.square.y && notices.direction == square.direction)
-		{
-			return notices;
-		}
+	if (auto toDisplay{ std::find(library.begin(), library.end(), square) }; toDisplay != library.end())
+	{
+		square = *toDisplay;
+		return true;
 	}
-	square.text = "";
-	return square;
+	
+	return false;
 }
 //**************************************
 //adds a notice to the library vector
@@ -56,4 +55,9 @@ bool NoticesAssetLibrary::removeAsset(Notice notice)
 	}
 	//if we did not find a notice, we return false.
 	return foundNotice;
+}
+
+bool operator==(const Notice& srcL, const Notice& srcR)
+{
+	return srcL.square == srcR.square && srcL.direction == srcR.direction;
 }

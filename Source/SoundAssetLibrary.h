@@ -19,7 +19,6 @@ public:
 	SoundAssetLibrary();
 	~SoundAssetLibrary();
 			
-	//TODO::reduce the reliance on strings in these libraries..
 	SoundEffect& searchSoundEffects(SoundEffect::Event event);
 	Mix_Music* searchMusic(Locations location);
 	bool addSoundEffect(SoundEffect::Event event, std::string path, int timeBetweenPlays=0);

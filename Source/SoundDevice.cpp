@@ -2,10 +2,7 @@
 #include "SoundAssetLibrary.h"
 #include "Timer.h"
 #include "FrameCounter.h"
-SoundDevice::~SoundDevice()
-{
-	
-}
+
 SoundDevice::SoundDevice(SoundAssetLibrary* sLibrary):sLibrary(sLibrary)
 {
 	//allows for OGG support
@@ -55,4 +52,9 @@ void SoundDevice::SetBackground(Locations location)
 	Mix_VolumeMusic((int)(0.5f * MIX_MAX_VOLUME));
 	if(Mix_PlayMusic(sLibrary -> searchMusic(location), -1) == -1)
 	{printf("Mix_PlayMusic: %s\n", Mix_GetError());}
+}
+
+void SoundDevice::SetSoundLibrary(SoundAssetLibrary* sLibrary)
+{
+	this->sLibrary = sLibrary;
 }

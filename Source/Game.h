@@ -1,34 +1,30 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "ResourceManager.h"
-
-#include "ObjectFactory.h"
 #include "Vector2D.h"
-
-#include "View.h"
-#include "Timer.h"
-
 
 #include <string>
 #include <vector>
 #include <memory>
+#include <optional>
+
 class Timer;
+class ResourceManager;
+class ObjectFactory;
+class GameObject;
+class LevelConfigLibrary;
+enum class Levels;
 class Game{
 public:
 	
 	Game();
-	Game(std::string levelConfigFile, std::string assetConfigFile);
 	~Game();
 	
 	void reset();
-	bool loadLevel(std::string levelConfigFile, std::string assetConfigFile);
+	bool loadLevel(Levels level);
 	bool run();
-	void update();
+	std::optional<Levels> update();
 	
-
-	
-
 private:
 	std::vector<std::unique_ptr<GameObject>> objects;
 	std::vector<std::unique_ptr<GameObject>> newObjects;
@@ -39,7 +35,7 @@ private:
 	bool debug{ false };
 	Vector2D screenDimensions{800, 600};
 	std::unique_ptr<Timer> frameTimer{ nullptr };
-	
+	std::unique_ptr<LevelConfigLibrary> levelLibrary{nullptr};
 	
 };
 

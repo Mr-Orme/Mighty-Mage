@@ -2,9 +2,9 @@
 #pragma once
 
 #include "box2d.h"
+#include "GraphicsDevice.h"
+#include "PhysicsDevice.h"
 
-class PhysicsDevice;
-class GraphicsDevice;
 class ResourceManager;
 
 class Box2DDebugDraw : public b2Draw {

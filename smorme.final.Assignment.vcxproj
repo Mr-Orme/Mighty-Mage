@@ -86,12 +86,13 @@
     <ClInclude Include="ThirdParty\tinyxml2\tinyxml2.h" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="Assets\Config\BasementAssets.xml" />
-    <Xml Include="Assets\Config\BasementLevel.xml" />
-    <Xml Include="Assets\Config\MainAssets.xml">
+    <Xml Include="Assets\Config\Areas.xml" />
+    <Xml Include="Assets\Config\SorpigalBasementAssets.xml" />
+    <Xml Include="Assets\Config\SorpigalBasement.xml" />
+    <Xml Include="Assets\Config\SorpigalAssets.xml">
       <SubType>Designer</SubType>
     </Xml>
-    <Xml Include="Assets\Config\MainLevel.xml" />
+    <Xml Include="Assets\Config\Sorpigal.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

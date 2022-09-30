@@ -1,17 +1,27 @@
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
+#include <memory>
+#include <map>
+#include <string>
+#include <vector>
 #include "tinyxml2.h"
-#include "GraphicsDevice.h"
-#include "InputDevice.h"
-#include "PhysicsDevice.h"
-#include "SoundDevice.h"
+
+#include "Definitions.h"
+#include "Vector2D.h"
 #include "ObjectLibrary.h"
-#include "NoticesAssetLibrary.h"
-#include "SoundAssetLibrary.h"
-#include "View.h"
 
 
+class View;
+class SoundAssetLibrary;
+class NoticesAssetLibrary;
+class ObjectLibrary;
+class SoundDevice;
+class PhysicsDevice;
+class InputDevice;
+class GraphicsDevice;
 class ObjectFactory;
+class GameObject;
+
 enum class Levels { sorpigal, sorpigal_basement, };
 class ResourceManager
 {
@@ -19,39 +29,41 @@ public:
 	ResourceManager(Vector2D screenDimensions, std::string assetPath);
 	~ResourceManager();
 
-	GraphicsDevice* GetGraphicsDevice();
-	InputDevice* GetInputDevice(){return iDevice.get();}
-	PhysicsDevice* GetPhysicsDevice(){return pDevice.get();}
-	SoundDevice* GetSoundDevice(){return sDevice.get();}
+	GraphicsDevice* getGraphicsDevice();
+	InputDevice* getInputDevice();
+	PhysicsDevice* getPhysicsDevice();
+	SoundDevice* getSoundDevice();
 
-	ObjectLibrary* GetObjectLibrary(){return oLibrary.get();}
-	NoticesAssetLibrary* GetNoticesLibrary(){return nLibrary.get();}
-	SoundAssetLibrary* GetSoundLibrary(){return sLibrary.get();}
+	ObjectLibrary* getObjectLibrary();
+	NoticesAssetLibrary* getNoticesLibrary();
+	SoundAssetLibrary* getSoundLibrary();
 
-	//ObjectFactor Getter
-	ObjectFactory* GetObjectFactory() {return factory.get();}
+	ObjectFactory* getObjectFactory();
 
-	//Other Getters
-	int GetFPS(){return FPS;}
-	Vector2D GetCityCorner(){return cityCorner;}
-	Levels GetLevel(){return level;}
-	bool GetLoadBasement(){return loadBasement;}
-	GameObject* getExit() { return levelExit; }
+	int getFPS(){return FPS;}
+	Vector2D getCityCorner(){return cityCorner;}
+	Levels getLevel(){return level;}
+
 	
 
 	//Other Setters
-	void SetFPS(int fps){ FPS = fps;}
-	void SetCityCorner(Vector2D cityCorner){this -> cityCorner = cityCorner;}
-	void SetLevel(Levels level){this -> level = level;}
-	void SetLoadBasement(bool loadBasement){this -> loadBasement = loadBasement;}
-	void setExit(GameObject* levelExit) { this->levelExit = levelExit; }
+	
+	void setCityCorner(Vector2D cityCorner){this -> cityCorner = cityCorner;}
+	void setLevel(Levels level){this -> level = level;}
+	void addExit(Levels level, Vector2D square);
 
 	bool isExitSquare(Vector2D currSquare) const;
 	const int pixelsPerSquare{ 110 };
 	const int blocksPerMap{ 15 };
-protected:
+private:
 	void loadLibraries(std::string assetPath);
-	void populateComponentLibrary(tinyxml2::XMLElement* asset);
+	void loadNotices(tinyxml2::XMLElement* notices);
+	void loadObjects(tinyxml2::XMLElement* asset);
+	void loadSounds(tinyxml2::XMLElement* sounds);
+
+	ObjectDefinition loadComponent(tinyxml2::XMLElement* component);
+
+
 	//Devices
 	std::unique_ptr<GraphicsDevice> gDevice{ nullptr };
 	std::unique_ptr<InputDevice> iDevice{ nullptr };
@@ -62,16 +74,14 @@ protected:
 	std::unique_ptr<ObjectLibrary> oLibrary{ nullptr };
 	std::unique_ptr<NoticesAssetLibrary> nLibrary{ nullptr };
 	std::unique_ptr<SoundAssetLibrary> sLibrary{ nullptr };
-
 	std::unique_ptr<ObjectFactory> factory{ nullptr };
 	
-	int FPS{ 100 };
-	Vector2D cityCorner{ 0,0 };
+	const int FPS{ 100 };
+	//TODO::get rid of this by makiing it 0,0 and adjust the view to center player.
+	Vector2D cityCorner{ 0,0 };//relative to player's start position.
 	Levels level{ Levels::sorpigal };
-	bool loadBasement{ false };
-	std::vector<Vector2D> exits;
-
-	GameObject* levelExit{ nullptr };
+	
+	std::map<Vector2D, Levels> exits;
 
 	
 };

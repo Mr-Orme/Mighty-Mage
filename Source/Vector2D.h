@@ -1,5 +1,4 @@
-#ifndef S2DVECTOR_H
-#define S2DVECTOR_H
+#pragma once
 //------------------------------------------------------------------------
 //
 //  Name:   Vector2D.h
@@ -452,9 +451,17 @@ inline bool isSecondInFOVOfFirst(Vector2D posFirst,
 
 	return facingFirst.Dot(toTarget) >= cos(fov / 2.0);
 }
+bool operator<(const Vector2D& srcL, const Vector2D& srcR)
+{
+	if (srcL.x == srcR.x)
+	{
+		return srcL.y < srcR.y;
+	}
+	return srcL.x < srcR.x;
+	
+}
 
 
 
 
 
-#endif

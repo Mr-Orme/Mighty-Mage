@@ -6,13 +6,21 @@
 #include "GameObject.h"
 #include "Initializers.h"
 #include "tinyxml2.h"
-Game::Game()
-{}
+#include "GraphicsDevice.h"
+#include "PhysicsDevice.h"
+#include "SoundDevice.h"
+#include "ObjectLibrary.h"
+#include "NoticesAssetLibrary.h"
+#include "ResourceManager.h"
+#include "ObjectFactory.h"
+#include "LevelConfigLibrary.h"
 
-Game::Game(std::string levelConfigFile, std::string assetConfigFile)
+Game::Game()
 {
-	loadLevel(levelConfigFile, assetConfigFile);
+	loadLevel(Levels::sorpigal);
 }
+
+
 
 Game::~Game()
 {}
@@ -23,33 +31,51 @@ Game::~Game()
 //containing level config data and loads the objects
 //into the objects vector.
 //Also creates a new view object for the level.
-bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
+bool Game::loadLevel(Levels toLoad)
 //**************************************
 {
 
 	reset();
+	std::string levelFile{ "./Assets/Config/Areas.xml" };
+	levelLibrary = std::make_unique<LevelConfigLibrary>();
+	tinyxml2::XMLDocument currentLevel;
+	if (!currentLevel.LoadFile(levelFile.c_str()) == tinyxml2::XML_SUCCESS) { return false; };
+	tinyxml2::XMLElement* lRoot{ currentLevel.FirstChildElement() };
+	tinyxml2::XMLElement* level{ lRoot->FirstChildElement() };
+	while (level)
+	{
+		int enumValue{};
+		level->QueryIntAttribute("enum", &enumValue);
+		std::string path{ level->Attribute("layout") };
+		std::string assets{ level->Attribute("assets") };
+		levelLibrary->addAsset((Levels)enumValue, "./Assets/Config/" + path, "./Assets/Config/" + assets);
+		level = level->NextSiblingElement();
+	}
+
+	auto [levelConfig, assetConfigFile] = levelLibrary->search(toLoad);
 	//========================================
 	//Construct Device Manager
 	//========================================
 	devices = std::make_unique<ResourceManager>(screenDimensions, assetConfigFile);
-	frameTimer = std::make_unique<Timer>(devices->GetFPS());
+	frameTimer = std::make_unique<Timer>(devices->getFPS());
 	///Get a few things ready
 	ObjectFactoryPresets presets;
 	presets.devices = devices.get();
-	ObjectFactory* objectFactory{ devices->GetObjectFactory() };
+	ObjectFactory* objectFactory{ devices->getObjectFactory() };
+	
 
 	//========================================
 	//load the files
 	//========================================
-	tinyxml2::XMLDocument currentLevel;
+	
 	//if it does not load, the level or the physics did not load.
 	if (!currentLevel.LoadFile(levelConfig.c_str())==tinyxml2::XML_SUCCESS){ return false; };
 	//create a root variable and set to the first element "Level"
-	tinyxml2::XMLElement* lRoot = currentLevel.FirstChildElement();;
+	lRoot = currentLevel.FirstChildElement();
 	//record the level;
 	int iLevel;
 	lRoot->QueryIntAttribute("level", &iLevel);
-	devices->SetLevel(static_cast<Levels>(iLevel));
+	devices->setLevel(static_cast<Levels>(iLevel));
 
 
 
@@ -100,13 +126,13 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 				//OF THE SCREEN BEFORE ANYTHING ELSE IS CREATED.
 				if (presets.objectType == "Player")
 				{
-					int halfWidth = devices->GetGraphicsDevice()->getScreenDimensions().x / 2;
-					int halfHeight = devices->GetGraphicsDevice()->getScreenDimensions().y / 2;
+					int halfWidth = devices->getGraphicsDevice()->getScreenDimensions().x / 2;
+					int halfHeight = devices->getGraphicsDevice()->getScreenDimensions().y / 2;
 					// sets the top left corenr of the map
 					squarePosition.x = presets.bodyInitializers.position.x*(-1) + halfWidth;
 					squarePosition.y = presets.bodyInitializers.position.y*(-1) + halfHeight;
 					//Keep track of that corner.
-					devices->SetCityCorner(squarePosition);
+					devices->setCityCorner(squarePosition);
 					//puts the player in the middle of the screen.
 					presets.bodyInitializers.position.x = halfWidth;
 					presets.bodyInitializers.position.y = halfHeight;
@@ -118,7 +144,7 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 
 				//mark the exit
 				//TODO::Make exits more generic. Perhaps an exit component?
-				if (presets.objectType == "Trapdoor") devices->setExit(objects.back().get());
+				if (presets.objectType == "Trapdoor") {} //devices->setExit(objects.back().get());
 
 				//make sure presests is ready for loading the level
 				presets.bodyInitializers.position = squarePosition;
@@ -212,6 +238,15 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 					presets.gDirection[Direction::S] = true;
 					presets.gDirection[Direction::W] = true;
 				}
+				else if (floor == "exit")
+				{
+					Vector2D location;
+					squareElement->QueryIntAttribute("id", &location.x);
+					rowElement->QueryIntAttribute("id", &location.y);
+					int area;
+					squareElement->QueryIntAttribute("area", &area);
+					devices->addExit((Levels)area, location);
+				}
 
 				//if there is a floor, create it.
 				if (floor != "none")
@@ -221,6 +256,7 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 					//add new object
 					objects.emplace_back(objectFactory->Create(presets));
 				}
+
 				//***************************************
 				//move x to next square to the right (we already moved ten in the code above).
 				presets.bodyInitializers.position.x += squareDimension - 10;
@@ -235,12 +271,12 @@ bool Game::loadLevel(std::string levelConfig, std::string assetConfigFile)
 		//get next row
 		rowElement = rowElement->NextSiblingElement();
 		//move x to beginning of row
-		presets.bodyInitializers.position.x = devices->GetCityCorner().x;
+		presets.bodyInitializers.position.x = devices->getCityCorner().x;
 		//only move a row down if we are doing rows, not extras.
 		if (label != "Extras") presets.bodyInitializers.position.y += 110;
 	} while (rowElement);
 
-	devices->GetSoundDevice()->SetBackground(Locations::sorpigal);
+	devices->getSoundDevice()->SetBackground(Locations::sorpigal);
 
 	return true;
 }
@@ -252,35 +288,28 @@ bool Game::run()
 //**************************************
 {
 	FrameCounter::incrementFrame();
-	//check to see if we have quit;
-	if (devices->GetInputDevice()->isPressed(InputDevice::Inputs::quit))
+	
+	if (devices->getInputDevice()->isPressed(InputDevice::Inputs::quit))
 	{
 		return false;
 	}
 
-	//here's where we load the basement if the variable was set.
-	//this needs to be abstracted a bit. . .
-	if (devices->GetLoadBasement())
-	{
-		loadLevel("./Assets/Config/BasementLevel.xml", "./Assets/Config/BasementAssets.xml");
-	}
-	//Poll for new events
-	devices->GetInputDevice()->update();
-
+	devices->getInputDevice()->update();
 	
-	
-
-	//Start Frame Timer
 	frameTimer->start();
-	devices->GetGraphicsDevice()->begin();
+	devices->getGraphicsDevice()->begin();
 	
-	update();
+	if (auto newLevel{ update() }; newLevel)
+	{
+		loadLevel(*newLevel);
+		return true;
+	}
 	
-	devices -> GetGraphicsDevice() -> drawOverlays();
+	devices -> getGraphicsDevice() -> drawOverlays();
 		
-	if (debug) devices->GetPhysicsDevice()->debugDraw(); 
+	if (debug) devices->getPhysicsDevice()->debugDraw(); 
 		
-	devices -> GetGraphicsDevice() -> present();
+	devices -> getGraphicsDevice() -> present();
 
 	//pauses until proper refresh time has passed.
 	frameTimer->fpsRegulate();
@@ -289,12 +318,12 @@ bool Game::run()
 //**************************************
 //call's the view's update method
 //Call's each object's update method in the object vector.
-void Game::update()
+std::optional<Levels> Game::update()
 //**************************************
 {
 
 	//update the physics world
-	devices->GetPhysicsDevice()->Update(1.0f / devices->GetFPS());
+	devices->getPhysicsDevice()->Update(1.0f / devices->getFPS());
 
 	std::vector<std::unique_ptr<GameObject>>::iterator objectIter;
 
@@ -334,23 +363,23 @@ void Game::update()
 		}
 		newObjects.clear();
 	}
-
+	std::optional<Levels> toReturn;
 	//Update objects.
 	for (auto& object : objects)
 	{
 		//run update method for the object
 		if (object != nullptr)
 		{
-			std::unique_ptr<GameObject> temp{ object->update(objects) };
+			auto [temp, level] =  object->update(objects) ;
 			//if it returned an object, add it to the list to be added.
 			if (temp != nullptr)
 			{
 				newObjects.push_back(std::move(temp));
 			}
+			if (level) toReturn = level;
 		}
-
-
 	}
+	return toReturn;
 }
 
 //**************************************
@@ -360,12 +389,12 @@ void Game::update()
 //bool Game::run()
 ////**************************************
 //{
-//	devices -> GetGraphicsDevice() -> begin();	
-//	devices -> GetGraphicsDevice() -> run();
+//	devices -> getGraphicsDevice() -> begin();	
+//	devices -> getGraphicsDevice() -> run();
 //	
-//	if (debug) devices->GetPhysicsDevice()->getWorld()->DebugDraw(); //-> DrawDebugData();
+//	if (debug) devices->getPhysicsDevice()->getWorld()->DebugDraw(); //-> DrawDebugData();
 //	
-//	devices -> GetGraphicsDevice() -> present();
+//	devices -> getGraphicsDevice() -> present();
 //	return true;
 //}
 

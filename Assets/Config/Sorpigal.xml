@@ -315,13 +315,13 @@
 		<Square id="9" floor="none" top = "wall" left = "none" />
 		<Square id="10" floor="none" top = "none" left = "none" />
 		<Square id="11" floor="wall" top = "wall" left = "wall" />
-		<Square id="12" floor="none" top = "none" left = "wall" />
+		<Square id="12" floor="exit" top = "none" left = "wall" area ="1"/>
 		<Square id="13" floor="wall" top = "wall" left = "wall" />
-		<Square id="14" floor="none" top = "wall" left = "wall" />>
+		<Square id="14" floor="exit" top = "wall" left = "wall" area="1" />>
 		<Square id="15" floor="none" top = "none" left = "none" />
 		<Square id="16" floor="none" top = "none" left = "wall" />
 	</Row>
-	<Row id="5">
+	<Row id="-1">
 		<Square id="0" floor="none" top = "wall" left = "none" />
 		<Square id="1" floor="none" top = "wall" left = "none" />
 		<Square id="2" floor="none" top = "wall" left = "none" />

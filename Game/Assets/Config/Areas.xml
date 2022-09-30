@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Areas>
+  <Sorpigal enum="0" assets="SorpigalAssets.xml" layout="Sorpigal.xml"></Sorpigal>
+  <SorpigalBasement enum="1" assets="SorpigalBasementAssets.xml" layout="SorpigalBasement.xml"></SorpigalBasement>
+  
+</Areas>

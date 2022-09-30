@@ -1,6 +1,7 @@
 #include "ComponentsList.h"
 #include "GameObject.h"
 #include "Definitions.h"
+#include "ResourceManager.h"
 
 GameObject::GameObject(){}
 
@@ -44,7 +45,7 @@ void GameObject::addComponent(std::unique_ptr<Component> component)
 
 //**************************************
 //runs the update method for all attached components
-std::unique_ptr<GameObject> GameObject::update(std::vector<std::unique_ptr<GameObject>>& objects)
+std::tuple<std::unique_ptr<GameObject>, std::optional<Levels> > GameObject::update(std::vector<std::unique_ptr<GameObject>>& objects)
 //**************************************
 
 {
@@ -58,7 +59,8 @@ std::unique_ptr<GameObject> GameObject::update(std::vector<std::unique_ptr<GameO
 		}
 			
 	}
-	return newObject;
+	//TODO::implement changing level!
+	return { std::move(newObject), std::nullopt};
 }
 
 bool GameObject::isA(Type name) const

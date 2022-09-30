@@ -6,14 +6,15 @@
 
 //Keeps track of paths to level xml files
 //TODO::implement this library.
+enum class Levels;
 class LevelConfigLibrary{
 public:
 	LevelConfigLibrary();
-	std::string search(std::string name);
-	bool addAsset(std::string name, std::string path);
-	bool removeAsset(std::string name);
-private:
-	std::map<std::string, std::string> library;
+	std::pair<std::string, std::string> search(Levels level);
+	bool addAsset(Levels level, std::string path, std::string assets);
+	bool removeAsset(Levels level);
+private:							//path, assets
+	std::map<Levels, std::pair<std::string, std::string> > library;
 };
 
 

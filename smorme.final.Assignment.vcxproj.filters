@@ -250,16 +250,19 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="Assets\Config\MainAssets.xml">
+    <Xml Include="Assets\Config\SorpigalAssets.xml">
       <Filter>Resource Files</Filter>
     </Xml>
-    <Xml Include="Assets\Config\MainLevel.xml">
+    <Xml Include="Assets\Config\Sorpigal.xml">
       <Filter>Resource Files</Filter>
     </Xml>
-    <Xml Include="Assets\Config\BasementAssets.xml">
+    <Xml Include="Assets\Config\SorpigalBasementAssets.xml">
       <Filter>Resource Files</Filter>
     </Xml>
-    <Xml Include="Assets\Config\BasementLevel.xml">
+    <Xml Include="Assets\Config\SorpigalBasement.xml">
+      <Filter>Resource Files</Filter>
+    </Xml>
+    <Xml Include="Assets\Config\Areas.xml">
       <Filter>Resource Files</Filter>
     </Xml>
   </ItemGroup>

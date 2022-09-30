@@ -1,12 +1,11 @@
 #include<iostream>
 #include <map>
 #include <vector>
-#include "SDL2_gfxPrimitives.h"
+
 #include "ResourceManager.h"
 #include "ComponentsList.h"
-
 #include "GraphicsDevice.h"
-//#include "InputDevice.h"
+
 #include "View.h"
 
 #include "Texture.h"
@@ -90,12 +89,9 @@ GraphicsDevice::~GraphicsDevice()
 {
 	//Free the window
 	SDL_DestroyWindow(screen);
-	screen = nullptr;
 
 	//Free renderer
 	SDL_DestroyRenderer(renderer);
-	renderer = nullptr;
-	
 
 	//Quit SDL Subsystems
 	Mix_CloseAudio();
@@ -172,10 +168,10 @@ void GraphicsDevice::drawOverlays()
 //	{
 //		ResourceManager* devices = levelExit -> getComponent<BodyComponent>() -> getDevices().get();
 //		//stop the physics on the trapdoor so we can walk onto that square.
-//		devices -> GetPhysicsDevice() -> SetStopPhysics(levelExit.get());
+//		devices -> getPhysicsDevice() -> SetStopPhysics(levelExit.get());
 //		//get rid of the notice stating we need to find the spheres.
 //		Notice notice = {15, 0, W, ""};
-//		devices -> GetNoticesLibrary() -> removeAsset(notice);
+//		devices -> getNoticesLibrary() -> removeAsset(notice);
 //
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 

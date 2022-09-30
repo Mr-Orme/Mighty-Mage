@@ -16,7 +16,9 @@ struct Notice
 class NoticesAssetLibrary{
 public:
 	NoticesAssetLibrary();
-	Notice search(Notice square);
+	//If notice is found, it updates square and returns true, else false.
+	bool search(Notice& square);
+
 	bool addAsset(Notice notice);
 	bool removeAsset(Notice notice);
 private:
@@ -24,6 +26,6 @@ private:
 	
 
 };
-
+bool operator==(const Notice& srcL, const Notice& srcR);
 
 #endif

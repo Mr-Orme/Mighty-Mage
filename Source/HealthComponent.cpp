@@ -27,7 +27,7 @@ bool HealthComponent::killMe(std::string deathSprite)
 //**************************************
 {
 	//Stop the physics of the object
-	devices -> GetPhysicsDevice() -> SetStopPhysics(_owner);
+	devices -> getPhysicsDevice() -> SetStopPhysics(_owner);
 
 	//grab the renderer
 	auto compRenderer{ _owner->getComponent<SpriteComponent>() };
@@ -58,9 +58,9 @@ std::unique_ptr<GameObject> HealthComponent::update(std::vector<std::unique_ptr<
 		{
 			//Turn off the joined object
 			GameObject* joined =  _owner -> getJoinedWith();
-			devices -> GetPhysicsDevice() -> SetStopPhysics(joined);
+			devices -> getPhysicsDevice() -> SetStopPhysics(joined);
 			//destroy the joints
-			devices -> GetPhysicsDevice() -> DestroyJoint(_owner);
+			devices -> getPhysicsDevice() -> DestroyJoint(_owner);
 		}
 		//kill it
 		killMe();

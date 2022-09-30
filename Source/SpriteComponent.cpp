@@ -5,11 +5,12 @@
 #include "View.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
+#include "GraphicsDevice.h"
 #include <memory>
 SpriteComponent::SpriteComponent(GameObject* owner, ResourceManager* devices) :Component(owner, devices){}
 SpriteComponent::SpriteComponent(ResourceManager* devices, std::string path) : 
 	Component(),
-	texture(std::make_shared<Texture>(path, devices->GetGraphicsDevice()))
+	texture(std::make_shared<Texture>(path, devices->getGraphicsDevice()))
 {
 
 }
@@ -27,14 +28,11 @@ bool SpriteComponent::initialize(ObjectFactoryPresets& presets)
 		std::cout << "Owner not present for Sprite component";
 		return false;
 	}
-	//this will get hit twice, so we only want it done once.
-	if(initialized == false)
+	if(!initialized)
 	{
-		//TODO::Do we need this here?
-		devices = presets.devices;
 		initialized = true;
 	}
-	return true;
+	return initialized;
 }
 std::unique_ptr<Component> SpriteComponent::copyMe() const
 {
@@ -47,7 +45,7 @@ void SpriteComponent::run()
 {
 	BodyComponent* body{ _owner->getComponent<BodyComponent>() };
 	run(
-		devices->GetGraphicsDevice()->getView()->relativePosition(body->getPosition()),
+		devices->getGraphicsDevice()->getView()->relativePosition(body->getPosition()),
 		body->getAngle());
 }
 

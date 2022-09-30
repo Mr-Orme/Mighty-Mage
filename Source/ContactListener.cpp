@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "ComponentsList.h"
 #include "Definitions.h"
+#include "SoundDevice.h"
 
 Direction travelDirection(b2Body* body)
 {
@@ -46,7 +47,7 @@ void wallCollision(BodyComponent* playerBody, BodyComponent* wallBody, Direction
 		break;
 	}
 	if (playWallSound)
-		playerBody->getDevices()->GetSoundDevice()->PlaySound(SoundEffect::Event::hitWall, 0, 2);
+		playerBody->getDevices()->getSoundDevice()->PlaySound(SoundEffect::Event::hitWall, 0, 2);
 }
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {
@@ -105,7 +106,7 @@ void ContactListener::PickUpItem(GameObject* player, GameObject* item)
 
 	if(player -> getComponent<BackpackComponent>() -> pickUpItem(item))
 	{
-		devices -> GetSoundDevice() -> PlaySound(SoundEffect::Event::pickup,0,3);
+		devices -> getSoundDevice() -> PlaySound(SoundEffect::Event::pickup,0,3);
 	}
 
 }

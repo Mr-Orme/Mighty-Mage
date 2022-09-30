@@ -4,6 +4,8 @@
 #include<memory>
 #include<iostream>
 #include<vector>
+#include<tuple>
+#include<optional>
 
 #include "Definitions.h"
 #include "Initializers.h"
@@ -11,7 +13,7 @@
 #include "Component.h"
 class GraphicsDevice;
 class PhysicsDevice;
-
+enum class Levels;
 class GameObject
 {
 public:
@@ -23,7 +25,7 @@ public:
 	bool initialize(ObjectFactoryPresets& presets);
 	void addComponent(std::unique_ptr<Component> component);
 	
-	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects);
+	std::tuple<std::unique_ptr<GameObject>, std::optional<Levels> > update(std::vector<std::unique_ptr<GameObject>>& objects);
 
 	void SetJoinedWith(GameObject* joinedWith){this -> joinedWith = joinedWith;}
 	GameObject* getJoinedWith() const {return joinedWith;}

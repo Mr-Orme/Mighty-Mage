@@ -86,15 +86,15 @@
 		</GameAsset>
 	</Structures>
 	<Notices>
-			<Notice x="8" y="5" direction = "S">The Inn of Sorpigal</Notice>
-		<Notice x="8" y="5" direction = "E">Eulard's Fine Foods</Notice>
-		<Notice x="8" y="5" direction = "W">B and B Blacksmiths</Notice>
-		<Notice x="13" y="10" direction = "N">Otto's Training</Notice>
-		<Notice x="6" y="10" direction = "N">Jail, KEEP OUT!</Notice>
-		<Notice x="9" y="14" direction = "E">Ye Olde Hogge Tavern</Notice>
-		<Notice x="4" y="0" direction = "N">Temple Moon Shadow</Notice>
-		<Notice x="15" y="0" direction = "W">You Must Collect all 6 Spheres to pass!</Notice>
-		<Notice x="14" y="0" direction = "W">You have broken the wizard's ward, you may descend!</Notice>
+			<Notice x="8" y="5" direction = "180">The Inn of Sorpigal</Notice>
+		<Notice x="8" y="5" direction = "90">Eulard's Fine Foods</Notice>
+		<Notice x="8" y="5" direction = "270">B and B Blacksmiths</Notice>
+		<Notice x="13" y="10" direction = "0">Otto's Training</Notice>
+		<Notice x="6" y="10" direction = "0">Jail, KEEP OUT!</Notice>
+		<Notice x="9" y="14" direction = "90">Ye Olde Hogge Tavern</Notice>
+		<Notice x="4" y="0" direction = "0">Temple Moon Shadow</Notice>
+		<Notice x="15" y="0" direction = "270">You Must Collect all 6 Spheres to pass!</Notice>
+		<Notice x="14" y="0" direction = "270">You have broken the wizard's ward, you may descend!</Notice>
 	</Notices>
 	<Sounds>
     <Sound name="3" path="./Assets/Sounds/found.ogg" duration="0" background="false"/>
