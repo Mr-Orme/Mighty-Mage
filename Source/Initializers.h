@@ -53,6 +53,7 @@ struct BodyPresets
 	~BodyPresets() {}
 	bool createBody{ false };
 	Vector2D position{ 0,0 };
+	Vector2D dimensions{ 0,0 };
 	float angle{ 0.0f };
 	PhysicsStats physics;
 	SpriteComponent* sprite{ nullptr };

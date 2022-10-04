@@ -142,6 +142,8 @@ inline Vector2D operator/(const Vector2D &lhs, int val);
 std::ostream& operator<<(std::ostream& os, const Vector2D& rhs);
 std::ifstream& operator>>(std::ifstream& is, Vector2D& lhs);
 
+bool operator<(const Vector2D& srcL, const Vector2D& srcR);
+
 
 //------------------------------------------------------------------------member functions
 
@@ -450,15 +452,6 @@ inline bool isSecondInFOVOfFirst(Vector2D posFirst,
 	Vector2D toTarget = Vec2DNormalize(posSecond - posFirst);
 
 	return facingFirst.Dot(toTarget) >= cos(fov / 2.0);
-}
-bool operator<(const Vector2D& srcL, const Vector2D& srcR)
-{
-	if (srcL.x == srcR.x)
-	{
-		return srcL.y < srcR.y;
-	}
-	return srcL.x < srcR.x;
-	
 }
 
 

@@ -45,7 +45,7 @@ protected:
 	int forceMultiplier{ baseForceMultiplier };
 	const int runMultiplier{ 2 }; //How many times faster is running then walking
 	const int angleAdjust{ 90 }; //How many degrees does the player turn each time
-
+	Vector2D dimensions{ 0,0 };
 	
 };
 

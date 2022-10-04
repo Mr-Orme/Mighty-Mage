@@ -15,3 +15,13 @@ std::ifstream& operator>>(std::ifstream& is, Vector2D& lhs)
 
 	return is;
 }
+
+bool operator<(const Vector2D& srcL, const Vector2D& srcR)
+{
+
+	if (srcL.x == srcR.x)
+	{
+		return srcL.y < srcR.y;
+	}
+	return srcL.x < srcR.x;
+}

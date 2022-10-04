@@ -6,29 +6,13 @@
 GameObject::GameObject(){}
 
 
-//**************************************
-//Get's the components up and running based on passed presests
-	//the renderer component needs to be initialized first because the body component depends on it
-	//It's initialization method has a check to see if it is already initialized 
-	//so that when we go through all the components and initialize them in the next step, it won't do it again.
 bool GameObject::initialize(ObjectFactoryPresets& presets)
-//**************************************
 {
 	presets.owner = this;
 	setType(presets.objectType);
 	
-	if (
-		SpriteComponent* component{ getComponent<SpriteComponent>() };
-		component != nullptr
-		)
-	{
-		component->initialize(presets);
-	}
-
-	//initialize all components
 	for ( auto& comp :components)
 	{
-		
 		comp -> initialize(presets);
 	}
 	
@@ -45,7 +29,7 @@ void GameObject::addComponent(std::unique_ptr<Component> component)
 
 //**************************************
 //runs the update method for all attached components
-std::tuple<std::unique_ptr<GameObject>, std::optional<Levels> > GameObject::update(std::vector<std::unique_ptr<GameObject>>& objects)
+std::unique_ptr<GameObject> GameObject::update(std::vector<std::unique_ptr<GameObject>>& objects)
 //**************************************
 
 {
@@ -60,7 +44,7 @@ std::tuple<std::unique_ptr<GameObject>, std::optional<Levels> > GameObject::upda
 			
 	}
 	//TODO::implement changing level!
-	return { std::move(newObject), std::nullopt};
+	return std::move(newObject);
 }
 
 bool GameObject::isA(Type name) const
@@ -104,6 +88,11 @@ void GameObject::setType(std::string sName)
 		name = Type::player;
 		direction = Direction::N;
 
+	}
+	else if (sName == "Trigger")
+	{
+		name = Type::trigger;
+		direction = Direction::N;
 	}
 	else
 	{

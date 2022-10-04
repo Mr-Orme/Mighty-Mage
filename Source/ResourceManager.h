@@ -80,7 +80,7 @@ private:
 	//TODO::get rid of this by makiing it 0,0 and adjust the view to center player.
 	Vector2D cityCorner{ 0,0 };//relative to player's start position.
 	Levels level{ Levels::sorpigal };
-	
+	Levels toLoad{ Levels::sorpigal };
 	std::map<Vector2D, Levels> exits;
 
 	

@@ -35,9 +35,13 @@ bool BodyComponent::initialize(ObjectFactoryPresets& presets)
 		return false;
 	}
 	PhysicsStats physics;
-	if(_owner->getComponent<SpriteComponent>() != nullptr)
+	if (auto sprite{ _owner->getComponent<SpriteComponent>() }; sprite != nullptr)
 	{
-		devices -> getPhysicsDevice() -> createFixture(	_owner,	presets.bodyInitializers);
+		presets.bodyInitializers.dimensions = sprite->getTexture()->getDimensions();
+	}
+	if (presets.bodyInitializers.dimensions != Vector2D{ 0, 0 })
+	{
+		devices->getPhysicsDevice()->createFixture(_owner, presets.bodyInitializers);
 	}
 	return true;
 }
@@ -71,7 +75,7 @@ std::unique_ptr<Component> BodyComponent::copyMe() const
 void BodyComponent::turnLeft()
 {
 	devices->getPhysicsDevice()->SetAngle(_owner, devices->getPhysicsDevice()->getAngle(_owner) - angleAdjust);
-	devices->getPhysicsDevice()->SetLinearVelocity(_owner, { 0,0 });
+	devices->getPhysicsDevice()->setLinearVelocity(_owner, { 0,0 });
 }
 
 void BodyComponent::turnRight()
@@ -81,7 +85,7 @@ void BodyComponent::turnRight()
 		_owner,
 		devices->getPhysicsDevice()->getAngle(_owner) + angleAdjust);
 	//stop forward motion
-	devices->getPhysicsDevice()->SetLinearVelocity(_owner, { 0,0 });
+	devices->getPhysicsDevice()->setLinearVelocity(_owner, { 0,0 });
 }
 
 void BodyComponent::moveForward()
@@ -98,7 +102,7 @@ void BodyComponent::moveBackward()
 
 void BodyComponent::stop()
 {
-	devices->getPhysicsDevice()->SetLinearVelocity(_owner, { 0,0 });
+	devices->getPhysicsDevice()->setLinearVelocity(_owner, { 0,0 });
 }
 
 float BodyComponent::getAngle() const
@@ -173,7 +177,7 @@ void BodyComponent::linearMovement(Way direction)
 	applyForce.y = (int)sinf((devices->getPhysicsDevice()->getAngle(_owner) * Pi / 180) + direction*(Pi / 2)) * forceMultiplier;
 	
 	//PUSH BABY PUSH!!!
-	devices->getPhysicsDevice()->SetLinearVelocity(_owner, applyForce);
+	devices->getPhysicsDevice()->setLinearVelocity(_owner, applyForce);
 	//if last play is done and the player is still moving
 	if (abs(velocity.x) > 1 || abs(velocity.y) > 1)
 	{

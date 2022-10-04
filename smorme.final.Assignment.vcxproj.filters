@@ -147,6 +147,9 @@
     <ClCompile Include="ThirdParty\tinyxml2\tinyxml2.cpp">
       <Filter>Source Files\third party\tinyXML</Filter>
     </ClCompile>
+    <ClCompile Include="Source\TriggerComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Game.h">
@@ -247,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="ThirdParty\tinyxml2\tinyxml2.h">
       <Filter>Header Files\third party\tinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TriggerComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,12 +20,12 @@ public:
 	GameObject();
 	~GameObject() {}
 
-	enum class Type{player, wall, floor, door, extra};
+	enum class Type{player, wall, floor, door, extra, trigger};
 
 	bool initialize(ObjectFactoryPresets& presets);
 	void addComponent(std::unique_ptr<Component> component);
 	
-	std::tuple<std::unique_ptr<GameObject>, std::optional<Levels> > update(std::vector<std::unique_ptr<GameObject>>& objects);
+	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects);
 
 	void SetJoinedWith(GameObject* joinedWith){this -> joinedWith = joinedWith;}
 	GameObject* getJoinedWith() const {return joinedWith;}

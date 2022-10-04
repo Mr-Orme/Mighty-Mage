@@ -166,7 +166,6 @@ ObjectDefinition ResourceManager::loadComponent(tinyxml2::XMLElement* component)
 	ObjectDefinition definition;
 	while (component)
 	{
-		//get the component's name
 		std::string currentComponent = component->Attribute("name");
 		//find the component we just grabbed
 		if (currentComponent == "Renderer")

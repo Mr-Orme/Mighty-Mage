@@ -68,34 +68,25 @@ bool Game::loadLevel(Levels toLoad)
 	//load the files
 	//========================================
 	
-	//if it does not load, the level or the physics did not load.
+	
 	if (!currentLevel.LoadFile(levelConfig.c_str())==tinyxml2::XML_SUCCESS){ return false; };
-	//create a root variable and set to the first element "Level"
 	lRoot = currentLevel.FirstChildElement();
-	//record the level;
 	int iLevel;
 	lRoot->QueryIntAttribute("level", &iLevel);
 	devices->setLevel(static_cast<Levels>(iLevel));
 
-
-
-	//get the first child element "Row"
 	tinyxml2::XMLElement* rowElement = lRoot->FirstChildElement();
 
+	presets.bodyInitializers.position = { 0, 0 };
 
-	//Size, in pixels, of one square in the game space
-	int squareDimension = 110;
-	presets.bodyInitializers.position.x = 0;
-	presets.bodyInitializers.position.y = 0;
 	//keeps track of the game square we are currently on.
-	Vector2D squarePosition = { presets.bodyInitializers.position.x, presets.bodyInitializers.position.y };
+	Vector2D squarePosition{ 0,0 };
 
 	//========================================
-	//Add level elements to object array
+	//load objects
 	//========================================
 	do
 	{
-		//get's the first square;
 		tinyxml2::XMLElement* squareElement = rowElement->FirstChildElement();
 		//This let's us know if we are doing extras or building actual squares.
 		std::string label = rowElement->Value();
@@ -370,13 +361,12 @@ std::optional<Levels> Game::update()
 		//run update method for the object
 		if (object != nullptr)
 		{
-			auto [temp, level] =  object->update(objects) ;
+			auto temp{ object->update(objects) };
 			//if it returned an object, add it to the list to be added.
 			if (temp != nullptr)
 			{
 				newObjects.push_back(std::move(temp));
 			}
-			if (level) toReturn = level;
 		}
 	}
 	return toReturn;

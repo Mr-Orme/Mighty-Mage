@@ -19,14 +19,11 @@ public:
 
 	void debugDraw();
 
-	bool createFixture
-		(
-		GameObject* object, BodyPresets presets
-		);
+	bool createFixture(GameObject* object, BodyPresets presets);
 
-	bool SetTransform(GameObject* object, Vector2D position, float angle);
-	bool SetLinearVelocity(GameObject* object, Vector2D linearVelociy);
-	bool SetAngularVelocity(GameObject* object, float angularVelocity);
+	
+	bool setLinearVelocity(GameObject* object, Vector2D linearVelociy);
+	
 	bool SetTorque(GameObject* object, float torque);
 	bool SetLinearImpulse(GameObject* object, Vector2D forceVec, Vector2D forceCenter);
 	bool SetStatic(GameObject* object);
@@ -54,6 +51,9 @@ public:
 	
 	inline float PW2RW(float x) { return x * physicsModifier; }
 private:
+	bool setTransform(GameObject* object, Vector2D position, float angle);
+	bool setAngularVelocity(GameObject* object, float angularVelocity);
+
 	const float physicsModifier = 10.0f;
 	inline float RW2PW(float x) { return x / physicsModifier; }
 	inline float RW2PW(int x) { return (float)x / physicsModifier; }

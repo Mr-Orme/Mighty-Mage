@@ -59,25 +59,25 @@
 		</GameAsset>
 	</Structures>
 	<Notices>
-			<Notice x="11" y="5" direction = "E">Getting Cold</Notice>
-		<Notice x="15" y="0" direction = "S">Getting Cold</Notice>
-		<Notice x="15" y="15" direction = "E">Getting Cold</Notice>
-		<Notice x="2" y="0" direction = "S">Getting Cold</Notice>
-		<Notice x="8" y="5" direction = "S">Getting Cold</Notice>
-		<Notice x="1" y="11" direction = "N">Getting HOT!!!</Notice>
-		<Notice x="1" y="15" direction = "S">Getting HOT!!!</Notice>
-		<Notice x="14" y="0" direction = "W">Find the Wizard's wand to free the town!</Notice>
-		<Notice x="1" y="13" direction = "N">You have found the Wizard's wand and freed the town from it's Curse!!!</Notice>
-		<Notice x="1" y="13" direction = "E">You have found the Wizard's wand and freed the town from it's Curse!!!</Notice>
-		<Notice x="1" y="13" direction = "S">You have found the Wizard's wand and freed the town from it's Curse!!!</Notice>
-		<Notice x="1" y="13" direction = "W">You have found the Wizard's wand and freed the town from it's Curse!!!</Notice>
+			<Notice x="11" y="5" direction = "90">Getting Cold</Notice>
+		<Notice x="15" y="0" direction = "180">Getting Cold</Notice>
+		<Notice x="15" y="15" direction = "90">Getting Cold</Notice>
+		<Notice x="2" y="0" direction = "180">Getting Cold</Notice>
+		<Notice x="8" y="5" direction = "180">Getting Cold</Notice>
+		<Notice x="1" y="11" direction = "0">Getting HOT!!!</Notice>
+		<Notice x="1" y="15" direction = "180">Getting HOT!!!</Notice>
+		<Notice x="14" y="0" direction = "270">Find the Wizard's wand to free the town!</Notice>
+		<Notice x="1" y="13" direction = "0">You have found the Wizard's wand and freed the town from it's Curse!!!</Notice>
+		<Notice x="1" y="13" direction = "90">You have found the Wizard's wand and freed the town from it's Curse!!!</Notice>
+		<Notice x="1" y="13" direction = "180">You have found the Wizard's wand and freed the town from it's Curse!!!</Notice>
+		<Notice x="1" y="13" direction = "270">You have found the Wizard's wand and freed the town from it's Curse!!!</Notice>
 	</Notices>
 	<Sounds>
-    <Sound name="found" path="./Assets/Sounds/found.ogg" duration="0" background="false"/>
-    <Sound name="walking" path="./Assets/Sounds/walking.ogg" duration=".9" background="false"/>
-    <Sound name="run" path="./Assets/Sounds/walking.ogg" duration=".6" background="false"/>
-    <Sound name="wall" path="./Assets/Sounds/wall.ogg" duration=".5" background="false"/>
-		<Sound name="main" path="./Assets/Sounds/basement.ogg" background="true"/>
+    <Sound name="3" path="./Assets/Sounds/found.ogg" duration="0" background="false"/>
+    <Sound name="0" path="./Assets/Sounds/walking.ogg" duration=".85" background="false"/>
+    <Sound name="1" path="./Assets/Sounds/walking.ogg" duration=".6" background="false"/>
+    <Sound name="2" path="./Assets/Sounds/wall.ogg" duration=".4" background="false"/>
+		<Sound name="0" path="./Assets/Sounds/basement.ogg" background="true"/>
 	
 	</Sounds>
 </Basement>

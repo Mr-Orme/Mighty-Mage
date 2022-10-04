@@ -38,7 +38,7 @@ void PhysicsDevice::debugDraw()
 
 //**************************************
 //Moves body to a set location & angle
-bool PhysicsDevice::SetTransform(GameObject* object, Vector2D position, float angle)
+bool PhysicsDevice::setTransform(GameObject* object, Vector2D position, float angle)
 //**************************************
 {
 	//finds which body this object is attached to.
@@ -64,7 +64,7 @@ bool PhysicsDevice::SetAngle(GameObject* object, float angle)
 
 //**************************************
 //Sets angular velocity
-bool PhysicsDevice::SetAngularVelocity(GameObject* object, float angularVelocity)
+bool PhysicsDevice::setAngularVelocity(GameObject* object, float angularVelocity)
 //**************************************
 {
 	b2Body* body = FindBody(object);
@@ -75,7 +75,7 @@ bool PhysicsDevice::SetAngularVelocity(GameObject* object, float angularVelocity
 
 //**************************************
 //Sets angular velocity
-bool PhysicsDevice::SetLinearVelocity(GameObject* object, Vector2D linearVelociy)
+bool PhysicsDevice::setLinearVelocity(GameObject* object, Vector2D linearVelociy)
 //**************************************
 {
 	b2Body* body = FindBody(object);
@@ -172,7 +172,7 @@ Vector2D PhysicsDevice::GetVelocity(GameObject* object)
 bool PhysicsDevice::createFixture(GameObject* object, BodyPresets presets)
 //**************************************
 {
-	SpriteComponent* compRenderer{ object->getComponent<SpriteComponent>() };
+	
 	//new body definition
 	b2BodyDef* bd = new b2BodyDef;
 	//made need one or the other, depending on what was passed.
@@ -201,11 +201,7 @@ bool PhysicsDevice::createFixture(GameObject* object, BodyPresets presets)
 	}
 
 	//********Adjust postion because SDL is top left, while box2d is center*************
-	Texture* texture = object -> getComponent<SpriteComponent>() -> getTexture();
-	//subtract off half the width.
-	presets.position.x += (texture -> getDimensions().x/2);
-	//subtract off half the height
-	presets.position.y += (texture -> getDimensions().y/2);
+	presets.position += presets.dimensions/2;
 	//**********************************************************************************
 
 	// set starting position & angle
@@ -224,13 +220,13 @@ bool PhysicsDevice::createFixture(GameObject* object, BodyPresets presets)
 	{
 	case BodyShape::Rectangle:
 		//rectangle's dimensions
-		pShape.SetAsBox(RW2PW(compRenderer -> getTexture() -> getDimensions().x/2.0f), RW2PW(compRenderer -> getTexture() -> getDimensions().y/2.0f));
+		pShape.SetAsBox(RW2PW(presets.dimensions.x/2.0f), RW2PW(presets.dimensions.y/2.0f));
 		shapefd.shape = &pShape;
 		break;
 	case BodyShape::Circle:
 		//circle radius based on object's width.
-		float width = compRenderer -> getTexture() -> getDimensions().x/2.0f;
-		float height = compRenderer -> getTexture() -> getDimensions().y/2.0f;
+		float width = presets.dimensions.x/2.0f;
+		float height = presets.dimensions.y/2.0f;
 
 		if (width > height)	cShape.m_radius = (RW2PW(width));
 		else cShape.m_radius = (RW2PW(height));

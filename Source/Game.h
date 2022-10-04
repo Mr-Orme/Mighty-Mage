@@ -36,7 +36,7 @@ private:
 	Vector2D screenDimensions{800, 600};
 	std::unique_ptr<Timer> frameTimer{ nullptr };
 	std::unique_ptr<LevelConfigLibrary> levelLibrary{nullptr};
-	
+	int squareDimension{ 110 };
 };
 
 
