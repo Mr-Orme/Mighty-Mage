@@ -5,7 +5,6 @@
 #include <string>
 
 //Keeps track of paths to level xml files
-//TODO::implement this library.
 enum class Levels;
 class LevelConfigLibrary{
 public:

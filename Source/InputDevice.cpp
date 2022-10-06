@@ -17,6 +17,8 @@ InputDevice::InputDevice():
 	keyStates[Inputs::quit] = false;
 	keyStates[Inputs::shift] = false;
 	keyStates[Inputs::key_b] = false;
+	keyStates[Inputs::key_y] = false;
+	keyStates[Inputs::key_n] = false;
 	update();
 }
 
@@ -85,6 +87,12 @@ InputDevice::Inputs InputDevice::Translate(SDL_Event* event)
 			break;
 		case SDLK_b:
 			return Inputs::key_b;
+			break;
+		case SDLK_y:
+			return Inputs::key_y;
+			break;
+		case SDLK_n:
+			return Inputs::key_n;
 			break;
 		}
 	return Inputs::NA;

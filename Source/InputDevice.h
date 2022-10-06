@@ -9,7 +9,7 @@
 class GameObject;
 class InputDevice{
 public:
-	enum class Inputs { NA, up, down, left, right, space, shift, key_b, quit, numEvents };
+	enum class Inputs { NA, up, down, left, right, space, shift, key_b, key_y, key_n, quit, numEvents };
 	InputDevice();
 	
 	void update();

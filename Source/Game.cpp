@@ -53,7 +53,7 @@ Game::~Game()
 bool Game::loadLevel(Levels toLoad)
 //**************************************
 {
-
+	//TODO::need to be able to specificy the player's position!
 	reset();
 
 	auto [levelConfig, assetConfigFile] = levelLibrary->search(toLoad);
@@ -113,7 +113,7 @@ bool Game::loadLevel(Levels toLoad)
 				//The SDL top starts at 0, Our map is reversed, so we need to subtract the integer part from 15 and add back on the fractinal part.
 				presets.bodyInitializers.position.y = (int)((((15 - intPart) + fractPart) * squareDimension) + squarePosition.y);
 
-				squareElement->QueryFloatAttribute("angle", &presets.bodyInitializers.angle);
+				squareElement->QueryIntAttribute("angle", &presets.bodyInitializers.angle);
 
 				//adjusts where we start the level based on the player's position
 				//and puts the player in the middle of the screen.
@@ -134,6 +134,25 @@ bool Game::loadLevel(Levels toLoad)
 				}
 				else if (presets.objectType == "Trigger")
 				{
+					switch ((Direction)presets.bodyInitializers.angle)
+					{
+					case Direction::N:
+						presets.bodyInitializers.dimensions = { squareDimension, (int)(squareDimension * 0.2f) };
+						break;
+					case Direction::E:
+						presets.bodyInitializers.dimensions = { (int)(squareDimension * 0.2f, squareDimension) };
+						presets.bodyInitializers.position.x += squareDimension - presets.bodyInitializers.dimensions.x;
+						break;
+					case Direction::S:
+						presets.bodyInitializers.dimensions = { squareDimension, (int)(squareDimension * 0.2f) };
+						presets.bodyInitializers.position.y += squareDimension - presets.bodyInitializers.dimensions.y;
+						break;
+					case Direction::W:
+						presets.bodyInitializers.dimensions = { (int)(squareDimension * 0.2f, squareDimension) };
+						break;
+					default:
+						break;
+					}
 					squareElement->QueryIntAttribute("type", &presets.triggerInitializers.name);
 					if (presets.triggerInitializers.name == (int)TriggerComponent::Type::exits)
 					{

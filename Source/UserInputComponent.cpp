@@ -50,19 +50,8 @@ void UserInputComponent::displayNotices()
 		devices->getNoticesLibrary()->search(notice)
 		)
 	{
-		devices->getGraphicsDevice()->notice2Screen(notice.text);
+		//devices->getGraphicsDevice()->notice2Screen(notice.text);
 	}
-	//*****************************TO Basement*********************************************
-	//if we are on the main level and make it to the proper spot
-
-	//TODO::make exiting a component!?
-	//if (devices->isExitSquare(body->currentSquare()))
-	//{
-	//	
-	//	//TODO::make more generic to load any level!
-	//	devices->setLoadBasement(true);
-	//}
-	//********************************************************************************
 }
 void UserInputComponent::dealWithButtonPresses()
 {

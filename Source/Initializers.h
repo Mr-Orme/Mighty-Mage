@@ -54,7 +54,7 @@ struct BodyPresets
 	bool createBody{ false };
 	Vector2D position{ 0,0 };
 	Vector2D dimensions{ 0,0 };
-	float angle{ 0.0f };
+	int angle{ 0 };
 	PhysicsStats physics;
 	SpriteComponent* sprite{ nullptr };
 	//std::vector<std::unique_ptr<BodyCallBack>> callBacks;

@@ -43,7 +43,6 @@ std::unique_ptr<GameObject> GameObject::update(std::vector<std::unique_ptr<GameO
 		}
 			
 	}
-	//TODO::implement changing level!
 	return std::move(newObject);
 }
 

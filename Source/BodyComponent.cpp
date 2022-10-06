@@ -34,7 +34,6 @@ bool BodyComponent::initialize(ObjectFactoryPresets& presets)
 		std::cout << "Owner not present for Bodycomponent";
 		return false;
 	}
-	PhysicsStats physics;
 	if (auto sprite{ _owner->getComponent<SpriteComponent>() }; sprite != nullptr)
 	{
 		presets.bodyInitializers.dimensions = sprite->getTexture()->getDimensions();

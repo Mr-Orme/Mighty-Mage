@@ -9,7 +9,7 @@ bool TriggerComponent::initialize(ObjectFactoryPresets& presets)
 		std::cout << "Owner not present for Trigger component";
 		return false;
 	}
-	direction = presets.triggerInitializers.direction;
+	direction = (Direction)presets.bodyInitializers.angle;
 	exitTo = presets.triggerInitializers.exitTo;
 	message = presets.triggerInitializers.message;
 	name = (Type)presets.triggerInitializers.name;
@@ -33,7 +33,20 @@ bool TriggerComponent::trigger(Direction direction)
 	case TriggerComponent::Type::exits:
 		devices->getGraphicsDevice()->text2Screen(std::to_string((int)direction), { 10, 50 });
 		if (this->direction == direction)
-			devices->changeLevel(exitTo);
+		{
+			devices->getGraphicsDevice()->notice2Screen(message);
+			bool y{ devices->getInputDevice()->isPressed(InputDevice::Inputs::key_y) };
+			bool n{ devices->getInputDevice()->isPressed(InputDevice::Inputs::key_n) };
+			while (!y || !n)
+			{
+				devices->getGraphicsDevice()->present();
+				y= devices->getInputDevice()->isPressed(InputDevice::Inputs::key_y);
+				n= devices->getInputDevice()->isPressed(InputDevice::Inputs::key_n);
+			}
+			if (y)
+				devices->changeLevel(exitTo);
+			
+		}
 		else return false;
 		break;
 	case TriggerComponent::Type::messages:
