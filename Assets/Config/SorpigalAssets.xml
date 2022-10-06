@@ -86,7 +86,7 @@
 		</GameAsset>
     <GameAsset name="Trigger">
       <Component name="Body" density="0.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "true"/>
-      <Component name="Trigger">
+      <Component name="Trigger"/>
     </GameAsset>
 	</Structures>
 	<Notices>

@@ -57,7 +57,14 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 	
 	GameObject* objectA = reinterpret_cast<GameObject*>(bodyA->GetUserData().pointer);
 	GameObject* objectB = reinterpret_cast<GameObject*>(bodyB->GetUserData().pointer);
-
+	if (objectA->isA(GameObject::Type::trigger))
+	{
+		std::cout << "a";
+	}
+	if (objectB->isA(GameObject::Type::trigger))
+	{
+		std::cout << "b";
+	}
 	if(objectA->isA(GameObject::Type::player))
 	{
 		if(objectB -> getComponent<InventoryComponent>())

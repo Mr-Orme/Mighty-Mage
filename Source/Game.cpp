@@ -5,7 +5,7 @@
 #include "Definitions.h"
 #include "GameObject.h"
 #include "Initializers.h"
-#include "tinyxml2.h"
+
 #include "GraphicsDevice.h"
 #include "PhysicsDevice.h"
 #include "SoundDevice.h"
@@ -128,14 +128,19 @@ bool Game::loadLevel(Levels toLoad)
 					presets.bodyInitializers.position.x = halfWidth;
 					presets.bodyInitializers.position.y = halfHeight;
 				}
-				//Create a pointer to a new object and initialize it.
-			
-				//add new object
+				else if (presets.objectType == "Trigger")
+				{
+					squareElement->QueryIntAttribute("type", &presets.triggerInitializers.name);
+					if (presets.triggerInitializers.name == (int)TriggerComponent::Type::exits)
+					{
+						int level{};
+						squareElement->QueryIntAttribute("area", &level);
+						presets.triggerInitializers.exitTo = (Levels)level;
+						presets.triggerInitializers.message = squareElement->Attribute("message");
+					}
+				}
+							
 				objects.push_back(objectFactory->Create(presets));
-
-				//mark the exit
-				//TODO::Make exits more generic. Perhaps an exit component?
-				if (presets.objectType == "Trapdoor") {} //devices->setExit(objects.back().get());
 
 				//make sure presests is ready for loading the level
 				presets.bodyInitializers.position = squarePosition;
@@ -370,6 +375,11 @@ std::optional<Levels> Game::update()
 		}
 	}
 	return toReturn;
+}
+
+bool Game::loadExtras(tinyxml2::XMLElement* squareElement)
+{
+	return false;
 }
 
 //**************************************

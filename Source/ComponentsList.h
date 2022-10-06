@@ -3,9 +3,15 @@
 
 /*If you add a component you need to make the following changes.
 assets.xml 
-enum in definitions 
-switch in ComponentAssetLibrary.cpp 
-if statements in ResourceManager.cpp
+if statements in ResourceManager.cpp loadComponent method.
+Game->loadLevels may need a modification.
+add the following to initializer:
+	if (!Component::initialize(presets))
+	{
+		std::cout << "Owner not present for Backpack component";
+		return false;
+	}
+create copyMe override!
 */
 #include "Component.h"
 #include "BodyComponent.h"
@@ -17,6 +23,7 @@ if statements in ResourceManager.cpp
 #include "BackpackComponent.h"
 #include "InventoryComponent.h"
 #include "GhostComponent.h"
+#include "TriggerComponent.h"
 
 
 

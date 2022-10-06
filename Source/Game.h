@@ -2,7 +2,7 @@
 #define GAME_H
 
 #include "Vector2D.h"
-
+#include "tinyxml2.h"
 #include <string>
 #include <vector>
 #include <memory>
@@ -26,10 +26,11 @@ public:
 	std::optional<Levels> update();
 	
 private:
+	bool loadExtras(tinyxml2::XMLElement* squareElement);
+	
 	std::vector<std::unique_ptr<GameObject>> objects;
 	std::vector<std::unique_ptr<GameObject>> newObjects;
 	
-
 	std::unique_ptr<ResourceManager> devices{ nullptr };
 	float gameTime{};
 	bool debug{ false };

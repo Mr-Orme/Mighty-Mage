@@ -13,7 +13,7 @@ class ResourceManager;
 class BodyComponent;
 class SpriteComponent;
 class Texture;
-
+enum class Levels;
 struct ObjectStats
 {
 	int health;
@@ -102,6 +102,13 @@ struct SteeringPresets
 	Vector2D staticTargetVector;
 	
 };
+struct TriggerPresets
+{
+	int name{}; //convert to TriggerComponent::Type
+	Direction direction{ Direction::N };
+	Levels exitTo;
+	std::string message;
+};
 struct ObjectFactoryPresets
 {
 	std::string objectType{ "" };
@@ -109,6 +116,7 @@ struct ObjectFactoryPresets
 	BodyPresets bodyInitializers;
 	UserInputPresets userInputInitializers;
 	SteeringPresets steeringInitializers;
+	TriggerPresets triggerInitializers;
 	PrimaryJoint jointInitializers;
 	std::map<Direction, bool> gDirection;
 	//int health{ 0 };//move to new AssetLibraryGame

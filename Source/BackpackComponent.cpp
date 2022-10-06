@@ -35,7 +35,7 @@ bool BackpackComponent::initialize(ObjectFactoryPresets& presets)
 {
 	if (!Component::initialize(presets))
 	{
-		std::cout << "Owner not present for Ghost component";
+		std::cout << "Owner not present for Backpack component";
 		return false;
 	}
 

@@ -9,7 +9,6 @@
 class GameObject;
 class ResourceManager;
 enum class Levels;
-class GameObject;
 class TriggerComponent : public Component
 {
 public:
@@ -24,3 +23,5 @@ private:
 	Levels exitTo;
 	std::string message;
 };
+///Trigger Component along with body component in Object.
+//Collision detection with component triggers it.
