@@ -57,6 +57,10 @@
 			<Component name="Renderer" sprite="./Assets/Images/wand.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "false"/>
 		</GameAsset>
+    <GameAsset name="Trigger">
+      <Component name="Body" density="0.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "true"/>
+      <Component name="Trigger"/>
+    </GameAsset>
 	</Structures>
 	<Notices>
 			<Notice x="11" y="5" direction = "90">Getting Cold</Notice>

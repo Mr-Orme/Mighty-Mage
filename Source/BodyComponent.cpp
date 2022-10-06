@@ -17,7 +17,7 @@ BodyComponent::BodyComponent():Component()
 BodyComponent::~BodyComponent()
 {
 	//remove the physics body
-	if (!devices->getPhysicsDevice()->RemoveObject(_owner))
+	if (_owner && !devices->getPhysicsDevice()->RemoveObject(_owner))
 	{
 		printf("Object could not be removed from Physics World");
 		//exit(1);

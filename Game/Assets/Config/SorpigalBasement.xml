@@ -10,6 +10,7 @@
 	<!-- Player must be first item in file!!!! In order for it to be on top of everything-->
 		<Player x="14.4" y="0.25" angle="270"/>
 		<Wand x="1.2" y="13.0" angle = "0" />
+    <Trigger x="14.1" y="0.1" angle="180" type="0" area="0" message="A stairway leads up into bright daylight. Do you want to ascend: (y/n)" />
 		
 	</Extras>
     <!-- NPC Layout for Game 	-->

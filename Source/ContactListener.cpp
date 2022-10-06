@@ -5,6 +5,7 @@
 #include "ComponentsList.h"
 #include "Definitions.h"
 #include "SoundDevice.h"
+#include "GraphicsDevice.h" //TODO::get rid of this
 
 Direction travelDirection(b2Body* body)
 {
@@ -57,14 +58,35 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 	
 	GameObject* objectA = reinterpret_cast<GameObject*>(bodyA->GetUserData().pointer);
 	GameObject* objectB = reinterpret_cast<GameObject*>(bodyB->GetUserData().pointer);
+	
 	if (objectA->isA(GameObject::Type::trigger))
 	{
-		std::cout << "a";
+		objectB->getComponent<BodyComponent>()->getDevices()->getGraphicsDevice()->
+			text2Screen(
+				std::to_string((int)objectB->getComponent<BodyComponent>()->getDirection()), { 10,10 });
+
+		if (!objectA->getComponent<TriggerComponent>()->trigger
+		(
+			objectB->getComponent<BodyComponent>()->getDirection()
+		))
+		{
+			contact->SetEnabled(false);
+		}
 	}
-	if (objectB->isA(GameObject::Type::trigger))
+	else if (objectB->isA(GameObject::Type::trigger))
 	{
-		std::cout << "b";
+		objectB->getComponent<BodyComponent>()->getDevices()->getGraphicsDevice()->
+			text2Screen(
+				std::to_string((int)objectB->getComponent<BodyComponent>()->getDirection()), { 10,10 });
+		if(objectB->getComponent<TriggerComponent>()->trigger
+		(
+			objectA->getComponent<BodyComponent>()->getDirection()
+		))
+		{
+		contact->SetEnabled(false);
+		}
 	}
+
 	if(objectA->isA(GameObject::Type::player))
 	{
 		if(objectB -> getComponent<InventoryComponent>())

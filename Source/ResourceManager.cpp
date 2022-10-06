@@ -69,17 +69,6 @@ ObjectFactory* ResourceManager::getObjectFactory()
 	return factory.get();
 }
 
-void ResourceManager::addExit(Levels level, Vector2D square)
-{
-	exits[square] = level;
-}
-
-bool ResourceManager::isExitSquare(Vector2D currSquare) const
-{
-	//return std::find(exits.begin(), exits.end(), currSquare) != exits.end();	
-	return false;
-}
-
 void ResourceManager::loadLibraries(std::string assetPath)
 {	
 	tinyxml2::XMLDocument assetFile;

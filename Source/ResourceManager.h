@@ -22,7 +22,7 @@ class GraphicsDevice;
 class ObjectFactory;
 class GameObject;
 
-enum class Levels { sorpigal, sorpigal_basement, };
+enum class Levels { sorpigal, sorpigal_basement, none};
 class ResourceManager
 {
 public:
@@ -40,19 +40,16 @@ public:
 
 	ObjectFactory* getObjectFactory();
 
-	int getFPS(){return FPS;}
-	Vector2D getCityCorner(){return cityCorner;}
-	Levels getLevel(){return level;}
-
-	
+	int getFPS() const {return FPS;}
+	Vector2D getCityCorner() const {return cityCorner;}
+	Levels getLevel() const {return level;}
+	Levels level2Load() const { return toLoad; }
 
 	//Other Setters
-	
 	void setCityCorner(Vector2D cityCorner){this -> cityCorner = cityCorner;}
 	void setLevel(Levels level){this -> level = level;}
-	void addExit(Levels level, Vector2D square);
-
-	bool isExitSquare(Vector2D currSquare) const;
+	void changeLevel(Levels exit) { this->toLoad = exit; }
+	
 	const int pixelsPerSquare{ 110 };
 	const int blocksPerMap{ 15 };
 private:
@@ -80,10 +77,7 @@ private:
 	//TODO::get rid of this by makiing it 0,0 and adjust the view to center player.
 	Vector2D cityCorner{ 0,0 };//relative to player's start position.
 	Levels level{ Levels::sorpigal };
-	Levels toLoad{ Levels::sorpigal };
-	std::map<Vector2D, Levels> exits;
-
-	
+	Levels toLoad{ Levels::none };	
 };
 
 #endif

@@ -17,6 +17,7 @@ public:
 	bool initialize(ObjectFactoryPresets& presets) override;
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;
 	std::unique_ptr<Component> copyMe() const override;
+	bool trigger(Direction direction);
 private:
 	Type name{ Type::exits };
 	Direction direction{ Direction::N };

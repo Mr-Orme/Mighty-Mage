@@ -17,6 +17,25 @@
 
 Game::Game()
 {
+	std::string levelFile{ "./Assets/Config/Areas.xml" };
+	levelLibrary = std::make_unique<LevelConfigLibrary>();
+	tinyxml2::XMLDocument currentLevel;
+	
+	if (!currentLevel.LoadFile(levelFile.c_str()) == tinyxml2::XML_SUCCESS) 
+	{ 
+		std::cout << "error with Areas.xml file";
+	};
+	tinyxml2::XMLElement* lRoot{ currentLevel.FirstChildElement() };
+	tinyxml2::XMLElement* level{ lRoot->FirstChildElement() };
+	while (level)
+	{
+		int enumValue{};
+		level->QueryIntAttribute("enum", &enumValue);
+		std::string path{ level->Attribute("layout") };
+		std::string assets{ level->Attribute("assets") };
+		levelLibrary->addAsset((Levels)enumValue, "./Assets/Config/" + path, "./Assets/Config/" + assets);
+		level = level->NextSiblingElement();
+	}
 	loadLevel(Levels::sorpigal);
 }
 
@@ -36,21 +55,6 @@ bool Game::loadLevel(Levels toLoad)
 {
 
 	reset();
-	std::string levelFile{ "./Assets/Config/Areas.xml" };
-	levelLibrary = std::make_unique<LevelConfigLibrary>();
-	tinyxml2::XMLDocument currentLevel;
-	if (!currentLevel.LoadFile(levelFile.c_str()) == tinyxml2::XML_SUCCESS) { return false; };
-	tinyxml2::XMLElement* lRoot{ currentLevel.FirstChildElement() };
-	tinyxml2::XMLElement* level{ lRoot->FirstChildElement() };
-	while (level)
-	{
-		int enumValue{};
-		level->QueryIntAttribute("enum", &enumValue);
-		std::string path{ level->Attribute("layout") };
-		std::string assets{ level->Attribute("assets") };
-		levelLibrary->addAsset((Levels)enumValue, "./Assets/Config/" + path, "./Assets/Config/" + assets);
-		level = level->NextSiblingElement();
-	}
 
 	auto [levelConfig, assetConfigFile] = levelLibrary->search(toLoad);
 	//========================================
@@ -68,9 +72,9 @@ bool Game::loadLevel(Levels toLoad)
 	//load the files
 	//========================================
 	
-	
+	tinyxml2::XMLDocument currentLevel;
 	if (!currentLevel.LoadFile(levelConfig.c_str())==tinyxml2::XML_SUCCESS){ return false; };
-	lRoot = currentLevel.FirstChildElement();
+	tinyxml2::XMLElement* lRoot{ currentLevel.FirstChildElement() };
 	int iLevel;
 	lRoot->QueryIntAttribute("level", &iLevel);
 	devices->setLevel(static_cast<Levels>(iLevel));
@@ -174,10 +178,6 @@ bool Game::loadLevel(Levels toLoad)
 				{
 					presets.objectType = "TopFill";
 				}
-
-				//Create a pointer to a new object and initialize it.
-				
-				//add new object
 				objects.emplace_back(objectFactory->Create(presets));
 				//***************************************
 
@@ -187,7 +187,6 @@ bool Game::loadLevel(Levels toLoad)
 				presets.bodyInitializers.position.y += 10;
 			
 				std::string left{ squareElement->Attribute("left") };
-				//set left wall
 				if (left == "wall")
 				{
 					presets.objectType = "VWall";
@@ -205,13 +204,8 @@ bool Game::loadLevel(Levels toLoad)
 					squareElement->QueryBoolAttribute("gW", &direction);
 					presets.gDirection[Direction::W] = direction;
 				}
-
-				//if there is a left wall, create it
 				if (left != "none")
 				{
-					//Create a pointer to a new object and initialize it.
-					
-					//add new object
 					objects.emplace_back(objectFactory->Create(presets));
 				}
 				//***************************************
@@ -234,22 +228,9 @@ bool Game::loadLevel(Levels toLoad)
 					presets.gDirection[Direction::S] = true;
 					presets.gDirection[Direction::W] = true;
 				}
-				else if (floor == "exit")
-				{
-					Vector2D location;
-					squareElement->QueryIntAttribute("id", &location.x);
-					rowElement->QueryIntAttribute("id", &location.y);
-					int area;
-					squareElement->QueryIntAttribute("area", &area);
-					devices->addExit((Levels)area, location);
-				}
-
-				//if there is a floor, create it.
+				
 				if (floor != "none")
 				{
-					//Create a pointer to a new object and initialize it.
-					
-					//add new object
 					objects.emplace_back(objectFactory->Create(presets));
 				}
 
@@ -283,6 +264,10 @@ bool Game::loadLevel(Levels toLoad)
 bool Game::run()
 //**************************************
 {
+	if (auto level{ devices->level2Load() }; level != Levels::none)
+	{
+		loadLevel(level);
+	}
 	FrameCounter::incrementFrame();
 	
 	if (devices->getInputDevice()->isPressed(InputDevice::Inputs::quit))
@@ -317,6 +302,7 @@ bool Game::run()
 std::optional<Levels> Game::update()
 //**************************************
 {
+	
 
 	//update the physics world
 	devices->getPhysicsDevice()->Update(1.0f / devices->getFPS());
@@ -382,21 +368,6 @@ bool Game::loadExtras(tinyxml2::XMLElement* squareElement)
 	return false;
 }
 
-//**************************************
-//Starts the graphic deivce, 
-//Graphic Device draws the sprites
-//Then calls the graphic device's present method to show the frame.
-//bool Game::run()
-////**************************************
-//{
-//	devices -> getGraphicsDevice() -> begin();	
-//	devices -> getGraphicsDevice() -> run();
-//	
-//	if (debug) devices->getPhysicsDevice()->getWorld()->DebugDraw(); //-> DrawDebugData();
-//	
-//	devices -> getGraphicsDevice() -> present();
-//	return true;
-//}
 
 //**************************************
 //Clears the object vector and ResourceManager in
