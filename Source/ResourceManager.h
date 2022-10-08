@@ -44,11 +44,13 @@ public:
 	Vector2D getCityCorner() const {return cityCorner;}
 	Levels getLevel() const {return level;}
 	Levels level2Load() const { return toLoad; }
+	bool isPaused() { return paused; }
 
-	//Other Setters
 	void setCityCorner(Vector2D cityCorner){this -> cityCorner = cityCorner;}
 	void setLevel(Levels level){this -> level = level;}
 	void changeLevel(Levels exit) { this->toLoad = exit; }
+	void pause() { paused = true; }
+	void upause() { paused = false; }
 	
 	const int pixelsPerSquare{ 110 };
 	const int blocksPerMap{ 15 };
@@ -78,6 +80,7 @@ private:
 	Vector2D cityCorner{ 0,0 };//relative to player's start position.
 	Levels level{ Levels::sorpigal };
 	Levels toLoad{ Levels::none };	
+	bool paused{ false };
 };
 
 #endif

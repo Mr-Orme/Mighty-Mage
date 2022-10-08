@@ -289,7 +289,7 @@ bool Game::run()
 	}
 	FrameCounter::incrementFrame();
 	
-	if (devices->getInputDevice()->isPressed(InputDevice::Inputs::quit))
+	if (devices->getInputDevice()->isPressed(Inputs::quit))
 	{
 		return false;
 	}
@@ -299,11 +299,7 @@ bool Game::run()
 	frameTimer->start();
 	devices->getGraphicsDevice()->begin();
 	
-	if (auto newLevel{ update() }; newLevel)
-	{
-		loadLevel(*newLevel);
-		return true;
-	}
+	update();
 	
 	devices -> getGraphicsDevice() -> drawOverlays();
 		
@@ -318,7 +314,7 @@ bool Game::run()
 //**************************************
 //call's the view's update method
 //Call's each object's update method in the object vector.
-std::optional<Levels> Game::update()
+bool Game::update()
 //**************************************
 {
 	
@@ -329,6 +325,7 @@ std::optional<Levels> Game::update()
 	std::vector<std::unique_ptr<GameObject>>::iterator objectIter;
 
 	//clean out dead objects
+	//TODO::update to algorithm!
 	for (objectIter = objects.begin(); objectIter != objects.end(); objectIter++)
 	{
 		if (*objectIter == nullptr)
@@ -349,7 +346,6 @@ std::optional<Levels> Game::update()
 					objectIter = objects.erase(objectIter);
 					objectIter--;
 				}
-				//if it got picked up. . 
 			}
 		}
 	}
@@ -364,22 +360,20 @@ std::optional<Levels> Game::update()
 		}
 		newObjects.clear();
 	}
-	std::optional<Levels> toReturn;
-	//Update objects.
+	
+	
 	for (auto& object : objects)
 	{
-		//run update method for the object
 		if (object != nullptr)
 		{
 			auto temp{ object->update(objects) };
-			//if it returned an object, add it to the list to be added.
 			if (temp != nullptr)
 			{
 				newObjects.push_back(std::move(temp));
 			}
 		}
 	}
-	return toReturn;
+	return true;
 }
 
 bool Game::loadExtras(tinyxml2::XMLElement* squareElement)

@@ -196,22 +196,6 @@ View* GraphicsDevice::getView()
 	return view.get();
 }
 
-//void GraphicsDevice::AddSpriteRenderer(SpriteComponent* sprite)
-//{
-//	sprites.push_back(sprite);
-//}
-//void GraphicsDevice::RemoveSpriteRenderer(SpriteComponent* dSprite)
-//{
-//	std::vector<SpriteComponent*>::iterator spriteIter;
-//	for(spriteIter=sprites.begin(); spriteIter!=sprites.end(); spriteIter++)
-//	{
-//		if(*spriteIter == dSprite)
-//		{
-//			spriteIter = sprites.erase(spriteIter);
-//			
-//		}
-//	}
-//}
 bool GraphicsDevice::setFont(std::string path, int size, RGBA color)
 {
 	font = TTF_OpenFont(path.c_str(), size);
@@ -287,6 +271,11 @@ void GraphicsDevice::notice2Screen(std::string text)
 	Vector2D textVec = {-1,550};
 	text2Screen(text, textVec);
 
+}
+
+bool GraphicsDevice::prompt(std::string message, std::vector<Inputs> responses, TriggerComponent* trigger)
+{
+	return false;
 }
 
 //**************************************

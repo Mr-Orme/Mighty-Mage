@@ -50,6 +50,21 @@ void wallCollision(BodyComponent* playerBody, BodyComponent* wallBody, Direction
 	if (playWallSound)
 		playerBody->getDevices()->getSoundDevice()->PlaySound(SoundEffect::Event::hitWall, 0, 2);
 }
+
+void hitTrigger(GameObject* trigger, GameObject* player, b2Contact* contact)
+{
+	player->getComponent<BodyComponent>()->getDevices()->getGraphicsDevice()->
+		text2Screen(
+			std::to_string((int)player->getComponent<BodyComponent>()->getDirection()), { 10,10 });
+
+	if (!trigger->getComponent<TriggerComponent>()->trigger
+	(
+		player->getComponent<BodyComponent>()->getDirection(), player
+	))
+	{
+		contact->SetEnabled(false);
+	}
+}
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {
     
@@ -61,40 +76,20 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 	
 	if (objectA->isA(GameObject::Type::trigger))
 	{
-		objectB->getComponent<BodyComponent>()->getDevices()->getGraphicsDevice()->
-			text2Screen(
-				std::to_string((int)objectB->getComponent<BodyComponent>()->getDirection()), { 10,10 });
-
-		if (!objectA->getComponent<TriggerComponent>()->trigger
-		(
-			objectB->getComponent<BodyComponent>()->getDirection()
-		))
-		{
-			contact->SetEnabled(false);
-		}
+		hitTrigger(objectA, objectB, contact);
 	}
 	else if (objectB->isA(GameObject::Type::trigger))
 	{
-		objectB->getComponent<BodyComponent>()->getDevices()->getGraphicsDevice()->
-			text2Screen(
-				std::to_string((int)objectB->getComponent<BodyComponent>()->getDirection()), { 10,10 });
-		if(objectB->getComponent<TriggerComponent>()->trigger
-		(
-			objectA->getComponent<BodyComponent>()->getDirection()
-		))
-		{
-		contact->SetEnabled(false);
-		}
+		hitTrigger(objectB, objectA, contact);
 	}
 
-	if(objectA->isA(GameObject::Type::player))
+	else if(objectA->isA(GameObject::Type::player))
 	{
 		if(objectB -> getComponent<InventoryComponent>())
 		{
 			PickUpItem(objectA, objectB);
 		}
 	}
-	
 	//walls always put the player as object B
 	else if (objectB->isA(GameObject::Type::player))
 	{

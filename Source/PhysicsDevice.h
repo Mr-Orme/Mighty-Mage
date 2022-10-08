@@ -14,7 +14,7 @@ class PhysicsDevice{
 public:
 
 	PhysicsDevice(Vector2D gravity, ResourceManager* devices);
-
+	~PhysicsDevice() = default;
 	bool Update(float dt);
 
 	void debugDraw();

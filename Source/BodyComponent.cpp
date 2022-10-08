@@ -157,7 +157,7 @@ void BodyComponent::linearMovement(Way direction)
 {
 	Vector2D applyForce{};
 	std::string walkSound{ "walking" };
-	if (devices->getInputDevice()->isPressed(InputDevice::Inputs::shift))
+	if (devices->getInputDevice()->isPressed(Inputs::shift))
 	{
 		forceMultiplier = baseForceMultiplier * runMultiplier;
 		walkSound = "run";

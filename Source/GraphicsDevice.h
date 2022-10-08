@@ -17,7 +17,8 @@
 class View;
 class SpriteComponent;
 class Texture;
-
+class TriggerComponent;
+enum class Inputs;
 
 class GraphicsDevice
 {		
@@ -39,6 +40,7 @@ public:
 
 	void text2Screen(std::string text, Vector2D position);
 	void notice2Screen(std::string text);
+	bool prompt(std::string message, std::vector<Inputs> responses, TriggerComponent* trigger = nullptr);
 
 	void drawFilledCircle(Vector2D position, int radius, RGBA color);
 	bool drawBox(Vector2D topLeft, Vector2D bottomRight, RGBA color);

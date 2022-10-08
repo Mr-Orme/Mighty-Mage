@@ -23,7 +23,7 @@ public:
 	void reset();
 	bool loadLevel(Levels level);
 	bool run();
-	std::optional<Levels> update();
+	bool update();
 	
 private:
 	bool loadExtras(tinyxml2::XMLElement* squareElement);

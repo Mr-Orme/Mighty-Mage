@@ -10,9 +10,9 @@
 
 PhysicsDevice::PhysicsDevice(Vector2D gravity, ResourceManager* devices):
 	gravity(RW2PW(gravity.x), RW2PW(gravity.y)),
-	debugDrawer(std::make_unique<Box2DDebugDraw>(devices)),
 	listner(std::make_unique<ContactListener>())
 {
+	debugDrawer = std::make_unique<Box2DDebugDraw>(this, devices->getGraphicsDevice());
 	world =std::make_unique<b2World>(this->gravity);
 	world->SetContactListener(listner.get());
 
@@ -206,7 +206,7 @@ bool PhysicsDevice::createFixture(GameObject* object, BodyPresets presets)
 
 	// set starting position & angle
 	bd -> position.Set(RW2PW(presets.position.x), RW2PW(presets.position.y));
-	bd -> angle = RW2PWAngle(presets.angle);
+	bd -> angle = RW2PWAngle((float)presets.angle);
 
 	//add the body to the world
 	b2Body* body = world -> CreateBody(bd);

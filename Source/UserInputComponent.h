@@ -27,7 +27,7 @@ protected:
 	void displayLocation();
 	int frameCount{ 0 };
 
-	std::map<InputDevice::Inputs, bool> pressControl;
+	std::map<Inputs, bool> pressControl;
 
 
 	

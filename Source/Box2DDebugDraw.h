@@ -2,15 +2,13 @@
 #pragma once
 
 #include "box2d.h"
-#include "GraphicsDevice.h"
+
 #include "PhysicsDevice.h"
-
-class ResourceManager;
-
+#include "GraphicsDevice.h"
 class Box2DDebugDraw : public b2Draw {
 
 	public:	
-		Box2DDebugDraw(ResourceManager* devices);
+		Box2DDebugDraw(PhysicsDevice* pDevice, GraphicsDevice* gDevice);
 		~Box2DDebugDraw();
 		
 

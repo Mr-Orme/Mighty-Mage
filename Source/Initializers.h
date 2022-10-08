@@ -87,7 +87,7 @@ struct PrimaryJoint
 struct UserInputPresets
 {
 	bool createUserInput{ false };
-	InputDevice::Inputs TriggeredInput;
+	Inputs TriggeredInput;
 	int triggeringEvent;
 	//ICallBack* callback;
 

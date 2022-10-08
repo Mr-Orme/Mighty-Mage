@@ -98,7 +98,7 @@
 		<Notice x="9" y="14" direction = "90">Ye Olde Hogge Tavern</Notice>
 		<Notice x="4" y="0" direction = "0">Temple Moon Shadow</Notice>
 		<Notice x="15" y="0" direction = "270">You Must Collect all 6 Spheres to pass!</Notice>
-		<Notice x="14" y="0" direction = "270">You have broken the wizard's ward, you may descend!</Notice>
+		<!--<Notice x="14" y="0" direction = "270">You have broken the wizard's ward, you may descend!</Notice>-->
 	</Notices>
 	<Sounds>
     <Sound name="3" path="./Assets/Sounds/found.ogg" duration="0" background="false"/>

@@ -7,9 +7,10 @@
 #include <memory>
 #include <vector>
 class GameObject;
+enum class Inputs { NA, up, down, left, right, space, shift, key_b, key_y, key_n, quit, numEvents };
 class InputDevice{
 public:
-	enum class Inputs { NA, up, down, left, right, space, shift, key_b, key_y, key_n, quit, numEvents };
+	
 	InputDevice();
 	
 	void update();

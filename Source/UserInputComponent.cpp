@@ -7,7 +7,7 @@
 #include "NoticesAssetLibrary.h"
 #include "View.h"
 
-using input = InputDevice::Inputs;
+using input = Inputs;
 UserInputComponent::UserInputComponent(GameObject* owner, ResourceManager* devices):Component(owner, devices)
 {
 	for (int i = 0; i < (int)input::numEvents; i++)
@@ -27,8 +27,8 @@ UserInputComponent::~UserInputComponent(){}
 std::unique_ptr<GameObject> UserInputComponent::update(std::vector<std::unique_ptr<GameObject>>& objects)
 //**************************************
 {
-	
-	dealWithButtonPresses();
+	if(!devices->isPaused())
+		dealWithButtonPresses();
 	
 	devices->getGraphicsDevice()->getView()->borderDectection(
 		_owner->getComponent<BodyComponent>()->getPosition());
@@ -50,13 +50,13 @@ void UserInputComponent::displayNotices()
 		devices->getNoticesLibrary()->search(notice)
 		)
 	{
-		//devices->getGraphicsDevice()->notice2Screen(notice.text);
+		devices->getGraphicsDevice()->notice2Screen(notice.text);
 	}
 }
 void UserInputComponent::dealWithButtonPresses()
 {
-	//HACK::This assumes userInput objects also has backpack!
-	if (!_owner->getComponent<BackpackComponent>()->isOpen())
+	
+	if (auto pack{ _owner->getComponent<BackpackComponent>() }; pack && !pack->isOpen())
 	{
 		if (devices->getInputDevice()->isPressed(input::up))
 		{
