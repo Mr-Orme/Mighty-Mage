@@ -14,6 +14,7 @@ class ObjectFactory;
 class GameObject;
 class LevelConfigLibrary;
 enum class Levels;
+struct ObjectFactoryPresets;
 class Game{
 public:
 	
@@ -26,7 +27,10 @@ public:
 	bool update();
 	
 private:
-	bool loadExtras(tinyxml2::XMLElement* squareElement);
+	ObjectFactoryPresets loadExtras(tinyxml2::XMLElement* squareElement, ResourceManager* devices);
+	std::optional<ObjectFactoryPresets> loadLeftWall(tinyxml2::XMLElement* squareElement, Vector2D square, ResourceManager* devices);
+	ObjectFactoryPresets loadTopWall(tinyxml2::XMLElement* squareElement, Vector2D square, ResourceManager* devices);
+	std::optional<ObjectFactoryPresets> loadFloor (tinyxml2::XMLElement* squareElement, Vector2D square, ResourceManager* devices);
 	
 	std::vector<std::unique_ptr<GameObject>> objects;
 	std::vector<std::unique_ptr<GameObject>> newObjects;
@@ -37,7 +41,6 @@ private:
 	Vector2D screenDimensions{800, 600};
 	std::unique_ptr<Timer> frameTimer{ nullptr };
 	std::unique_ptr<LevelConfigLibrary> levelLibrary{nullptr};
-	int squareDimension{ 110 };
 };
 
 

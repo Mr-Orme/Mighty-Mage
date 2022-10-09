@@ -3,6 +3,10 @@
 #include "Definitions.h"
 #include "ResourceManager.h"
 
+//TODO::Get rid of this
+#include <sstream>
+#include "GraphicsDevice.h"
+#include "View.h"
 GameObject::GameObject(){}
 
 
@@ -33,6 +37,16 @@ std::unique_ptr<GameObject> GameObject::update(std::vector<std::unique_ptr<GameO
 //**************************************
 
 {
+	//if (name == Type::wall)
+	//{
+	//	auto center{ getComponent<BodyComponent>()->getCenter() };
+	//	center = getComponent<BodyComponent>()->getDevices()->pixel2Square(center);
+	//	std::stringstream output;
+	//	output << center.x << ", " << center.y;
+	//	auto gDevice{ getComponent<BodyComponent>()->getDevices()->getGraphicsDevice() };
+	//	gDevice->text2Screen(output.str(), gDevice->getView()->relativePosition(center));
+	//}
+
 	std::unique_ptr<GameObject> newObject{ nullptr };
 	for (auto& comp : components)
 	{

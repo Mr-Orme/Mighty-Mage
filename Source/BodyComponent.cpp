@@ -123,34 +123,18 @@ void BodyComponent::turnOffPhysics() const
 {
 	devices->getPhysicsDevice()->SetStopPhysics(_owner);
 }
-//**************************************
-//find's the 15x15 game square based on current position
-Vector2D BodyComponent::currentSquare() const
-//**************************************
-{
-	Vector2D position
-	{ devices->getGraphicsDevice()->getView()->relativePosition(getPosition()) };
-	Vector2D dimensions{ getDimenions() };
-	Vector2D center{ (int)(position.x + .5 * dimensions.x), (int)(position.y + .5 * dimensions.y) };
 
-	Vector2D viewPosition
-	{ devices->getGraphicsDevice()->getView()->getViewingWindowPosition() };
-	Vector2D cityCorner{ devices->getCityCorner() };
 
-	//the city corner plus the view get's us the top left corner of the view.
-	//subtract off the player's position on the screen to get the actual spot of the player.
-	//divide the number of pixels in each square.
-	//Adjust the y, because the 15x15 square starts in the bottom left corner, while SDL starts in the top left.
-	return
-	{
-		int((cityCorner.x + viewPosition.x - position.x) * -1 / devices->pixelsPerSquare),
-		devices->blocksPerMap + int((cityCorner.y + viewPosition.y - position.y) / devices->pixelsPerSquare)
-	};	
-}
-
-Vector2D BodyComponent::getDimenions() const
+Vector2D BodyComponent::getDimensions() const
 {
 	return _owner->getComponent<SpriteComponent>()->getTexture()->getDimensions();
+}
+
+Vector2D BodyComponent::getCenter() const
+{
+	auto position{ getPosition() };
+	auto dimensions{ getDimensions() };
+	return {(int) (position.x + dimensions.x / 2.0f), (int)(position.y + dimensions.y / 2.0f) };
 }
 
 void BodyComponent::linearMovement(Way direction)

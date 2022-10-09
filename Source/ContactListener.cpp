@@ -6,6 +6,7 @@
 #include "Definitions.h"
 #include "SoundDevice.h"
 #include "GraphicsDevice.h" //TODO::get rid of this
+#include <sstream>
 
 Direction travelDirection(b2Body* body)
 {
@@ -20,17 +21,19 @@ Direction travelDirection(b2Body* body)
 void wallCollision(BodyComponent* playerBody, BodyComponent* wallBody, Direction travel)
 {
 	bool playWallSound{ false };
-	Vector2D playerSquare{ playerBody->currentSquare() };
-	Vector2D wallSquare{ wallBody->currentSquare() };
+	Vector2D playerSquare{ playerBody->getDevices()->pixel2Square(playerBody->getCenter()) };
+	Vector2D wallSquare{ wallBody->getDevices()->pixel2Square(wallBody->getCenter()) };
+	/*std::cout << "Player Square: " << playerSquare.x << ", " << playerSquare.y << std::endl;
+	std::cout << "wall Square: " << wallSquare.x << ", " << wallSquare.y << std::endl << std::endl;*/
 	
-
+	
 	switch (travel)
 	{
 	case Direction::N:
 	case Direction::S:
 		//HACK::because of how the level is built, the left and bottom walls are in the wrong square.
 		//this adjusts for that. Same in Direction::E
-		if (playerBody->getPosition().x > wallBody->getPosition().x + wallBody->getDimenions().x)
+		if (playerBody->getPosition().x > wallBody->getPosition().x + wallBody->getDimensions().x)
 		{
 			wallSquare.x--;
 		}
@@ -38,9 +41,9 @@ void wallCollision(BodyComponent* playerBody, BodyComponent* wallBody, Direction
 		break;
 	case Direction::W:
 	case Direction::E:
-		if (playerBody->getPosition().y >= wallBody->getPosition().y + wallBody->getDimenions().y)
+		if (playerBody->getPosition().y >= wallBody->getPosition().y + wallBody->getDimensions().y)
 		{
-			wallSquare++;
+			wallSquare.y++;
 		}
 		playWallSound = playerSquare.y == wallSquare.y;
 		break;
@@ -51,18 +54,18 @@ void wallCollision(BodyComponent* playerBody, BodyComponent* wallBody, Direction
 		playerBody->getDevices()->getSoundDevice()->PlaySound(SoundEffect::Event::hitWall, 0, 2);
 }
 
-void hitTrigger(GameObject* trigger, GameObject* player, b2Contact* contact)
+void hitTrigger(GameObject* trigger, GameObject* player, b2Contact* contact, Direction travel)
 {
-	player->getComponent<BodyComponent>()->getDevices()->getGraphicsDevice()->
-		text2Screen(
-			std::to_string((int)player->getComponent<BodyComponent>()->getDirection()), { 10,10 });
+	//player->getComponent<BodyComponent>()->getDevices()->getGraphicsDevice()->
+	//	text2Screen(
+	//		std::to_string((int)player->getComponent<BodyComponent>()->getDirection()), { 10,10 });
 
-	if (!trigger->getComponent<TriggerComponent>()->trigger
+	if (player->getComponent<BodyComponent>()->getDirection() == travel && !trigger->getComponent<TriggerComponent>()->trigger
 	(
 		player->getComponent<BodyComponent>()->getDirection(), player
 	))
 	{
-		contact->SetEnabled(false);
+		//contact->SetEnabled(false);
 	}
 }
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
@@ -76,11 +79,11 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 	
 	if (objectA->isA(GameObject::Type::trigger))
 	{
-		hitTrigger(objectA, objectB, contact);
+		hitTrigger(objectA, objectB, contact, travelDirection(bodyB));
 	}
 	else if (objectB->isA(GameObject::Type::trigger))
 	{
-		hitTrigger(objectB, objectA, contact);
+		hitTrigger(objectB, objectA, contact, travelDirection(bodyA));
 	}
 
 	else if(objectA->isA(GameObject::Type::player))

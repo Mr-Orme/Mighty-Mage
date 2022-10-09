@@ -90,6 +90,14 @@ struct Vector2D
 		return *this;
 	}
 
+	const Vector2D& operator+=(const int& rhs)
+	{
+		x += rhs;
+		y += rhs;
+
+		return *this;
+	}
+
 	const Vector2D& operator-=(const Vector2D &rhs)
 	{
 		x -= rhs.x;

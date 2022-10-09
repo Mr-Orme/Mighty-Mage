@@ -1,5 +1,5 @@
 #include "PhysicsDevice.h"
-#include "SpriteComponent.h"
+#include "BodyComponent.h"
 #include "ContactListener.h"
 #include "GameObject.h"
 #include "Texture.h"
@@ -373,16 +373,12 @@ bool PhysicsDevice::CreatRevolvingJoint(GameObject* object1, GameObject* object2
 Vector2D PhysicsDevice::AlignCenters(GameObject* object)
 //**************************************
 {
-	b2Body* body = FindBody(object);
-	b2Vec2 physPosition = body -> GetPosition();
-	Vector2D position;
-	Texture* texture = object -> getComponent<SpriteComponent>() -> getTexture();
-
-		//subtract off half the width.
-		position.x = (int)(PW2RW(physPosition.x) - (texture -> getDimensions().x/2.0f));
-		//subtract off half the height
-		position.y = (int)(PW2RW(physPosition.y) - (texture -> getDimensions().y/2.0f));
 	
-
-	return (position);
+	auto physPosition{ FindBody(object)->GetPosition() };
+	auto body{ object->getComponent<BodyComponent>() };
+		return 
+		{
+			(int)(PW2RW(physPosition.x) - (body->getDimensions().x / 2.0f)),
+			(int)(PW2RW(physPosition.y) - (body->getDimensions().y / 2.0f))
+		};
 }

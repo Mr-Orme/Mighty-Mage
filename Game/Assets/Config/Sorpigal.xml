@@ -5,7 +5,7 @@
 		Will load to top left corner of square
 		Decimal values can be to adjust position-->
 		
-	<Extras>
+	<Extras id="-1">
 	<!-- Player must be first item in file!!!! In order for it to be on top of everything-->
 		<Player x="8.4" y="5.25" angle="180"/>
 		<Trapdoor x="14.1" y="0.1" angle="270"/>

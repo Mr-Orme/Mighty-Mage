@@ -34,9 +34,10 @@ public:
 	float getAngle() const;
 	Direction getDirection() const;
 	Vector2D getPosition() const;
+	Vector2D getDimensions() const;
+	Vector2D getCenter() const;
+
 	void turnOffPhysics() const;
-	Vector2D currentSquare() const;
-	Vector2D getDimenions() const;
 protected:
 	enum Way { forward = -1, backward = 1 };
 	void linearMovement(Way direction);
@@ -45,7 +46,7 @@ protected:
 	int forceMultiplier{ baseForceMultiplier };
 	const int runMultiplier{ 2 }; //How many times faster is running then walking
 	const int angleAdjust{ 90 }; //How many degrees does the player turn each time
-	Vector2D dimensions{ 0,0 };
+	
 	
 };
 

@@ -69,6 +69,43 @@ ObjectFactory* ResourceManager::getObjectFactory()
 	return factory.get();
 }
 
+Vector2D ResourceManager::pixel2Square(Vector2D position) const
+{
+	return
+	{
+		position.x / pixelsPerSquare,
+		blocksPerMap - (position.y / pixelsPerSquare)
+	};
+}
+
+Vector2D ResourceManager::square2Pixel(float x, float y) const
+{
+	float xInt{};
+	float yInt{};
+	float xfract{ modff(x, &xInt) };
+	float yfract{ modff(y, &yInt) };
+	
+	return square2Pixel
+	(
+		{ (int)xInt, (int)yInt }, { (int)(xfract * 100.0f), (int)(yfract * 100.0f) }
+	);
+	
+}
+
+Vector2D ResourceManager::square2Pixel(Vector2D square, Vector2D fractional) const
+{
+	fractional = 
+	{ 
+		(int)((fractional.x / 100.0f) * pixelsPerSquare), 
+		(int)((fractional.y / 100.0f) * pixelsPerSquare) 
+	};
+	return
+	{
+		square.x * pixelsPerSquare + fractional.x,
+		(blocksPerMap - square.y) * pixelsPerSquare + fractional.y
+	};
+}
+
 void ResourceManager::loadLibraries(std::string assetPath)
 {	
 	tinyxml2::XMLDocument assetFile;

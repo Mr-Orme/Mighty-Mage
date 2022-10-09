@@ -6,6 +6,9 @@
 #include "SoundDevice.h"
 #include "NoticesAssetLibrary.h"
 #include "View.h"
+//TODO::Get rid of
+#include <string>
+#include<sstream>
 
 using input = Inputs;
 UserInputComponent::UserInputComponent(GameObject* owner, ResourceManager* devices):Component(owner, devices)
@@ -27,6 +30,14 @@ UserInputComponent::~UserInputComponent(){}
 std::unique_ptr<GameObject> UserInputComponent::update(std::vector<std::unique_ptr<GameObject>>& objects)
 //**************************************
 {
+	//TODO::Get rid of
+	auto center{ _owner->getComponent<BodyComponent>()->getPosition()+_owner->getComponent<BodyComponent>()->getDimensions() };
+	auto square{ devices->pixel2Square(center) };
+	std::stringstream output;
+	output << "Player bottom right: " << center.x << ", " << center.y << "\n"
+		<< square.x << ", " << square.y;
+	devices->getGraphicsDevice()->text2Screen(output.str(), { 10,10 });
+	
 	if(!devices->isPaused())
 		dealWithButtonPresses();
 	
@@ -46,7 +57,7 @@ void UserInputComponent::displayNotices()
 	BodyComponent* body{ _owner->getComponent<BodyComponent>() };
 	
 	if (
-		Notice notice{body->currentSquare(), body->getDirection(), "" }; 
+		Notice notice{ devices->pixel2Square(body->getPosition()), body->getDirection(), "" };
 		devices->getNoticesLibrary()->search(notice)
 		)
 	{
@@ -55,18 +66,15 @@ void UserInputComponent::displayNotices()
 }
 void UserInputComponent::dealWithButtonPresses()
 {
-	
 	if (auto pack{ _owner->getComponent<BackpackComponent>() }; pack && !pack->isOpen())
 	{
 		if (devices->getInputDevice()->isPressed(input::up))
 		{
 			_owner->getComponent<BodyComponent>()->moveForward();
-
 		}
 		else if (devices->getInputDevice()->isPressed(input::down))
 		{
 			_owner->getComponent<BodyComponent>()->moveBackward();
-
 		}
 		else
 		{

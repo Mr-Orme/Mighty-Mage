@@ -26,6 +26,10 @@ enum class Levels { sorpigal, sorpigal_basement, none};
 class ResourceManager
 {
 public:
+	const int pixelsPerSquare{ 110 };
+	const int blocksPerMap{ 15 };
+	const int FPS{ 100 };
+
 	ResourceManager(Vector2D screenDimensions, std::string assetPath);
 	~ResourceManager();
 
@@ -40,20 +44,24 @@ public:
 
 	ObjectFactory* getObjectFactory();
 
-	int getFPS() const {return FPS;}
-	Vector2D getCityCorner() const {return cityCorner;}
 	Levels getLevel() const {return level;}
-	Levels level2Load() const { return toLoad; }
-	bool isPaused() { return paused; }
-
-	void setCityCorner(Vector2D cityCorner){this -> cityCorner = cityCorner;}
-	void setLevel(Levels level){this -> level = level;}
+	void setLevel(Levels level) { this->level = level; }
 	void changeLevel(Levels exit) { this->toLoad = exit; }
+	Levels level2Load() const { return toLoad; }	
+	
+	Vector2D pixel2Square(Vector2D position) const;
+	/*
+	* fractional part is percentage of square
+	* for placing smaller objects inside a square.
+	*/
+	Vector2D square2Pixel(float x, float y) const; 
+	Vector2D square2Pixel(Vector2D square, Vector2D fractional = { 0,0 }) const;	
+	
 	void pause() { paused = true; }
 	void upause() { paused = false; }
+	bool isPaused() { return paused; }
 	
-	const int pixelsPerSquare{ 110 };
-	const int blocksPerMap{ 15 };
+
 private:
 	void loadLibraries(std::string assetPath);
 	void loadNotices(tinyxml2::XMLElement* notices);
@@ -75,9 +83,7 @@ private:
 	std::unique_ptr<SoundAssetLibrary> sLibrary{ nullptr };
 	std::unique_ptr<ObjectFactory> factory{ nullptr };
 	
-	const int FPS{ 100 };
-	//TODO::get rid of this by makiing it 0,0 and adjust the view to center player.
-	Vector2D cityCorner{ 0,0 };//relative to player's start position.
+	
 	Levels level{ Levels::sorpigal };
 	Levels toLoad{ Levels::none };	
 	bool paused{ false };

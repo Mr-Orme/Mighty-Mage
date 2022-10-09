@@ -19,6 +19,7 @@ View::~View()
 bool View::Update(float gameTime)
 //**************************************
 {
+	
 	return true;
 }
 
@@ -61,5 +62,5 @@ void View::borderDectection(Vector2D objectPosition)
 
 Vector2D View::relativePosition(Vector2D objectPosition)
 {
-	return { position.x + objectPosition.x, position.y + objectPosition.y };
+	return position + objectPosition;
 }
