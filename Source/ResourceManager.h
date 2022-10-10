@@ -4,6 +4,8 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <optional>
+#include <tuple>
 #include "tinyxml2.h"
 
 #include "Definitions.h"
@@ -44,9 +46,10 @@ public:
 
 	ObjectFactory* getObjectFactory();
 
+	std::tuple<Vector2D, Direction> getPlayerStart() const;
 	Levels getLevel() const {return level;}
 	void setLevel(Levels level) { this->level = level; }
-	void changeLevel(Levels exit) { this->toLoad = exit; }
+	void changeLevel(Levels exit, std::optional<Vector2D> playerStart = std::nullopt, std::optional<Direction> direction = Direction::N);
 	Levels level2Load() const { return toLoad; }	
 	
 	Vector2D pixel2Square(Vector2D position) const;
@@ -86,6 +89,8 @@ private:
 	
 	Levels level{ Levels::sorpigal };
 	Levels toLoad{ Levels::none };	
+	Vector2D playerStart{};
+	Direction playerDirection{};
 	bool paused{ false };
 };
 

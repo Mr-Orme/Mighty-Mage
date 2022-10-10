@@ -54,7 +54,15 @@ Game::~Game()
 bool Game::loadLevel(Levels toLoad)
 //**************************************
 {
-	//TODO::need to be able to specificy the player's position!
+	std::optional<Vector2D> playerStart{ std::nullopt };
+	std::optional<Direction> playerDirection{ std::nullopt };
+	if (devices)
+	{
+		auto [start, direction] = devices->getPlayerStart();
+		playerStart = start;
+		playerDirection = direction;
+	}
+
 	reset();
 
 	auto [levelConfig, assetConfigFile] = levelLibrary->search(toLoad);
@@ -90,7 +98,7 @@ bool Game::loadLevel(Levels toLoad)
 		{
 			if (label == "Extras") // not walls or doors
 			{
-				objects.push_back(objectFactory->Create(loadExtras(squareElement, devices.get())));
+				objects.push_back(objectFactory->Create(loadExtras(squareElement, devices.get(), playerStart, playerDirection)));
 			}
 			else
 			{
@@ -123,6 +131,7 @@ bool Game::loadLevel(Levels toLoad)
 bool Game::run()
 //**************************************
 {
+	//TODO::modify level2Load to also return starting position!
 	if (auto level{ devices->level2Load() }; level != Levels::none)
 	{
 		loadLevel(level);
@@ -216,7 +225,7 @@ bool Game::update()
 	return true;
 }
 
-ObjectFactoryPresets Game::loadExtras(tinyxml2::XMLElement* squareElement, ResourceManager* devices)
+ObjectFactoryPresets Game::loadExtras(tinyxml2::XMLElement* squareElement, ResourceManager* devices, std::optional<Vector2D> playerStart, std::optional<Direction> playerDirection)
 {
 	ObjectFactoryPresets presets;
 	presets.devices = devices;
@@ -229,9 +238,16 @@ ObjectFactoryPresets Game::loadExtras(tinyxml2::XMLElement* squareElement, Resou
 	presets.bodyInitializers.position = devices->square2Pixel(tempX, tempY);
 
 	squareElement->QueryIntAttribute("angle", &presets.bodyInitializers.angle);
-
+	/*TODO::pass in a position for player
+	* Need to modify level toLoad to include position. Should be returned from trigger.
+	*/
 	if (presets.objectType == "Player")
 	{
+		if (playerStart)
+		{
+			presets.bodyInitializers.position = devices->square2Pixel(*playerStart, { 50, 50 });
+		}
+		if (playerDirection) presets.bodyInitializers.angle = (int)*playerDirection;
 		// center the view around player
 		Vector2D halfScreen{ devices->getGraphicsDevice()->getScreenDimensions() / 2 };
 		devices->getGraphicsDevice()->getView()->setPosition(presets.bodyInitializers.position - halfScreen);
@@ -266,6 +282,9 @@ ObjectFactoryPresets Game::loadExtras(tinyxml2::XMLElement* squareElement, Resou
 			squareElement->QueryIntAttribute("area", &level);
 			presets.triggerInitializers.exitTo = (Levels)level;
 			presets.triggerInitializers.message = squareElement->Attribute("message");
+			squareElement->QueryIntAttribute("playerAngle", &presets.triggerInitializers.playerAngle);
+			squareElement->QueryIntAttribute("playerX", &presets.triggerInitializers.playerLocation.x);
+			squareElement->QueryIntAttribute("playerY", &presets.triggerInitializers.playerLocation.y);
 		}
 	}
 	return presets;

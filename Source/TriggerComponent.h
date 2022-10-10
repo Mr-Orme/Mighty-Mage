@@ -25,6 +25,8 @@ private:
 	Direction direction{ Direction::N };
 	Levels exitTo;
 	std::string message;
+	Vector2D playerLocation{};
+	Direction playerDirection{};
 
 	bool triggered{ false };
 	GameObject* triggerer{ nullptr };

@@ -14,6 +14,8 @@ bool TriggerComponent::initialize(ObjectFactoryPresets& presets)
 	exitTo = presets.triggerInitializers.exitTo;
 	message = presets.triggerInitializers.message;
 	name = (Type)presets.triggerInitializers.name;
+	playerLocation = presets.triggerInitializers.playerLocation;
+	playerDirection = (Direction)presets.triggerInitializers.playerAngle;
 	return true;
 }
 
@@ -33,7 +35,7 @@ std::unique_ptr<GameObject> TriggerComponent::update(std::vector<std::unique_ptr
 			{
 				devices->upause();
 				triggered = false;
-				devices->changeLevel(exitTo);
+				devices->changeLevel(exitTo, playerLocation, playerDirection);
 			}
 			else if (devices->getInputDevice()->isPressed(Inputs::key_n))
 			{

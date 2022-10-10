@@ -69,6 +69,18 @@ ObjectFactory* ResourceManager::getObjectFactory()
 	return factory.get();
 }
 
+std::tuple<Vector2D, Direction> ResourceManager::getPlayerStart() const
+{
+	return { playerStart, playerDirection };
+}
+
+void ResourceManager::changeLevel(Levels exit, std::optional<Vector2D> playerStart, std::optional<Direction> direction)
+{
+	this->toLoad = exit;
+	if (playerStart) this->playerStart = *playerStart;
+	if (direction) this->playerDirection = *direction;
+}
+
 Vector2D ResourceManager::pixel2Square(Vector2D position) const
 {
 	return

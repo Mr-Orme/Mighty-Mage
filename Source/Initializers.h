@@ -107,6 +107,8 @@ struct TriggerPresets
 	int name{}; //convert to TriggerComponent::Type
 	Direction direction{ Direction::N };
 	Levels exitTo;
+	Vector2D playerLocation;
+	int playerAngle;
 	std::string message;
 };
 struct ObjectFactoryPresets
