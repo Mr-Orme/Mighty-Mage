@@ -111,6 +111,13 @@ struct TriggerPresets
 	int playerAngle;
 	std::string message;
 };
+struct QuestCriteriaPresets
+{
+	std::string successMessage;
+	std::string failMessage;
+	QuestComponent* quest{ nullptr };
+	bool completeWithoutQuest{ false };
+};
 struct ObjectFactoryPresets
 {
 	std::string objectType{ "" };
@@ -119,6 +126,7 @@ struct ObjectFactoryPresets
 	UserInputPresets userInputInitializers;
 	SteeringPresets steeringInitializers;
 	TriggerPresets triggerInitializers;
+	QuestCriteriaPresets criteriaInitializers;
 	PrimaryJoint jointInitializers;
 	std::map<Direction, bool> gDirection;
 	//int health{ 0 };//move to new AssetLibraryGame

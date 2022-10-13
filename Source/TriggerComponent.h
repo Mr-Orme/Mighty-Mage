@@ -15,7 +15,7 @@ class TriggerComponent : public Component
 {
 public:
 	//TODO:: switch notices to Trigger components with messages.
-	enum class Type { exits, messages, battles, quest };
+	enum class Type { exits, messages, battles, quest, trap };
 	bool initialize(ObjectFactoryPresets& presets) override;
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;
 	std::unique_ptr<Component> copyMe() const override;

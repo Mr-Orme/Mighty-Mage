@@ -7,5 +7,3 @@ struct RGBA
 	int B;
 	int A;
 };
-
-enum class Locations{ sorpigal, sorpigalDungeon };

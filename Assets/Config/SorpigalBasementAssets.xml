@@ -81,7 +81,7 @@
     <Sound name="0" path="./Assets/Sounds/walking.ogg" duration=".85" background="false"/>
     <Sound name="1" path="./Assets/Sounds/walking.ogg" duration=".6" background="false"/>
     <Sound name="2" path="./Assets/Sounds/wall.ogg" duration=".4" background="false"/>
-		<Sound name="0" path="./Assets/Sounds/basement.ogg" background="true"/>
+		<Sound name="1" path="./Assets/Sounds/basement.ogg" background="true"/>
 	
 	</Sounds>
 </Basement>

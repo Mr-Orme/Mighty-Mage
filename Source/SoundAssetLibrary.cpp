@@ -1,5 +1,5 @@
 #include "SoundAssetLibrary.h"
-
+#include "ResourceManager.h"
 //**************************************
 //Nothing here, move along.
 SoundAssetLibrary::SoundAssetLibrary()
@@ -39,7 +39,7 @@ bool SoundAssetLibrary::addSoundEffect(SoundEffect::Event event, std::string pat
 
 //**************************************
 //finds the background music based on a string and returns it.
-Mix_Music* SoundAssetLibrary::searchMusic(Locations location)
+Mix_Music* SoundAssetLibrary::searchMusic(Levels location)
 //**************************************
 {
 	
@@ -54,7 +54,7 @@ Mix_Music* SoundAssetLibrary::searchMusic(Locations location)
 
 //**************************************
 //adds background music to the library
-bool SoundAssetLibrary::addBackgroundMusic(Locations location, std::string path)
+bool SoundAssetLibrary::addBackgroundMusic(Levels location, std::string path)
 //**************************************
 {
 	//Mix_Load

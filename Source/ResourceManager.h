@@ -66,6 +66,7 @@ public:
 	
 
 private:
+	
 	void loadLibraries(std::string assetPath);
 	void loadNotices(tinyxml2::XMLElement* notices);
 	void loadObjects(tinyxml2::XMLElement* asset);

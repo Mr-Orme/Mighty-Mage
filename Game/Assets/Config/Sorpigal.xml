@@ -10,7 +10,7 @@
 		<Player x="8.4" y="5.25" angle="180"/>
 		<Trapdoor x="14.1" y="0.1" angle="270"/>
     <!--TriggerComponent::Type enum for type Levels enum for area-->
-    <Trigger x="14.1" y="0.1" angle="270" type="0" area="1" playerX="14" playerY="0" playerAngle="0" message="You have broken the wizard's ward! Do you want to descend: (y/n)" />
+    <Trigger x="14" y="0" angle="270" type="0" area="1" playerX="14" playerY="0" playerAngle="0" message="You have broken the wizard's ward! Do you want to descend: (y/n)" />
 		<RSphere x="9.7" y="3.7" angle="0"/>
 		<OSphere x="0.2" y ="15.2" angle="0"/>
 		<BSphere x="4.2" y ="15.2" angle="0"/>

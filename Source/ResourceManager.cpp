@@ -183,7 +183,7 @@ void ResourceManager::loadSounds(tinyxml2::XMLElement* sounds)
 
 		if (background)
 		{
-			sLibrary->addBackgroundMusic((Locations)sound, path);
+			sLibrary->addBackgroundMusic((Levels)sound, path);
 		}
 		else
 		{
@@ -236,8 +236,10 @@ ObjectDefinition ResourceManager::loadComponent(tinyxml2::XMLElement* component)
 		else if (currentComponent == "Inventory") definition.components.emplace_back(std::make_unique<InventoryComponent>());
 		else if (currentComponent == "Ghost") definition.components.emplace_back(std::make_unique<GhostComponent>());
 		else if (currentComponent == "Health") definition.components.emplace_back(std::make_unique<HealthComponent>());
-		else if (currentComponent == "Trigger") 
+		else if (currentComponent == "Trigger")
 			definition.components.emplace_back(std::make_unique<TriggerComponent>());
+		else if (currentComponent == "Quest") definition.components.emplace_back(std::make_unique<QuestComponent>());
+		else if (currentComponent == "Criteria") definition.components.emplace_back(std::make_unique<QuestCriteria>());
 		// if we have a misspeleed or non-existant component name in the file
 		else
 		{

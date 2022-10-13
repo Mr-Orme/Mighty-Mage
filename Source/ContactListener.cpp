@@ -65,8 +65,9 @@ void hitTrigger(GameObject* trigger, GameObject* player, b2Contact* contact, Dir
 		player->getComponent<BodyComponent>()->getDirection(), player
 	))
 	{
-		//contact->SetEnabled(false);
+		
 	}
+	contact->SetEnabled(false);
 }
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {

@@ -22,22 +22,21 @@ UserInputComponent::UserInputComponent(GameObject* owner, ResourceManager* devic
 
 UserInputComponent::~UserInputComponent(){}
 
-
-
-
-//**************************************
-//reacts to keyboard input and adjusts the world accoringly.
 std::unique_ptr<GameObject> UserInputComponent::update(std::vector<std::unique_ptr<GameObject>>& objects)
-//**************************************
 {
-	//TODO::Get rid of
-	auto center{ _owner->getComponent<BodyComponent>()->getPosition()+_owner->getComponent<BodyComponent>()->getDimensions() };
+	//TODO::Get rid of********************
+	auto center{ _owner->getComponent<BodyComponent>()->getPosition()};
 	auto square{ devices->pixel2Square(center) };
 	std::stringstream output;
-	output << "Player bottom right: " << center.x << ", " << center.y << "\n"
+	output << "Player: " << center.x << ", " << center.y << "\n"
 		<< square.x << ", " << square.y;
 	devices->getGraphicsDevice()->text2Screen(output.str(), { 10,10 });
-	
+	auto viewP{ devices->getGraphicsDevice()->getView()->getViewingWindowPosition() };
+	output=std::stringstream();
+	output << "View:" << viewP.x << ", " << viewP.y;
+	devices->getGraphicsDevice()->text2Screen(output.str(), { 10,40 });
+
+	//*************************************************
 	if(!devices->isPaused())
 		dealWithButtonPresses();
 	

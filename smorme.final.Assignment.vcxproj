@@ -25,6 +25,8 @@
     <ClCompile Include="Source\LevelConfigLibrary.cpp" />
     <ClCompile Include="Source\NoticesAssetLibrary.cpp" />
     <ClCompile Include="Source\ObjectLibrary.cpp" />
+    <ClCompile Include="Source\QuestComponent.cpp" />
+    <ClCompile Include="Source\QuestCriteria.cpp" />
     <ClCompile Include="Source\SoundAssetLibrary.cpp" />
     <ClCompile Include="Source\Box2DDebugDraw.cpp" />
     <ClCompile Include="Source\Component.cpp" />
@@ -60,6 +62,9 @@
     <ClInclude Include="Source\LevelConfigLibrary.h" />
     <ClInclude Include="Source\NoticesAssetLibrary.h" />
     <ClInclude Include="Source\ObjectLibrary.h" />
+    <ClInclude Include="Source\QuestComponent.h" />
+    <ClInclude Include="Source\QuestCriteria.h" />
+    <ClInclude Include="Source\QuestLibrary.h" />
     <ClInclude Include="Source\SoundAssetLibrary.h" />
     <ClInclude Include="Source\Box2DDebugDraw.h" />
     <ClInclude Include="Source\Component.h" />

@@ -1,3 +1,5 @@
+
+#include <algorithm>
 #include "Game.h"
 #include "ComponentsList.h"
 #include "FrameCounter.h"
@@ -19,24 +21,7 @@
 Game::Game()
 {
 	std::string levelFile{ "./Assets/Config/Areas.xml" };
-	levelLibrary = std::make_unique<LevelConfigLibrary>();
-	tinyxml2::XMLDocument currentLevel;
-	
-	if (!currentLevel.LoadFile(levelFile.c_str()) == tinyxml2::XML_SUCCESS) 
-	{ 
-		std::cout << "error with Areas.xml file";
-	};
-	tinyxml2::XMLElement* lRoot{ currentLevel.FirstChildElement() };
-	tinyxml2::XMLElement* level{ lRoot->FirstChildElement() };
-	while (level)
-	{
-		int enumValue{};
-		level->QueryIntAttribute("enum", &enumValue);
-		std::string path{ level->Attribute("layout") };
-		std::string assets{ level->Attribute("assets") };
-		levelLibrary->addAsset((Levels)enumValue, "./Assets/Config/" + path, "./Assets/Config/" + assets);
-		level = level->NextSiblingElement();
-	}
+	loadLevelLibrary(levelFile);
 	loadLevel(Levels::sorpigal);
 }
 
@@ -46,17 +31,14 @@ Game::~Game()
 {}
 
 
-//**************************************
-//Takes a string corresponding to an XML file
-//containing level config data and loads the objects
-//into the objects vector.
-//Also creates a new view object for the level.
+
 bool Game::loadLevel(Levels toLoad)
-//**************************************
 {
+	//When we are loading a level from within the game, the starting position and the direciton for the player are
+	//stored in devices. Otherwise, we use the values loaded from the file.
 	std::optional<Vector2D> playerStart{ std::nullopt };
 	std::optional<Direction> playerDirection{ std::nullopt };
-	if (devices)
+	if (devices)//devices is nullptr on game start!
 	{
 		auto [start, direction] = devices->getPlayerStart();
 		playerStart = start;
@@ -70,57 +52,9 @@ bool Game::loadLevel(Levels toLoad)
 	devices = std::make_unique<ResourceManager>(screenDimensions, assetConfigFile);
 	frameTimer = std::make_unique<Timer>(devices->FPS);
 	
-	//TODO::pass in devices instead of having it in presets! This will simplify the load helper functions!
-	ObjectFactory* objectFactory{ devices->getObjectFactory() };
-	
+	parseLevelXML(levelConfig, playerStart, playerDirection);	
 
-	//========================================
-	//load the files
-	//========================================
-	
-	tinyxml2::XMLDocument currentLevel;
-	if (!currentLevel.LoadFile(levelConfig.c_str())==tinyxml2::XML_SUCCESS){ return false; };
-	tinyxml2::XMLElement* levelRoot{ currentLevel.FirstChildElement() };
-	int iLevel;
-	levelRoot->QueryIntAttribute("level", &iLevel);
-	devices->setLevel(static_cast<Levels>(iLevel));
-
-	tinyxml2::XMLElement* rowElement = levelRoot->FirstChildElement();
-
-	Vector2D square{ 0,0 };
-	while (rowElement)
-	{
-		rowElement->QueryIntAttribute("id", &square.y);
-		tinyxml2::XMLElement* squareElement = rowElement->FirstChildElement();
-		std::string label = rowElement->Value();
-
-		while (squareElement)
-		{
-			if (label == "Extras") // not walls or doors
-			{
-				objects.push_back(objectFactory->Create(loadExtras(squareElement, devices.get(), playerStart, playerDirection)));
-			}
-			else
-			{
-				squareElement->QueryIntAttribute("id", &square.x);
-
-				objects.emplace_back(objectFactory->Create(loadTopWall(squareElement, square, devices.get())));
-				
-				if (auto presets{ loadLeftWall(squareElement, square, devices.get()) }; presets)
-				{
-					objects.emplace_back(objectFactory->Create(*presets));
-				}
-				if (auto presets{ loadFloor(squareElement, square, devices.get()) }; presets)
-				{
-					objects.emplace_back(objectFactory->Create(*presets));
-				}
-			}
-			squareElement = squareElement->NextSiblingElement();
-		} 
-		rowElement = rowElement->NextSiblingElement();
-	} 
-
-	devices->getSoundDevice()->SetBackground(Locations::sorpigal);
+	devices->getSoundDevice()->SetBackground(toLoad);
 
 	return true;
 }
@@ -131,33 +65,28 @@ bool Game::loadLevel(Levels toLoad)
 bool Game::run()
 //**************************************
 {
-	//TODO::modify level2Load to also return starting position!
+	frameTimer->start();
 	if (auto level{ devices->level2Load() }; level != Levels::none)
 	{
 		loadLevel(level);
 	}
-	FrameCounter::incrementFrame();
+	
 	
 	if (devices->getInputDevice()->isPressed(Inputs::quit))
 	{
 		return false;
 	}
-
-	devices->getInputDevice()->update();
-	
-	frameTimer->start();
+	devices->getInputDevice()->update();//HACK::This HAS to be here otherwise pickup sound does not play. Don't know why???
 	devices->getGraphicsDevice()->begin();
 	
 	update();
 	
 	devices -> getGraphicsDevice() -> drawOverlays();
-		
 	if (debug) devices->getPhysicsDevice()->debugDraw(); 
-		
 	devices -> getGraphicsDevice() -> present();
 
-	//pauses until proper refresh time has passed.
 	frameTimer->fpsRegulate();
+	FrameCounter::incrementFrame();
 	return true;
 }
 //**************************************
@@ -166,63 +95,56 @@ bool Game::run()
 bool Game::update()
 //**************************************
 {
-	
-
-	//update the physics world
 	devices->getPhysicsDevice()->Update(1.0f / devices->FPS);
 
-	std::vector<std::unique_ptr<GameObject>>::iterator objectIter;
-
-	//clean out dead objects
-	//TODO::update to algorithm!
-	for (objectIter = objects.begin(); objectIter != objects.end(); objectIter++)
-	{
-		if (*objectIter == nullptr)
+	objects.erase(std::remove_if(objects.begin(), objects.end(), [](std::unique_ptr<GameObject>& object)
 		{
-			objectIter = objects.erase(objectIter);
-			objectIter--;
-		}
-		else
-		{
-			//check for health component
-			HealthComponent* compHealth{ (*objectIter)->getComponent<HealthComponent>() };
-			InventoryComponent* compInventory{ (*objectIter)->getComponent<InventoryComponent>() };
-			if (compHealth != nullptr)
+			if (!object) return true;
+			
+			if (auto compHealth{ object->getComponent<HealthComponent>() }; compHealth)
 			{
-				if (compHealth->isDead())
-				{
-
-					objectIter = objects.erase(objectIter);
-					objectIter--;
-				}
+				return compHealth->isDead();
 			}
-		}
-	}
+			return false;
+		}), objects.end());
 
 
-	//add any objects created in the previous iteration
-	if (!newObjects.empty())
-	{
-		for (auto& object : newObjects)
-		{
-			objects.push_back(std::move(object));
-		}
-		newObjects.clear();
-	}
 	
+	std::move(newObjects.begin(), newObjects.end(), std::back_inserter(objects));
 	
 	for (auto& object : objects)
 	{
-		if (object != nullptr)
+		if (object)
 		{
-			auto temp{ object->update(objects) };
-			if (temp != nullptr)
+			if (auto temp{ object->update(objects) }; temp)
 			{
 				newObjects.push_back(std::move(temp));
 			}
 		}
 	}
 	return true;
+}
+
+void Game::loadLevelLibrary(std::string levelFile)
+{
+	levelLibrary = std::make_unique<LevelConfigLibrary>();
+	tinyxml2::XMLDocument currentLevel;
+
+	if (!currentLevel.LoadFile(levelFile.c_str()) == tinyxml2::XML_SUCCESS)
+	{
+		std::cout << "error with Areas.xml file";
+	};
+	tinyxml2::XMLElement* lRoot{ currentLevel.FirstChildElement() };
+	tinyxml2::XMLElement* level{ lRoot->FirstChildElement() };
+	while (level)
+	{
+		int enumValue{};
+		level->QueryIntAttribute("enum", &enumValue);
+		std::string path{ level->Attribute("layout") };
+		std::string assets{ level->Attribute("assets") };
+		levelLibrary->addAsset((Levels)enumValue, "./Assets/Config/" + path, "./Assets/Config/" + assets);
+		level = level->NextSiblingElement();
+	}
 }
 
 ObjectFactoryPresets Game::loadExtras(tinyxml2::XMLElement* squareElement, ResourceManager* devices, std::optional<Vector2D> playerStart, std::optional<Direction> playerDirection)
@@ -238,9 +160,7 @@ ObjectFactoryPresets Game::loadExtras(tinyxml2::XMLElement* squareElement, Resou
 	presets.bodyInitializers.position = devices->square2Pixel(tempX, tempY);
 
 	squareElement->QueryIntAttribute("angle", &presets.bodyInitializers.angle);
-	/*TODO::pass in a position for player
-	* Need to modify level toLoad to include position. Should be returned from trigger.
-	*/
+	
 	if (presets.objectType == "Player")
 	{
 		if (playerStart)
@@ -248,6 +168,7 @@ ObjectFactoryPresets Game::loadExtras(tinyxml2::XMLElement* squareElement, Resou
 			presets.bodyInitializers.position = devices->square2Pixel(*playerStart, { 50, 50 });
 		}
 		if (playerDirection) presets.bodyInitializers.angle = (int)*playerDirection;
+		
 		// center the view around player
 		Vector2D halfScreen{ devices->getGraphicsDevice()->getScreenDimensions() / 2 };
 		devices->getGraphicsDevice()->getView()->setPosition(presets.bodyInitializers.position - halfScreen);
@@ -256,13 +177,14 @@ ObjectFactoryPresets Game::loadExtras(tinyxml2::XMLElement* squareElement, Resou
 	else if (presets.objectType == "Trigger")
 	{
 		//size the trigger so it's near the proper edge of the square.
+		//TODO::Trigger should be only a component added to objects. Need an illustratiive object to collide with.
 		switch ((Direction)presets.bodyInitializers.angle)
 		{
 		case Direction::N:
 			presets.bodyInitializers.dimensions = { devices->pixelsPerSquare, (int)(devices->pixelsPerSquare * 0.2f) };
 			break;
 		case Direction::E:
-			presets.bodyInitializers.dimensions = { (int)(devices->pixelsPerSquare * 0.2f, devices->pixelsPerSquare) };
+			presets.bodyInitializers.dimensions = { (int)(devices->pixelsPerSquare * 0.2f), devices->pixelsPerSquare };
 			presets.bodyInitializers.position.x += devices->pixelsPerSquare - presets.bodyInitializers.dimensions.x;
 			break;
 		case Direction::S:
@@ -270,7 +192,7 @@ ObjectFactoryPresets Game::loadExtras(tinyxml2::XMLElement* squareElement, Resou
 			presets.bodyInitializers.position.y += devices->pixelsPerSquare - presets.bodyInitializers.dimensions.y;
 			break;
 		case Direction::W:
-			presets.bodyInitializers.dimensions = { (int)(devices->pixelsPerSquare * 0.2f, devices->pixelsPerSquare) };
+			presets.bodyInitializers.dimensions = { (int)(devices->pixelsPerSquare * 0.2f), devices->pixelsPerSquare };
 			break;
 		default:
 			break;
@@ -383,6 +305,53 @@ std::optional<ObjectFactoryPresets> Game::loadFloor(tinyxml2::XMLElement* square
 	}
 
 	return std::nullopt;
+}
+
+bool Game::parseLevelXML(std::string levelConfig, std::optional<Vector2D> playerStart, std::optional<Direction> playerDirection)
+{
+	//TODO::pass in devices instead of having it in presets! This will simplify the load helper functions!
+	ObjectFactory* objectFactory{ devices->getObjectFactory() };
+	tinyxml2::XMLDocument currentLevel;
+	if (!currentLevel.LoadFile(levelConfig.c_str()) == tinyxml2::XML_SUCCESS) { return false; };
+	tinyxml2::XMLElement* levelRoot{ currentLevel.FirstChildElement() };
+	int iLevel;
+	levelRoot->QueryIntAttribute("level", &iLevel);
+	devices->setLevel(static_cast<Levels>(iLevel));
+
+	tinyxml2::XMLElement* rowElement = levelRoot->FirstChildElement();
+
+	Vector2D square{ 0,0 };
+	while (rowElement)
+	{
+		rowElement->QueryIntAttribute("id", &square.y);
+		tinyxml2::XMLElement* squareElement = rowElement->FirstChildElement();
+		std::string label = rowElement->Value();
+
+		while (squareElement)
+		{
+			if (label == "Extras") // not walls or doors
+			{
+				objects.push_back(objectFactory->Create(loadExtras(squareElement, devices.get(), playerStart, playerDirection)));
+			}
+			else
+			{
+				squareElement->QueryIntAttribute("id", &square.x);
+
+				objects.emplace_back(objectFactory->Create(loadTopWall(squareElement, square, devices.get())));
+
+				if (auto presets{ loadLeftWall(squareElement, square, devices.get()) }; presets)
+				{
+					objects.emplace_back(objectFactory->Create(*presets));
+				}
+				if (auto presets{ loadFloor(squareElement, square, devices.get()) }; presets)
+				{
+					objects.emplace_back(objectFactory->Create(*presets));
+				}
+			}
+			squareElement = squareElement->NextSiblingElement();
+		}
+		rowElement = rowElement->NextSiblingElement();
+	}
 }
 
 

@@ -150,6 +150,9 @@
     <ClCompile Include="Source\TriggerComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Source\QuestComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Game.h">
@@ -253,6 +256,15 @@
     </ClInclude>
     <ClInclude Include="Source\TriggerComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\QuestComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\QuestCriteria.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\QuestLibrary.h">
+      <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

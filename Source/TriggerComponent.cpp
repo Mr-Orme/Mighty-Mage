@@ -48,6 +48,8 @@ std::unique_ptr<GameObject> TriggerComponent::update(std::vector<std::unique_ptr
 			break;
 		case TriggerComponent::Type::battles:
 			break;
+		case TriggerComponent::Type::quest:
+			break;
 		}
 	
 	}

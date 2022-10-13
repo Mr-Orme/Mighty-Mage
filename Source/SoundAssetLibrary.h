@@ -5,6 +5,7 @@
 #include <string>
 #include "SDL_Mixer.h"
 #include "Definitions.h"
+enum class Levels;
 struct SoundEffect
 {
 	enum class Event { walk, run, hitWall, pickup, background };
@@ -20,13 +21,13 @@ public:
 	~SoundAssetLibrary();
 			
 	SoundEffect& searchSoundEffects(SoundEffect::Event event);
-	Mix_Music* searchMusic(Locations location);
+	Mix_Music* searchMusic(Levels location);
 	bool addSoundEffect(SoundEffect::Event event, std::string path, int timeBetweenPlays=0);
-	bool addBackgroundMusic(Locations location, std::string path);
+	bool addBackgroundMusic(Levels location, std::string path);
 	
 private:
 	std::map<SoundEffect::Event, SoundEffect > soundEffectLibrary;
-	std::map<Locations, Mix_Music* > musicLibrary;
+	std::map<Levels, Mix_Music* > musicLibrary;
 };
 
 

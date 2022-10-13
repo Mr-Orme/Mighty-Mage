@@ -7,7 +7,7 @@
 #include "SoundAssetLibrary.h"
 #include <string>
 
-
+enum class Levels;
 class SoundDevice{
 public:
 	~SoundDevice() {}
@@ -16,7 +16,7 @@ public:
 	bool PlaySound(SoundEffect::Event sound, int numLoops, int channel=-1);
 	bool stopSounds();
 	
-	void SetBackground(Locations location);
+	void SetBackground(Levels location);
 	void SetSoundLibrary(SoundAssetLibrary* sLibrary);
 	
 

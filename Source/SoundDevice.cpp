@@ -2,6 +2,7 @@
 #include "SoundAssetLibrary.h"
 #include "Timer.h"
 #include "FrameCounter.h"
+#include "ResourceManager.h"
 
 SoundDevice::SoundDevice(SoundAssetLibrary* sLibrary):sLibrary(sLibrary)
 {
@@ -46,7 +47,7 @@ bool SoundDevice::stopSounds()
 }
 //**************************************
 //set's the background music to play.
-void SoundDevice::SetBackground(Locations location)
+void SoundDevice::SetBackground(Levels location)
 //**************************************
 {
 	Mix_VolumeMusic((int)(0.5f * MIX_MAX_VOLUME));
