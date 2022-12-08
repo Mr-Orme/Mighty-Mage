@@ -116,7 +116,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -158,8 +158,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ProjectDir)Game\</OutDir>
     <IntDir>$(ProjectDir)Temp\</IntDir>
-    <IncludePath>$(ProjectDir)ThirdParty\SDL2_ttf\include;$(ProjectDir)ThirdParty\box2d\include\box2d;$(ProjectDir)ThirdParty\SDL2\include;$(ProjectDir)ThirdParty\SDL2_image\include;$(ProjectDir)ThirdParty\SDL2_gfx;$(ProjectDir)ThirdParty\SDL2_mixer\include;$(ProjectDir)ThirdParty\tinyxml2;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)ThirdParty\SDL2_ttf\lib\x86;$(ProjectDir)ThirdParty\box2d\build\bin\Debug;$(ProjectDir)ThirdParty\SDL2\lib\x86;$(ProjectDir)ThirdParty\SDL2_image\lib\x86;$(ProjectDir)ThirdParty\SDL2_gfx\Win32\Debug;$(ProjectDir)ThirdParty\SDL2_mixer\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)ThirdParty\SDL2_ttf\include;$(ProjectDir)ThirdParty\Box2d\include\box2d;$(ProjectDir)ThirdParty\SDL2\include;$(ProjectDir)ThirdParty\SDL2_image\include;$(ProjectDir)ThirdParty\SDL2_gfx;$(ProjectDir)ThirdParty\SDL2_mixer\include;$(ProjectDir)ThirdParty\tinyxml2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)ThirdParty\SDL2_ttf\lib\x86;$(ProjectDir)ThirdParty\Box2d\build\bin\Debug;$(ProjectDir)ThirdParty\SDL2\lib\x86;$(ProjectDir)ThirdParty\SDL2_image\lib\x86;$(ProjectDir)ThirdParty\SDL2_gfx\Win32\Debug;$(ProjectDir)ThirdParty\SDL2_mixer\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)ThirdParty\SDL2_ttf\include;$(ProjectDir)ThirdParty\Box2D\include\box2d;$(ProjectDir)ThirdParty\SDL2\include;$(ProjectDir)ThirdParty\SDL2_image\include;$(ProjectDir)ThirdParty\SDL2_gfx;$(ProjectDir)ThirdParty\SDL2_mixer\include;$(ProjectDir)ThirdParty\Box2D\include;$(IncludePath)</IncludePath>

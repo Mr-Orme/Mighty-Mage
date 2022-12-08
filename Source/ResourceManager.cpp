@@ -239,7 +239,7 @@ ObjectDefinition ResourceManager::loadComponent(tinyxml2::XMLElement* component)
 		else if (currentComponent == "Trigger")
 			definition.components.emplace_back(std::make_unique<TriggerComponent>());
 		else if (currentComponent == "Quest") definition.components.emplace_back(std::make_unique<QuestComponent>());
-		else if (currentComponent == "Criteria") definition.components.emplace_back(std::make_unique<QuestCriteria>());
+		else if (currentComponent == "Criteria") definition.components.emplace_back(std::make_unique<QuestCriteria>(nullptr, this));
 		// if we have a misspeleed or non-existant component name in the file
 		else
 		{

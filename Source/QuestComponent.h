@@ -30,8 +30,8 @@ private:
 	std::string description;
 	std::string completionMessage;
 
-	std::vector<QuestCriteria> notCompleted;
-	std::vector<QuestCriteria> completed;
+	std::vector<QuestCriteria*> notCompleted;
+	std::vector<QuestCriteria*> completed;
 	bool sequential{ false };
 	/*How to generalize criteria for a quest?
 	* Types:

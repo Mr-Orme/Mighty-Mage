@@ -14,6 +14,7 @@ class BodyComponent;
 class SpriteComponent;
 class Texture;
 enum class Levels;
+class QuestComponent;
 struct ObjectStats
 {
 	int health;

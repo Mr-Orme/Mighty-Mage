@@ -352,6 +352,7 @@ bool Game::parseLevelXML(std::string levelConfig, std::optional<Vector2D> player
 		}
 		rowElement = rowElement->NextSiblingElement();
 	}
+	return true;
 }
 
 

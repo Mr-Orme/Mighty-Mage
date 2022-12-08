@@ -1,12 +1,9 @@
 #pragma once
 
-class FrameCounter
+namespace FrameCounter
 {
-public:
-	static unsigned int framesSince(unsigned int pastFrameCount);
-	static unsigned int currentFrame();
-	static void incrementFrame();
-private:
-	static unsigned int frameNumber;
+	unsigned int framesSince(unsigned int pastFrameCount);
+	unsigned int currentFrame();
+	void incrementFrame();
 
 };

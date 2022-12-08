@@ -1,26 +1,32 @@
 #include "FrameCounter.h"
 #include <limits>
-unsigned int FrameCounter::frameNumber{ 0 };
-unsigned FrameCounter::framesSince(unsigned int pastFrameCount)
+namespace FrameCounter
 {
-	//deal with wraparound.
-	if (pastFrameCount < frameNumber)
-	{
-		return frameNumber - pastFrameCount;
+	namespace {
+		unsigned int frameNumber{ 0 };
 	}
-	else
+	unsigned int framesSince(unsigned int pastFrameCount)
 	{
-		return frameNumber + (UINT_MAX - pastFrameCount);
+		//deal with wraparound.
+		if (pastFrameCount < frameNumber)
+		{
+			return frameNumber - pastFrameCount;
+		}
+		else
+		{
+			return frameNumber + (UINT_MAX - pastFrameCount);
+		}
+		return 0;
 	}
-	return 0;
-}
 
-unsigned int FrameCounter::currentFrame()
-{
-	return frameNumber;
-}
+	unsigned int currentFrame()
+	{
+		return frameNumber;
+	}
 
-void FrameCounter::incrementFrame()
-{
-	frameNumber++;
+	void incrementFrame()
+	{
+		frameNumber++;
+	}
+
 }
