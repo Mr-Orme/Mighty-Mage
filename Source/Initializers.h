@@ -131,7 +131,6 @@ struct ObjectFactoryPresets
 	PrimaryJoint jointInitializers;
 	std::map<Direction, bool> gDirection;
 	//int health{ 0 };//move to new AssetLibraryGame
-	ResourceManager* devices{ nullptr };
 	GameObject* owner{ nullptr };
 };
 #endif // !INITIALIZERS_H

@@ -14,7 +14,8 @@ BackpackComponent::BackpackComponent()
 {
 }
 
-BackpackComponent::BackpackComponent(const BackpackComponent& src):
+BackpackComponent::BackpackComponent(const BackpackComponent& src) :
+	Component(src),
 	slotSize(src.slotSize),
 	topLeft(src.topLeft),
 	bottomRight(src.bottomRight),

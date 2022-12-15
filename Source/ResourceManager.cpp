@@ -229,16 +229,16 @@ ObjectDefinition ResourceManager::loadComponent(tinyxml2::XMLElement* component)
 			else if (bodyShape == "circle") { definition.physics.bodyShape = BodyShape::Circle; }
 
 
-			definition.components.emplace_back(std::make_unique<BodyComponent>());
+			definition.components.emplace_back(std::make_unique<BodyComponent>(nullptr, this));
 		}
-		else if (currentComponent == "UserInput") definition.components.emplace_back(std::make_unique<UserInputComponent>());
-		else if (currentComponent == "Backpack") definition.components.emplace_back(std::make_unique<BackpackComponent>());
-		else if (currentComponent == "Inventory") definition.components.emplace_back(std::make_unique<InventoryComponent>());
-		else if (currentComponent == "Ghost") definition.components.emplace_back(std::make_unique<GhostComponent>());
-		else if (currentComponent == "Health") definition.components.emplace_back(std::make_unique<HealthComponent>());
+		else if (currentComponent == "UserInput") definition.components.emplace_back(std::make_unique<UserInputComponent>(nullptr, this));
+		else if (currentComponent == "Backpack") definition.components.emplace_back(std::make_unique<BackpackComponent>(nullptr, this));
+		else if (currentComponent == "Inventory") definition.components.emplace_back(std::make_unique<InventoryComponent>(nullptr, this));
+		else if (currentComponent == "Ghost") definition.components.emplace_back(std::make_unique<GhostComponent>(nullptr, this));
+		else if (currentComponent == "Health") definition.components.emplace_back(std::make_unique<HealthComponent>(nullptr, this));
 		else if (currentComponent == "Trigger")
-			definition.components.emplace_back(std::make_unique<TriggerComponent>());
-		else if (currentComponent == "Quest") definition.components.emplace_back(std::make_unique<QuestComponent>());
+			definition.components.emplace_back(std::make_unique<TriggerComponent>(nullptr, this));
+		else if (currentComponent == "Quest") definition.components.emplace_back(std::make_unique<QuestComponent>(nullptr, this));
 		else if (currentComponent == "Criteria") definition.components.emplace_back(std::make_unique<QuestCriteria>(nullptr, this));
 		// if we have a misspeleed or non-existant component name in the file
 		else

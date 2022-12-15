@@ -3,10 +3,10 @@
 #include "Definitions.h"
 #include "ResourceManager.h"
 
-//TODO::Get rid of this
-#include <sstream>
-#include "GraphicsDevice.h"
-#include "View.h"
+
+//#include <sstream>
+//#include "GraphicsDevice.h"
+//#include "View.h"
 GameObject::GameObject(){}
 
 

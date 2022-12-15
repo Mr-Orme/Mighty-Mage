@@ -15,13 +15,14 @@ public:
 	
 	Component(GameObject* owner, ResourceManager* devices);
 	Component();
+	Component(const Component& src);
+	Component(Component&& src) noexcept;
 	virtual ~Component() {}
 	
 	virtual bool initialize(ObjectFactoryPresets& presets);
 	virtual std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects)=0;
 	virtual std::unique_ptr<Component> copyMe() const = 0;
-	//TODO::try and eliminate getDevices
-	ResourceManager* getDevices() const { return devices; }
+
 	GameObject* getOwner() const {return(_owner);}
 	
 

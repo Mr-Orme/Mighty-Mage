@@ -9,7 +9,7 @@
 #include <memory>
 SpriteComponent::SpriteComponent(GameObject* owner, ResourceManager* devices) :Component(owner, devices){}
 SpriteComponent::SpriteComponent(ResourceManager* devices, std::string path) : 
-	Component(),
+	Component(nullptr, devices),
 	texture(std::make_shared<Texture>(path, devices->getGraphicsDevice()))
 {
 

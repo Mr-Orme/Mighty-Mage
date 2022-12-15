@@ -147,10 +147,9 @@ void Game::loadLevelLibrary(std::string levelFile)
 	}
 }
 
-ObjectFactoryPresets Game::loadExtras(tinyxml2::XMLElement* squareElement, ResourceManager* devices, std::optional<Vector2D> playerStart, std::optional<Direction> playerDirection)
+ObjectFactoryPresets Game::loadExtras(tinyxml2::XMLElement* squareElement, std::optional<Vector2D> playerStart, std::optional<Direction> playerDirection)
 {
 	ObjectFactoryPresets presets;
-	presets.devices = devices;
 	presets.objectType = squareElement->Value();
 
 	float tempX{};
@@ -213,10 +212,9 @@ ObjectFactoryPresets Game::loadExtras(tinyxml2::XMLElement* squareElement, Resou
 	
 }
 
-std::optional<ObjectFactoryPresets> Game::loadLeftWall(tinyxml2::XMLElement* squareElement, Vector2D square, ResourceManager* devices)
+std::optional<ObjectFactoryPresets> Game::loadLeftWall(tinyxml2::XMLElement* squareElement, Vector2D square)
 {
 	ObjectFactoryPresets presets;
-	presets.devices = devices;
 	presets.bodyInitializers.position = devices->square2Pixel(square);
 	presets.bodyInitializers.position.y += 10;
 
@@ -246,10 +244,9 @@ std::optional<ObjectFactoryPresets> Game::loadLeftWall(tinyxml2::XMLElement* squ
 	
 }
 
-ObjectFactoryPresets Game::loadTopWall(tinyxml2::XMLElement* squareElement, Vector2D square, ResourceManager* devices)
+ObjectFactoryPresets Game::loadTopWall(tinyxml2::XMLElement* squareElement, Vector2D square)
 {
 	ObjectFactoryPresets presets;
-	presets.devices = devices;
 	presets.bodyInitializers.position = devices->square2Pixel(square);
 	
 	std::string top{ squareElement->Attribute("top") };
@@ -278,10 +275,9 @@ ObjectFactoryPresets Game::loadTopWall(tinyxml2::XMLElement* squareElement, Vect
 	return presets;
 }
 
-std::optional<ObjectFactoryPresets> Game::loadFloor(tinyxml2::XMLElement* squareElement, Vector2D square, ResourceManager* devices)
+std::optional<ObjectFactoryPresets> Game::loadFloor(tinyxml2::XMLElement* squareElement, Vector2D square)
 {
 	ObjectFactoryPresets presets;
-	presets.devices = devices;
 	presets.gDirection.clear();
 	presets.bodyInitializers.position = devices->square2Pixel(square);
 	presets.bodyInitializers.position += 10;
@@ -331,21 +327,21 @@ bool Game::parseLevelXML(std::string levelConfig, std::optional<Vector2D> player
 		{
 			if (label == "Extras") // not walls or doors
 			{
-				objects.push_back(objectFactory->Create(loadExtras(squareElement, devices.get(), playerStart, playerDirection)));
+				objects.push_back(objectFactory->Create(loadExtras(squareElement, playerStart, playerDirection), devices.get()));
 			}
 			else
 			{
 				squareElement->QueryIntAttribute("id", &square.x);
 
-				objects.emplace_back(objectFactory->Create(loadTopWall(squareElement, square, devices.get())));
+				objects.emplace_back(objectFactory->Create(loadTopWall(squareElement, square), devices.get()));
 
-				if (auto presets{ loadLeftWall(squareElement, square, devices.get()) }; presets)
+				if (auto presets{ loadLeftWall(squareElement, square) }; presets)
 				{
-					objects.emplace_back(objectFactory->Create(*presets));
+					objects.emplace_back(objectFactory->Create(*presets, devices.get()));
 				}
-				if (auto presets{ loadFloor(squareElement, square, devices.get()) }; presets)
+				if (auto presets{ loadFloor(squareElement, square) }; presets)
 				{
-					objects.emplace_back(objectFactory->Create(*presets));
+					objects.emplace_back(objectFactory->Create(*presets, devices.get()));
 				}
 			}
 			squareElement = squareElement->NextSiblingElement();

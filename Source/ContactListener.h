@@ -2,11 +2,12 @@
 #define CONTACTLISTENER_H
 
 #include "box2d.h"
+class ResourceManager;
 class GameObject;
 class ContactListener : public b2ContactListener
 {
 public:
-	ContactListener() {}
+	ContactListener(ResourceManager* devices);
 	~ContactListener() {}
 	void BeginContact(b2Contact* contact){}
 
@@ -18,6 +19,8 @@ public:
 	void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);
 
 	void PickUpItem(GameObject* player, GameObject* item);
+private:
+	ResourceManager* devices{ nullptr };
 };
 
 #endif

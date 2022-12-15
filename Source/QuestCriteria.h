@@ -22,7 +22,7 @@ public:
 private:
 	std::string successMessage;
 	std::string failMessage;
-	QuestComponent* quest{ nullptr };
+	QuestComponent* owningQuest{ nullptr };
 	bool completeWithoutQuest{ false };
 	
 };

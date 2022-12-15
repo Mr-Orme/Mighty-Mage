@@ -285,4 +285,6 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
-/Game/Mighty.Mage.exe
+*.exe
+*.tlog
+*.idb

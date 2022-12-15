@@ -7,12 +7,13 @@
 #include "Initializers.h"
 
 class GameObject;
+class ResourceManager;
 
 class ObjectFactory
 {
 public:
 
-	std::unique_ptr<GameObject> Create(ObjectFactoryPresets& presets);
+	std::unique_ptr<GameObject> Create(ObjectFactoryPresets& presets, ResourceManager* devices);
 	protected:
 	
 };

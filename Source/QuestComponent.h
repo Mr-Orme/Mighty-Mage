@@ -33,7 +33,7 @@ private:
 	std::vector<QuestCriteria*> notCompleted;
 	std::vector<QuestCriteria*> completed;
 	bool sequential{ false };
-	/*How to generalize criteria for a quest?
+	/*TODO:: How to generalize criteria for a quest?
 	* Types:
 	* 1. Get item(s)
 	* 2. Defeat creature
@@ -43,12 +43,12 @@ private:
 	* 6. courier
 	* 7. Trigger event
 	* 
-	* QuestCriteria class? When collide with something with this, search for matching quest component.
+	* QuestCriteria Component? When collide with something with this component, search for matching quest component.
 	* Each quest component would need a unique ID or list of QuestCritiria....
 	* once notCompleted is empty, quest is done!
 	* What about criteria that can be met before quest accepted?
-	*	Perhaps a generic questComponent to store criteria.
-	*   When new quest is picked up, check this one.
+	*	QuestCriteria with completeWithoutQuest true, can be added to player's component vector.
+	*   When new quest is picked up, check for loose criteria in the component vector..
 	* Ordered vs unordered quest criteria!
 	*/
 

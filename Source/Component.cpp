@@ -8,6 +8,16 @@ Component::Component(GameObject* owner, ResourceManager* devices)
 Component::Component()
 {
 }
+Component::Component(const Component& src)
+	:_owner(src._owner), devices(src.devices)
+{
+}
+Component::Component(Component&& src) noexcept
+	:_owner(src._owner), devices(src.devices)
+{
+	src._owner = nullptr;
+	devices = nullptr;
+}
 //**************************************
 
 
@@ -15,7 +25,7 @@ Component::Component()
 bool Component::initialize(ObjectFactoryPresets& presets)
 {
 	if (_owner == nullptr) _owner = presets.owner;
-	if (devices == nullptr) devices = presets.devices;
+	
 	return _owner != nullptr && devices != nullptr;
 }
 

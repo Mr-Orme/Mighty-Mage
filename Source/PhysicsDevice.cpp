@@ -10,7 +10,7 @@
 
 PhysicsDevice::PhysicsDevice(Vector2D gravity, ResourceManager* devices):
 	gravity(RW2PW(gravity.x), RW2PW(gravity.y)),
-	listner(std::make_unique<ContactListener>())
+	listner(std::make_unique<ContactListener>(devices))
 {
 	debugDrawer = std::make_unique<Box2DDebugDraw>(this, devices->getGraphicsDevice());
 	world =std::make_unique<b2World>(this->gravity);

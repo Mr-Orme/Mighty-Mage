@@ -6,7 +6,7 @@
 #include "SoundDevice.h"
 #include "NoticesAssetLibrary.h"
 #include "View.h"
-//TODO::Get rid of
+//REMOVE_LATER::Get rid of
 #include <string>
 #include<sstream>
 
@@ -24,7 +24,7 @@ UserInputComponent::~UserInputComponent(){}
 
 std::unique_ptr<GameObject> UserInputComponent::update(std::vector<std::unique_ptr<GameObject>>& objects)
 {
-	//TODO::Get rid of********************
+	//REMOVE_LATER::Get rid of********************
 	auto center{ _owner->getComponent<BodyComponent>()->getPosition()};
 	auto square{ devices->pixel2Square(center) };
 	std::stringstream output;

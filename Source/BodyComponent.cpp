@@ -11,9 +11,7 @@
 #include "View.h"
 
 BodyComponent::BodyComponent(GameObject* owner, ResourceManager* devices):Component(owner, devices){}
-BodyComponent::BodyComponent():Component()
-{
-}
+
 BodyComponent::~BodyComponent()
 {
 	//remove the physics body

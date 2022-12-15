@@ -5,8 +5,8 @@
 #include "ComponentsList.h"
 #include "Definitions.h"
 #include "SoundDevice.h"
-#include "GraphicsDevice.h" //TODO::get rid of this
-#include <sstream>
+#include "GraphicsDevice.h" 
+//#include <sstream>
 
 Direction travelDirection(b2Body* body)
 {
@@ -18,11 +18,11 @@ Direction travelDirection(b2Body* body)
 	return reinterpret_cast<GameObject*>(body->GetUserData().pointer)->getComponent<BodyComponent>()->getDirection();
 
 }
-void wallCollision(BodyComponent* playerBody, BodyComponent* wallBody, Direction travel)
+void wallCollision(BodyComponent* playerBody, BodyComponent* wallBody, Direction travel, ResourceManager* devices)
 {
 	bool playWallSound{ false };
-	Vector2D playerSquare{ playerBody->getDevices()->pixel2Square(playerBody->getCenter()) };
-	Vector2D wallSquare{ wallBody->getDevices()->pixel2Square(wallBody->getCenter()) };
+	Vector2D playerSquare{devices->pixel2Square(playerBody->getCenter()) };
+	Vector2D wallSquare{ devices->pixel2Square(wallBody->getCenter()) };
 	/*std::cout << "Player Square: " << playerSquare.x << ", " << playerSquare.y << std::endl;
 	std::cout << "wall Square: " << wallSquare.x << ", " << wallSquare.y << std::endl << std::endl;*/
 	
@@ -51,7 +51,7 @@ void wallCollision(BodyComponent* playerBody, BodyComponent* wallBody, Direction
 		break;
 	}
 	if (playWallSound)
-		playerBody->getDevices()->getSoundDevice()->PlaySound(SoundEffect::Event::hitWall, 0, 2);
+		devices->getSoundDevice()->PlaySound(SoundEffect::Event::hitWall, 0, 2);
 }
 
 void hitTrigger(GameObject* trigger, GameObject* player, b2Contact* contact, Direction travel)
@@ -68,6 +68,10 @@ void hitTrigger(GameObject* trigger, GameObject* player, b2Contact* contact, Dir
 		
 	}
 	contact->SetEnabled(false);
+}
+ContactListener::ContactListener(ResourceManager* devices)
+	:devices(devices)
+{
 }
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {
@@ -112,7 +116,8 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 			wallCollision(
 				objectB->getComponent<BodyComponent>(), 
 				objectA->getComponent<BodyComponent>(), 
-				travelDirection(bodyB)
+				travelDirection(bodyB),
+				devices
 			);
 		}
 		
@@ -129,12 +134,8 @@ void ContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impu
 
 void ContactListener::PickUpItem(GameObject* player, GameObject* item)
 {
-
-	ResourceManager* devices = player -> getComponent<BodyComponent>() -> getDevices();
-
 	if(player -> getComponent<BackpackComponent>() -> pickUpItem(item))
 	{
 		devices -> getSoundDevice() -> PlaySound(SoundEffect::Event::pickup,0,3);
 	}
-
 }

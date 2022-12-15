@@ -16,7 +16,8 @@ bool QuestCriteria::initialize(ObjectFactoryPresets& presets)
 	}
 	successMessage = presets.criteriaInitializers.successMessage;
 	failMessage = presets.criteriaInitializers.failMessage;
-	quest = presets.criteriaInitializers.quest;
+	owningQuest = presets.criteriaInitializers.quest; 
+	//can the criteria be satisfied, even if the quest has yet to be gotten.
 	completeWithoutQuest = presets.criteriaInitializers.completeWithoutQuest;
 	return true;
 }

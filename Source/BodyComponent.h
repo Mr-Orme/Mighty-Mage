@@ -18,7 +18,8 @@ public:
 	
 
 	BodyComponent(GameObject* owner, ResourceManager* devices);
-	BodyComponent();
+	
+	BodyComponent() = delete;
 	~BodyComponent();
 
 	bool initialize(ObjectFactoryPresets& presets) override;

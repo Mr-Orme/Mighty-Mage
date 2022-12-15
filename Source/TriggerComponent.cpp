@@ -3,6 +3,10 @@
 #include "GameObject.h"
 #include "ResourceManager.h"
 #include "GraphicsDevice.h"
+TriggerComponent::TriggerComponent(GameObject* owner, ResourceManager* devices)
+	:Component(owner, devices), exitTo(Levels::none)
+{
+}
 bool TriggerComponent::initialize(ObjectFactoryPresets& presets)
 {
 	if (!Component::initialize(presets))

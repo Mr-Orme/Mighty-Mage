@@ -29,10 +29,10 @@ public:
 	
 private:
 	void loadLevelLibrary(std::string levelFile);
-	ObjectFactoryPresets loadExtras(tinyxml2::XMLElement* squareElement, ResourceManager* devices, std::optional<Vector2D> playerStart = std::nullopt, std::optional<Direction> playerDirection = Direction::N);
-	std::optional<ObjectFactoryPresets> loadLeftWall(tinyxml2::XMLElement* squareElement, Vector2D square, ResourceManager* devices);
-	ObjectFactoryPresets loadTopWall(tinyxml2::XMLElement* squareElement, Vector2D square, ResourceManager* devices);
-	std::optional<ObjectFactoryPresets> loadFloor (tinyxml2::XMLElement* squareElement, Vector2D square, ResourceManager* devices);
+	ObjectFactoryPresets loadExtras(tinyxml2::XMLElement* squareElement, std::optional<Vector2D> playerStart = std::nullopt, std::optional<Direction> playerDirection = Direction::N);
+	std::optional<ObjectFactoryPresets> loadLeftWall(tinyxml2::XMLElement* squareElement, Vector2D square);
+	ObjectFactoryPresets loadTopWall(tinyxml2::XMLElement* squareElement, Vector2D square);
+	std::optional<ObjectFactoryPresets> loadFloor (tinyxml2::XMLElement* squareElement, Vector2D square);
 	
 	bool parseLevelXML(std::string levelConfig, std::optional<Vector2D> playerStart, std::optional<Direction> playerDirection);
 	std::vector<std::unique_ptr<GameObject>> objects;
