@@ -17,7 +17,6 @@ std::unique_ptr<GameObject> ObjectFactory::Create(ObjectFactoryPresets& presets,
 //**************************************
 {
 
-	//Create pointer to new objects
 	std::unique_ptr<GameObject> newObject{ std::make_unique<GameObject>() };
 	ObjectDefinition& definition{ devices->getObjectLibrary()->search(presets.objectType) };
 	presets.bodyInitializers.physics = definition.physics;
@@ -32,8 +31,6 @@ std::unique_ptr<GameObject> ObjectFactory::Create(ObjectFactoryPresets& presets,
 		newObject -> addComponent(std::make_unique<GhostComponent>(newObject.get(), devices));
 	}
 		
-	//Initialize the new object (this will also initialize components)
-	//Owner and devices set here for each component.
 	if (newObject -> initialize(presets))
 	{
 		return newObject;

@@ -14,7 +14,7 @@ enum class Levels;
 class TriggerComponent : public Component
 {
 public:
-	TriggerComponent(GameObject* owner, ResourceManager* devices);
+	TriggerComponent(GameObject* owner, ResourceManager* devices, TriggerPresets presets);
 	//TODO:: switch notices to Trigger components with messages.
 	enum class Type { exits, messages, battles, quest, trap };
 	bool initialize(ObjectFactoryPresets& presets) override;

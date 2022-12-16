@@ -159,55 +159,22 @@ ObjectFactoryPresets Game::loadExtras(tinyxml2::XMLElement* squareElement, std::
 	presets.bodyInitializers.position = devices->square2Pixel(tempX, tempY);
 
 	squareElement->QueryIntAttribute("angle", &presets.bodyInitializers.angle);
-	
+	//TODO::These need to be moved to the constructor
 	if (presets.objectType == "Player")
 	{
 		if (playerStart)
 		{
 			presets.bodyInitializers.position = devices->square2Pixel(*playerStart, { 50, 50 });
 		}
-		if (playerDirection) presets.bodyInitializers.angle = (int)*playerDirection;
+		if (playerDirection) presets.bodyInitializers.angle = (int)*playerDirection;//TODO::Move the casting to an int to physics device
 		
 		// center the view around player
+		
 		Vector2D halfScreen{ devices->getGraphicsDevice()->getScreenDimensions() / 2 };
 		devices->getGraphicsDevice()->getView()->setPosition(presets.bodyInitializers.position - halfScreen);
 
 	}
-	else if (presets.objectType == "Trigger")
-	{
-		//size the trigger so it's near the proper edge of the square.
-		//TODO::Trigger should be only a component added to objects. Need an illustratiive object to collide with.
-		switch ((Direction)presets.bodyInitializers.angle)
-		{
-		case Direction::N:
-			presets.bodyInitializers.dimensions = { devices->pixelsPerSquare, (int)(devices->pixelsPerSquare * 0.2f) };
-			break;
-		case Direction::E:
-			presets.bodyInitializers.dimensions = { (int)(devices->pixelsPerSquare * 0.2f), devices->pixelsPerSquare };
-			presets.bodyInitializers.position.x += devices->pixelsPerSquare - presets.bodyInitializers.dimensions.x;
-			break;
-		case Direction::S:
-			presets.bodyInitializers.dimensions = { devices->pixelsPerSquare, (int)(devices->pixelsPerSquare * 0.2f) };
-			presets.bodyInitializers.position.y += devices->pixelsPerSquare - presets.bodyInitializers.dimensions.y;
-			break;
-		case Direction::W:
-			presets.bodyInitializers.dimensions = { (int)(devices->pixelsPerSquare * 0.2f), devices->pixelsPerSquare };
-			break;
-		default:
-			break;
-		}
-		squareElement->QueryIntAttribute("type", &presets.triggerInitializers.name);
-		if (presets.triggerInitializers.name == (int)TriggerComponent::Type::exits)
-		{
-			int level{};
-			squareElement->QueryIntAttribute("area", &level);
-			presets.triggerInitializers.exitTo = (Levels)level;
-			presets.triggerInitializers.message = squareElement->Attribute("message");
-			squareElement->QueryIntAttribute("playerAngle", &presets.triggerInitializers.playerAngle);
-			squareElement->QueryIntAttribute("playerX", &presets.triggerInitializers.playerLocation.x);
-			squareElement->QueryIntAttribute("playerY", &presets.triggerInitializers.playerLocation.y);
-		}
-	}
+	
 	return presets;
 	
 }
@@ -230,11 +197,8 @@ std::optional<ObjectFactoryPresets> Game::loadLeftWall(tinyxml2::XMLElement* squ
 	else if (left == "ghost")
 	{
 		presets.objectType = "VWall";
-		bool direction;
-		squareElement->QueryBoolAttribute("gE", &direction);
-		presets.gDirection[Direction::E] = direction;
-		squareElement->QueryBoolAttribute("gW", &direction);
-		presets.gDirection[Direction::W] = direction;
+		squareElement->QueryBoolAttribute("gE", &presets.gDirection[Direction::E]);
+		squareElement->QueryBoolAttribute("gW", &presets.gDirection[Direction::W]);
 	}
 	if (left != "none")
 	{
@@ -261,11 +225,8 @@ ObjectFactoryPresets Game::loadTopWall(tinyxml2::XMLElement* squareElement, Vect
 	else if (top == "ghost")
 	{
 		presets.objectType = "HWall";
-		bool direction;
-		squareElement->QueryBoolAttribute("gN", &direction);
-		presets.gDirection[Direction::N] = direction;
-		squareElement->QueryBoolAttribute("gS", &direction);
-		presets.gDirection[Direction::S] = direction;
+		squareElement->QueryBoolAttribute("gN", &presets.gDirection[Direction::N]);
+		squareElement->QueryBoolAttribute("gS", &presets.gDirection[Direction::S]);
 	}
 	else if (top == "none")
 	{
@@ -280,7 +241,7 @@ std::optional<ObjectFactoryPresets> Game::loadFloor(tinyxml2::XMLElement* square
 	ObjectFactoryPresets presets;
 	presets.gDirection.clear();
 	presets.bodyInitializers.position = devices->square2Pixel(square);
-	presets.bodyInitializers.position += 10;
+	presets.bodyInitializers.position += 10;//HACK::This is what puts the top and left in the wrong square!
 	std::string floor{ squareElement->Attribute("floor") };
 	if (floor == "wall")
 	{
@@ -305,11 +266,13 @@ std::optional<ObjectFactoryPresets> Game::loadFloor(tinyxml2::XMLElement* square
 
 bool Game::parseLevelXML(std::string levelConfig, std::optional<Vector2D> playerStart, std::optional<Direction> playerDirection)
 {
-	//TODO::pass in devices instead of having it in presets! This will simplify the load helper functions!
 	ObjectFactory* objectFactory{ devices->getObjectFactory() };
+
 	tinyxml2::XMLDocument currentLevel;
 	if (!currentLevel.LoadFile(levelConfig.c_str()) == tinyxml2::XML_SUCCESS) { return false; };
+	
 	tinyxml2::XMLElement* levelRoot{ currentLevel.FirstChildElement() };
+	
 	int iLevel;
 	levelRoot->QueryIntAttribute("level", &iLevel);
 	devices->setLevel(static_cast<Levels>(iLevel));

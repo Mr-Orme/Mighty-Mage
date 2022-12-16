@@ -121,7 +121,7 @@ struct QuestCriteriaPresets
 };
 struct ObjectFactoryPresets
 {
-	std::string objectType{ "" };
+	std::string objectType{ "" };//TODO:: enum??
 	SpritePresets spriteInitializers;
 	BodyPresets bodyInitializers;
 	UserInputPresets userInputInitializers;

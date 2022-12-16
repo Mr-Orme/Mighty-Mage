@@ -7,7 +7,7 @@ ObjectLibrary::ObjectLibrary(){}
 
 //**************************************
 //Takes the name of the object and returns it's stats.
-//right now it is just health, but that will change.
+//TODO::Use std::optional in case it's not found!
 ObjectDefinition&  ObjectLibrary::search(std::string name)
 //**************************************
 {

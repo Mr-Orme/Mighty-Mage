@@ -28,7 +28,7 @@ public:
 
 protected:
 	GameObject* _owner{ nullptr };
-	ResourceManager* devices{ nullptr };
+	ResourceManager* devices{ nullptr };//TODO::Make a reference!
 };
 
 

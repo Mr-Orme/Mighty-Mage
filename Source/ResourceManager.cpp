@@ -28,7 +28,7 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 
 ResourceManager::~ResourceManager(){
 }
-
+//TODO::get rid of some of these getters!
 GraphicsDevice* ResourceManager::getGraphicsDevice()
 {
 	return gDevice.get();
@@ -199,7 +199,11 @@ void ResourceManager::loadSounds(tinyxml2::XMLElement* sounds)
 	}
 }
 
+//****************************************
+//Creates the definition that will be added to the Object Library.
+//Loaded from the level's Assets xml file.
 ObjectDefinition ResourceManager::loadComponent(tinyxml2::XMLElement* component)
+//****************************************
 {
 	ObjectDefinition definition;
 	while (component)
@@ -237,7 +241,21 @@ ObjectDefinition ResourceManager::loadComponent(tinyxml2::XMLElement* component)
 		else if (currentComponent == "Ghost") definition.components.emplace_back(std::make_unique<GhostComponent>(nullptr, this));
 		else if (currentComponent == "Health") definition.components.emplace_back(std::make_unique<HealthComponent>(nullptr, this));
 		else if (currentComponent == "Trigger")
-			definition.components.emplace_back(std::make_unique<TriggerComponent>(nullptr, this));
+		{
+			TriggerPresets presets;
+			component->QueryIntAttribute("type", &presets.name);
+			if (presets.name == (int)TriggerComponent::Type::exits)
+			{
+				int level{};
+				component->QueryIntAttribute("area", &level);
+				presets.exitTo = (Levels)level;
+				presets.message = component->Attribute("message");
+				component->QueryIntAttribute("playerAngle", &presets.playerAngle);
+				component->QueryIntAttribute("playerX", &presets.playerLocation.x);
+				component->QueryIntAttribute("playerY", &presets.playerLocation.y);
+			}
+			definition.components.emplace_back(std::make_unique<TriggerComponent>(nullptr, this, presets));
+		}
 		else if (currentComponent == "Quest") definition.components.emplace_back(std::make_unique<QuestComponent>(nullptr, this));
 		else if (currentComponent == "Criteria") definition.components.emplace_back(std::make_unique<QuestCriteria>(nullptr, this));
 		// if we have a misspeleed or non-existant component name in the file

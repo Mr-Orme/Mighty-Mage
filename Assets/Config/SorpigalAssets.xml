@@ -84,9 +84,10 @@
 			<Component name="Health" health="1"/>
 			<Component name="Inventory"/>
 		</GameAsset>
-    <GameAsset name="Trigger">
+    <GameAsset name="StairsDown">
       <Component name="Body" density="0.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "true"/>
-      <Component name="Trigger"/>
+      <!--TriggerComponent::Type enum for type Levels enum for area-->
+      <Component name="Trigger" type="0" area="1" playerX="14" playerY="0" playerAngle="0" message="You have broken the wizard's ward! Do you want to descend: (y/n)"/>
     </GameAsset>
 	</Structures>
 	<Notices>

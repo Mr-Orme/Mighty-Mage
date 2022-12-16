@@ -3,8 +3,13 @@
 #include "GameObject.h"
 #include "ResourceManager.h"
 #include "GraphicsDevice.h"
-TriggerComponent::TriggerComponent(GameObject* owner, ResourceManager* devices)
-	:Component(owner, devices), exitTo(Levels::none)
+TriggerComponent::TriggerComponent(GameObject* owner, ResourceManager* devices, TriggerPresets presets)
+	:Component(owner, devices), 
+	name((Type)presets.name),
+	exitTo(presets.exitTo),
+	message(presets.message),
+	playerLocation(presets.playerLocation),
+	playerDirection((Direction)presets.playerAngle)
 {
 }
 bool TriggerComponent::initialize(ObjectFactoryPresets& presets)
@@ -15,11 +20,27 @@ bool TriggerComponent::initialize(ObjectFactoryPresets& presets)
 		return false;
 	}
 	direction = (Direction)presets.bodyInitializers.angle;
-	exitTo = presets.triggerInitializers.exitTo;
-	message = presets.triggerInitializers.message;
-	name = (Type)presets.triggerInitializers.name;
-	playerLocation = presets.triggerInitializers.playerLocation;
-	playerDirection = (Direction)presets.triggerInitializers.playerAngle;
+
+	switch (direction)
+	{
+	case Direction::N:
+		presets.bodyInitializers.dimensions = { devices->pixelsPerSquare, (int)(devices->pixelsPerSquare * 0.2f) };
+		break;
+	case Direction::E:
+		presets.bodyInitializers.dimensions = { (int)(devices->pixelsPerSquare * 0.2f), devices->pixelsPerSquare };
+		presets.bodyInitializers.position.x += devices->pixelsPerSquare - presets.bodyInitializers.dimensions.x;
+		break;
+	case Direction::S:
+		presets.bodyInitializers.dimensions = { devices->pixelsPerSquare, (int)(devices->pixelsPerSquare * 0.2f) };
+		presets.bodyInitializers.position.y += devices->pixelsPerSquare - presets.bodyInitializers.dimensions.y;
+		break;
+	case Direction::W:
+		presets.bodyInitializers.dimensions = { (int)(devices->pixelsPerSquare * 0.2f), devices->pixelsPerSquare };
+		break;
+	default:
+		break;
+	}
+
 	return true;
 }
 
