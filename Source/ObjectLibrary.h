@@ -13,6 +13,7 @@ class Component;
 
 struct ObjectDefinition
 {
+	ID id;
 	std::unique_ptr<Texture> sprite;
 	PhysicsStats physics;
 	std::vector<std::unique_ptr<Component>> components;
@@ -21,7 +22,7 @@ class ObjectLibrary{
 public:
 	ObjectLibrary();
 	ObjectDefinition& search(std::string name);
-	bool addAsset(std::string name, ObjectDefinition stats);
+	bool addAsset(ID id, ObjectDefinition stats);
 private:
 	std::map<std::string, ObjectDefinition> library;
 

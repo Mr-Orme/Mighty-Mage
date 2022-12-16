@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "Component.h"
+#include "Initializers.h"
 //**************************************
 //owner is set on creation.
 Component::Component(GameObject* owner, ResourceManager* devices) 

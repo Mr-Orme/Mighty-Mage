@@ -161,9 +161,12 @@ void ResourceManager::loadObjects(tinyxml2::XMLElement* asset)
 {
 	while (asset)
 	{
-		std::string objectName{ asset->Attribute("name") };
-
-		oLibrary->addAsset(objectName, loadComponent(asset->FirstChildElement()));
+		ID id;
+		id.name = asset->Attribute("name");
+		int objectType;
+		asset->QueryIntAttribute("type", &objectType);
+		id.type = (GameObject::Type)objectType;
+		oLibrary->addAsset(id, loadComponent(asset->FirstChildElement()));
 
 		asset = asset->NextSiblingElement();
 	}

@@ -3,10 +3,11 @@
 #include <memory>
 #include <string>
 #include <map>
+#include <tuple>
 #include "Definitions.h"
 #include "Vector2D.h"
 #include "InputDevice.h"
-
+#include "GameObject.h"
 //class ICallBack;
 //class BodyCallBack;
 class ResourceManager;
@@ -119,9 +120,14 @@ struct QuestCriteriaPresets
 	QuestComponent* quest{ nullptr };
 	bool completeWithoutQuest{ false };
 };
+struct ID
+{
+	std::string name;
+	GameObject::Type type;
+};
 struct ObjectFactoryPresets
 {
-	std::string objectType{ "" };//TODO:: enum??
+	ID id;
 	SpritePresets spriteInitializers;
 	BodyPresets bodyInitializers;
 	UserInputPresets userInputInitializers;

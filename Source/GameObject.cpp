@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Definitions.h"
 #include "ResourceManager.h"
+#include "Initializers.h"
 
 
 //#include <sstream>
@@ -13,7 +14,7 @@ GameObject::GameObject(){}
 bool GameObject::initialize(ObjectFactoryPresets& presets)
 {
 	presets.owner = this;
-	setType(presets.objectType);
+	name = presets.id.type;
 	
 	for ( auto& comp :components)
 	{
@@ -66,54 +67,6 @@ bool GameObject::isA(Type name) const
 }
 
 
-void GameObject::setType(std::string sName)
-{
-	if (sName == "HWall" || sName =="HGhostWall")
-	{
-		name = Type::wall;
-		direction = Direction::E;
-	}
-	else if (sName == "VWall" || sName == "VGhostWall" || sName == "TopFill")
-	{
-		name = Type::wall;
-		direction = Direction::N;
-	}
-	else if (sName == "WallFloor" || sName == "GhostWallFloor")
-	{
-		name = Type::floor;
-		direction = Direction::N;
-		
-	}
-	else if (sName == "HDoor")
-	{
-		name = Type::door;
-		direction = Direction::E;
-
-	}
-	else if (sName == "VDoor")
-	{
-		name = Type::door;
-		direction = Direction::N;
-
-	}
-	else if (sName == "Player")
-	{
-		name = Type::player;
-		direction = Direction::N;
-
-	}
-	else if (sName == "Trigger")
-	{
-		name = Type::trigger;
-		direction = Direction::N;
-	}
-	else
-	{
-		name = Type::extra;
-		direction = Direction::N;
-
-	}
-}
 
 
 

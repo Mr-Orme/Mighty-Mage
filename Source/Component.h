@@ -5,7 +5,8 @@
 #include <vector>
 
 #include "Vector2D.h"
-#include "Initializers.h"
+
+struct ObjectFactoryPresets;
 class GameObject;
 class ResourceManager;
 

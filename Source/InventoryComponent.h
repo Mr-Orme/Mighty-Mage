@@ -11,6 +11,7 @@ class GameObject;
 class InventoryComponent : public Component
 {
 public:
+	//TODO:: this should be a type of trigger
 	InventoryComponent(GameObject* owner, ResourceManager* devices);
 	InventoryComponent() {}
 	~InventoryComponent();

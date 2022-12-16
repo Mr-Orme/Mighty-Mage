@@ -1,93 +1,96 @@
 <?xml version="1.0" ?>
+<!--Trigger must be before body!-->
 <Main>
 	<Structures>
 			<!-- Asset description for libraries 	-->
-   		<GameAsset name="HWall">
+   		<GameAsset name="HWall" type="1">
 			<Component name="Renderer" sprite="./Assets/Images/wall_h_t.png"/>
 			<Component name="Body" density="15.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "true"/>
 		</GameAsset>
 	
-		<GameAsset name="VWall">
+		<GameAsset name="VWall" type="1">
 			<Component name="Renderer" sprite="./Assets/Images/wall_v.png"/>
 			<Component name="Body" density="15.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "true"/>
 		</GameAsset>
 
 	
-		<GameAsset name="WallFloor">
+		<GameAsset name="WallFloor" type="2">
 			<Component name="Renderer" sprite="./Assets/Images/solid.png"/>
 			<Component name="Body" density="15.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "true"/>
 		</GameAsset>
 
 	
-		<GameAsset name="TopFill">
+		<GameAsset name="TopFill" type="1">
 			<Component name="Renderer" sprite="./Assets/Images/top_n.png"/>
 			<Component name="Body" density="15.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "true"/>
 		</GameAsset>
-		<GameAsset name="Torch">
+		<GameAsset name="Torch" type="4">
 			<Component name="Renderer" sprite="./Assets/Images/torch_h.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "false"/>
 		</GameAsset>
 	
-		<GameAsset name="HDoor">
+		<GameAsset name="HDoor" type="3">
 			<Component name="Renderer" sprite="./Assets/Images/door_h.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "false"/>
 		</GameAsset>
-		<GameAsset name="VDoor">
+		<GameAsset name="VDoor" type="3">
 			<Component name="Renderer" sprite="./Assets/Images/door_v.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "false"/>
 		</GameAsset>
 	
-		<GameAsset name="Player">
+		<GameAsset name="Player" type="0">
 			<Component name="Renderer" sprite="./Assets/Images/player.png"/>
 			<Component name="Body" density="1.0f" restitution="0.0f" angularDamping="4.0f" linearDamping="0.0f" bodyType="dynamic" bodyShape="circle" physicsOn = "true"/>
 			<Component name="Health" health="18"/>
 			<Component name="Backpack" />
 			<Component name="UserInput" />
 		</GameAsset>
-		<GameAsset name="Trapdoor">
+		<GameAsset name="Trapdoor" type="4">
 			<Component name="Renderer" sprite="./Assets/Images/trapdoor.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "false"/>
 		</GameAsset>
-		<GameAsset name="RSphere">
+		<GameAsset name="RSphere" type="4">
 			<Component name="Renderer" sprite="./Assets/Images/red_sphere.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="circle" physicsOn = "true"/>
 			<Component name="Health" health="1"/>
 			<Component name="Inventory"/>
 		</GameAsset>
-		<GameAsset name="BSphere">
+		<GameAsset name="BSphere" type="4">
 			<Component name="Renderer" sprite="./Assets/Images/blue_sphere.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="circle" physicsOn = "true"/>
 			<Component name="Health" health="1"/>
 			<Component name="Inventory"/>
 		</GameAsset>
-		<GameAsset name="GSphere">
+		<GameAsset name="GSphere" type="4">
 			<Component name="Renderer" sprite="./Assets/Images/green_sphere.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="circle" physicsOn = "true"/>
 			<Component name="Health" health="1"/>
 			<Component name="Inventory"/>
 		</GameAsset>
-		<GameAsset name="OSphere">
+		<GameAsset name="OSphere" type="4">
 			<Component name="Renderer" sprite="./Assets/Images/orange_sphere.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="circle" physicsOn = "true"/>
 			<Component name="Health" health="1"/>
 			<Component name="Inventory"/>
 		</GameAsset>
-		<GameAsset name="PSphere">
+		<GameAsset name="PSphere" type="4">
 			<Component name="Renderer" sprite="./Assets/Images/purple_sphere.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="circle" physicsOn = "true"/>
 			<Component name="Health" health="1"/>
 			<Component name="Inventory"/>
 		</GameAsset>
-		<GameAsset name="YSphere">
+		<GameAsset name="YSphere" type="4">
 			<Component name="Renderer" sprite="./Assets/Images/yellow_sphere.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="circle" physicsOn = "true"/>
 			<Component name="Health" health="1"/>
 			<Component name="Inventory"/>
 		</GameAsset>
-    <GameAsset name="StairsDown">
-      <Component name="Body" density="0.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "true"/>
+    <GameAsset name="StairsDown" type="5">
       <!--TriggerComponent::Type enum for type Levels enum for area-->
       <Component name="Trigger" type="0" area="1" playerX="14" playerY="0" playerAngle="0" message="You have broken the wizard's ward! Do you want to descend: (y/n)"/>
+      <Component name="Body" density="0.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "true"/>
+      
+      
     </GameAsset>
 	</Structures>
 	<Notices>

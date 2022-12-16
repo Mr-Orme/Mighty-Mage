@@ -16,9 +16,10 @@ ObjectDefinition&  ObjectLibrary::search(std::string name)
 
 //**************************************
 //takes the name of the object and a vecotr of enums of types of stats and saves it to the library.
-bool ObjectLibrary::addAsset(std::string name, ObjectDefinition stats)
+bool ObjectLibrary::addAsset(ID id, ObjectDefinition stats)
 //**************************************
 {
-	library[name] = std::move(stats);
+	stats.id = id;
+	library[id.name] = std::move(stats);
 	return true;
 }

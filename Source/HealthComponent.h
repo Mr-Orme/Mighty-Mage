@@ -2,7 +2,9 @@
 #define HEALTH_H
 
 #include "Component.h"
-
+#include <string>
+#include <memory>
+#include <vector>
 class ResourceManager;
 
 class HealthComponent : public Component

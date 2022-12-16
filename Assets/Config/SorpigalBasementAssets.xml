@@ -3,49 +3,49 @@
 	<Structures>
 			<!-- Asset description for libraries 	-->
 	
-   		<GameAsset name="HWall">
+   	<GameAsset name="HWall" type="1">
 			<Component name="Renderer" sprite="./Assets/Images/d_wall_h_t.png"/>
 			<Component name="Body" density="15.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "true"/>
 		</GameAsset>
-		<GameAsset name="HGhostWall">
+		<GameAsset name="HGhostWall" type="1">
 			<Component name="Renderer" sprite="./Assets/Images/d_wall_h_t.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "false"/>
 		</GameAsset>
-		<GameAsset name="VWall">
+		<GameAsset name="VWall" type="1">
 			<Component name="Renderer" sprite="./Assets/Images/d_wall_v.png"/>
 			<Component name="Body" density="15.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "true"/>
 		</GameAsset>
-		<GameAsset name="VGhostWall">
+		<GameAsset name="VGhostWall" type="1">
 			<Component name="Renderer" sprite="./Assets/Images/d_wall_v.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "false"/>
 		</GameAsset>
-		<GameAsset name="WallFloor">
+		<GameAsset name="WallFloor" type="2">
 			<Component name="Renderer" sprite="./Assets/Images/d_solid.png"/>
 			<Component name="Body" density="15.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "true"/>
 		</GameAsset>
-		<GameAsset name="GhostWallFloor">
+		<GameAsset name="GhostWallFloor" type="2">
 			<Component name="Renderer" sprite="./Assets/Images/d_solid.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "false"/>
 		</GameAsset>
-		<GameAsset name="TopFill">
+		<GameAsset name="TopFill" type="1">
 			<Component name="Renderer" sprite="./Assets/Images/d_top_n.png"/>
 			<Component name="Body" density="15.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "true"/>
 		</GameAsset>
-		<GameAsset name="Torch">
+		<GameAsset name="Torch" type="4">
 			<Component name="Renderer" sprite="./Assets/Images/torch_h.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "false"/>
 		</GameAsset>
 	
-		<GameAsset name="HDoor">
+		<GameAsset name="HDoor" type="3">
 			<Component name="Renderer" sprite="./Assets/Images/d_door_h.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "false"/>
 		</GameAsset>
-		<GameAsset name="VDoor">
+		<GameAsset name="VDoor" type="3">
 			<Component name="Renderer" sprite="./Assets/Images/d_door_v.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "false"/>
 		</GameAsset>
 	
-		<GameAsset name="Player">
+		<GameAsset name="Player" type="0">
 			<Component name="Renderer" sprite="./Assets/Images/player.png"/>
 			<Component name="Body" density="1.0f" restitution="0.0f" angularDamping="4.0f" linearDamping="0.0f" bodyType="dynamic" bodyShape="circle" physicsOn = "true"/>
 			<Component name="Health" health="18"/>
@@ -53,13 +53,13 @@
 			<Component name="UserInput" />
 		</GameAsset>
 	
-		<GameAsset name="Wand">
+		<GameAsset name="Wand" type="4">
 			<Component name="Renderer" sprite="./Assets/Images/wand.png"/>
 			<Component name="Body" density="15.0f" restitution="0.7f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "false"/>
 		</GameAsset>
-    <GameAsset name="Trigger">
+    <GameAsset name="StairsDown" type="5">
+      <Component name="Trigger" type="0" area="0" playerX="14" playerY="0" playerAngle="90" message="A stairway leads up into bright daylight. Do you want to ascend: (y/n)" />
       <Component name="Body" density="0.0f" restitution="0.0f" angularDamping="0.0f" linearDamping="0.0f" bodyType="staticBody" bodyShape="rectangle" physicsOn = "true"/>
-      <Component name="Trigger"/>
     </GameAsset>
 	</Structures>
 	<Notices>

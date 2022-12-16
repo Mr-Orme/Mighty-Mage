@@ -5,6 +5,8 @@
 #include "Component.h"
 #include "Definitions.h"
 
+#include <memory>
+#include <vector>
 class GameObject;
 
 class GhostComponent : public Component

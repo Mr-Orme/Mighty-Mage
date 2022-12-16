@@ -8,9 +8,10 @@
 #include<optional>
 
 #include "Definitions.h"
-#include "Initializers.h"
+//#include "Initializers.h"
 
 #include "Component.h"
+struct ObjectFactoryPresets;
 class GraphicsDevice;
 class PhysicsDevice;
 enum class Levels;
@@ -48,8 +49,6 @@ public:
 	}
 
 protected:
-	void setType(std::string);
-
 	std::vector<std::unique_ptr<Component>> components;
 
 	Type name{ Type::extra };

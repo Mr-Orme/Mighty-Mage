@@ -150,7 +150,7 @@ void Game::loadLevelLibrary(std::string levelFile)
 ObjectFactoryPresets Game::loadExtras(tinyxml2::XMLElement* squareElement, std::optional<Vector2D> playerStart, std::optional<Direction> playerDirection)
 {
 	ObjectFactoryPresets presets;
-	presets.objectType = squareElement->Value();
+	presets.id.name = squareElement->Value();
 
 	float tempX{};
 	float tempY{};
@@ -160,7 +160,7 @@ ObjectFactoryPresets Game::loadExtras(tinyxml2::XMLElement* squareElement, std::
 
 	squareElement->QueryIntAttribute("angle", &presets.bodyInitializers.angle);
 	//TODO::These need to be moved to the constructor
-	if (presets.objectType == "Player")
+	if (presets.id.name == "Player")
 	{
 		if (playerStart)
 		{
@@ -188,15 +188,15 @@ std::optional<ObjectFactoryPresets> Game::loadLeftWall(tinyxml2::XMLElement* squ
 	std::string left{ squareElement->Attribute("left") };
 	if (left == "wall")
 	{
-		presets.objectType = "VWall";
+		presets.id.name = "VWall";
 	}
 	else if (left == "door")
 	{
-		presets.objectType = "VDoor";
+		presets.id.name = "VDoor";
 	}
 	else if (left == "ghost")
 	{
-		presets.objectType = "VWall";
+		presets.id.name = "VWall";
 		squareElement->QueryBoolAttribute("gE", &presets.gDirection[Direction::E]);
 		squareElement->QueryBoolAttribute("gW", &presets.gDirection[Direction::W]);
 	}
@@ -216,21 +216,21 @@ ObjectFactoryPresets Game::loadTopWall(tinyxml2::XMLElement* squareElement, Vect
 	std::string top{ squareElement->Attribute("top") };
 	if (top == "wall")
 	{
-		presets.objectType = "HWall";
+		presets.id.name = "HWall";
 	}
 	else if (top == "door")
 	{
-		presets.objectType = "HDoor";
+		presets.id.name = "HDoor";
 	}
 	else if (top == "ghost")
 	{
-		presets.objectType = "HWall";
+		presets.id.name = "HWall";
 		squareElement->QueryBoolAttribute("gN", &presets.gDirection[Direction::N]);
 		squareElement->QueryBoolAttribute("gS", &presets.gDirection[Direction::S]);
 	}
 	else if (top == "none")
 	{
-		presets.objectType = "TopFill";
+		presets.id.name = "TopFill";
 	}
 
 	return presets;
@@ -245,11 +245,11 @@ std::optional<ObjectFactoryPresets> Game::loadFloor(tinyxml2::XMLElement* square
 	std::string floor{ squareElement->Attribute("floor") };
 	if (floor == "wall")
 	{
-		presets.objectType = "WallFloor";
+		presets.id.name = "WallFloor";
 	}
 	else if (floor == "ghost")
 	{
-		presets.objectType = "WallFloor";
+		presets.id.name = "WallFloor";
 		presets.gDirection[Direction::N] = true;
 		presets.gDirection[Direction::E] = true;
 		presets.gDirection[Direction::S] = true;

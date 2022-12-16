@@ -3,7 +3,9 @@
 
 #include "Component.h"
 
-
+#include <string>
+#include <memory>
+#include <vector>
 class Texture;
 
 class SpriteComponent : public Component
@@ -23,7 +25,7 @@ public:
 	void changeSprite(std::shared_ptr<Texture> texture);
 
 protected:
-	std::shared_ptr<Texture> texture{ nullptr };
+	std::shared_ptr<Texture> texture{ nullptr };//TODO::make into unique_ptr!
 	bool initialized{ false };
 };
 
