@@ -8,9 +8,6 @@
 GhostComponent::GhostComponent(GameObject* owner, ResourceManager* devices)
 	:Component(owner, devices){}
 
-GhostComponent::GhostComponent()
-{
-}
 
 GhostComponent::~GhostComponent(){}
 

@@ -18,7 +18,7 @@ std::unique_ptr<GameObject> ObjectFactory::Create(ObjectFactoryPresets& presets,
 {
 
 	std::unique_ptr<GameObject> newObject{ std::make_unique<GameObject>() };
-	ObjectDefinition& definition{ devices->getObjectLibrary()->search(presets.id.name) };
+	auto definition{ devices->findObjectDefinition(presets.id.name) };
 	presets.bodyInitializers.physics = definition.physics;
 	presets.id = definition.id;
 

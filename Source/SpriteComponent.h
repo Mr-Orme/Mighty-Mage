@@ -13,6 +13,7 @@ class SpriteComponent : public Component
 public:
 	SpriteComponent(GameObject* owner, ResourceManager* devices);
 	SpriteComponent(ResourceManager* devices, std::string path);
+	SpriteComponent() = delete;
 	~SpriteComponent();
 
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;

@@ -26,21 +26,21 @@ std::unique_ptr<GameObject> UserInputComponent::update(std::vector<std::unique_p
 {
 	//REMOVE_LATER::Get rid of********************
 	auto center{ _owner->getComponent<BodyComponent>()->getPosition()};
-	auto square{ devices->pixel2Square(center) };
+	auto square{ devices.pixel2Square(center) };
 	std::stringstream output;
 	output << "Player: " << center.x << ", " << center.y << "\n"
 		<< square.x << ", " << square.y;
-	devices->getGraphicsDevice()->text2Screen(output.str(), { 10,10 });
-	auto viewP{ devices->getGraphicsDevice()->getView()->getViewingWindowPosition() };
+	devices.getGraphicsDevice()->text2Screen(output.str(), { 10,10 });
+	auto viewP{ devices.getGraphicsDevice()->getView()->getViewingWindowPosition() };
 	output=std::stringstream();
 	output << "View:" << viewP.x << ", " << viewP.y;
-	devices->getGraphicsDevice()->text2Screen(output.str(), { 10,40 });
+	devices.getGraphicsDevice()->text2Screen(output.str(), { 10,40 });
 
 	//*************************************************
-	if(!devices->isPaused())
+	if(!devices.isPaused())
 		dealWithButtonPresses();
 	
-	devices->getGraphicsDevice()->getView()->borderDectection(
+	devices.getGraphicsDevice()->getView()->borderDectection(
 		_owner->getComponent<BodyComponent>()->getPosition());
 	
 	displayNotices();
@@ -56,33 +56,33 @@ void UserInputComponent::displayNotices()
 	BodyComponent* body{ _owner->getComponent<BodyComponent>() };
 	
 	if (
-		Notice notice{ devices->pixel2Square(body->getPosition()), body->getDirection(), "" };
-		devices->getNoticesLibrary()->search(notice)
+		Notice notice{ devices.pixel2Square(body->getPosition()), body->getDirection(), "" };
+		devices.searchNotices(notice)
 		)
 	{
-		devices->getGraphicsDevice()->notice2Screen(notice.text);
+		devices.getGraphicsDevice()->notice2Screen(notice.text);
 	}
 }
 void UserInputComponent::dealWithButtonPresses()
 {
 	if (auto pack{ _owner->getComponent<BackpackComponent>() }; pack && !pack->isOpen())
 	{
-		if (devices->getInputDevice()->isPressed(input::up))
+		if (devices.getInputDevice()->isPressed(input::up))
 		{
 			_owner->getComponent<BodyComponent>()->moveForward();
 		}
-		else if (devices->getInputDevice()->isPressed(input::down))
+		else if (devices.getInputDevice()->isPressed(input::down))
 		{
 			_owner->getComponent<BodyComponent>()->moveBackward();
 		}
 		else
 		{
 			_owner->getComponent<BodyComponent>()->stop();
-			devices->getSoundDevice()->stopSounds();
+			devices.getSoundDevice()->stopSounds();
 		}
 
 		// the "pressControl" variable makes sure we only turn once every time we push the button
-		if (devices->getInputDevice()->isPressed(input::right))
+		if (devices.getInputDevice()->isPressed(input::right))
 		{
 			if (pressControl[input::right])
 			{
@@ -92,7 +92,7 @@ void UserInputComponent::dealWithButtonPresses()
 			}
 		}
 		else pressControl[input::right] = true;
-		if (devices->getInputDevice()->isPressed(input::left))
+		if (devices.getInputDevice()->isPressed(input::left))
 		{
 			if (pressControl[input::left])
 			{
@@ -104,7 +104,7 @@ void UserInputComponent::dealWithButtonPresses()
 	}
 	else _owner->getComponent<BodyComponent>()->stop();
 
-	if (devices->getInputDevice()->isPressed(input::key_b))
+	if (devices.getInputDevice()->isPressed(input::key_b))
 	{
 		if (pressControl[input::key_b])
 		{
@@ -126,7 +126,7 @@ void UserInputComponent::dealWithButtonPresses()
 
 void UserInputComponent::displayLocation()
 {
-	Vector2D playerPosition = devices->getPhysicsDevice()->GetPosition(_owner);
+	Vector2D playerPosition = devices.getPhysicsDevice()->GetPosition(_owner);
 	std::string playerPositionText = "(" + std::to_string(playerPosition.x) + ", " + std::to_string(playerPosition.y) + ")";
-	devices->getGraphicsDevice()->text2Screen(playerPositionText, { 10,10 });
+	devices.getGraphicsDevice()->text2Screen(playerPositionText, { 10,10 });
 }

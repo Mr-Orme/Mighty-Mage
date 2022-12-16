@@ -14,7 +14,7 @@ class QuestComponent : public Component
 {
 public:
 	QuestComponent(GameObject* owner, ResourceManager* devices);
-	QuestComponent() = default;
+	QuestComponent() = delete;
 	~QuestComponent() = default;
 
 	bool initialize(ObjectFactoryPresets& presets) override;

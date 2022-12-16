@@ -8,9 +8,7 @@
 
 HealthComponent::HealthComponent(GameObject* owner, ResourceManager* devices)
 	:Component(owner, devices){}
-HealthComponent::HealthComponent()
-{
-}
+
 HealthComponent::~HealthComponent(){}
 
 
@@ -27,12 +25,12 @@ bool HealthComponent::killMe(std::string deathSprite)
 //**************************************
 {
 	//Stop the physics of the object
-	devices -> getPhysicsDevice() -> SetStopPhysics(_owner);
+	devices. getPhysicsDevice() -> SetStopPhysics(_owner);
 
 	//grab the renderer
 	auto compRenderer{ _owner->getComponent<SpriteComponent>() };
 	//change the sprite
-	//compRenderer -> changeSprite(devices -> GetArtLibrary() -> search(deathSprite));	
+	//compRenderer -> changeSprite(devices. GetArtLibrary() -> search(deathSprite));	
 	return true;
 }
 //**************************************
@@ -58,9 +56,9 @@ std::unique_ptr<GameObject> HealthComponent::update(std::vector<std::unique_ptr<
 		{
 			//Turn off the joined object
 			GameObject* joined =  _owner -> getJoinedWith();
-			devices -> getPhysicsDevice() -> SetStopPhysics(joined);
+			devices. getPhysicsDevice() -> SetStopPhysics(joined);
 			//destroy the joints
-			devices -> getPhysicsDevice() -> DestroyJoint(_owner);
+			devices. getPhysicsDevice() -> DestroyJoint(_owner);
 		}
 		//kill it
 		killMe();

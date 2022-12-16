@@ -12,7 +12,7 @@
 #include "Vector2D.h"
 #include "ObjectLibrary.h"
 
-
+struct Notice;
 class View;
 class SoundAssetLibrary;
 class NoticesAssetLibrary;
@@ -41,8 +41,9 @@ public:
 	SoundDevice* getSoundDevice();
 
 	ObjectLibrary* getObjectLibrary();
-	NoticesAssetLibrary* getNoticesLibrary();
-	SoundAssetLibrary* getSoundLibrary();
+	ObjectDefinition& findObjectDefinition(std::string name);
+	bool searchNotices(Notice findMe);
+	
 
 	ObjectFactory* getObjectFactory();
 

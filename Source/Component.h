@@ -15,7 +15,7 @@ class Component
 public:
 	
 	Component(GameObject* owner, ResourceManager* devices);
-	Component();
+	Component() = delete;
 	Component(const Component& src);
 	Component(Component&& src) noexcept;
 	virtual ~Component() {}
@@ -29,7 +29,7 @@ public:
 
 protected:
 	GameObject* _owner{ nullptr };
-	ResourceManager* devices{ nullptr };//TODO::Make a reference!
+	ResourceManager& devices;
 };
 
 

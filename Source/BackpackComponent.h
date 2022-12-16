@@ -16,7 +16,7 @@ class BackpackComponent : public Component
 {
 public:
 	BackpackComponent(GameObject* owner, ResourceManager* devices);
-	BackpackComponent();
+	BackpackComponent() = delete;
 	BackpackComponent(const BackpackComponent& src);
 	~BackpackComponent() = default;
 

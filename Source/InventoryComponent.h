@@ -13,7 +13,7 @@ class InventoryComponent : public Component
 public:
 	//TODO:: this should be a type of trigger
 	InventoryComponent(GameObject* owner, ResourceManager* devices);
-	InventoryComponent() {}
+	InventoryComponent() = delete;
 	~InventoryComponent();
 
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;

@@ -13,7 +13,7 @@ class GhostComponent : public Component
 {
 public:
 	GhostComponent(GameObject* owner, ResourceManager* devices);
-	GhostComponent();
+	GhostComponent() = delete;
 	~GhostComponent();
 	
 	bool initialize(ObjectFactoryPresets& presets) override;

@@ -13,7 +13,7 @@ class ResourceManager;
 class QuestCriteria: public Component
 {
 public:
-	//QuestCriteria() = delete;
+	QuestCriteria() = delete;
 	QuestCriteria(GameObject* owner, ResourceManager* devices);
 	bool initialize(ObjectFactoryPresets& presets) override;
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;

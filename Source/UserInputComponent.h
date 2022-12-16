@@ -15,7 +15,7 @@ class UserInputComponent : public Component
 {
 public:
 	UserInputComponent(GameObject* owner, ResourceManager* devices);
-	UserInputComponent() {}
+	UserInputComponent() = delete;
 	~UserInputComponent();
 	
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;	

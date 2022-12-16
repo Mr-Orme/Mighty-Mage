@@ -11,7 +11,7 @@ class HealthComponent : public Component
 {
 public:
 	HealthComponent(GameObject* owner, ResourceManager* devices);
-	HealthComponent();
+	HealthComponent() = delete;
 	~HealthComponent();
 
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;

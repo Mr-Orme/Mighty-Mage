@@ -45,7 +45,7 @@ void SpriteComponent::run()
 {
 	BodyComponent* body{ _owner->getComponent<BodyComponent>() };
 	run(
-		devices->getGraphicsDevice()->getView()->relativePosition(body->getPosition()),
+		devices.getGraphicsDevice()->getView()->relativePosition(body->getPosition()),
 		body->getAngle());
 }
 

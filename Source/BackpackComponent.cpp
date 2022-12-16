@@ -10,9 +10,7 @@
 BackpackComponent::BackpackComponent(GameObject* owner, ResourceManager* devices)	:
 	Component(owner, devices)
 {}
-BackpackComponent::BackpackComponent()
-{
-}
+
 
 BackpackComponent::BackpackComponent(const BackpackComponent& src) :
 	Component(src),
@@ -40,7 +38,7 @@ bool BackpackComponent::initialize(ObjectFactoryPresets& presets)
 		return false;
 	}
 
-	Vector2D screenDimensions{ devices->getGraphicsDevice()->getScreenDimensions() };
+	Vector2D screenDimensions{ devices.getGraphicsDevice()->getScreenDimensions() };
 	
 	topLeft.x = (int)(screenDimensions.x *.1);
 	topLeft.y = (int)(screenDimensions.y*.1);
@@ -88,7 +86,7 @@ std::unique_ptr<GameObject> BackpackComponent::update(std::vector<std::unique_pt
 				);
 			}
 			
-			devices->getGraphicsDevice()->
+			devices.getGraphicsDevice()->
 				addOverlay({ topLeft, bottomRight, background, border, objects });
 		}
 		return nullptr;
@@ -103,7 +101,7 @@ bool BackpackComponent::ToBackpack(std::unique_ptr<GameObject> item)
 {
 	item->getComponent<BodyComponent>()->turnOffPhysics();
 
-	Vector2D screenDimensions{ devices->getGraphicsDevice()->getScreenDimensions() };
+	Vector2D screenDimensions{ devices.getGraphicsDevice()->getScreenDimensions() };
 	Vector2D topLeft{ (int)(screenDimensions.x * .1), (int)(screenDimensions.y * .1) };
 	Vector2D bottomRight{ screenDimensions.x - topLeft.x, screenDimensions.y - topLeft.y };
 

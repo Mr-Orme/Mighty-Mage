@@ -54,15 +54,17 @@ ObjectLibrary* ResourceManager::getObjectLibrary()
 	return oLibrary.get();
 }
 
-NoticesAssetLibrary* ResourceManager::getNoticesLibrary()
+ObjectDefinition ResourceManager::findObjectDefinition(std::string name)
 {
-	return nLibrary.get();
+	return oLibrary->search(name);
 }
 
-SoundAssetLibrary* ResourceManager::getSoundLibrary()
+
+bool ResourceManager::searchNotices(Notice findMe)
 {
-	return sLibrary.get();
+	return nLibrary->search(findMe);
 }
+
 
 ObjectFactory* ResourceManager::getObjectFactory()
 {
