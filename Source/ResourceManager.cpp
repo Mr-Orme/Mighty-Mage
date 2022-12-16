@@ -49,12 +49,8 @@ SoundDevice* ResourceManager::getSoundDevice()
 	return sDevice.get();
 }
 
-ObjectLibrary* ResourceManager::getObjectLibrary()
-{
-	return oLibrary.get();
-}
 
-ObjectDefinition ResourceManager::findObjectDefinition(std::string name)
+ObjectDefinition& ResourceManager::findObjectDefinition(std::string name)
 {
 	return oLibrary->search(name);
 }

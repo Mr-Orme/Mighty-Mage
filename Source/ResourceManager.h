@@ -40,7 +40,6 @@ public:
 	PhysicsDevice* getPhysicsDevice();
 	SoundDevice* getSoundDevice();
 
-	ObjectLibrary* getObjectLibrary();
 	ObjectDefinition& findObjectDefinition(std::string name);
 	bool searchNotices(Notice findMe);
 	
