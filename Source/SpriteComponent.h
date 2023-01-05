@@ -6,6 +6,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <variant>
 class Texture;
 
 class SpriteComponent : public Component
@@ -19,14 +20,13 @@ public:
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects) override;
 	bool initialize(ObjectFactoryPresets& presets) override;
 	std::unique_ptr<Component> copyMe() const override;
-	
-	void run();
-	void run(Vector2D position, float angle);
 	Texture* getTexture() const { return texture.get(); };
 	void changeSprite(std::shared_ptr<Texture> texture);
 
 protected:
-	std::shared_ptr<Texture> texture{ nullptr };//TODO::make into unique_ptr!
+	void run();//TODO::change name to draw!
+	void run(Vector2D position, float angle);
+	std::shared_ptr<Texture> texture{ nullptr };
 	bool initialized{ false };
 };
 

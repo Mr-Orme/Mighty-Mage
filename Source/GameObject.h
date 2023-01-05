@@ -8,6 +8,7 @@
 #include<optional>
 
 #include "Definitions.h"
+#include "StopUpdateDecorator.h"
 //#include "Initializers.h"
 
 #include "Component.h"
@@ -32,7 +33,7 @@ public:
 	GameObject* getJoinedWith() const {return joinedWith;}
 
 	bool isA(Type name) const;
-
+	std::unique_ptr<Component> swap(std::unique_ptr<Component> to, Component* from);
 	template<class T>
 	T* getComponent()
 	{
@@ -42,6 +43,16 @@ public:
 			if (auto result{ dynamic_cast<T*>(comp.get()) }; result != nullptr)
 			{
 				return(result);
+			}
+			else if (
+				auto result2{ dynamic_cast<StopUpdateDecorator*>(comp.get()) }; 
+				result2 != nullptr
+				)
+			{
+				if (auto decoratorResult{ dynamic_cast<T*>(result2->getDecorated()) }; decoratorResult != nullptr)
+				{
+					return decoratorResult;
+				}
 			}
 		}
 

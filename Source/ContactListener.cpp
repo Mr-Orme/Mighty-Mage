@@ -6,6 +6,7 @@
 #include "Definitions.h"
 #include "SoundDevice.h"
 #include "GraphicsDevice.h" 
+#include "StopUpdateDecorator.h"
 //#include <sstream>
 
 Direction travelDirection(b2Body* body)
@@ -70,61 +71,70 @@ void hitTrigger(GameObject* trigger, GameObject* player, b2Contact* contact, Dir
 	contact->SetEnabled(false);
 }
 ContactListener::ContactListener(ResourceManager* devices)
-	:devices(devices)
+	:devices(*devices)
 {
+}
+std::tuple<GameObject*, GameObject*> findPlayer_Other(b2Body* bodyA, b2Body* bodyB)
+{
+	auto objectA{ reinterpret_cast<GameObject*>(bodyA->GetUserData().pointer) };
+	auto objectB{ reinterpret_cast<GameObject*>(bodyB->GetUserData().pointer) };
+	GameObject* player{ nullptr };
+	GameObject* other{ nullptr };
+	if (objectA->isA(GameObject::Type::player))
+	{
+		player = objectA;
+		other = objectB;
+	}
+	else if(objectB->isA(GameObject::Type::player))
+	{
+		player = objectB;
+		other = objectA;
+	}
+	return { player, other };
+
 }
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {
-    
-	b2Body* bodyA = contact->GetFixtureA()->GetBody();
-	b2Body* bodyB = contact->GetFixtureB()->GetBody();
-	
-	GameObject* objectA = reinterpret_cast<GameObject*>(bodyA->GetUserData().pointer);
-	GameObject* objectB = reinterpret_cast<GameObject*>(bodyB->GetUserData().pointer);
-	
-	if (objectA->isA(GameObject::Type::trigger))
-	{
-		hitTrigger(objectA, objectB, contact, travelDirection(bodyB));
-	}
-	else if (objectB->isA(GameObject::Type::trigger))
-	{
-		hitTrigger(objectB, objectA, contact, travelDirection(bodyA));
-	}
+	auto bodyA{ contact->GetFixtureA()->GetBody() };
+	auto bodyB{ contact->GetFixtureB()->GetBody() };
+	auto [player, other] = findPlayer_Other(bodyA, bodyB);
 
-	else if(objectA->isA(GameObject::Type::player))
+	if (player)
 	{
-		if(objectB -> getComponent<InventoryComponent>())
+		if (other->isA(GameObject::Type::trigger))
 		{
-			PickUpItem(objectA, objectB);
+			hitTrigger(other, player, contact, travelDirection(bodyB));
 		}
-	}
-	//walls always put the player as object B
-	else if (objectB->isA(GameObject::Type::player))
-	{
-		
-		if (auto ghost{ objectA->getComponent<GhostComponent>() };
-			ghost != nullptr && ghost->canPass(travelDirection(bodyB))
+
+		if (other->getComponent<InventoryComponent>())
+		{
+			PickUpItem(player, other);
+		}
+
+		if (other->isA(GameObject::Type::floor))
+		{
+			auto stop{ new StopUpdateDecorator(other,&devices, other->getComponent<SpriteComponent>(),player) };
+			//other->getComponent<SpriteComponent>()->hide(player);
+		}
+		if (auto ghost{ other->getComponent<GhostComponent>() };
+			ghost && ghost->canPass(travelDirection(bodyB))
 			)
 		{
 			contact->SetEnabled(false);
+
 			return;
 		}
 
-		if (objectA->isA(GameObject::Type::wall))
+		if (other->isA(GameObject::Type::wall))
 		{
-			
 			wallCollision(
-				objectB->getComponent<BodyComponent>(), 
-				objectA->getComponent<BodyComponent>(), 
+				player->getComponent<BodyComponent>(),
+				other->getComponent<BodyComponent>(),
 				travelDirection(bodyB),
-				devices
+				&devices
 			);
 		}
-		
-		
-
 	}
-
 }
 void ContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
 {
@@ -136,6 +146,6 @@ void ContactListener::PickUpItem(GameObject* player, GameObject* item)
 {
 	if(player -> getComponent<BackpackComponent>() -> pickUpItem(item))
 	{
-		devices -> getSoundDevice() -> PlaySound(SoundEffect::Event::pickup,0,3);
+		devices.getSoundDevice() -> PlaySound(SoundEffect::Event::pickup,0,3);
 	}
 }

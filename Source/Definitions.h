@@ -7,3 +7,6 @@ struct RGBA
 	int B;
 	int A;
 };
+//IDEA::breath first search to make rooms open when entering.
+//Some container that keeps track of which squares have walls
+//to do the search

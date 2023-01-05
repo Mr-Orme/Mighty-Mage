@@ -66,6 +66,20 @@ bool GameObject::isA(Type name) const
 	return this->name == name;
 }
 
+std::unique_ptr<Component> GameObject::swap(std::unique_ptr<Component> to, Component* from)
+{
+	std::unique_ptr<Component> toReturn{nullptr};
+	if (auto found{ std::find_if(components.begin(), components.end(),[&](std::unique_ptr<Component>& current)
+		{
+			return from == current.get();
+		}
+	) }; found != components.end())
+	{
+		toReturn = std::move(*found);
+		*found = std::move(to);
+	}
+return toReturn;
+}
 
 
 

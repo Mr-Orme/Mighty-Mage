@@ -18,329 +18,276 @@
 		<YSphere x="0.2" y ="5.3" angle="0"/>
     
 	</Extras>
-  
+  <!-- Type: 'I'= ghost into square 'O'= ghost out of square 'B'=Ghost both
+        'D' = door 'W' = regular wall-->
    <Row id="15">
-		<Square id="0" floor="ghost" top = "wall" left = "wall" />
-		<Square id="1" floor="none" top = "wall" left = "wall" />
-		<Square id="2" floor="none" top = "wall" left = "door" />
-		<Square id="3" floor="wall" top = "wall" left = "wall" />
-		<Square id="4" floor="none" top = "wall" left = "wall" />
-		<Square id="5" floor="none" top = "wall" left = "none" />
-		<Square id="6" floor="none" top = "wall" left = "door" />
-		<Square id="7" floor="none" top = "wall" left = "none" />
-		<Square id="8" floor="none" top = "wall" left = "none" />
-		<Square id="9" floor="none" top = "wall" left = "wall" />
-		<Square id="10" floor="wall" top = "wall" left = "wall" />
-		<Square id="11" floor="none" top = "wall" left = "wall" />
-		<Square id="12" floor="none" top = "wall" left = "none" />
-		<Square id="13" floor="wall" top = "wall" left = "wall" />
-		<Square id="14" floor="wall" top = "wall" left = "wall" />
-		<Square id="15" floor="none" top = "wall" left = "wall" />
-		<Square id="16" floor="none" top = "none" left = "wall" />
+     <Square id="0">
+       <Wall directions="NW" />
+       <Floor/>
+     </Square>
+     <Square id="1">
+       <Wall directions="NW" />
+     </Square>
+     <Square id="2">
+       <Wall directions="NW" type="WD" />
+     </Square>
+     <Square id="3">
+       <Wall directions="NW" />
+       <Floor/>
+     </Square>
+     <Square id="4">
+       <Wall directions="NW" />       
+     </Square>
+     <Square id="5">
+       <Wall directions="N" />
+     </Square>
+     <Square id="6">
+       <Wall directions="NW" type="WD" />
+     </Square>
+     <Square id="7">
+       <Wall directions="N" />
+     </Square>
+     <Square id="8">
+       <Wall directions="N" />
+     </Square>
+     <Square id="9">
+       <Wall directions="NW" />
+     </Square>
+     <Square id="10">
+       <Wall directions="NW" />
+       <Floor/>
+     </Square>
+     <Square id="11">
+       <Wall directions="NW" />
+     </Square>
+     <Square id="12">
+       <Wall directions="N" />
+     </Square>
+     <Square id="13">
+       <Wall directions="NW" />
+       <Floor/>
+     </Square>
+     <Square id="14">
+       <Wall directions="NW" />
+       <Floor/>
+     </Square>
+     <Square id="15">
+       <Wall directions="NWE" />
+     </Square>
 	</Row>
 	<Row id="14">
-		<Square id="0" floor="none" top = "ghost" left = "wall" gN="true" gS="true"/>
-		<Square id="1" floor="none" top = "none" left = "door" />
-		<Square id="2" floor="wall" top = "wall" left = "wall" />
-		<Square id="3" floor="wall" top = "wall" left = "wall" />
-		<Square id="4" floor="none" top = "ghost" left = "wall" gN="false" gS="true"/>
-    <Square id="5" floor="none" top = "wall" left = "none" />
-		<Square id="6" floor="none" top = "wall" left = "none" />
-		<Square id="7" floor="none" top = "ghost" left = "none" gN="true" gS="false"/>
-		<Square id="8" floor="none" top = "wall" left = "none" />
-		<Square id="9" floor="none" top = "none" left = "wall" />
-		<Square id="10" floor="none" top = "wall" left = "none" />
-		<Square id="11" floor="none" top = "none" left = "door" />
-		<Square id="12" floor="none" top = "none" left = "none" />
-		<Square id="13" floor="wall" top = "wall" left = "wall" />
-		<Square id="14" floor="ghost" top = "wall" left = "wall" />
-		<Square id="15" floor="none" top = "none" left = "ghost" gE="true" gW="true"/>
-		<Square id="16" floor="none" top = "none" left = "wall" />
+    <Square id="0">
+      <Wall directions="NW" type="BW" />
+    </Square>
+    <Square id="1">
+      <Wall directions="W" type="D" />
+    </Square>
+    <Square id="2">
+      <Wall directions="NW" />
+      <Floor/>
+    </Square>
+    <Square id="3">
+      <Wall directions="NW" />
+      <Floor/>
+    </Square>
+    <Square id="4">
+      <Wall directions="NW" type="IW"/>
+    </Square>
+    <Square id="5">
+      <Wall directions="N" />
+    </Square>
+    <Square id="6">
+      <Wall directions="N" />
+    </Square>
+    <Square id="7">
+      <Wall directions="N" type="O" />
+    </Square>
+    <Square id="8">
+      <Wall directions="N" />
+    </Square>
+    <Square id="9">
+      <Wall directions="W" />
+    </Square>
+    <Square id="10">
+      <Wall directions="N" />
+    </Square>
+    <Square id="11">
+      <Wall directions="W" type="D"/>
+    </Square>
+    <Square id="12">
+    </Square>
+    <Square id="13">
+      <Wall directions="NW" />
+      <Floor/>
+    </Square>
+    <Square id="14">
+      <Wall directions="NW" />
+      <Floor/>
+    </Square>
+    <Square id="15">
+      <Wall directions="WE" type="BW" />
+    </Square>
 	</Row>
-	<Row id="13">
-		<Square id="0" floor="ghost" top = "ghost" left = "wall" gN="false" gS="true"/>
-		<Square id="1" floor="none" top = "none" left = "ghost" gE="true" gW="false"/>
-		<Square id="2" floor="none" top = "wall" left = "door" />
-		<Square id="3" floor="wall" top = "wall" left = "wall" />
-		<Square id="4" floor="none" top = "none" left = "wall" />
-		<Square id="5" floor="none" top = "wall" left = "wall" />
-		<Square id="6" floor="none" top = "wall" left = "wall" />
-		<Square id="7" floor="none" top = "wall" left = "wall" />
-		<Square id="8" floor="none" top = "none" left = "ghost" gE="true" gW="false"/>
-		<Square id="9" floor="none" top = "none" left = "wall" />
-		<Square id="10" floor="wall" top = "wall" left = "wall" />
-		<Square id="11" floor="wall" top = "wall" left = "wall" />
-		<Square id="12" floor="wall" top = "wall" left = "wall" />
-		<Square id="13" floor="wall" top = "wall" left = "wall" />
-		<Square id="14" floor="wall" top = "wall" left = "wall" />
-		<Square id="15" floor="none" top = "none" left = "wall" />
-		<Square id="16" floor="none" top = "none" left = "wall" />
-	</Row>
-	<Row id="12">
-		<Square id="0" floor="none" top = "ghost" left = "wall" gN="true" gS="false"/>
-		<Square id="1" floor="none" top = "none" left = "door" />
-		<Square id="2" floor="wall" top = "wall" left = "wall" />
-		<Square id="3" floor="wall" top = "wall" left = "wall" />
-		<Square id="4" floor="none" top = "none" left = "wall" />
-		<Square id="5" floor="none" top = "door" left = "wall" />
-		<Square id="6" floor="none" top = "none" left = "none" />
-		<Square id="7" floor="none" top = "door" left = "none" />
-		<Square id="8" floor="none" top = "none" left = "wall" />
-		<Square id="9" floor="none" top = "none" left = "wall" />
-		<Square id="10" floor="none" top = "wall" left = "none" />
-		<Square id="11" floor="wall" top = "wall" left = "wall" />
-		<Square id="12" floor="none" top = "wall" left = "wall" />
-		<Square id="13" floor="none" top = "wall" left = "none" />
-		<Square id="14" floor="wall" top = "wall" left = "wall" />
-		<Square id="15" floor="none" top = "none" left = "wall" />
-		<Square id="16" floor="none" top = "none" left = "wall" />
-	</Row>
-	<Row id="11">
-		<Square id="0" floor="ghost" top = "ghost" left = "wall" gN="true" gS="true"/>
-		<Square id="1" floor="none" top = "none" left = "wall" />
-		<Square id="2" floor="none" top = "wall" left = "door" />
-		<Square id="3" floor="wall" top = "wall" left = "wall" />
-		<Square id="4" floor="none" top = "none" left = "wall" />
-		<Square id="5" floor="none" top = "wall" left = "none" />
-		<Square id="6" floor="none" top = "none" left = "wall" />
-		<Square id="7" floor="none" top = "wall" left = "wall" />
-		<Square id="8" floor="none" top = "none" left = "none" />
-		<Square id="9" floor="none" top = "none" left = "wall" />
-		<Square id="10" floor="wall" top = "wall" left = "wall" />
-		<Square id="11" floor="wall" top = "wall" left = "wall" />
-		<Square id="12" floor="none" top = "none" left = "wall" />
-		<Square id="13" floor="none" top = "none" left = "none" />
-		<Square id="14" floor="wall" top = "wall" left = "wall" />
-		<Square id="15" floor="none" top = "none" left = "wall" />
-		<Square id="16" floor="none" top = "none" left = "wall" />
-	</Row>
-	<Row id="10">
-		<Square id="0" floor="none" top = "wall" left = "wall" />
-		<Square id="1" floor="none" top = "none" left = "none" />
-		<Square id="2" floor="none" top = "wall" left = "none" />
-		<Square id="3" floor="none" top = "wall" left = "none" />
-		<Square id="4" floor="none" top = "ghost" left = "none" gN="false" gS="true"/>
-		<Square id="5" floor="none" top = "wall" left = "none" />
-		<Square id="6" floor="none" top = "door" left = "none" />
-		<Square id="7" floor="none" top = "wall" left = "none" />
-		<Square id="8" floor="none" top = "wall" left = "none" />
-		<Square id="9" floor="none" top = "none" left = "none" />
-		<Square id="10" floor="none" top = "wall" left = "none" />
-		<Square id="11" floor="none" top = "wall" left = "none" />
-		<Square id="12" floor="none" top = "wall" left = "none" />
-		<Square id="13" floor="none" top = "door" left = "none" />
-		<Square id="14" floor="none" top = "wall" left = "none" />
-		<Square id="15" floor="none" top = "none" left = "none" />
-		<Square id="16" floor="none" top = "none" left = "wall" />
-	</Row>
-	<Row id="9">
-		<Square id="0" floor="none" top = "none" left = "wall" />
-		<Square id="1" floor="wall" top = "wall" left = "wall" />
-		<Square id="2" floor="wall" top = "wall" left = "wall" />
-		<Square id="3" floor="none" top = "none" left = "wall" />
-		<Square id="4" floor="wall" top = "wall" left = "wall" />
-		<Square id="5" floor="none" top = "wall" left = "wall" />
-		<Square id="6" floor="none" top = "door" left = "none" />
-		<Square id="7" floor="wall" top = "wall" left = "wall" />
-		<Square id="8" floor="none" top = "wall" left = "wall" />
-		<Square id="9" floor="none" top = "none" left = "door" />
-		<Square id="10" floor="none" top = "wall" left = "door" />
-		<Square id="11" floor="none" top = "wall" left = "wall" />
-		<Square id="12" floor="none" top = "none" left = "door" />
-		<Square id="13" floor="wall" top = "wall" left = "wall" />
-		<Square id="14" floor="none" top = "none" left = "wall" />
-		<Square id="15" floor="wall" top = "wall" left = "wall" />
-		<Square id="16" floor="none" top = "none" left = "wall" />
-	</Row>
-	<Row id="8">
-		<Square id="0" floor="wall" top = "wall" left = "wall" />
-		<Square id="1" floor="wall" top = "wall" left = "wall" />
-		<Square id="2" floor="wall" top = "wall" left = "wall" />
-		<Square id="3" floor="none" top = "none" left = "wall" />
-		<Square id="4" floor="wall" top = "wall" left = "wall" />
-		<Square id="5" floor="none" top = "none" left = "wall" />
-		<Square id="6" floor="none" top = "none" left = "none" />
-		<Square id="7" floor="wall" top = "wall" left = "wall" />
-		<Square id="8" floor="wall" top = "wall" left = "wall" />
-		<Square id="9" floor="wall" top = "wall" left = "wall" />
-		<Square id="10" floor="wall" top = "wall" left = "wall" />
-		<Square id="11" floor="wall" top = "wall" left = "wall" />
-		<Square id="12" floor="wall" top = "wall" left = "wall" />
-		<Square id="13" floor="wall" top = "wall" left = "wall" />
-		<Square id="14" floor="none" top = "none" left = "wall" />
-		<Square id="15" floor="wall" top = "wall" left = "wall" />
-		<Square id="16" floor="none" top = "none" left = "wall" />
-	</Row>
-	<Row id="7">
-		<Square id="0" floor="wall" top = "wall" left = "wall" />
-		<Square id="1" floor="none" top = "wall" left = "wall" />
-		<Square id="2" floor="none" top = "wall" left = "none" />
-		<Square id="3" floor="none" top = "none" left = "none" />
-		<Square id="4" floor="wall" top = "wall" left = "wall" />
-		<Square id="5" floor="wall" top = "wall" left = "wall" />
-		<Square id="6" floor="wall" top = "wall" left = "wall" />
-		<Square id="7" floor="wall" top = "wall" left = "wall" />
-		<Square id="8" floor="none" top = "wall" left = "wall" />
-		<Square id="9" floor="none" top = "wall" left = "none" />
-		<Square id="10" floor="none" top = "wall" left = "none" />
-		<Square id="11" floor="none" top = "wall" left = "none" />
-		<Square id="12" floor="none" top = "wall" left = "none" />
-		<Square id="13" floor="none" top = "wall" left = "none" />
-		<Square id="14" floor="none" top = "none" left = "none" />
-		<Square id="15" floor="wall" top = "wall" left = "wall" />
-		<Square id="16" floor="none" top = "none" left = "wall" />
-	</Row>
-	<Row id="6">
-		<Square id="0" floor="none" top = "wall" left = "wall" />
-		<Square id="1" floor="none" top = "none" left = "none" />
-		<Square id="2" floor="wall" top = "wall" left = "wall" />
-		<Square id="3" floor="none" top = "door" left = "wall" />
-		<Square id="4" floor="wall" top = "wall" left = "wall" />
-		<Square id="5" floor="none" top = "wall" left = "wall" />
-		<Square id="6" floor="none" top = "wall" left = "none" />
-		<Square id="7" floor="wall" top = "wall" left = "wall" />
-		<Square id="8" floor="none" top = "none" left = "wall" />
-		<Square id="9" floor="wall" top = "wall" left = "wall" />
-		<Square id="10" floor="wall" top = "wall" left = "wall" />
-		<Square id="11" floor="wall" top = "wall" left = "wall" />
-		<Square id="12" floor="none" top = "none" left = "wall" />
-		<Square id="13" floor="wall" top = "wall" left = "wall" />
-		<Square id="14" floor="none" top = "none" left = "wall" />
-		<Square id="15" floor="none" top = "wall" left = "none" />
-		<Square id="16" floor="none" top = "none" left = "wall" />
-	</Row>
-	<Row id="5">
-		<Square id="0" floor="ghost" top = "wall" left = "wall" />
-		<Square id="1" floor="none" top = "none" left = "wall" />
-		<Square id="2" floor="wall" top = "wall" left = "wall" />
-		<Square id="3" floor="wall" top = "wall" left = "wall" />
-		<Square id="4" floor="wall" top = "wall" left = "wall" />
-		<Square id="5" floor="none" top = "none" left = "wall" />
-		<Square id="6" floor="none" top = "none" left = "none" />
-		<Square id="7" floor="none" top = "wall" left = "door" />
-		<Square id="8" floor="none" top = "none" left = "none" />
-		<Square id="9" floor="none" top = "wall" left = "none" />
-		<Square id="10" floor="none" top = "wall" left = "door" />
-		<Square id="11" floor="wall" top = "wall" left = "wall" />
-		<Square id="12" floor="none" top = "none" left = "wall" />
-		<Square id="13" floor="wall" top = "wall" left = "wall" />
-		<Square id="14" floor="none" top = "none" left = "wall" />
-		<Square id="15" floor="none" top = "wall" left = "none" />
-		<Square id="16" floor="none" top = "none" left = "wall" />
-	</Row>
-	<Row id="4">
-		<Square id="0" floor="none" top = "ghost" left = "wall" gN="true" gS="true"/>
-		<Square id="1" floor="none" top = "none" left = "none" />
-		<Square id="2" floor="none" top = "wall" left = "none" />
-		<Square id="3" floor="wall" top = "wall" left = "wall" />
-		<Square id="4" floor="wall" top = "wall" left = "wall" />
-		<Square id="5" floor="wall" top = "wall" left = "wall" />
-		<Square id="6" floor="wall" top = "wall" left = "wall" />
-		<Square id="7" floor="wall" top = "wall" left = "wall" />
-		<Square id="8" floor="none" top = "door" left = "wall" />
-		<Square id="9" floor="wall" top = "wall" left = "wall" />
-		<Square id="10" floor="wall" top = "wall" left = "wall" />
-		<Square id="11" floor="wall" top = "wall" left = "wall" />
-		<Square id="12" floor="none" top = "none" left = "wall" />
-		<Square id="13" floor="wall" top = "wall" left = "wall" />
-		<Square id="14" floor="none" top = "none" left = "wall" />
-		<Square id="15" floor="none" top = "wall" left = "none" />
-		<Square id="16" floor="none" top = "none" left = "wall" />
-	</Row>
-	<Row id="3">
-		<Square id="0" floor="ghost" top = "wall" left = "wall" />
-		<Square id="1" floor="none" top = "none" left = "wall" />
-		<Square id="2" floor="wall" top = "wall" left = "wall" />
-		<Square id="3" floor="wall" top = "wall" left = "wall" />
-		<Square id="4" floor="none" top = "wall" left = "wall" />
-		<Square id="5" floor="ghost" top = "wall" left = "wall" />
-		<Square id="6" floor="wall" top = "wall" left = "wall" />
-		<Square id="7" floor="none" top = "wall" left = "wall" />
-		<Square id="8" floor="none" top = "none" left = "none" />
-		<Square id="9" floor="none" top = "wall" left = "none" />
-		<Square id="10" floor="wall" top = "wall" left = "wall" />
-		<Square id="11" floor="ghost" top = "wall" left = "wall" />
-		<Square id="12" floor="none" top = "none" left = "ghost" gE="true" gW="true"/>
-		<Square id="13" floor="wall" top = "wall" left = "wall" />
-		<Square id="14" floor="wall" top = "wall" left = "wall" />>
-		<Square id="15" floor="wall" top = "wall" left = "wall" />
-		<Square id="16" floor="none" top = "none" left = "wall" />
-	</Row>
-	<Row id="2">
-		<Square id="0" floor="none" top = "ghost" left = "wall" gN="true" gS="true"/>
-		<Square id="1" floor="none" top = "none" left = "none" />
-		<Square id="2" floor="wall" top = "wall" left = "wall" />
-		<Square id="3" floor="none" top = "wall" left = "wall" />
-		<Square id="4" floor="none" top = "none" left = "none" />
-		<Square id="5" floor="none" top = "ghost" left = "none" gN="true" gS="true"/>
-		<Square id="6" floor="wall" top = "wall" left = "wall" />
-		<Square id="7" floor="wall" top = "wall" left = "wall" />
-		<Square id="8" floor="wall" top = "wall" left = "wall" />
-		<Square id="9" floor="wall" top = "wall" left = "wall" />
-		<Square id="10" floor="none" top = "wall" left = "wall" />
-		<Square id="11" floor="none" top = "wall" left = "none" />
-		<Square id="12" floor="none" top = "none" left = "none" />
-		<Square id="13" floor="none" top = "wall" left = "none" />
-		<Square id="14" floor="none" top = "wall" left = "none" />>
-		<Square id="15" floor="none" top = "wall" left = "none" />
-		<Square id="16" floor="none" top = "none" left = "wall" />
-	</Row>
-	<Row id="1">
-		<Square id="0" floor="ghost" top = "ghost" left = "wall" gN="true" gS="true"/>
-		<Square id="1" floor="none" top = "none" left = "wall" />
-		<Square id="2" floor="wall" top = "wall" left = "wall" />
-		<Square id="3" floor="wall" top = "wall" left = "wall" />
-		<Square id="4" floor="none" top = "none" left = "wall" />
-		<Square id="5" floor="wall" top = "wall" left = "wall" />
-		<Square id="6" floor="wall" top = "wall" left = "wall" />
-		<Square id="7" floor="none" top = "wall" left = "wall" />
-		<Square id="8" floor="none" top = "wall" left = "none" />
-		<Square id="9" floor="wall" top = "wall" left = "wall" />
-		<Square id="10" floor="none" top = "none" left = "wall" />
-		<Square id="11" floor="wall" top = "wall" left = "wall" />
-		<Square id="12" floor="none" top = "none" left = "wall" />
-		<Square id="13" floor="wall" top = "wall" left = "wall" />
-		<Square id="14" floor="wall" top = "wall" left = "wall" />>
-		<Square id="15" floor="none" top = "none" left = "wall" />
-		<Square id="16" floor="none" top = "none" left = "wall" />
-	</Row>
-	<Row id="0">
-		<Square id="0" floor="none" top = "wall" left = "wall" />
-		<Square id="1" floor="none" top = "none" left = "door" />
-		<Square id="2" floor="none" top = "wall" left = "none" />
-		<Square id="3" floor="none" top = "wall" left = "none" />
-		<Square id="4" floor="none" top = "door" left = "none" />
-		<Square id="5" floor="none" top = "wall" left = "none" />
-		<Square id="6" floor="none" top = "wall" left = "none" />
-		<Square id="7" floor="none" top = "none" left = "none" />
-		<Square id="8" floor="none" top = "none" left = "none" />
-		<Square id="9" floor="none" top = "wall" left = "none" />
-		<Square id="10" floor="none" top = "none" left = "none" />
-		<Square id="11" floor="wall" top = "wall" left = "wall" />
-		<Square id="12" floor="none" top = "none" left = "wall" />
-		<Square id="13" floor="wall" top = "wall" left = "wall" />
-		<Square id="14" floor="none" top = "wall" left = "wall" />>
-		<Square id="15" floor="none" top = "none" left = "none" />
-		<Square id="16" floor="none" top = "none" left = "wall" />
-	</Row>
-	<Row id="-1">
-		<Square id="0" floor="none" top = "wall" left = "none" />
-		<Square id="1" floor="none" top = "wall" left = "none" />
-		<Square id="2" floor="none" top = "wall" left = "none" />
-		<Square id="3" floor="none" top = "wall" left = "none" />
-		<Square id="4" floor="none" top = "wall" left = "none" />
-		<Square id="5" floor="none" top = "wall" left = "none" />
-		<Square id="6" floor="none" top = "wall" left = "none" />
-		<Square id="7" floor="none" top = "wall" left = "none" />
-		<Square id="8" floor="none" top = "wall" left = "none" />
-		<Square id="9" floor="none" top = "wall" left = "none" />
-		<Square id="10" floor="none" top = "wall" left = "none" />
-		<Square id="11" floor="none" top = "wall" left = "none" />
-		<Square id="12" floor="none" top = "wall" left = "none" />
-		<Square id="13" floor="none" top = "wall" left = "none" />
-		<Square id="14" floor="none" top = "wall" left = "none" />>
-		<Square id="15" floor="none" top = "wall" left = "none" />
-		<Square id="16" floor="none" top = "none" left = "none" />
-	</Row>
-	
+  <Row id="13">
+    <Square id="0">
+      <Wall directions="NW" type="IW" />
+      <Floor/>
+    </Square>
+    <Square id="1">
+      <Wall directions="W" type="I"/>
+    </Square>
+    <Square id="2">
+      <Wall directions="NW" type="WD"/>
+    </Square>
+    <Square id="3">
+      <Wall directions="NW" />
+      <Floor/>
+    </Square>
+    <Square id="4">
+      <Wall directions="W" />
+    </Square>
+    <Square id="5">
+      <Wall directions="NW" />
+    </Square>
+    <Square id="6">
+      <Wall directions="NW" />
+    </Square>
+    <Square id="7">
+      <Wall directions="NW" />
+    </Square>
+    <Square id="8">
+      <Wall directions="W" type="I"/>
+    </Square>
+    <Square id="9">
+      <Wall directions="W" />
+    </Square>
+    <Square id="10">
+      <Wall directions="NW" />
+      <Floor/>
+    </Square>
+    <Square id="11">
+      <Wall directions="NW" />
+      <Floor/>
+    </Square>
+    <Square id="12">
+      <Wall directions="NW" />
+      <Floor/>
+    </Square>
+    <Square id="13">
+      <Wall directions="NW" />
+      <Floor/>
+    </Square>
+    <Square id="14">
+      <Wall directions="NW" />
+      <Floor/>
+    </Square>
+    <Square id="15">
+      <Wall directions="WE" />
+    </Square>
+  </Row>
+  <Row id="12">
+    <Square id="0">
+      <Wall directions="NW" type="OW" />
+    </Square>
+    <Square id="1">
+      <Wall directions="W" type="D"/>
+    </Square>
+    <Square id="2">
+      <Wall directions="NW"/>
+      <Floor/>
+    </Square>
+    <Square id="3">
+      <Wall directions="NW" />
+      <Floor/>
+    </Square>
+    <Square id="4">
+      <Wall directions="W" />
+    </Square>
+    <Square id="5">
+      <Wall directions="NW" type="DW"/>
+    </Square>
+    <Square id="6">
+    </Square>
+    <Square id="7">
+      <Wall directions="N" type="D" />
+    </Square>
+    <Square id="8">
+      <Wall directions="W" />
+    </Square>
+    <Square id="9">
+      <Wall directions="W" />
+    </Square>
+    <Square id="10">
+      <Wall directions="N" />
+    </Square>
+    <Square id="11">
+      <Wall directions="NW" />
+      <Floor/>
+    </Square>
+    <Square id="12">
+      <Wall directions="NW" />
+    </Square>
+    <Square id="13">
+      <Wall directions="N" />
+    </Square>
+    <Square id="14">
+      <Wall directions="NW" />
+      <Floor/>
+    </Square>
+    <Square id="15">
+      <Wall directions="WE" />
+    </Square>
+  </Row>
+  <Row id="11">
+    <Square id="0">
+      <Wall directions="NW" type="IW" />
+    </Square>
+    <Square id="1">
+      <Wall directions="W" />
+    </Square>
+    <Square id="2">
+      <Wall directions="NW" type="WD"/>
+    </Square>
+    <Square id="3">
+      <Wall directions="NW" />
+      <Floor/>
+    </Square>
+    <Square id="4">
+      <Wall directions="W" />
+    </Square>
+    <Square id="5">
+      <Wall directions="N" />
+    </Square>
+    <Square id="6">
+      <Wall directions="W" />
+    </Square>
+    <Square id="7">
+      <Wall directions="NW" />
+    </Square>
+    <Square id="8">
+    </Square>
+    <Square id="9">
+      <Wall directions="W" />
+    </Square>
+    <Square id="10">
+      <Wall directions="NW" />
+      <Floor/>
+    </Square>
+    <Square id="11">
+      <Wall directions="NW" />
+      <Floor/>
+    </Square>
+    <Square id="12">
+      <Wall directions="W" />
+    </Square>
+    <Square id="13">
+    </Square>
+    <Square id="14">
+      <Wall directions="NW" />
+      <Floor/>
+    </Square>
+    <Square id="15">
+      <Wall directions="WE" />
+    </Square>
+  </Row>
 </Main>

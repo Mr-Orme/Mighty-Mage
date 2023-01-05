@@ -153,6 +153,12 @@
     <ClCompile Include="Source\QuestComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Source\QuestCriteria.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StopUpdateDecorator.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Game.h">
@@ -265,6 +271,9 @@
     </ClInclude>
     <ClInclude Include="Source\QuestLibrary.h">
       <Filter>Header Files\Resource Manager\Asset LIbraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StopUpdateDecorator.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -34,6 +34,7 @@
     <ClCompile Include="Source\BodyComponent.cpp" />
     <ClCompile Include="Source\HealthComponent.cpp" />
     <ClCompile Include="Source\SpriteComponent.cpp" />
+    <ClCompile Include="Source\StopUpdateDecorator.cpp" />
     <ClCompile Include="Source\TriggerComponent.cpp" />
     <ClCompile Include="Source\UserInputComponent.cpp" />
     <ClCompile Include="Source\ContactListener.cpp" />
@@ -73,6 +74,7 @@
     <ClInclude Include="Source\HealthComponent.h" />
     <ClInclude Include="Source\SpriteComponent.h" />
     <ClInclude Include="Source\ComponentsList.h" />
+    <ClInclude Include="Source\StopUpdateDecorator.h" />
     <ClInclude Include="Source\TriggerComponent.h" />
     <ClInclude Include="Source\UserInputComponent.h" />
     <ClInclude Include="Source\ContactListener.h" />

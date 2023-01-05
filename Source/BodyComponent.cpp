@@ -128,6 +128,10 @@ Vector2D BodyComponent::getDimensions() const
 	return _owner->getComponent<SpriteComponent>()->getTexture()->getDimensions();
 }
 
+Vector2D BodyComponent::getSqaure() const
+{
+	return devices.pixel2Square(getPosition());
+}
 Vector2D BodyComponent::getCenter() const
 {
 	auto position{ getPosition() };

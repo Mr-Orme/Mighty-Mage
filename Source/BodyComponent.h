@@ -37,7 +37,7 @@ public:
 	Vector2D getPosition() const;
 	Vector2D getDimensions() const;
 	Vector2D getCenter() const;
-
+	Vector2D getSqaure() const;
 	void turnOffPhysics() const;
 protected:
 	enum Way { forward = -1, backward = 1 };

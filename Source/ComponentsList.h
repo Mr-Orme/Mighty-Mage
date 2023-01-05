@@ -24,9 +24,10 @@ create copyMe override!
 #include "InventoryComponent.h"
 #include "GhostComponent.h"
 #include "TriggerComponent.h"
+
 #include "QuestComponent.h"
 #include "QuestCriteria.h"
 
-
+#include "StopUpdateDecorator.h"
 
 #endif

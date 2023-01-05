@@ -20,7 +20,7 @@ public:
 
 	void PickUpItem(GameObject* player, GameObject* item);
 private:
-	ResourceManager* devices{ nullptr };
+	ResourceManager& devices;
 };
 
 #endif

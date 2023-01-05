@@ -178,90 +178,142 @@ ObjectFactoryPresets Game::loadExtras(tinyxml2::XMLElement* squareElement, std::
 	return presets;
 	
 }
-
-std::optional<ObjectFactoryPresets> Game::loadLeftWall(tinyxml2::XMLElement* squareElement, Vector2D square)
+void Game::loadWalls(tinyxml2::XMLElement* wallElement, Vector2D square)
 {
 	ObjectFactoryPresets presets;
-	presets.bodyInitializers.position = devices->square2Pixel(square);
-	presets.bodyInitializers.position.y += 10;
 
-	std::string left{ squareElement->Attribute("left") };
-	if (left == "wall")
+	std::string wallDirections{ wallElement->Attribute("directions") };
+	auto wallType{ wallElement->Attribute("type") };
+
+	for (int i{ 0 }; i < wallDirections.size(); i++)
 	{
-		presets.id.name = "VWall";
+		presets.bodyInitializers.position = devices->square2Pixel(square);
+		presets.gDirection.clear();
+		switch (wallDirections.at(i))
+		{
+			case 'N':
+				presets.id.name = "HWall";//TODO::use rotation to set horizontal/vertical instead of separate images.
+				presets.bodyInitializers.position.y -= 5;
+				presets.bodyInitializers.position.x -= 5;
+				if (wallType)
+				{
+					
+					switch (wallType[i])//char* so have to use []
+					{
+					case 'D':
+						presets.id.name = "HDoor";
+						break;
+					case 'I':
+						presets.gDirection[Direction::S] = true;
+						break;
+					case 'O':
+						presets.gDirection[Direction::N] = true;
+						break;
+					case 'B':
+						presets.gDirection[Direction::N] = true;
+						presets.gDirection[Direction::S] = true;
+						break;
+					}
+				}
+				break;
+			case 'E':
+				presets.id.name = "TopFill";
+				presets.bodyInitializers.position = devices->square2Pixel(square) + Vector2D{ 105, -5 };
+				objects.emplace_back(devices->getObjectFactory()->Create(presets, devices.get()));
+
+				presets.id.name = "VWall";
+				presets.bodyInitializers.position = devices->square2Pixel(square) + Vector2D{ 105, 5 };
+				if (wallType)
+				{
+					
+					switch (wallType[i])//char* so have to use []
+					{
+					case 'D':
+						presets.id.name = "VDoor";
+						break;
+					case 'I':
+						presets.gDirection[Direction::W] = true;
+						break;
+					case 'O':
+						presets.gDirection[Direction::E] = true;
+						break;
+					case 'B':
+						presets.gDirection[Direction::E] = true;
+						presets.gDirection[Direction::W] = true;
+						break;
+					}
+				}
+				break;
+			case 'S':
+				presets.id.name = "HWall";
+				presets.bodyInitializers.position.y += 105;
+				presets.bodyInitializers.position.x -= 5;
+				if (wallType)
+				{
+					
+					switch (wallType[i])//char* so have to use []
+					{
+					case 'D':
+						presets.id.name = "HDoor";
+						break;
+					case 'I':
+						presets.gDirection[Direction::N] = true;
+						break;
+					case 'O':
+						presets.gDirection[Direction::S] = true;
+						break;
+					case 'B':
+						presets.gDirection[Direction::N] = true;
+						presets.gDirection[Direction::S] = true;
+						break;
+					}
+				}
+				break;
+			case 'W':
+				presets.id.name = "VWall";
+				presets.bodyInitializers.position.x -= 5;
+				presets.bodyInitializers.position.y += 5;
+				if (wallType)
+				{
+					
+					switch (wallType[i])//char* so have to use []
+					{
+					case 'D':
+						presets.id.name = "VDoor";
+						break;
+					case 'I':
+						presets.gDirection[Direction::E] = true;
+						break;
+					case 'O':
+						presets.gDirection[Direction::W] = true;
+						break;
+					case 'B':
+						presets.gDirection[Direction::E] = true;
+						presets.gDirection[Direction::W] = true;
+						break;
+					}
+				}
+				break;
+		}
+		objects.emplace_back(devices->getObjectFactory()->Create(presets, devices.get()));
 	}
-	else if (left == "door")
-	{
-		presets.id.name = "VDoor";
-	}
-	else if (left == "ghost")
-	{
-		presets.id.name = "VWall";
-		squareElement->QueryBoolAttribute("gE", &presets.gDirection[Direction::E]);
-		squareElement->QueryBoolAttribute("gW", &presets.gDirection[Direction::W]);
-	}
-	if (left != "none")
-	{
-		return presets;
-	}
-	return std::nullopt;
-	
 }
 
-ObjectFactoryPresets Game::loadTopWall(tinyxml2::XMLElement* squareElement, Vector2D square)
+
+void Game::loadFloor(Vector2D square)
 {
 	ObjectFactoryPresets presets;
-	presets.bodyInitializers.position = devices->square2Pixel(square);
-	
-	std::string top{ squareElement->Attribute("top") };
-	if (top == "wall")
-	{
-		presets.id.name = "HWall";
-	}
-	else if (top == "door")
-	{
-		presets.id.name = "HDoor";
-	}
-	else if (top == "ghost")
-	{
-		presets.id.name = "HWall";
-		squareElement->QueryBoolAttribute("gN", &presets.gDirection[Direction::N]);
-		squareElement->QueryBoolAttribute("gS", &presets.gDirection[Direction::S]);
-	}
-	else if (top == "none")
-	{
-		presets.id.name = "TopFill";
-	}
 
-	return presets;
-}
-
-std::optional<ObjectFactoryPresets> Game::loadFloor(tinyxml2::XMLElement* squareElement, Vector2D square)
-{
-	ObjectFactoryPresets presets;
 	presets.gDirection.clear();
 	presets.bodyInitializers.position = devices->square2Pixel(square);
-	presets.bodyInitializers.position += 10;//HACK::This is what puts the top and left in the wrong square!
-	std::string floor{ squareElement->Attribute("floor") };
-	if (floor == "wall")
-	{
-		presets.id.name = "WallFloor";
-	}
-	else if (floor == "ghost")
-	{
-		presets.id.name = "WallFloor";
-		presets.gDirection[Direction::N] = true;
-		presets.gDirection[Direction::E] = true;
-		presets.gDirection[Direction::S] = true;
-		presets.gDirection[Direction::W] = true;
-	}
+	presets.bodyInitializers.position += 5;
+	presets.id.name = "WallFloor";
+	presets.gDirection[Direction::N] = true;
+	presets.gDirection[Direction::E] = true;
+	presets.gDirection[Direction::S] = true;
+	presets.gDirection[Direction::W] = true;
 
-	if (floor != "none")
-	{
-		return presets;
-	}
-
-	return std::nullopt;
+	objects.emplace_back(devices->getObjectFactory()->Create(presets, devices.get()));
 }
 
 bool Game::parseLevelXML(std::string levelConfig, std::optional<Vector2D> playerStart, std::optional<Direction> playerDirection)
@@ -283,7 +335,7 @@ bool Game::parseLevelXML(std::string levelConfig, std::optional<Vector2D> player
 	while (rowElement)
 	{
 		rowElement->QueryIntAttribute("id", &square.y);
-		tinyxml2::XMLElement* squareElement = rowElement->FirstChildElement();
+		auto squareElement{ rowElement->FirstChildElement() };
 		std::string label = rowElement->Value();
 
 		while (squareElement)
@@ -294,18 +346,27 @@ bool Game::parseLevelXML(std::string levelConfig, std::optional<Vector2D> player
 			}
 			else
 			{
+				
 				squareElement->QueryIntAttribute("id", &square.x);
-
-				objects.emplace_back(objectFactory->Create(loadTopWall(squareElement, square), devices.get()));
-
-				if (auto presets{ loadLeftWall(squareElement, square) }; presets)
+				auto objectElement{ squareElement->FirstChildElement() };
+				while (objectElement)
 				{
-					objects.emplace_back(objectFactory->Create(*presets, devices.get()));
+					std::string elementType{ objectElement->Value() };
+					if (elementType == "Wall")
+					{
+						loadWalls(objectElement, square);
+					}
+					else if (elementType == "Floor")
+					{
+						loadFloor(square);
+					}
+					
+					objectElement = objectElement->NextSiblingElement();
 				}
-				if (auto presets{ loadFloor(squareElement, square) }; presets)
-				{
-					objects.emplace_back(objectFactory->Create(*presets, devices.get()));
-				}
+				ObjectFactoryPresets presets;
+				presets.id.name = "TopFill";
+				presets.bodyInitializers.position = devices->square2Pixel(square) + Vector2D{ -5, -5 };
+				objects.emplace_back(devices->getObjectFactory()->Create(presets, devices.get()));
 			}
 			squareElement = squareElement->NextSiblingElement();
 		}
