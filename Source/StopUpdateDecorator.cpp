@@ -2,6 +2,7 @@
 #include "BodyComponent.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
+#include <iostream>
 StopUpdateDecorator::StopUpdateDecorator(GameObject* owner, ResourceManager* devices, Component* decorated, std::variant<GameObject*, int> condition)
 	:Component(owner, devices), 
 	decorated(owner->swap(std::unique_ptr<Component>(this), decorated)),
@@ -10,6 +11,7 @@ StopUpdateDecorator::StopUpdateDecorator(GameObject* owner, ResourceManager* dev
 
 StopUpdateDecorator::~StopUpdateDecorator()
 {
+	std::cout << "dead";
 	//remove();
 }
 

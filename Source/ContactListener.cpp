@@ -113,8 +113,13 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 
 		if (other->isA(GameObject::Type::floor))
 		{
-			auto stop{ new StopUpdateDecorator(other,&devices, other->getComponent<SpriteComponent>(),player) };
-			//other->getComponent<SpriteComponent>()->hide(player);
+			//TODO::future proof in case there are multiple decorators!
+			//TODO:: make decorator a child of component, and the stopupdatedecorator a child of that!
+			if (auto decor{ other->getComponent<StopUpdateDecorator>() }; 
+				!decor 
+				|| decor->getDecorated() != other->getComponent<SpriteComponent>())
+				new StopUpdateDecorator(other, &devices, other->getComponent<SpriteComponent>(), player);
+
 		}
 		if (auto ghost{ other->getComponent<GhostComponent>() };
 			ghost && ghost->canPass(travelDirection(bodyB))
