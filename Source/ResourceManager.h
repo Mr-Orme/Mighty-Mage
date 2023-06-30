@@ -35,16 +35,16 @@ public:
 	ResourceManager(Vector2D screenDimensions, std::string assetPath);
 	~ResourceManager();
 
-	GraphicsDevice* getGraphicsDevice();
-	InputDevice* getInputDevice();
-	PhysicsDevice* getPhysicsDevice();
-	SoundDevice* getSoundDevice();
+	GraphicsDevice* getGraphicsDevice() const;
+	InputDevice* getInputDevice() const;
+	PhysicsDevice* getPhysicsDevice() const;
+	SoundDevice* getSoundDevice() const;
 
-	ObjectLibrary* getObjectLibrary();
-	NoticesAssetLibrary* getNoticesLibrary();
-	SoundAssetLibrary* getSoundLibrary();
+	ObjectLibrary* getObjectLibrary() const;
+	NoticesAssetLibrary* getNoticesLibrary() const;
+	SoundAssetLibrary* getSoundLibrary() const;
 
-	ObjectFactory* getObjectFactory();
+	ObjectFactory* getObjectFactory() const;
 
 	std::tuple<Vector2D, Direction> getPlayerStart() const;
 	Levels getLevel() const {return level;}
@@ -61,7 +61,7 @@ public:
 	Vector2D square2Pixel(Vector2D square, Vector2D fractional = { 0,0 }) const;	
 	
 	void pause() { paused = true; }
-	void upause() { paused = false; }
+	void unpause() { paused = false; }
 	bool isPaused() { return paused; }
 	
 
@@ -72,7 +72,12 @@ private:
 	void loadSounds(tinyxml2::XMLElement* sounds);
 
 	ObjectDefinition loadComponent(tinyxml2::XMLElement* component);
-
+	
+	//Libraries MUST be before devices to initialize properly!
+	std::unique_ptr<ObjectLibrary> oLibrary{ nullptr };
+	std::unique_ptr<NoticesAssetLibrary> nLibrary{ nullptr };
+	std::unique_ptr<SoundAssetLibrary> sLibrary{ nullptr };
+	std::unique_ptr<ObjectFactory> factory{ nullptr };
 
 	//Devices
 	std::unique_ptr<GraphicsDevice> gDevice{ nullptr };
@@ -80,13 +85,7 @@ private:
 	std::unique_ptr<PhysicsDevice> pDevice{ nullptr };
 	std::unique_ptr<SoundDevice> sDevice{ nullptr };
 
-	//Libraries
-	std::unique_ptr<ObjectLibrary> oLibrary{ nullptr };
-	std::unique_ptr<NoticesAssetLibrary> nLibrary{ nullptr };
-	std::unique_ptr<SoundAssetLibrary> sLibrary{ nullptr };
-	std::unique_ptr<ObjectFactory> factory{ nullptr };
-	
-	
+		
 	Levels level{ Levels::sorpigal };
 	Levels toLoad{ Levels::none };	
 	Vector2D playerStart{};

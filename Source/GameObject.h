@@ -1,16 +1,14 @@
-#ifndef GAMEOBJECT_H
-#define GAMEOBJECT_H
+#ifndef MIGHTYMAGE_GAMEOBJECT_H
+#define MIGHTYMAGE_GAMEOBJECT_H
 
 #include<memory>
-#include<iostream>
 #include<vector>
-#include<tuple>
-#include<optional>
 
+#include "Component.h"
 #include "Definitions.h"
 #include "Initializers.h"
 
-#include "Component.h"
+
 class GraphicsDevice;
 class PhysicsDevice;
 enum class Levels;
@@ -27,7 +25,7 @@ public:
 	
 	std::unique_ptr<GameObject> update(std::vector<std::unique_ptr<GameObject>>& objects);
 
-	void SetJoinedWith(GameObject* joinedWith){this -> joinedWith = joinedWith;}
+	void setJoinedWith(GameObject* joinedWith){this -> joinedWith = joinedWith;}
 	GameObject* getJoinedWith() const {return joinedWith;}
 
 	bool isA(Type name) const;
@@ -35,16 +33,16 @@ public:
 	template<class T>
 	T* getComponent()
 	{
-		for (auto& comp : components)
-		{
 
-			if (auto result{ dynamic_cast<T*>(comp.get()) }; result != nullptr)
-			{
-				return(result);
-			}
+		auto result{ std::find_if(components.begin(), components.end(), [](const auto& comp) {return dynamic_cast<T*>(comp.get()) != nullptr; }) };
+
+		if (result != components.end())
+		{
+			return dynamic_cast<T*>((*result).get());
 		}
 
-		return(nullptr);
+		return nullptr;
+		
 	}
 
 protected:

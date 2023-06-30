@@ -1,3 +1,4 @@
+#include <iostream>
 #include "TriggerComponent.h"
 #include "ComponentsList.h"
 #include "GameObject.h"
@@ -33,13 +34,13 @@ std::unique_ptr<GameObject> TriggerComponent::update(std::vector<std::unique_ptr
 			devices->getGraphicsDevice()->notice2Screen(message);
 			if (devices->getInputDevice()->isPressed(Inputs::key_y))
 			{
-				devices->upause();
+				devices->unpause();
 				triggered = false;
 				devices->changeLevel(exitTo, playerLocation, playerDirection);
 			}
 			else if (devices->getInputDevice()->isPressed(Inputs::key_n))
 			{
-				devices->upause();
+				devices->unpause();
 				triggered = false;
 			}
 			else return false;

@@ -1,12 +1,12 @@
-#include "ComponentsList.h"
+
 #include "GameObject.h"
 #include "Definitions.h"
 #include "ResourceManager.h"
 
 //TODO::Get rid of this
 #include <sstream>
-#include "GraphicsDevice.h"
-#include "View.h"
+
+
 GameObject::GameObject(){}
 
 
@@ -57,7 +57,7 @@ std::unique_ptr<GameObject> GameObject::update(std::vector<std::unique_ptr<GameO
 		}
 			
 	}
-	return std::move(newObject);
+	return newObject;
 }
 
 bool GameObject::isA(Type name) const

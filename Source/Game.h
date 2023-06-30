@@ -1,13 +1,17 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef MIGHTYMAGE_GAME_H
+#define MIGHTYMAGE_GAME_H
 
-#include "Vector2D.h"
-#include "Definitions.h"
-#include "tinyxml2.h"
 #include <string>
 #include <vector>
 #include <memory>
 #include <optional>
+
+#include "tinyxml2.h"
+
+#include "Vector2D.h"
+#include "Definitions.h"
+
+
 
 class Timer;
 class ResourceManager;

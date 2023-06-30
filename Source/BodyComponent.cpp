@@ -1,3 +1,4 @@
+#include <iostream>
 #include "BodyComponent.h"
 #include "SpriteComponent.h"
 #include "ResourceManager.h"

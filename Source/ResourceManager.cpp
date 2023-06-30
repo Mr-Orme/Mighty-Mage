@@ -11,17 +11,19 @@
 #include "SoundAssetLibrary.h"
 #include "View.h"
 
-ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPath):
-	factory(std::make_unique<ObjectFactory>()),
-	iDevice(std::make_unique<InputDevice>()),
-	oLibrary(std::make_unique<ObjectLibrary>()),
-	nLibrary(std::make_unique<NoticesAssetLibrary>())
-{
-	gDevice = std::make_unique<GraphicsDevice>(screenDimensions, "./Assets/Fonts/impact.ttf", 16, RGBA{ 0, 0, 0, 255 });
-	pDevice = std::make_unique<PhysicsDevice>(Vector2D{ 0,0 }, this);
+const int fontSize{ 16 };
 
-	sLibrary = std::make_unique<SoundAssetLibrary>();
-	sDevice = std::make_unique<SoundDevice>(sLibrary.get());
+
+ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPath) :
+	factory{ std::make_unique<ObjectFactory>() },
+	iDevice{ std::make_unique<InputDevice>() },
+	oLibrary{ std::make_unique<ObjectLibrary>() },
+	nLibrary{ std::make_unique<NoticesAssetLibrary>() },
+	gDevice{ std::make_unique<GraphicsDevice>(screenDimensions, "./Assets/Fonts/impact.ttf", fontSize, RGBA{ 0, 0, 0, 255 }) },
+	sLibrary{ std::make_unique<SoundAssetLibrary>() },
+	sDevice{ std::make_unique<SoundDevice>(sLibrary.get()) },
+	pDevice{ std::make_unique<PhysicsDevice>(Vector2D{ 0,0 }, this) }
+{
 
 	loadLibraries(assetPath);
 }
@@ -29,42 +31,42 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 ResourceManager::~ResourceManager(){
 }
 
-GraphicsDevice* ResourceManager::getGraphicsDevice()
+GraphicsDevice* ResourceManager::getGraphicsDevice() const
 {
 	return gDevice.get();
 }
 
-InputDevice* ResourceManager::getInputDevice()
+InputDevice* ResourceManager::getInputDevice() const
 {
 	return iDevice.get();
 }
 
-PhysicsDevice* ResourceManager::getPhysicsDevice()
+PhysicsDevice* ResourceManager::getPhysicsDevice() const
 {
 	return pDevice.get();
 }
 
-SoundDevice* ResourceManager::getSoundDevice()
+SoundDevice* ResourceManager::getSoundDevice() const
 {
 	return sDevice.get();
 }
 
-ObjectLibrary* ResourceManager::getObjectLibrary()
+ObjectLibrary* ResourceManager::getObjectLibrary() const
 {
 	return oLibrary.get();
 }
 
-NoticesAssetLibrary* ResourceManager::getNoticesLibrary()
+NoticesAssetLibrary* ResourceManager::getNoticesLibrary() const
 {
 	return nLibrary.get();
 }
 
-SoundAssetLibrary* ResourceManager::getSoundLibrary()
+SoundAssetLibrary* ResourceManager::getSoundLibrary() const
 {
 	return sLibrary.get();
 }
 
-ObjectFactory* ResourceManager::getObjectFactory()
+ObjectFactory* ResourceManager::getObjectFactory() const
 {
 	return factory.get();
 }
@@ -147,7 +149,7 @@ void ResourceManager::loadNotices(tinyxml2::XMLElement* notices)
 		
 		int direction{};
 		notices->QueryIntAttribute("direction", &direction);
-		notice.direction = (Direction)direction;
+		notice.direction = static_cast<Direction>(direction);
 		
 		notice.text = notices->GetText();
 

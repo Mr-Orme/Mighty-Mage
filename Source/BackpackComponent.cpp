@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <iostream>
 #include "BackpackComponent.h"
 #include "ResourceManager.h"
 #include "GameObject.h"

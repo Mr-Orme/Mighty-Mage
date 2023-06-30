@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "SpriteComponent.h"
 #include "BodyComponent.h"
 #include "Texture.h"
