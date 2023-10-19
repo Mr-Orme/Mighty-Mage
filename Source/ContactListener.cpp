@@ -125,10 +125,11 @@ void ContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impu
 void ContactListener::pickUpItem(GameObject* player, GameObject* item)
 {
 
-	ResourceManager* devices = player -> getComponent<BodyComponent>() -> getDevices();
+	auto devices{ player->getComponent<BodyComponent>()->getDevices() };
 
 	if(player -> getComponent<BackpackComponent>() -> pickUpItem(item))
 	{
+		//TODO:: I don't like these hard coded ints....
 		devices -> getSoundDevice() -> PlaySound(SoundEffect::Event::pickup,0,3);
 	}
 
