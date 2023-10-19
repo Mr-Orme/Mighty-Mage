@@ -7,18 +7,10 @@
 #include "SoundDevice.h"
 #include "GraphicsDevice.h" //TODO::get rid of this
 #include "PhysicsDevice.h"
-#include <sstream>
+//#include <sstream>
+#include <tuple>
 
-Direction travelDirection(b2Body* body, PhysicsDevice* pDevice)
-{
-	auto lv{ body->GetLinearVelocity() };
-	if (lv.x > 0) return Direction::E;
-	else if (lv.x < 0) return Direction::W;
-	else if (lv.y > 0) return Direction::S;
-	else if (lv.y < 0) return Direction::N;
-	return pDevice->findObject(body)->getComponent<BodyComponent>()->getDirection();
 
-}
 void wallCollision(BodyComponent* playerBody, BodyComponent* wallBody, Direction travel)
 {
 	bool playWallSound{ false };
@@ -69,69 +61,68 @@ void hitTrigger(GameObject* trigger, GameObject* player, b2Contact* contact, Dir
 		//contact->SetEnabled(false);
 	}
 }
+
+std::tuple<GameObject*, GameObject*> ContactListener::getObjects(b2Contact* contact)
+{
+	auto bodyA{ contact->GetFixtureA()->GetBody() };
+	auto bodyB{ contact->GetFixtureB()->GetBody() };
+
+	auto objectA{ pDevice->findObject(bodyA) };
+	auto objectB{ pDevice->findObject(bodyB) };
+
+	if (objectB->isA(GameObject::Type::player))
+	{
+		auto temp{ objectB };
+		objectB = objectA;
+		objectA = temp;
+	}
+	return { objectA, objectB };
+}
+
 ContactListener::ContactListener(PhysicsDevice* pDevice)
 	:pDevice(pDevice)
 {
 }
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {
-    
-	b2Body* bodyA{ contact->GetFixtureA()->GetBody() };
-	b2Body* bodyB{ contact->GetFixtureB()->GetBody() };
+	auto [player, collidedWith] = getObjects(contact);
 	
-	GameObject* objectA{ pDevice->findObject(bodyA) };
-	GameObject* objectB{ pDevice->findObject(bodyB) };
-	
-	if (objectA->isA(GameObject::Type::trigger))
+		
+	if (collidedWith->isA(GameObject::Type::trigger))
 	{
-		hitTrigger(objectA, objectB, contact, travelDirection(bodyB, pDevice));
+		hitTrigger(collidedWith, player, contact, travelDirection(player));
 	}
-	else if (objectB->isA(GameObject::Type::trigger))
-	{
-		hitTrigger(objectB, objectA, contact, travelDirection(bodyA, pDevice));
-	}
-
-	else if(objectA->isA(GameObject::Type::player))
-	{
-		if(objectB -> getComponent<InventoryComponent>())
-		{
-			PickUpItem(objectA, objectB);
-		}
-	}
-	//walls always put the player as object B
-	else if (objectB->isA(GameObject::Type::player))
+	//TODO:: wall collision becomes a trigger.
+	else if (collidedWith->isA(GameObject::Type::wall))
 	{
 		
-		if (auto ghost{ objectA->getComponent<GhostComponent>() };
-			ghost != nullptr && ghost->canPass(travelDirection(bodyB, pDevice))
+		if (auto ghost{ collidedWith->getComponent<GhostComponent>() };
+			ghost != nullptr && ghost->canPass(travelDirection(player))
 			)
 		{
 			contact->SetEnabled(false);
 			return;
 		}
 
-		if (objectA->isA(GameObject::Type::wall))
-		{
-			
-			wallCollision(
-				objectB->getComponent<BodyComponent>(), 
-				objectA->getComponent<BodyComponent>(), 
-				travelDirection(bodyB, pDevice)
-			);
-		}
-		
-		
-
+		wallCollision(
+			player->getComponent<BodyComponent>(),
+			collidedWith->getComponent<BodyComponent>(),
+			travelDirection(player)
+		);
 	}
-
+	else if (collidedWith->getComponent<InventoryComponent>())
+	{
+		pickUpItem(player, collidedWith);
+	}
 }
+
 void ContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
 {
 
 }
 
 
-void ContactListener::PickUpItem(GameObject* player, GameObject* item)
+void ContactListener::pickUpItem(GameObject* player, GameObject* item)
 {
 
 	ResourceManager* devices = player -> getComponent<BodyComponent>() -> getDevices();
@@ -140,5 +131,17 @@ void ContactListener::PickUpItem(GameObject* player, GameObject* item)
 	{
 		devices -> getSoundDevice() -> PlaySound(SoundEffect::Event::pickup,0,3);
 	}
+
+}
+
+Direction ContactListener::travelDirection(GameObject* player) const
+{
+	auto bodyComp{ player->getComponent<BodyComponent>() };
+	auto lv{ bodyComp->getLinearVelocity()};
+	if (lv.x > 0) return Direction::E;
+	if (lv.x < 0) return Direction::W;
+	if (lv.y > 0) return Direction::S;
+	if (lv.y < 0) return Direction::N;
+	return bodyComp->getDirection();
 
 }

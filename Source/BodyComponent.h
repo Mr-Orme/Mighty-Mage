@@ -36,6 +36,7 @@ public:
 	Vector2D getPosition() const;
 	Vector2D getDimensions() const;
 	Vector2D getCenter() const;
+	Vector2D getLinearVelocity() const;
 
 	void turnOffPhysics() const;
 protected:

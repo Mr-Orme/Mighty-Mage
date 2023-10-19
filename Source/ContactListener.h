@@ -1,7 +1,8 @@
 #ifndef CONTACTLISTENER_H
 #define CONTACTLISTENER_H
-
+#include <tuple>
 #include "box2d.h"
+#include "Definitions.h"
 class GameObject;
 class PhysicsDevice;
 class ContactListener : public b2ContactListener
@@ -18,9 +19,12 @@ public:
 
 	void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);
 
-	void PickUpItem(GameObject* player, GameObject* item);
+	
 private:
+	std::tuple<GameObject*, GameObject*> getObjects(b2Contact* contact);
+	Direction travelDirection(GameObject* player) const;
 	PhysicsDevice* pDevice{ nullptr };
+	void pickUpItem(GameObject* player, GameObject* item);
 };
 
 #endif

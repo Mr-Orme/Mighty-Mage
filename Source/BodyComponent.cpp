@@ -124,7 +124,10 @@ void BodyComponent::turnOffPhysics() const
 {
 	devices->getPhysicsDevice()->SetStopPhysics(_owner);
 }
-
+Vector2D BodyComponent::getLinearVelocity() const
+{
+	return devices->getPhysicsDevice()->GetLinearVelocity(_owner);
+}
 
 Vector2D BodyComponent::getDimensions() const
 {
