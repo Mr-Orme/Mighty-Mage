@@ -288,3 +288,4 @@ __pycache__/
 *.enc
 *.tlog
 *.idb
+/Temp/Mighty.Mage.tlog/CL.command.1.tlog
