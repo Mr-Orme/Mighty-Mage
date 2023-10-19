@@ -6,16 +6,17 @@
 #include "Definitions.h"
 #include "SoundDevice.h"
 #include "GraphicsDevice.h" //TODO::get rid of this
+#include "PhysicsDevice.h"
 #include <sstream>
 
-Direction travelDirection(b2Body* body)
+Direction travelDirection(b2Body* body, PhysicsDevice* pDevice)
 {
 	auto lv{ body->GetLinearVelocity() };
 	if (lv.x > 0) return Direction::E;
 	else if (lv.x < 0) return Direction::W;
 	else if (lv.y > 0) return Direction::S;
 	else if (lv.y < 0) return Direction::N;
-	return reinterpret_cast<GameObject*>(body->GetUserData().pointer)->getComponent<BodyComponent>()->getDirection();
+	return pDevice->findObject(body)->getComponent<BodyComponent>()->getDirection();
 
 }
 void wallCollision(BodyComponent* playerBody, BodyComponent* wallBody, Direction travel)
@@ -68,22 +69,26 @@ void hitTrigger(GameObject* trigger, GameObject* player, b2Contact* contact, Dir
 		//contact->SetEnabled(false);
 	}
 }
+ContactListener::ContactListener(PhysicsDevice* pDevice)
+	:pDevice(pDevice)
+{
+}
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {
     
-	b2Body* bodyA = contact->GetFixtureA()->GetBody();
-	b2Body* bodyB = contact->GetFixtureB()->GetBody();
+	b2Body* bodyA{ contact->GetFixtureA()->GetBody() };
+	b2Body* bodyB{ contact->GetFixtureB()->GetBody() };
 	
-	GameObject* objectA = reinterpret_cast<GameObject*>(bodyA->GetUserData().pointer);
-	GameObject* objectB = reinterpret_cast<GameObject*>(bodyB->GetUserData().pointer);
+	GameObject* objectA{ pDevice->findObject(bodyA) };
+	GameObject* objectB{ pDevice->findObject(bodyB) };
 	
 	if (objectA->isA(GameObject::Type::trigger))
 	{
-		hitTrigger(objectA, objectB, contact, travelDirection(bodyB));
+		hitTrigger(objectA, objectB, contact, travelDirection(bodyB, pDevice));
 	}
 	else if (objectB->isA(GameObject::Type::trigger))
 	{
-		hitTrigger(objectB, objectA, contact, travelDirection(bodyA));
+		hitTrigger(objectB, objectA, contact, travelDirection(bodyA, pDevice));
 	}
 
 	else if(objectA->isA(GameObject::Type::player))
@@ -98,7 +103,7 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 	{
 		
 		if (auto ghost{ objectA->getComponent<GhostComponent>() };
-			ghost != nullptr && ghost->canPass(travelDirection(bodyB))
+			ghost != nullptr && ghost->canPass(travelDirection(bodyB, pDevice))
 			)
 		{
 			contact->SetEnabled(false);
@@ -111,7 +116,7 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 			wallCollision(
 				objectB->getComponent<BodyComponent>(), 
 				objectA->getComponent<BodyComponent>(), 
-				travelDirection(bodyB)
+				travelDirection(bodyB, pDevice)
 			);
 		}
 		

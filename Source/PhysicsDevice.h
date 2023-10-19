@@ -1,6 +1,6 @@
 #ifndef PHYSICSDEVICE_H
 #define PHYSICSDEVICE_H
-
+#include<unordered_map>
 
 #include "ContactListener.h"
 #include "Box2D.h"
@@ -42,6 +42,7 @@ public:
 
 	
 	b2Body* FindBody(GameObject* Object);
+	GameObject* findObject(b2Body* body) const;
 	b2Vec2 GV2PV(Vector2D gameVec);
 	Vector2D PV2GV(b2Vec2 physicsVec);
 	bool RemoveObject(GameObject* object);
@@ -66,7 +67,7 @@ private:
 	std::unique_ptr<Box2DDebugDraw> debugDrawer{ nullptr };
 	std::unique_ptr<ContactListener> listner{ nullptr };
 	const b2Vec2 gravity;
-	
+	std::unordered_map<GameObject*, b2Body*> bodyMap;
 
 	
 

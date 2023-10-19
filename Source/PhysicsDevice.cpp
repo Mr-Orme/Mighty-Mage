@@ -10,7 +10,7 @@
 
 PhysicsDevice::PhysicsDevice(Vector2D gravity, ResourceManager* devices):
 	gravity(RW2PW(gravity.x), RW2PW(gravity.y)),
-	listner(std::make_unique<ContactListener>())
+	listner(std::make_unique<ContactListener>(this))
 {
 	debugDrawer = std::make_unique<Box2DDebugDraw>(this, devices->getGraphicsDevice());
 	world =std::make_unique<b2World>(this->gravity);
@@ -183,8 +183,8 @@ bool PhysicsDevice::createFixture(GameObject* object, BodyPresets presets)
 	b2FixtureDef shapefd;
 	
 	//Set userData field with passed in object pointer.
-	bd -> userData.pointer = reinterpret_cast<uintptr_t>(object);
-	
+	//bd -> userData.pointer = reinterpret_cast<uintptr_t>(object);
+	//bd->SetUserData(object);
 
 	//set body type
 	switch (presets.physics.bodyType)
@@ -214,7 +214,9 @@ bool PhysicsDevice::createFixture(GameObject* object, BodyPresets presets)
 	//Set damping values on the body
 	body -> SetAngularDamping(presets.physics.angularDamping);
 	body -> SetLinearDamping(presets.physics.linearDamping);
-
+	bodyMap.insert({ object, body });
+	//body->GetUserData().pointer = reinterpret_cast<uintptr_t>(object);
+	//body->SetUserData(object);
 	//Set fixture's shape
 	switch (presets.physics.bodyShape)
 	{
@@ -233,7 +235,7 @@ bool PhysicsDevice::createFixture(GameObject* object, BodyPresets presets)
 		shapefd.shape = &cShape;
 		break;
 	}
-
+	
 	//set fixture values based on passed in values.
 	shapefd.density = presets.physics.density;
 	shapefd.friction = presets.physics.friction;
@@ -293,7 +295,18 @@ bool PhysicsDevice::DestroyJoint(b2Body* body)
 	}
 	return jointFound;
 }
-
+GameObject* PhysicsDevice::findObject(b2Body* body) const
+{
+	auto foundBody{ std::find_if(bodyMap.begin(), bodyMap.end(), [&](std::pair<GameObject*, b2Body*> bodyPair)
+		{
+			return body == bodyPair.second;
+		}) };
+	if (foundBody != bodyMap.end())
+	{
+		return foundBody->first;
+	}
+	return nullptr;
+}
 //**************************************
 //Uses the user data field in the body and compares the memory location
 //to the memory location of the passed object pointer.
@@ -301,15 +314,22 @@ bool PhysicsDevice::DestroyJoint(b2Body* body)
 b2Body* PhysicsDevice::FindBody(GameObject* object)
 //**************************************
 {
-	//loop through the bodies
-	for (b2Body* body = world -> GetBodyList(); body; body = body -> GetNext())
+
+	if (auto body{ bodyMap.find(object) }; body != bodyMap.end())
 	{
-		//when we have a match, return it.
-		if(object == reinterpret_cast<GameObject*>(body -> GetUserData().pointer))
-		{
-			return body;
-		}
+		return body->second;
 	}
+
+	//loop through the bodies
+	//for (b2Body* body = world -> GetBodyList(); body; body = body -> GetNext())
+	//{
+	//	auto storedObject{ body->GetUserData().pointer };
+	//	//when we have a match, return it.
+	//	if(object == reinterpret_cast<GameObject*>(body -> GetUserData().pointer))
+	//	{
+	//		return body;
+	//	}
+	//}
 	//if there was no match, return nullptr
 	return nullptr;
 }
