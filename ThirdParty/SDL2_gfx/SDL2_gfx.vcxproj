@@ -83,8 +83,8 @@
     <LibraryPath>D:\Google Drive\MightyMage\ThirdParty\SDL2\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\smorme\source\repos\Mighty-Mage\ThirdParty\SDL2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\smorme\source\repos\Mighty-Mage\ThirdParty\SDL2\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Documents\GitHub\Mighty-Mage\ThirdParty\SDL2\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Documents\GitHub\Mighty-Mage\ThirdParty\SDL2\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

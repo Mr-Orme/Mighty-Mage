@@ -168,7 +168,7 @@ bool Game::run()
 
 	devices->getGraphicsDevice()->drawOverlays();
 
-	if (debug) devices->getPhysicsDevice()->debugDraw();
+	//if (debug) devices->getPhysicsDevice()->debugDraw();
 
 	devices->getGraphicsDevice()->present();
 
@@ -411,6 +411,8 @@ std::optional<ObjectFactoryPresets> Game::loadFloor(tinyxml2::XMLElement* square
 void Game::reset()
 //**************************************
 {
-	objects.clear();
+	
+	objects.clear();//This HAS to be first!
 	devices = nullptr;
+
 }

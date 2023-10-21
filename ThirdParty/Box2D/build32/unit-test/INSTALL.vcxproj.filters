@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\Documents\GitHub\Mighty-Mage\ThirdParty\Box2D\build32\CMakeFiles\6b93c211b75bd7b50d82dfc8e865cb87\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{CB4C65E3-ED1B-3A75-A4DA-77062F731FA7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

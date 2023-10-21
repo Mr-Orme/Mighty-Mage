@@ -3,7 +3,7 @@
 #include<unordered_map>
 
 #include "ContactListener.h"
-#include "Box2D.h"
+#include "box2D.h"
 #include "Initializers.h"
 class GameObject;
 class Box2DDebugDraw;
@@ -14,10 +14,8 @@ class PhysicsDevice{
 public:
 
 	PhysicsDevice(Vector2D gravity, ResourceManager* devices);
-	~PhysicsDevice() = default;
+	~PhysicsDevice();
 	bool Update(float dt);
-
-	void debugDraw();
 
 	bool createFixture(GameObject* object, BodyPresets presets);
 
@@ -64,7 +62,7 @@ private:
 	Vector2D AlignCenters(GameObject* object);
 	
 	std::unique_ptr<b2World> world{ nullptr };
-	std::unique_ptr<Box2DDebugDraw> debugDrawer{ nullptr };
+	//std::unique_ptr<Box2DDebugDraw> debugDrawer{ nullptr };
 	std::unique_ptr<ContactListener> listner{ nullptr };
 	const b2Vec2 gravity;
 	std::unordered_map<GameObject*, b2Body*> bodyMap;

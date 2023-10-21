@@ -154,10 +154,10 @@
     <OutDir>$(ProjectDir)Game\</OutDir>
     <IntDir>$(ProjectDir)Temp\</IntDir>
     <IncludePath>$(ProjectDir)ThirdParty\SDL2_ttf\include;$(ProjectDir)ThirdParty\box2d\include\box2d;$(ProjectDir)ThirdParty\SDL2\include;$(ProjectDir)ThirdParty\SDL2_image\include;$(ProjectDir)ThirdParty\SDL2_gfx;$(ProjectDir)ThirdParty\SDL2_mixer\include;$(ProjectDir)ThirdParty\tinyxml2;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)ThirdParty\SDL2_ttf\lib\x86;$(ProjectDir)ThirdParty\box2d\build\bin\Debug;$(ProjectDir)ThirdParty\SDL2\lib\x86;$(ProjectDir)ThirdParty\SDL2_image\lib\x86;$(ProjectDir)ThirdParty\SDL2_gfx\Win32\Debug;$(ProjectDir)ThirdParty\SDL2_mixer\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)ThirdParty\SDL2_ttf\lib\x86;$(ProjectDir)ThirdParty\Box2D\build32\bin\Debug;$(ProjectDir)ThirdParty\SDL2\lib\x86;$(ProjectDir)ThirdParty\SDL2_image\lib\x86;$(ProjectDir)ThirdParty\SDL2_gfx\Win32\Debug;$(ProjectDir)ThirdParty\SDL2_mixer\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)ThirdParty\SDL2_ttf\include;$(ProjectDir)ThirdParty\Box2D\include\box2d;$(ProjectDir)ThirdParty\SDL2\include;$(ProjectDir)ThirdParty\SDL2_image\include;$(ProjectDir)ThirdParty\SDL2_gfx;$(ProjectDir)ThirdParty\SDL2_mixer\include;$(ProjectDir)ThirdParty\Box2D\include;$(ProjectDir)ThirdParty\tinyxml2;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ThirdParty\SDL2_ttf\include;$(ProjectDir)ThirdParty\Box2D\include\box2d;$(ProjectDir)ThirdParty\SDL2\include;$(ProjectDir)ThirdParty\SDL2_image\include;$(ProjectDir)ThirdParty\SDL2_gfx;$(ProjectDir)ThirdParty\SDL2_mixer\include;$(ProjectDir)ThirdParty\tinyxml2;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)ThirdParty\SDL2_ttf\lib\x64;$(ProjectDir)ThirdParty\Box2D\build\src\x64debug;$(ProjectDir)ThirdParty\SDL2\lib\x64;$(ProjectDir)ThirdParty\SDL2_image\lib\x64;$(ProjectDir)ThirdParty\SDL2_gfx\x64\Debug;$(ProjectDir)ThirdParty\SDL2_mixer\lib\x64;$(LibraryPath)</LibraryPath>
     <OutDir>$(ProjectDir)Game\</OutDir>
     <IntDir>$(ProjectDir)Temp\</IntDir>
@@ -199,6 +199,7 @@ xcopy "$(ProjectDir)Assets" "$(ProjectDir)Game\Assets" /E /I /F /Y</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_gfx.lib;SDL2_ttf.lib;SDL2_mixer.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>copy "$(ProjectDir)ThirdParty\SDL2\lib\x64\*.dll" "$(ProjectDir)"

@@ -29,6 +29,15 @@ ResourceManager::ResourceManager(Vector2D screenDimensions, std::string assetPat
 }
 
 ResourceManager::~ResourceManager(){
+	oLibrary = nullptr;
+	nLibrary = nullptr;
+	sLibrary = nullptr;
+	factory = nullptr;
+	//Devices must be after libraries/factor
+	iDevice = nullptr;
+	sDevice = nullptr;
+	pDevice = nullptr;
+	gDevice = nullptr;//gDevice MUST be last!
 }
 
 GraphicsDevice* ResourceManager::getGraphicsDevice() const

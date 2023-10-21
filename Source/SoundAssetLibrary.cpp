@@ -9,11 +9,11 @@ SoundAssetLibrary::SoundAssetLibrary()
 }
 SoundAssetLibrary::~SoundAssetLibrary()
 {
-	for(auto [event, effect]: soundEffectLibrary)
+	for(auto& [event, effect]: soundEffectLibrary)
 	{
 		Mix_FreeChunk(effect.sound);
 	}
-	for (auto [location, music] : musicLibrary)
+	for (auto& [location, music] : musicLibrary)
 	{
 		Mix_FreeMusic(music);
 	}

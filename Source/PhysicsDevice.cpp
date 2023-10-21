@@ -3,7 +3,7 @@
 #include "ContactListener.h"
 #include "GameObject.h"
 #include "Texture.h"
-#include "Box2DDebugDraw.h"
+//#include "Box2DDebugDraw.h"
 #include "ResourceManager.h"
 #include <cmath>
 
@@ -12,13 +12,21 @@ PhysicsDevice::PhysicsDevice(Vector2D gravity, ResourceManager* devices):
 	gravity(RW2PW(gravity.x), RW2PW(gravity.y)),
 	listner(std::make_unique<ContactListener>(this))
 {
-	debugDrawer = std::make_unique<Box2DDebugDraw>(this, devices->getGraphicsDevice());
+	//debugDrawer = std::make_unique<Box2DDebugDraw>(this, devices->getGraphicsDevice());
 	world =std::make_unique<b2World>(this->gravity);
 	world->SetContactListener(listner.get());
 
-	debugDrawer->SetFlags(b2Draw::e_shapeBit | b2Draw::e_aabbBit);  //Turn on shape (red color) and aabb (green) 
-	world->SetDebugDraw(debugDrawer.get());
+	//debugDrawer->SetFlags(b2Draw::e_shapeBit | b2Draw::e_aabbBit);  //Turn on shape (red color) and aabb (green) 
+	//world->SetDebugDraw(debugDrawer.get());
 	
+}
+
+PhysicsDevice::~PhysicsDevice()
+{
+	//bodyMap.clear();
+	////debugDrawer = nullptr;
+	//listner = nullptr;
+	//world = nullptr;
 }
 
 
@@ -31,10 +39,7 @@ bool PhysicsDevice::Update(float dt)
 	return true;
 }
 
-void PhysicsDevice::debugDraw()
-{
-	world->DebugDraw();
-}
+
 
 //**************************************
 //Moves body to a set location & angle

@@ -1,0 +1,17 @@
+D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/CMakeFiles/INSTALL.dir
+D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/CMakeFiles/ALL_BUILD.dir
+D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/CMakeFiles/ZERO_CHECK.dir
+D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/src/CMakeFiles/box2d.dir
+D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/src/CMakeFiles/INSTALL.dir
+D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/unit-test/CMakeFiles/unit_test.dir
+D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/unit-test/CMakeFiles/INSTALL.dir
+D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/extern/glad/CMakeFiles/glad.dir
+D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/extern/glad/CMakeFiles/INSTALL.dir
+D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/extern/glfw/CMakeFiles/glfw.dir
+D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/extern/glfw/CMakeFiles/INSTALL.dir
+D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/extern/imgui/CMakeFiles/imgui.dir
+D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/extern/imgui/CMakeFiles/INSTALL.dir
+D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/extern/sajson/CMakeFiles/sajson.dir
+D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/extern/sajson/CMakeFiles/INSTALL.dir
+D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/testbed/CMakeFiles/testbed.dir
+D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/testbed/CMakeFiles/INSTALL.dir
