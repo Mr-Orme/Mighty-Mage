@@ -61,10 +61,11 @@ private:
 	bool DestroyJoint(b2Body* body);
 	Vector2D AlignCenters(GameObject* object);
 	
+	const b2Vec2 gravity;
 	std::unique_ptr<b2World> world{ nullptr };
 	//std::unique_ptr<Box2DDebugDraw> debugDrawer{ nullptr };
 	std::unique_ptr<ContactListener> listner{ nullptr };
-	const b2Vec2 gravity;
+	
 	std::unordered_map<GameObject*, b2Body*> bodyMap;
 
 	

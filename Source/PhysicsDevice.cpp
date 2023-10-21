@@ -5,28 +5,21 @@
 #include "Texture.h"
 //#include "Box2DDebugDraw.h"
 #include "ResourceManager.h"
-#include <cmath>
+//#include <cmath>
 
 
 PhysicsDevice::PhysicsDevice(Vector2D gravity, ResourceManager* devices):
 	gravity(RW2PW(gravity.x), RW2PW(gravity.y)),
+	world(std::make_unique<b2World>(this->gravity)),
 	listner(std::make_unique<ContactListener>(this))
 {
-	//debugDrawer = std::make_unique<Box2DDebugDraw>(this, devices->getGraphicsDevice());
-	world =std::make_unique<b2World>(this->gravity);
 	world->SetContactListener(listner.get());
-
-	//debugDrawer->SetFlags(b2Draw::e_shapeBit | b2Draw::e_aabbBit);  //Turn on shape (red color) and aabb (green) 
-	//world->SetDebugDraw(debugDrawer.get());
 	
 }
 
 PhysicsDevice::~PhysicsDevice()
 {
-	//bodyMap.clear();
-	////debugDrawer = nullptr;
-	//listner = nullptr;
-	//world = nullptr;
+
 }
 
 
@@ -46,12 +39,8 @@ bool PhysicsDevice::Update(float dt)
 bool PhysicsDevice::setTransform(GameObject* object, Vector2D position, float angle)
 //**************************************
 {
-	//finds which body this object is attached to.
-	//based on value set in UserData field of body
-	b2Body* body = FindBody(object);
-
-	//Applies' Box2D transform.
-	body -> SetTransform
+	
+	FindBody(object)-> SetTransform
 		(
 			GV2PV(position), 
 			RW2PWAngle(angle)
@@ -61,7 +50,7 @@ bool PhysicsDevice::setTransform(GameObject* object, Vector2D position, float an
 }
 bool PhysicsDevice::SetAngle(GameObject* object, float angle)
 {
-	b2Body* body = FindBody(object);
+	auto body{ FindBody(object) };
 	body -> SetTransform(body -> GetPosition(), RW2PWAngle(angle));
 	return true;
 }
@@ -72,8 +61,7 @@ bool PhysicsDevice::SetAngle(GameObject* object, float angle)
 bool PhysicsDevice::setAngularVelocity(GameObject* object, float angularVelocity)
 //**************************************
 {
-	b2Body* body = FindBody(object);
-	body -> SetAngularVelocity(RW2PW(angularVelocity));
+	FindBody(object) -> SetAngularVelocity(RW2PW(angularVelocity));
 	return true;
 	
 }
@@ -83,11 +71,7 @@ bool PhysicsDevice::setAngularVelocity(GameObject* object, float angularVelocity
 bool PhysicsDevice::setLinearVelocity(GameObject* object, Vector2D linearVelociy)
 //**************************************
 {
-	b2Body* body = FindBody(object);
-	b2Vec2 b2LVelocity;
-	b2LVelocity.x = RW2PW(linearVelociy.x);
-	b2LVelocity.y = RW2PW(linearVelociy.y);
-	body -> SetLinearVelocity(b2LVelocity);
+	FindBody(object) -> SetLinearVelocity({ RW2PW(linearVelociy.x),RW2PW(linearVelociy.y) });
 	return true;
 }
 
@@ -96,13 +80,13 @@ bool PhysicsDevice::setLinearVelocity(GameObject* object, Vector2D linearVelociy
 bool PhysicsDevice::SetLinearImpulse(GameObject* object, Vector2D forceVec, Vector2D forceCenter)
 //**************************************
 {
-	b2Body* body = FindBody(object);
-	body -> ApplyLinearImpulse
-			(
-			GV2PV(forceVec),
-			body -> GetWorldPoint(GV2PV(forceCenter)),
-			true
-			);
+	auto body{ FindBody(object) };
+	body->ApplyLinearImpulse
+	(
+		GV2PV(forceVec),
+		body->GetWorldPoint(GV2PV(forceCenter)),
+		true
+	);
 	return true;
 }
 
@@ -111,23 +95,19 @@ bool PhysicsDevice::SetLinearImpulse(GameObject* object, Vector2D forceVec, Vect
 bool PhysicsDevice::SetTorque(GameObject* object, float torque)
 //**************************************
 {
-	b2Body* body = FindBody(object);
-	body -> ApplyTorque(RW2PW(torque), true);
+	FindBody(object)->ApplyTorque(RW2PW(torque), true);
 	return true;
 }
 
 bool PhysicsDevice::SetStatic(GameObject* object)
 {
-	b2Body* body = FindBody(object);
-	body -> SetType(b2_staticBody);
+	FindBody(object)->SetType(b2_staticBody);
 	return true;
 }
 
 bool PhysicsDevice::SetStopPhysics(GameObject* object)
 {
-	b2Body* body = FindBody(object);
-	//body -> SetActive(false);
-	body->SetEnabled(false);
+	FindBody(object)->SetEnabled(false);
 	return true;	
 }
 
@@ -136,13 +116,12 @@ bool PhysicsDevice::SetStopPhysics(GameObject* object)
 float PhysicsDevice::GetAngularVelocity(GameObject* object)
 //**************************************
 {
-	b2Body* body = FindBody(object);
-	return (PW2RWAngle(body -> GetAngularVelocity()));
+	
+	return (PW2RWAngle(FindBody(object)->GetAngularVelocity()));
 }
 Vector2D PhysicsDevice::GetLinearVelocity(GameObject* object)
 {
-	b2Body* body = FindBody(object);
-	return(PV2GV(body -> GetLinearVelocity()));
+	return(PV2GV(FindBody(object)->GetLinearVelocity()));
 }
 
 //**************************************
@@ -150,9 +129,6 @@ Vector2D PhysicsDevice::GetLinearVelocity(GameObject* object)
 Vector2D PhysicsDevice::GetPosition(GameObject* object)
 //**************************************
 {
-	//b2Body* body = FindBody(object);
-	////PV2GV = Physics vector to Game vector (b2vec2 to Vector2D)
-	//return (PV2GV(body -> GetPosition()));
 	return (AlignCenters(object));
 }
 
@@ -161,14 +137,12 @@ Vector2D PhysicsDevice::GetPosition(GameObject* object)
 float PhysicsDevice::getAngle(GameObject* object)
 //**************************************
 {
-	b2Body* body = FindBody(object);
-	return (PW2RWAngle(body ->GetAngle()));
+	return (PW2RWAngle(FindBody(object)->GetAngle()));
 }
 
 Vector2D PhysicsDevice::GetVelocity(GameObject* object)
 {
-	b2Body* body = FindBody(object);
-	return (PV2GV(body -> GetLinearVelocity()));
+	return (PV2GV(FindBody(object)-> GetLinearVelocity()));
 }
 
 //**************************************
@@ -179,31 +153,15 @@ bool PhysicsDevice::createFixture(GameObject* object, BodyPresets presets)
 {
 	
 	//new body definition
-	b2BodyDef* bd = new b2BodyDef;
-	//made need one or the other, depending on what was passed.
-	b2PolygonShape pShape;
-	b2CircleShape cShape;
-
-	//Fixture definition
-	b2FixtureDef shapefd;
-	
+	auto bd{ new b2BodyDef };
+		
 	//Set userData field with passed in object pointer.
 	//bd -> userData.pointer = reinterpret_cast<uintptr_t>(object);
 	//bd->SetUserData(object);
 
 	//set body type
-	switch (presets.physics.bodyType)
-	{
-	case BodyType::Static:
-		bd -> type = b2_staticBody;
-		break;
-	case BodyType::Kinematic:
-		bd -> type = b2_kinematicBody;
-		break;
-	case BodyType::Dynamic:
-		bd -> type = b2_dynamicBody;
-		break;
-	}
+	bd->type = (b2BodyType)presets.physics.bodyType;
+
 
 	//********Adjust postion because SDL is top left, while box2d is center*************
 	presets.position += presets.dimensions/2;
@@ -214,31 +172,46 @@ bool PhysicsDevice::createFixture(GameObject* object, BodyPresets presets)
 	bd -> angle = RW2PWAngle((float)presets.angle);
 
 	//add the body to the world
-	b2Body* body = world -> CreateBody(bd);
+	auto body{ world->CreateBody(bd) };
 
 	//Set damping values on the body
 	body -> SetAngularDamping(presets.physics.angularDamping);
 	body -> SetLinearDamping(presets.physics.linearDamping);
 	bodyMap.insert({ object, body });
-	//body->GetUserData().pointer = reinterpret_cast<uintptr_t>(object);
-	//body->SetUserData(object);
+
+	//made need one or the other, depending on what was passed.
+	
+	
+
+	//Fixture definition
+	b2FixtureDef shapefd{};
+
 	//Set fixture's shape
+	b2PolygonShape pShape{};
+	b2CircleShape cShape{};
 	switch (presets.physics.bodyShape)
 	{
 	case BodyShape::Rectangle:
+	{
 		//rectangle's dimensions
-		pShape.SetAsBox(RW2PW(presets.dimensions.x/2.0f), RW2PW(presets.dimensions.y/2.0f));
+		
+		pShape.SetAsBox(RW2PW(presets.dimensions.x / 2.0f), RW2PW(presets.dimensions.y / 2.0f));
 		shapefd.shape = &pShape;
 		break;
+	}
 	case BodyShape::Circle:
+	{
 		//circle radius based on object's width.
-		float width = presets.dimensions.x/2.0f;
-		float height = presets.dimensions.y/2.0f;
+		float width{ presets.dimensions.x / 2.0f };
+		float height{ presets.dimensions.y / 2.0f };
 
+		
 		if (width > height)	cShape.m_radius = (RW2PW(width));
 		else cShape.m_radius = (RW2PW(height));
 		shapefd.shape = &cShape;
+
 		break;
+	}
 	}
 	
 	//set fixture values based on passed in values.
@@ -248,8 +221,8 @@ bool PhysicsDevice::createFixture(GameObject* object, BodyPresets presets)
 
 	//create the fixture on the body.
 	body -> CreateFixture(&shapefd);
-	//body -> SetActive(physics.physicsOn);
 	body->SetEnabled(presets.physics.physicsOn);
+	
 	return true;
 	
 }
@@ -259,20 +232,14 @@ bool PhysicsDevice::createFixture(GameObject* object, BodyPresets presets)
 bool PhysicsDevice::RemoveObject(GameObject* object)
 //**************************************
 {
-	//Find the body based on the passed object
-	b2Body* body = FindBody(object);
-	DestroyJoint(body);
-	
-	//check to see if we have a body.
-	if(body == nullptr)
-	{return false;}
-	else
+	if(auto body{ FindBody(object) }; body)
 	{
+		DestroyJoint(body);
 		//delete the body from the world
 		world -> DestroyBody(body);
 		return true;
 	}
-
+	return false;
 }
 
 //**************************************
@@ -280,10 +247,7 @@ bool PhysicsDevice::RemoveObject(GameObject* object)
 bool PhysicsDevice::DestroyJoint(GameObject* object)
 //**************************************
 {
-	b2Body* body = FindBody(object);
-	
-	//destroy joints associated with body.
-	return DestroyJoint(body);
+	return DestroyJoint(FindBody(object));
 }
 
 //**************************************
@@ -291,9 +255,9 @@ bool PhysicsDevice::DestroyJoint(GameObject* object)
 bool PhysicsDevice::DestroyJoint(b2Body* body)
 //**************************************
 {
-	bool jointFound = false;
+	bool jointFound{ false };
 	//destroy joints associated with body.
-	for(b2JointEdge* j = body -> GetJointList(); j != nullptr; j = j -> next)
+	for(auto j = body -> GetJointList(); j != nullptr; j = j -> next)
 	{
 		world -> DestroyJoint(j -> joint);
 		jointFound = true;
@@ -325,17 +289,6 @@ b2Body* PhysicsDevice::FindBody(GameObject* object)
 		return body->second;
 	}
 
-	//loop through the bodies
-	//for (b2Body* body = world -> GetBodyList(); body; body = body -> GetNext())
-	//{
-	//	auto storedObject{ body->GetUserData().pointer };
-	//	//when we have a match, return it.
-	//	if(object == reinterpret_cast<GameObject*>(body -> GetUserData().pointer))
-	//	{
-	//		return body;
-	//	}
-	//}
-	//if there was no match, return nullptr
 	return nullptr;
 }
 
@@ -344,7 +297,7 @@ b2Body* PhysicsDevice::FindBody(GameObject* object)
 b2Vec2 PhysicsDevice::GV2PV(Vector2D gameVec)
 //**************************************
 {
-	return b2Vec2(RW2PW(gameVec.x), RW2PW(gameVec.y));
+	return { RW2PW(gameVec.x), RW2PW(gameVec.y) };
 }
 
 //**************************************
@@ -352,10 +305,7 @@ b2Vec2 PhysicsDevice::GV2PV(Vector2D gameVec)
 Vector2D PhysicsDevice::PV2GV(b2Vec2 physicsVec)
 //**************************************
 {
-	Vector2D temp;
-	temp.x = (int)PW2RW(physicsVec.x);
-	temp.y = (int)PW2RW(physicsVec.y);
-	return temp;
+	return { (int)PW2RW(physicsVec.x), (int)PW2RW(physicsVec.y) };
 }
 
 //**************************************
@@ -364,28 +314,20 @@ bool PhysicsDevice::CreatRevolvingJoint(GameObject* object1, GameObject* object2
 //**************************************
 {
 	//find corresponding bodies for objects
-	b2Body* bodyA = FindBody(object1);
-	b2Body* bodyB = FindBody(object2);
+	auto bodyA{ FindBody(object1)};
+	auto bodyB{ FindBody(object2) };
 	if(bodyA == nullptr || bodyB == nullptr)
 	{
 		return false;
 	}
 
 	//joint definition
-	b2RevoluteJointDef revoluteJointDef;
-
-	//assign bodies to definition
+	b2RevoluteJointDef revoluteJointDef{};
 	revoluteJointDef.bodyA = bodyA;
 	revoluteJointDef.bodyB = bodyB;
-
-	//They cannot collide
 	revoluteJointDef.collideConnected = false;
-
-	//set anchor points
 	revoluteJointDef.localAnchorA.Set(RW2PW(anchor1.x), RW2PW(anchor1.y));
 	revoluteJointDef.localAnchorB.Set(RW2PW(anchor2.x), RW2PW(anchor2.y));
-
-	//Joint starts at angle zero
 	revoluteJointDef.referenceAngle = 0;
 
 	//Add the joint to the world. If successful will return True, othewise false.

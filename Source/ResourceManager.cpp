@@ -150,7 +150,6 @@ void ResourceManager::loadNotices(tinyxml2::XMLElement* notices)
 {
 	while (notices)
 	{
-		//get information from file TODO:: x and y directly in notice
 		Notice notice;
 
 		notices->QueryIntAttribute("x", &notice.square.x);
@@ -215,7 +214,7 @@ ObjectDefinition ResourceManager::loadComponent(tinyxml2::XMLElement* component)
 	ObjectDefinition definition;
 	while (component)
 	{
-		std::string currentComponent = component->Attribute("name");
+		std::string currentComponent {component->Attribute("name")};
 		//find the component we just grabbed
 		if (currentComponent == "Renderer")
 		{
@@ -235,7 +234,7 @@ ObjectDefinition ResourceManager::loadComponent(tinyxml2::XMLElement* component)
 
 			if (bodyType == "dynamic") { definition.physics.bodyType = BodyType::Dynamic; }
 			else if (bodyType == "staticBody") { definition.physics.bodyType = BodyType::Static; }
-
+			
 			if (bodyShape == "rectangle") { definition.physics.bodyShape = BodyShape::Rectangle; }
 			else if (bodyShape == "circle") { definition.physics.bodyShape = BodyShape::Circle; }
 
@@ -247,8 +246,7 @@ ObjectDefinition ResourceManager::loadComponent(tinyxml2::XMLElement* component)
 		else if (currentComponent == "Inventory") definition.components.emplace_back(std::make_unique<InventoryComponent>());
 		else if (currentComponent == "Ghost") definition.components.emplace_back(std::make_unique<GhostComponent>());
 		else if (currentComponent == "Health") definition.components.emplace_back(std::make_unique<HealthComponent>());
-		else if (currentComponent == "Trigger") 
-			definition.components.emplace_back(std::make_unique<TriggerComponent>());
+		else if (currentComponent == "Trigger") definition.components.emplace_back(std::make_unique<TriggerComponent>());
 		// if we have a misspeleed or non-existant component name in the file
 		else
 		{

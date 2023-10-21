@@ -51,11 +51,8 @@ bool BackpackComponent::initialize(ObjectFactoryPresets& presets)
 	return true;
 }
 
-//**************************************
-//kills the item passed in, grabs it's rendere, and saves it to, what is essentially
-//the Graphics device's openSlots vector.
+
 bool BackpackComponent::pickUpItem(GameObject* item)
-//**************************************
 {
 	pickedUpItem = item;
 	return true;
@@ -64,7 +61,7 @@ bool BackpackComponent::pickUpItem(GameObject* item)
 	//Have this iterate through all items in inventory and draw them. .  . Must happen after Graphic's
 	//Device does it's draw. . .
 std::unique_ptr<GameObject> BackpackComponent::update(std::vector<std::unique_ptr<GameObject>>& objects)
-	{
+{
 	if (pickedUpItem != nullptr)
 	{
 		if (auto toPickUp{ std::find_if(objects.begin(), objects.end(),
@@ -76,23 +73,23 @@ std::unique_ptr<GameObject> BackpackComponent::update(std::vector<std::unique_pt
 			pickedUpItem = nullptr;
 		}
 	}
-		if (open)
-		{			
-			std::map<Texture*, Vector2D> objects;
-			for(const auto& item : inventory)
-			{
-				objects.emplace
-				(
-					item -> getComponent<SpriteComponent>() -> getTexture(), 
-					item -> getComponent<InventoryComponent>() -> locationInPack()
-				);
-			}
-			
-			devices->getGraphicsDevice()->
-				addOverlay({ topLeft, bottomRight, background, border, objects });
+	if (open)
+	{
+		std::map<Texture*, Vector2D> objects;
+		for (const auto& item : inventory)
+		{
+			objects.emplace
+			(
+				item->getComponent<SpriteComponent>()->getTexture(),
+				item->getComponent<InventoryComponent>()->locationInPack()
+			);
 		}
-		return nullptr;
+
+		devices->getGraphicsDevice()->
+			addOverlay({ topLeft, bottomRight, background, border, objects });
 	}
+	return nullptr;
+}
 
 std::unique_ptr<Component> BackpackComponent::copyMe() const
 {
@@ -123,16 +120,16 @@ bool BackpackComponent::ToBackpack(std::unique_ptr<GameObject> item)
 	Vector2D currPosition{ 0,0 };
 
 	//Found a row that the item can fit in
-	bool rowFound = false;
+	bool rowFound{ false };
 
 	//let's find a spot for it. . .
 	//while we have not reached the last row, and we have not found a row to put it in.
 	while (currPosition.x < max.x && !rowFound)
 	{
 		//Not yet found a column that the item can fit in
-		bool columnFound = false;
+		bool columnFound{ false };
 		//# of sequential open columns we have found
-		int seqColumns = 0;
+		int seqColumns{ 0 };
 		//back to the first column
 		currPosition.y = 0;
 
@@ -141,7 +138,7 @@ bool BackpackComponent::ToBackpack(std::unique_ptr<GameObject> item)
 		while (!columnFound && currPosition.y < max.y)
 		{
 			//If it is empty, add one to our sequential columns
-			if (openSlots[currPosition.x][currPosition.y]) seqColumns++;
+			if (openSlots.at(currPosition.x).at(currPosition.y)) seqColumns++;
 			//if it is not empty, start sequential column count over.
 			else seqColumns = 0;
 			//If we have found enough sequential columns, set the found to true
