@@ -1,0 +1,10 @@
+^D:\DOCUMENTS\GITHUB\MIGHTY-MAGE\THIRDPARTY\BOX2D\BUILD32\CMAKEFILES\6877C98663701BFAA030BF209C02ED3B\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D -BD:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32 --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/Documents/GitHub/Mighty-Mage/ThirdParty/Box2D/build32/box2d.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

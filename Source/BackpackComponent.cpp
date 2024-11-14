@@ -94,6 +94,7 @@ std::unique_ptr<GameObject> BackpackComponent::update(std::vector<std::unique_pt
 std::unique_ptr<Component> BackpackComponent::copyMe() const
 {
 	return std::move(std::make_unique<BackpackComponent>(*this));
+	
 }
 
 bool BackpackComponent::ToBackpack(std::unique_ptr<GameObject> item)

@@ -1,0 +1,1 @@
+D:\Documents\GitHub\Mighty-Mage\ThirdParty\SDL2_gfx\Win32\Debug\SDL2_gfx.dll

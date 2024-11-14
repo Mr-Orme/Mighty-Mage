@@ -1,0 +1,9 @@
+﻿cl : command line  warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  SDL2_rotozoom.c
+  SDL2_imageFilter.c
+  SDL2_gfxPrimitives.c
+  SDL2_framerate.c
+  Generating Code...
+SDL2_framerate.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+     Creating library Win32\Debug\SDL2_gfx.lib and object Win32\Debug\SDL2_gfx.exp
+  SDL2_gfx.vcxproj -> D:\Documents\GitHub\Mighty-Mage\ThirdParty\SDL2_gfx\Win32\Debug\SDL2_gfx.dll
